@@ -22,6 +22,6 @@ administration and R before a stint as a Data Scientist at a telematics company 
 good software development practices.
 
 Here you'll find Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R,
-Statistics, Genetics, Evolution and more.
+Emacs, Org-mode, Statistics, Genetics, Evolution and more.
 
 When not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family.
