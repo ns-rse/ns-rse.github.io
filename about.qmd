@@ -1,0 +1,19 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/nshephardRSE
+    - icon: github
+      text: Github
+      href: https://github.com/ns-rse
+
+---
+
+## About this blog
+
+Semi-coherent thoughts on research software engineering, Git, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R,
+GitHub, GitLab, Statistics, Genetics, Evolution and more.
