@@ -41,7 +41,6 @@ vignettes/*.pdf
 # Emacs
 \#*
 *~
-/.quarto/
 
 # Quarto
 /.quarto/
