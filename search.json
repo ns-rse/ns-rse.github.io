@@ -2,9 +2,9 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "About this blog",
     "section": "",
-    "text": "Hi, I’m Neil and work as a Research Software Engineer at the University of Sheffield. My education started with BSc in Zoology and Genetics followed by a MSc in Genetic Epidemiology. I spent time as a Genetics Statistician before shifting to Medical Statistics and working on Clinical Trials where I learnt GNU/Linux system administration and R before a stint as a Data Scientist at a telematics company where I not only learnt Python but about good software development practices.\nHere you’ll find Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
+    "text": "Here you’ll find Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
   },
   {
     "objectID": "index.html",
