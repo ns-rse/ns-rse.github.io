@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "About this blog"
 image: profile.jpg
 about:
   template: jolla
@@ -12,8 +12,6 @@ about:
       href: https://github.com/ns-rse
 
 ---
-
-## About this blog
 
 Hi, I'm Neil and work as a [Research Software Engineer](https://rse.shef.ac.uk) at the University of Sheffield. My
 education started with BSc in Zoology and Genetics followed by a MSc in Genetic Epidemiology. I spent time as a Genetics
