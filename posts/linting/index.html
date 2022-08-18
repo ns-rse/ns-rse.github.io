@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Neil Shephard">
+<meta name="dcterms.date" content="2022-08-18">
+
+<title>ns-rse - Linting - What is all the fluff about?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ns-rse</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About this blog</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ns-rse"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/nshephardRSE"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Linting - What is all the fluff about?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">code</div>
+    <div class="quarto-category">linting</div>
+    <div class="quarto-category">python</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Neil Shephard </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 18, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<p><strong>NB</strong> This article originally appeared on <a href="https://rse.shef.ac.uk/blog/">RSE University of Sheffield</a> but is updated here.</p>
+<p>If you’ve been dabbling in programming for a while you may have heard of “linting your code” which is a process of static code analysis to remove the “fluff” from your code. Just as physically linting your clothes removes unwanted fluff, linting your code removes “fluff” and can help…</p>
+<ul>
+<li>Reduce bugs.</li>
+<li>Improve performance.</li>
+<li>Mitigate against some security flaws.</li>
+<li>Improve coding skills.</li>
+<li>Consistent coding style.</li>
+</ul>
+<p>This helps reduce the <a href="https://en.wikipedia.org/wiki/Technical_debt">technical debt</a> which impacts the amount of time required for maintenance and further development of a code base. The main focus of this article is the use of linting to ensure consistent coding style, it focuses on Python under Linux but similar tools are available for other operating systems and languages.</p>
+<!--more-->
+<section id="style-matters" class="level2">
+<h2 class="anchored" data-anchor-id="style-matters">Style Matters</h2>
+<p>What has style got to do with writing code? Trends come and go in fashion but coding styles are meant to be relatively static and not change with the season, although they can and do evolve over time. This is because using a consistent and widely used style when writing code makes it easier for other people, often your future self, to read and understand the code you have written. If code is easier to understand then its easier to modify, update, extend, improve and in general maintain.</p>
+<p>A useful insight from <a href="https://en.wikipedia.org/wiki/Guido_van_Rossum">Gudio van Rossum</a>, the creator of <a href="https://www.python.org">Python</a> is that “<a href="https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds"><em>code is read much more often than it is written</em></a>” and so it should be easy to understand and not obfuscate its intent. Python is quite good for this as it is an expressive language which encourages coders to be explicit when naming variables, functions, classes and so forth so that their purpose and intention is clear, although the same is true of most modern languages. However, going a step further and using consistent styles to format and layout code helps enhance this.</p>
+</section>
+<section id="linting-in-python" class="level2">
+<h2 class="anchored" data-anchor-id="linting-in-python">Linting in Python</h2>
+<p>The most widely used Python style is defined in the long established <a href="https://pep8.org/">PEP 8: The Style Guide for Python Code</a>. There are a number of tools available that will lint your Python code for you and most integrate with your IDE, whether that is <a href="https://code.visualstudio.com/">Visual Studio Code</a>, <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> or <a href="https://www.gnu.org/software/emacs/">Emacs</a>. Some of the formatting and linting tools available for Python are…</p>
+<ul>
+<li><p><a href="https://pylint.pycqa.org/en/latest/index.html">Pylint</a> - checks for errors in Python code, tries to enforce a coding standard and looks for code smells.</p></li>
+<li><p><a href="https://pypi.org/project/yapf/">YAPF</a> - takes the code and reformats it to the best formatting that conforms to the style guide.</p></li>
+<li><p><a href="https://github.com/psf/black">Black</a> - The Uncompromising Code Formatter</p></li>
+<li><p><a href="https://flake8.pycqa.org/en/latest/">Flake8</a> - Your Tool For Style Guide Enforcement</p></li>
+<li><p><a href="https://prospector.landscape.io/en/master/index.html">Prospector</a> - Python Static Analysis</p></li>
+<li><p><a href="http://mypy-lang.org/">mypy</a> - Optional Static Typing for Python</p></li>
+</ul>
+<p>Here we will work through linting and formatting the simple file below (available as a download <a href="../../assets/python/save_random_numbers.py">here</a>) using PyLint and Black.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_random_numbers(size: <span class="bu">int</span>, seed: <span class="bu">int</span> <span class="op">=</span> <span class="dv">87653546</span>, save_as: Union[<span class="bu">str</span>, Path] <span class="op">=</span> <span class="st">"./random_numbers.txt"</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Save a list of random numbers (floats) to the given file.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    The stated number of random numbers will be saved to the given target file, if the directory structure</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    doesn't exist it will be created. Output will by default be over-written.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    size : int</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">        Number of random numbers to generate</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">    seed: int</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">        Seed for random number generation</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">    save_as : Union[str, Path]</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">        Directory/file to save numbers to.</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng()</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    random_numbers <span class="op">=</span> rng.random(size)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> Path(save_as).<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> out:</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        writer <span class="op">=</span> csv.write(out)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        writer.writerows(random_numbers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="linting-with-pylint" class="level3">
+<h3 class="anchored" data-anchor-id="linting-with-pylint">Linting with PyLint</h3>
+<p>We will lint this file using <a href="https://pylint.pycqa.org/en/latest/index.html">Pylint</a> to find out what errors there are and how its style can be improved to conform with PEP8 guidelines.</p>
+<p>First you need to install <code>pylint</code>, typically in your <a href="https://realpython.com/python-virtual-environments-a-primer/">virtual environment</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pylint</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Pylint can be configured using a <code>~/.pylintrc</code> file in your home directory and over time this will grow as you customise your configuration but for now we will make one simple change from the default which is to increase the accepted line length. Create the file and save it with the following content.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[FORMAT]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Maximum number of characters on a single line.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">max-line-length=120</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Open a terminal and navigate to the location you saved the example file <code>save_random_numbers.py</code> activate the virtual environment you installed pylint under if its not already being used and then type the following to run Pylint against your code…</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pylint</span> save_random_numbers.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should see output similar to the following…</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">❱</span> pylint save_random_numbers.py</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">*************</span> Module save_random_numbers</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">save_random_numbers.py:1:0:</span> C0114: Missing module docstring <span class="er">(</span><span class="ex">missing-module-docstring</span><span class="kw">)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">save_random_numbers.py:5:66:</span> E0602: Undefined variable <span class="st">'Union'</span> <span class="er">(</span><span class="ex">undefined-variable</span><span class="kw">)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">save_random_numbers.py:5:35:</span> W0613: Unused argument <span class="st">'seed'</span> <span class="er">(</span><span class="ex">unused-argument</span><span class="kw">)</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">save_random_numbers.py:2:0:</span> C0411: standard import <span class="st">"from pathlib import Path"</span> should be placed before <span class="st">"import numpy as np"</span> <span class="er">(</span><span class="ex">wrong-import-order</span><span class="kw">)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">save_random_numbers.py:3:0:</span> C0411: standard import <span class="st">"import csv"</span> should be placed before <span class="st">"import numpy as np"</span> <span class="er">(</span><span class="ex">wrong-import-order</span><span class="kw">)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------------------------------</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> code has been rated at 0.00/10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The output tells us which module has been inspected on the first line. Each subsequent line indicates</p>
+<ul>
+<li>The file.</li>
+<li>The line the problem has been encountered on.</li>
+<li>The column.</li>
+<li>A somewhat cryptic error code and then a message about the problem</li>
+<li>A more descriptive generic message associated with the error code.</li>
+</ul>
+<p>At the moment we are only looking at one file, but when using PyLint against larger code bases this information is vital in helping direct you to the location of code that needs changing. At the end PyLint rates your code, ideally you should aim to get a score of <code>10.0/10</code>.</p>
+<p>The messages are quite informative, taking each in turn we can work through resolving them.</p>
+<section id="missing-module-docstring-missing-module-docstring" class="level4">
+<h4 class="anchored" data-anchor-id="missing-module-docstring-missing-module-docstring"><code>Missing module docstring (missing-module-docstring)</code></h4>
+<p>Each Python module should have a docstring as the very first line that describes what it does. In this example it might be considered superflous but its good practice to get in the habit of writing these as it comes in useful when documentation is automatically generated from the docstrings in the code. To fix it we can add a short docstring at the top.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Module for saving randomly generated numbers."""</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="undefined-variable-union-undefined-variable" class="level4">
+<h4 class="anchored" data-anchor-id="undefined-variable-union-undefined-variable"><code>Undefined variable 'Union' (undefined-variable)</code></h4>
+<p>This error arises because the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/">type hint</a> uses <code>Union</code> but it hasn’t been imported. It’s from the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/">typing</a> module so we can import it.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Module for saving randomly generated numbers."""</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="unused-argument-seed-unused-argument" class="level4">
+<h4 class="anchored" data-anchor-id="unused-argument-seed-unused-argument"><code>Unused argument 'seed' (unused-argument)</code></h4>
+<p>This is very useful to be informed about because the <code>seed</code> argument, according to the docstring, is meant to be used in the call to the random number generator and ensures we will get the same set of random numbers generated each time we call the function with that seed, however, as Pylint has informed us we haven’t actually used it within the <code>save_random_number()</code> function. We can correct that by adding it when we instantiate the random number generator.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>seed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="standard-import-from-pathlib-import-path-should-be-placed-before-import-numpy-as-np-wrong-import-order" class="level4">
+<h4 class="anchored" data-anchor-id="standard-import-from-pathlib-import-path-should-be-placed-before-import-numpy-as-np-wrong-import-order"><code>standard import "from pathlib import Path" should be placed before "import numpy as np" (wrong-import-order)</code></h4>
+<p>This message, like the one that follows it, is telling us that the order in which we have imported modules is incorrect, because the PEP8 guide recommends that core modules, which both <code>csv</code> and <code>pathlib</code> are, should be imported before other modules. We can correct this by changing the order (and because we have added an import from the <code>typing</code> module which is also a core module we move that too).</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Module for saving randomly generated numbers."""</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once corrected your file should look like this…</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Module for saving randomly generated numbers."""</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_random_numbers(size: <span class="bu">int</span>, seed: <span class="bu">int</span> <span class="op">=</span> <span class="dv">87653546</span>, save_as: Union[<span class="bu">str</span>, Path] <span class="op">=</span> <span class="st">"./random_numbers.txt"</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Save a list of random numbers (floats) to the given file.</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">    The stated number of random numbers will be saved to the given target file, if the directory structure</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">    doesn't exist it will be created. Output will by default be over-written.</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">    size : int</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">        Number of random numbers to generate</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">    seed: int</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">        Seed for random number generation</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">    save_as : Union[str, Path]</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">        Directory/file to save numbers to.</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    random_numbers <span class="op">=</span> rng.random(size)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> Path(save_as).<span class="bu">open</span>(<span class="st">'w'</span>) <span class="im">as</span> out:</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        writer <span class="op">=</span> csv.write(out)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>        writer.writerows(random_numbers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>…and you can now run PyLint against it to see if you’ve improved your score.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">❱</span> pylint save_random_numbers.py</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">*************</span> Module save_random_numbers</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">save_random_numbers.py:7:66:</span> E1136: Value <span class="st">'Union'</span> is unsubscriptable <span class="er">(</span><span class="ex">unsubscriptable-object</span><span class="kw">)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">------------------------------------------------------------------</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> code has been rated at 5.00/10 <span class="er">(</span><span class="ex">previous</span> run: 4.00/10, +1.00<span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>That is an improvement in score (of <code>+1.00</code>) but we now have another error telling us that <code>E1136: Value 'Union' is unsubscriptable (unsubscriptable-object)</code>. You are unlikely to know what all the error codes mean, but there are a few handy on-line lists <a href="http://pylint-messages.wikidot.com/all-codes">all PyLint codes</a> or <a href="http://pylint-messages.wikidot.com/all-messages">all PyLint messages</a> and what they are telling you are worth consulting (<a href="https://docs.quantifiedcode.com/python-anti-patterns/index.html">The Little Book of Python Anti-Patterns</a> is also useful). In this instance PyLint has returned a false-positive because <code>Union</code> can and should be subscripted here because it means the argument can be either a string (<code>str</code>) or a <a href="https://docs.python.org/3/library/pathlib.html">pathlib</a> Path (<code>Path</code>). So how do we get around this complaint?</p>
+<p>You can disable PyLint from complaining about specific error codes/messages on a per-file basis by adding a line that disables them. You can use either codes or messages (the bit in the brackets at the end of the line, in this case <code>unsubscriptable-object</code>) and it is advisable to use the message form as it is more informative to those who read your code subequently.</p>
+<p>If we add the following line it prevents PyLint from reporting the specific error…</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># pylint: disable=unsubscriptable-object</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_random_numbers(size: <span class="bu">int</span>, seed: <span class="bu">int</span> <span class="op">=</span> <span class="dv">87653546</span>, save_as: Union[<span class="bu">str</span>, Path] <span class="op">=</span> <span class="st">"./random_numbers.txt"</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>…running PyLint against our code again we get a much better score.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a> <span class="ex">❱</span> pylint save_random_numbers_tidy.py</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-------------------------------------------------------------------</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> code has been rated at 10.00/10 <span class="er">(</span><span class="ex">previous</span> run: 5.00/10, +5.00<span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="configuring-pylint" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-pylint">Configuring PyLint</h3>
+<p>The last error we encountered is something that is likely to crop up again if you use Typehints liberally throughout your Python code (and I would encourage you to do so). Rather than having to remember to disable the error in each file/module we create we can configure PyLint via its configuration file <code>~/.pylintrc</code> to always ignore this error. To do so add the following…</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[MESSAGES</span> CONTROL]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Disable the message, report, category or checker with the given id(s). You</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># can either give multiple identifiers separated by comma (,) or put this</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># option multiple times (only on the command line, not in the configuration</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># file where it should appear only once).</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="va">disable</span><span class="op">=</span>unsubscriptable-object</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For more on configuriong PyLint refer to the <a href="https://pylint.pycqa.org/en/latest/user_guide/options.html">documentation</a> and also details of how to <a href="https://pylint.pycqa.org/en/latest/user_guide/ide-integration.html">integrate with your editor and IDE</a></p>
+</section>
+<section id="automated-formatting-with-black" class="level3">
+<h3 class="anchored" data-anchor-id="automated-formatting-with-black">Automated Formatting with Black</h3>
+<p><a href="https://github.com/psf/black">Black</a> is <em>The Uncompromising Code Formatter</em> and is very strict about the way in which it formats code. This could be a good or bad thing depending on your point of view, but it does result in highly consistent code when applied to all files. It formats files in place, so be mindful of this if you run it against one of your files it <em>will</em> change it.</p>
+<p>Install <code>black</code> in your virtual environment and make a backup of your <code>save_random_number.py</code> file that you have just tidied up with linting.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install black</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> save_random_numbers.py tidy_save_random_numbers.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To run black against your code pass it the input file, it will re-write it and you can then compare it against the backup you just made…</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">black</span> save_random_numbers.py</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> diff save_random_numbers.py tidy_save_random_numbers.py</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="ex">5,8c5</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span> def <span class="ex">save_random_numbers</span><span class="er">(</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;</span>     size: <span class="ex">int,</span> seed: int = 87653546, save_as: Union[str, Path] = <span class="st">"./random_numbers.txt"</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;</span> <span class="kw">)</span> <span class="ex">-</span><span class="op">&gt;</span> None:</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> def <span class="ex">save_random_numbers</span><span class="er">(</span><span class="ex">size:</span> int, seed: int = 87653546, save_as: Union[str, Path] = <span class="st">"./random_numbers.txt"</span><span class="kw">)</span> <span class="ex">-</span><span class="op">&gt;</span> None:</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="ex">27c24</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>     with <span class="ex">Path</span><span class="er">(</span><span class="ex">save_as</span><span class="kw">)</span><span class="ex">.open</span><span class="er">(</span><span class="st">"w"</span><span class="kw">)</span> <span class="fu">as</span> out:</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="ex">---</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span>     with <span class="ex">Path</span><span class="er">(</span><span class="ex">save_as</span><span class="kw">)</span><span class="ex">.open</span><span class="er">(</span><span class="st">'w'</span><span class="kw">)</span> <span class="fu">as</span> out:</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this instance Black hasn’t changed much but it has reformatted the <code>def save~randomnumbers~(...)</code> line and moved the <code>with Path()</code> line as a consequence.</p>
+</section>
+</section>
+<section id="when-to-lint" class="level2">
+<h2 class="anchored" data-anchor-id="when-to-lint">When to Lint</h2>
+<p>It is worth linting your code from the outset of a project as not only does it result in a consistent style across your code base it also avoids the problem that can arise when applying linting retrospectively. If an existing code base has linting applied then the <a href="https://www.git-scm.com/docs/git-blame"><code>git blame</code></a>, which indicates who the last person to edit a section was, then resides with the person who applied the linting, rather than the original author of the code. Its possible though that the person who applied the linting knows very little about the underlying functionality of the code but they may receive questions about it if they are indicated as the last person to have modified particular lines.</p>
+<p>Fortunately there are a number of ways to automate and integrate linting into your workflow.</p>
+</section>
+<section id="automating-linting" class="level2">
+<h2 class="anchored" data-anchor-id="automating-linting">Automating Linting</h2>
+<section id="ide-integration" class="level3">
+<h3 class="anchored" data-anchor-id="ide-integration">IDE Integration</h3>
+<p>When programming it is really useful to use an <a href="https://en.wikipedia.org/wiki/Integrated_development_environment">Integrated Development Environment (IDE)</a> as most allow the integration of linting tools and apply them to your code automatically, whether its using PyLint, YAPF, Black or otherwise. Setup and configuration is beyond the scope of this article but some links are provided to useful resources to get you started.</p>
+</section>
+<section id="vscode" class="level3">
+<h3 class="anchored" data-anchor-id="vscode">VSCode</h3>
+<p>VSCode supports linting in most languages, and both <a href="https://code.visualstudio.com/docs/python/linting">Python</a> and <a href="https://docs.microsoft.com/en-us/visualstudio/rtvs/linting-r-code?view=vs-2017">R</a> are supported along with other languages.</p>
+</section>
+<section id="pycharm" class="level3">
+<h3 class="anchored" data-anchor-id="pycharm">PyCharm</h3>
+<p>PyCharm supports automated formatting of code, for more information please refer to <a href="https://www.jetbrains.com/help/pycharm/reformat-and-rearrange-code.html">Reformat and rearrange code | PyCharm</a>.</p>
+</section>
+<section id="emacs" class="level3">
+<h3 class="anchored" data-anchor-id="emacs">Emacs</h3>
+<p>There are various options available for linting within Emacs, which you use depends on your preferences but <a href="https://emacs-lsp.github.io/lsp-mode/">LSP mode</a> integrates with YAPF (via <a href="https://github.com/JorisE/yapfify">yapfify</a>), Flake8 (via <a href="https://www.flycheck.org/en/latest/">flycheck</a>) and Black (via <a href="https://github.com/pythonic-emacs/blacken">blacken</a>).</p>
+</section>
+</section>
+<section id="git-integration" class="level2">
+<h2 class="anchored" data-anchor-id="git-integration">Git Integration</h2>
+<p>If you are using an IDE then if configured correctly your code should be linted automatically for you, but an additional step that can capture anything that hasn’t been correctly formatted is to use a <a href="https://githooks.com/">git hook</a> to run linting on your code prior to making commits. There is <a href="https://github.com/sebdah/git-pylint-commit-hook">git-pylint-commit-hook</a> available on PyPi which runs automatically when you make commits to <code>.py</code> files.</p>
+</section>
+<section id="continuous-integration" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-integration">Continuous Integration</h2>
+<p>Including a linting stage in your Continuous Integration (CI) pipeline pays dividends as we all make mistakes and sometimes forget to lint our code before making pushes.</p>
+</section>
+<section id="megalinter" class="level2">
+<h2 class="anchored" data-anchor-id="megalinter">Megalinter</h2>
+<p>Perhaps not necessary for everyone but worth mentioning the beast that is <a href="https://megalinter.github.io/latest/">MegaLinter</a> which will lint code across multiple languages and integrates easily into your pipeline (GitHub Action, CI on GitLab, Jenkins etc.). A useful article on doing so is <a href="https://nicolas.vuillamy.fr/improve-uniformize-and-secure-your-code-base-with-megalinter-62ebab422c1">Limit your technical debt and secure your code base using MegaLinter</a>.</p>
+</section>
+<section id="pre-commit" class="level2">
+<h2 class="anchored" data-anchor-id="pre-commit">Pre-commit</h2>
+<p><a href="https://pre-commit.com/">Pre-commit</a> is a Python package that adds a set of configurable hooks for linting your code, and not just Python, using a Git pre-commit <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">hook</a>. Hooks are run conditional on certain changes in states, in this case code that is run before commits are made. It creates a virtual Python Environment and installs the required packages there to lint your code. More will be written on this in a subsequent post.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="python" class="level3">
+<h3 class="anchored" data-anchor-id="python">Python</h3>
+<ul>
+<li><a href="https://flake8.pycqa.org/en/latest/">Flake8</a> - Your Tool For Style Guide Enforcement</li>
+<li><a href="https://github.com/psf/black">Black</a> - The Uncompromising Code Formatter</li>
+<li><a href="https://code.visualstudio.com/docs/python/linting">Linting Python in Visual Studio Code</a></li>
+<li><a href="https://pylint.pycqa.org/en/latest/messages/messages_list.html">Pylint - Overview of all Pylint messages</a></li>
+</ul>
+</section>
+<section id="r" class="level3">
+<h3 class="anchored" data-anchor-id="r">R</h3>
+<ul>
+<li><a href="https://github.com/r-lib/lintr">GitHub - r-lib/lintr: Static Code Analysis for R</a></li>
+<li><a href="https://rowannicholls.github.io/R/intro/linting.html">Introduction to R: Linting R (and R Markdown)</a></li>
+</ul>
+</section>
+<section id="c" class="level3">
+<h3 class="anchored" data-anchor-id="c">C++</h3>
+<ul>
+<li><a href="https://github.com/cpplint/cpplint">cpplint</a></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
