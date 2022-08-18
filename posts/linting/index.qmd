@@ -3,7 +3,7 @@ title: "Linting - What is all the fluff about?"
 author: "Neil Shephard"
 date: "2022-08-18"
 categories: [code, linting, python, R]
-image: "image.jpg**
+image: "image.jpg"
 ---
 
 **NB** This article originally appeared on [RSE University of Sheffield](https://rse.shef.ac.uk/blog/) but is updated
