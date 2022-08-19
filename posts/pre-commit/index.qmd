@@ -37,7 +37,7 @@ haven't done so yet.
 ### Why pre-commit hooks?
 
 Typically when writing code you should [lint](https://rse.shef.ac.uk/blog/2022-04-19-linting/) your code to ensure it
-complied to agreed style guides and remove any "[code smells](https://en.wikipedia.org/wiki/Code_smell)" that may be
+complies to agreed style guides and remove any "[code smells](https://en.wikipedia.org/wiki/Code_smell)" that may be
 lingering (code that violates design principles). It won't guarantee that your code is perfect but its a good starting
 point to improving it. Experienced coders are typically in a good habit of doing these checks manually prior to making
 commits, although smart people will have configured their Integrated Development Environment (IDE) to apply many such
