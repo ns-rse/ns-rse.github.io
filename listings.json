@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/pre-commit/index.html",
       "/posts/linting/index.html"
     ]
   }
