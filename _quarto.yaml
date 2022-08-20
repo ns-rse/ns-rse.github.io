@@ -1,5 +1,12 @@
 project:
   type: website
+  resources:
+    - "*.R"
+    - "*.Rmd"
+    - "*.py"
+    - "*.qmd"
+    - "*.sh"
+    - "*.yaml"
 website:
   title: "ns-rse"
   navbar:
