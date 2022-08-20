@@ -3,7 +3,7 @@ title: "Linting - What is all the fluff about?"
 author: "Neil Shephard"
 date: "2022-08-18"
 categories: [code, linting, python, R]
-image: "image.jpg"
+image: "https://live.staticflickr.com/153/410254296_e518f48141_k.jpg"
 ---
 
 **NB** This article originally appeared on [RSE University of Sheffield](https://rse.shef.ac.uk/blog/) but is updated
@@ -66,7 +66,7 @@ and linting tools available for Python are...
 -   [mypy](http://mypy-lang.org/) - Optional Static Typing for Python
 
 Here we will work through linting and formatting the simple file below (available as a download
-[here](/assets/python/save_random_numbers.py)) using PyLint and Black.
+[here](/www/python/save_random_numbers.py)) using PyLint and Black.
 
 ```python
 import numpy as np
