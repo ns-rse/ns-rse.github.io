@@ -3,6 +3,7 @@ title: "Pre-Commit : Protecting your future self"
 author: "nshephard"
 date: "2022-08-28"
 categories: [code, analysis, linting, git]
+image: https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg
 # image: "image.jpg"
 ---
 
@@ -60,12 +61,72 @@ specific for each enabled hook for you.
 ## Configuration
 
 Configuration of pre-commit is via a file in the root of your Git version controlled directory called
-`./.pre-commit-config.yaml`.
+`./.pre-commit-config.yaml`. This file should be included in your Git repository.
+
+```bash
+git add .pre-commit-config.yaml
+```
+
+Each hook is associated with a repository (`repo`) and a version (`rev`). Many are available from the
+`https://github.com/pre-commit/pre-commit-hooks`
+
+```yaml
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.3.0 # Use the ref you want to point at
+      hooks:
+          - id: trailing-whitespace
+            types: [file, text]
+          - id: check-docstring-first
+          - id: check-case-conflict
+          - id: end-of-file-fixer
+            types: [python]
+          - id: requirements-txt-fixer
+          - id: mixed-line-ending
+            types: [python]
+            args: [--fix=no]
+          - id: debug-statements
+          - id: fix-byte-order-marker
+          - id: check-yaml
+```
+
+But some are from dedicated repositories, for example the following runs both [Black]() and [Flake8]() on your code and
+should follow under the above (with the same level of indenting to be valid YAML).
+
+```yaml
+    - repo: https://github.com/psf/black
+      rev: 22.6.0
+      hooks:
+          - id: black
+            types: [python]
+
+    - repo: https://gitlab.com/pycqa/flake8.git
+      rev: 3.9.2
+      hooks:
+          - id: flake8
+            additional_dependencies: [flake8-print]
+            types: [python]
+```
+
+An extensive list of [supported hooks](https://pre-commit.com/hooks.html) is available. It lists the repository from
+which the hook is derived along with its name.
 
 ## Usage
 
 Once installed and configured there really isn't much to be said for using pre-commit, just make commits, the hooks you
 have configured will run.
+
+You can optionally run `pre-commit` manually in a repository that has been configured.
+
+```bash
+pre-commit run --all-files # Across all files/hooks
+pre-commit run <hook_id>   # Specific hook
+```
+
+## Updating
+
+You can update hooks by running `pre-commit autoupdate`.
+
 
 ## Pre-commit CI/CD
 
@@ -73,4 +134,24 @@ Ideally contributors will have setup their system to work with pre-commit and be
 pushes. But as a backup you can enable running pre-commit as part of your Continuous Integration/Development
 pipeline. Here we show how to enable this on both [GitLab](https://gitlab.com) and [GitHub](https://github.com) although
 similar methods are available for many [continuous integration
-systems](https://pre-commit.com/#usage-in-continuous-integration)
+systems](https://pre-commit.com/#usage-in-continuous-integration).
+
+### GitHub
+
+GitHub actions reside in the `.github/workflows/` directory of your project. A simple pre-commit action is available on
+the Marketplace at [pre-commit/action](https://github.com/marketplace/actions/pre-commit)
+
+
+### GitLab
+
+If you use GitLab the following article describes how to configure a CI job to run as part of your repository.
+
+* [How to use pre-commit to automatically correct commits and merge requests with GitLab CI](https://stackoverflow.com/collectives/gitlab/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g)
+
+
+## Links
+
+* [Pre-commit](https://pre-commit.com/)
+* [Supported hooks](https://pre-commit.com/hooks.html)
+* [GitHub Action](https://github.com/marketplace/actions/pre-commit)
+* [GitLab CI](https://stackoverflow.com/collectives/gitlab/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g)
