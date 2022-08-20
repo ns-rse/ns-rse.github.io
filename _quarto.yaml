@@ -1,7 +1,14 @@
 project:
   type: website
+  resources:
+    - "*.R"
+    - "*.Rmd"
+    - "*.py"
+    - "*.qmd"
+    - "*.sh"
+    - "*.yaml"
 website:
-  title: "slackening"
+  title: "ns-rse"
   navbar:
     right:
       - about.qmd
