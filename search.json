@@ -2,23 +2,72 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About this blog",
+    "title": "About",
     "section": "",
-    "text": "Here you’ll find Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
+    "text": "Here you’ll find posts about Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "ns-rse",
     "section": "",
-    "text": "code\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
+    "text": "ssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/git-ssh/index.html",
+    "href": "posts/git-ssh/index.html",
+    "title": "Git : Custom SSH credentials for git repositories",
+    "section": "",
+    "text": "How to configure individual Git repositories to use specific SSH keys. This is useful if you have more than one account on a forge, for example a personal and work account."
+  },
+  {
+    "objectID": "posts/git-ssh/index.html#background",
+    "href": "posts/git-ssh/index.html#background",
+    "title": "Git : Custom SSH credentials for git repositories",
+    "section": "Background",
+    "text": "Background\nTypically when pushing changes to a forge such as GitHub, GitLab or Codeberg you use an SSH (Secure SHell) key to authenticate that you have permission to."
+  },
+  {
+    "objectID": "posts/git-ssh/index.html#ssh-keys",
+    "href": "posts/git-ssh/index.html#ssh-keys",
+    "title": "Git : Custom SSH credentials for git repositories",
+    "section": "SSH Keys",
+    "text": "SSH Keys\n\nConcept\nSSH keys are, in conjunction with “keychains”, used to save you having to enter a password each time you connect from one computer to another. They are generated on your computer and consist of two parts, a private key which remains on your computer and a public key which you place on remote computers you wish to connect to. There is a password associated with your key which is required to “unlock” your private key on your computer. Only an unlocked private key will match with a public key. Think of the public key as the lock on your front door, and the private key the key you carry on your traditional, physical, keychain/keyring. Only when the two match will things be unlocked, although you have to unlock your private key when you want to use it just as you have to get your keys out of your pocket (although “keychains” help with this).\n\n\nGeneration\nThere are different algorithms for generating SSH key pairs. DSA is no longer considered secure and RSA keys should have at least 2048-bits if not 4096-bits. A good choice these days is to use an elliptic curve based key such as ed25519 as they are shorter and faster. For more on why you should use this key see the article Upgrade your SSH keys!.\nTo generate a key use the following command entering a secure (i.e. long) password.\nssh-keygen -o -a 100 -t ed25519\nYou will be prompted for a filename to save your keys to, so you should know where to find them (the default is ~/.ssh/id_ed25519[.pub]). You have a private key ~/.ssh/id_ed25519 and a public ~/.ssh/id_ed25519.pub and we will use this to set up authentication on your Git Forge.\n\n\nForge Configuration\nUnder your account settings on your chosen Git Forge navigate to Settings > SSH and GPG Keys and select Add New Key on (GitHub). On GitLab navigate to Preferences > SSH Keys GitLab), this page allows you to add a new key.\nYou need to copy and paste your public key into the Key box on these pages and give it a name (typically the hostname of your computer is a good choice). To view your public key simply use cat and copy and paste it. You can optionally choose to set an expiration date for your key which is good practice but means you have to generate new keys in the future.\ncat ~/.ssh/id_ed25519.pub"
+  },
+  {
+    "objectID": "posts/git-ssh/index.html#git-global-ssh-configuration",
+    "href": "posts/git-ssh/index.html#git-global-ssh-configuration",
+    "title": "Git : Custom SSH credentials for git repositories",
+    "section": "Git Global SSH Configuration",
+    "text": "Git Global SSH Configuration\nTypically your global configuration for which key to use is set in ~/.ssh/config with an entry similar to the below.\nHost github.com\n     User git\n     Port 22\n     PreferredAuthentications publickey\n     IdentityFile ~/.ssh/id_ed25519\nHere it uses the User name git on port 22. The preferred authentication method is using a publickey and the private key used is stored locally at ~/.ssh/id_ed25519.\nWhen asked to connect to a forge using SSH (e.g. git pull or git push) will look through the ~/.ssh/config file to see if there is a configuration section that matches the target and if so use the configuration defined there-in. You will then be prompted for your SSH private key password.\n\nWhat are Keychains?\nYou may be wondering how an SSH key makes your life easier, you are still prompted to enter a password when trying to interact with a Git Forge, or use it in a more traditional manner to connect over SSH to another server. This is where the magic of a “keychain” steps in to make your life easier, you still have to enter a password but only once to add your SSH key to the “keychain”. Typically keychains are front-ends for interacting with and managing SSH agent. The name is apt since you add your SSH key to the keychain once, typically on log-in, and are asked for your password to unlock it and then stores it in the SSH agent. Then each time SSH requires an SSH key it retrieves it from the keychain rather than prompting you for a password.\nThere are many different implementations of keychain such as the Funtoo Keychain Project, Seahorse the GNOME GUI management tool,"
+  },
+  {
+    "objectID": "posts/git-ssh/index.html#git-per-repository-configuration",
+    "href": "posts/git-ssh/index.html#git-per-repository-configuration",
+    "title": "Git : Custom SSH credentials for git repositories",
+    "section": "Git Per Repository Configuration",
+    "text": "Git Per Repository Configuration\nWe now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be desirable if you have two accounts on the same forge e.g. both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you can configure each repository to use a specific key (source). At the command line…\ncd a/git/repository\ngit config core.sshCommand \"ssh -i ~/.ssh/different_ed25519 -F /dev/null\"\ngit config --local user.name \"Username\"\ngit config --local user.email \"repos@username.com\"\nThis adds the following to the repositories configuration which is stored under .git/config and you can of course enter this directly to the configuration file yourself.\n[core]\n    sshCommand = ssh -i ~/.ssh/different_ed25519 -F /dev/null\n[user]\n    name = Username\n    email = repos@username.com\nWhat is this doing? Well it’s instructing Git to run ssh using the private key file (with the -i flag to specify the identity_file) that is located at ~/.ssh/different_ed25519. Providing you have…\n\nAlready uploaded the public key (different_ed25519.pub) to your GitHub account.\nStored this key in a Keychain as described above.\n\n…you shouldn’t be prompted for a password.\nYou can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote origin (typically a forge such as GitHub, GitLab, Codeberg or so forth)."
+  },
+  {
+    "objectID": "posts/git-ssh/index.html#commit-verification-with-ssh",
+    "href": "posts/git-ssh/index.html#commit-verification-with-ssh",
+    "title": "Git : Custom SSH credentials for git repositories",
+    "section": "Commit verification with SSH",
+    "text": "Commit verification with SSH\nVerification of commits is a usefl security feature, but beyond the scope of this article but as doing so with SSH keys is a recently supported feature on GitHub (see blog SSH commit verification now supported) I felt it worth mentioning."
+  },
+  {
+    "objectID": "posts/git-ssh/index.html#links",
+    "href": "posts/git-ssh/index.html#links",
+    "title": "Git : Custom SSH credentials for git repositories",
+    "section": "Links",
+    "text": "Links\n\nSSH\n\nSSH Academy\nOpenSSH Key Management, Part 1\nOpenSSH Key Management, Part 2\nOpenSSH Key Management, Part 3\n\n\n\nForges\n\nGitHub | Connect with SSH\nGitLab | Use SSH keys to communicate with GitLab\nCodeberg | Adding an SSH key to your account"
   },
   {
     "objectID": "posts/pre-commit/index.html",
     "href": "posts/pre-commit/index.html",
     "title": "Pre-Commit : Protecting your future self",
     "section": "",
-    "text": "Pre-commit is a powerful tool for executing a range of hooks prior to making commits to your Git history. This is useful because it means you can automatically run a range of linting tools on your code across an array of languages to ensure your code is up-to-scratch before you make the commit. Thus your Git history doesn’t end up littered with commits such as “Tidying up” or “Placating the linting deity”.\nPre-commit is written in Python but that isn’t a limitation as it will lint YAML, JSON, C, JavaScript, Go, Rust, TOML, Terraform, Jupyter Notebooks, and so on. The list of supported hooks is vast."
+    "text": "Learn about installing and configuring Pre-commit to lint your code before making Git commits.\nPre-commit is a powerful tool for executing a range of hooks prior to making commits to your Git history. This is useful because it means you can automatically run a range of linting tools on your code across an array of languages to ensure your code is up-to-scratch before you make the commit. Thus your Git history doesn’t end up littered with commits such as “Tidying up” or “Placating the linting deity”.\nPre-commit is written in Python but that isn’t a limitation as it will lint YAML, JSON, C, JavaScript, Go, Rust, TOML, Terraform, Jupyter Notebooks, and so on. The list of supported hooks is vast."
   },
   {
     "objectID": "posts/pre-commit/index.html#background",

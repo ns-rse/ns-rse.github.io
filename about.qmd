@@ -1,5 +1,5 @@
 ---
-title: "About this blog"
+title: "About"
 image: profile.jpg
 about:
   template: jolla
@@ -16,10 +16,11 @@ about:
 Hi, I'm Neil and work as a [Research Software Engineer](https://rse.shef.ac.uk) at the University of Sheffield. My
 education started with BSc in Zoology and Genetics followed by a MSc in Genetic Epidemiology. I spent time as a Genetics
 Statistician before shifting to Medical Statistics and working on Clinical Trials where I learnt GNU/Linux system
-administration and R before a stint as a Data Scientist at a telematics company where I not only learnt Python but about
-good software development practices.
+administration, reproducible research practices and R before a stint as a Data Scientist at a telematics company where I
+not only learnt Python but about good software development practices.
 
-Here you'll find Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R,
-Emacs, Org-mode, Statistics, Genetics, Evolution and more.
+Here you'll find posts about Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT),
+Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.
 
-When not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family.
+When not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my
+family.
