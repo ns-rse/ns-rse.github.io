@@ -1,0 +1,157 @@
+---
+title: "Git : Custom SSH credentials for git repositories"
+author: "nshephard"
+date: "2022-08-28"
+categories: [ssh, git, github, gitlab, keychain]
+image: https://live.staticflickr.com/65535/48816178863_85ee1fe7f1_k.jpg
+---
+
+How to configure individual Git repositories to use specific SSH keys. This is useful if you have
+more than one account on a forge, for example a personal and work account.
+
+## Background
+
+Typically when pushing changes to a forge such as [GitHub](https://github.com), [GitLab](https://gitlab.com) or
+[Codeberg](https://codeberg.org) you use an SSH (*S*ecure *SH*ell) key to authenticate that you have permission to.
+
+## SSH Keys
+
+
+### Concept
+
+SSH keys are, in conjunction with "keychains", used to save you having to enter a password each time you connect from
+one computer to another. They are generated on your computer and consist of two parts, a private key which remains on
+your computer and a public key which you place on remote computers you wish to connect to. There is a password
+associated with your key which is required to "unlock" your private key on your computer. Only an unlocked private key
+will match with a public key. Think of the public key as the lock on your front door, and the private key the key you
+carry on your traditional, physical, keychain/keyring. Only when the two match will things be unlocked, although you
+have to unlock your private key when you want to use it just as you have to get your keys out of your pocket (although
+"keychains" help with this).
+
+### Generation
+
+There are different algorithms for generating SSH key pairs. DSA is no longer considered secure and RSA keys should have
+at least 2048-bits if not 4096-bits. A good choice these days is to use an elliptic curve based key such as
+ed25519 as they are shorter and faster. For more on why you should use this key see the article [Upgrade your SSH
+keys!](https://blog.g3rt.nl/upgrade-your-ssh-keys.html).
+
+To generate a key use the following command entering a secure (i.e. [long](xkcd.com/936/)) password.
+
+```bash
+ssh-keygen -o -a 100 -t ed25519
+```
+
+You will be prompted for a filename to save your keys to, so you should know where to find them (the default is
+`~/.ssh/id_ed25519[.pub]`). You have a private key `~/.ssh/id_ed25519` and a public `~/.ssh/id_ed25519.pub` and we will
+use this to set up authentication on your Git Forge.
+
+
+### Forge Configuration
+
+Under your account settings on your chosen Git Forge navigate to _Settings > SSH and GPG Keys_ and select _Add New Key_
+on ([GitHub](https://github.com/settings/keys)). On GitLab navigate to _Preferences > SSH Keys_
+[GitLab](https://gitlab.com/-/profile/keys)), this page allows you to add a new key.
+
+You need to copy and paste your public key into the `Key` box on these pages and give it a name (typically the hostname
+of your computer is a good choice). To view your public key simply use `cat` and copy and paste it. You can optionally
+choose to set an expiration date for your key which is good practice but means you have to generate new keys in the
+future.
+
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+
+## Git Global SSH Configuration
+
+Typically your global configuration for which key to use is set in `~/.ssh/config` with an entry similar to the below.
+
+
+```
+Host github.com
+     User git
+     Port 22
+     PreferredAuthentications publickey
+     IdentityFile ~/.ssh/id_ed25519
+```
+
+Here it uses the User name `git` on port `22`. The preferred authentication method is using a  `publickey` and the private
+key used is stored locally at `~/.ssh/id_ed25519`.
+
+When asked to connect to a forge using SSH (e.g. `git pull` or `git push`) will look through the `~/.ssh/config` file to
+see if there is a configuration section that matches the target and if so use the configuration defined there-in. You
+will then be prompted for your SSH private key password.
+
+### What are Keychains?
+
+You may be wondering how an SSH key makes your life easier, you are still prompted to enter a password when trying to
+interact with a Git Forge, or use it in a more traditional manner to connect over SSH to another server. This is where
+the magic of a "keychain" steps in to make your life easier, you still have to enter a password but only once to add
+your SSH key to the "keychain". Typically keychains are front-ends for interacting with and managing [SSH
+agent](https://www.ssh.com/academy/ssh/agent). The name is apt since you add your SSH key to the keychain once,
+typically on log-in, and are asked for your password to unlock it and then stores it in the SSH agent. Then each time
+SSH requires an SSH key it retrieves it from the keychain rather than prompting you for a password.
+
+There are many different implementations of keychain such as the [Funtoo Keychain
+Project](https://www.funtoo.org/Funtoo:Keychain), [Seahorse](https://wiki.gnome.org/Apps/Seahorse) the GNOME GUI
+management tool,
+
+
+## Git Per Repository Configuration
+
+We now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be
+desirable if you have two accounts on the same forge e.g. both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you
+can configure each repository to use a specific key ([source](https://superuser.com/a/912281)). At the command line...
+
+
+```bash
+cd a/git/repository
+git config core.sshCommand "ssh -i ~/.ssh/different_ed25519 -F /dev/null"
+git config --local user.name "Username"
+git config --local user.email "repos@username.com"
+```
+
+This adds the following to the repositories configuration which is stored under `.git/config` and you can of course
+enter this directly to the configuration file yourself.
+
+```
+[core]
+    sshCommand = ssh -i ~/.ssh/different_ed25519 -F /dev/null
+[user]
+    name = Username
+    email = repos@username.com
+```
+
+What is this doing? Well it's instructing Git to run ssh using the private key file (with the `-i` flag to specify the
+`identity_file`) that is located at `~/.ssh/different_ed25519`. Providing you have...
+
+a) Already uploaded the public key (`different_ed25519.pub`) to your GitHub account.
+b) Stored this key in a Keychain as described above.
+
+...you shouldn't be prompted for a password.
+
+You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote
+`origin` (typically a forge such as GitHub, GitLab, Codeberg or so forth).
+
+
+## Commit verification with SSH
+
+Verification of commits is a usefl security feature, but beyond the scope of this article but as doing so with SSH keys is a
+recently supported feature on GitHub (see blog [SSH commit verification now
+supported](https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/)) I felt it worth
+mentioning.
+
+## Links
+
+### SSH
+
+* [SSH Academy](https://www.ssh.com/academy/ssh)
+* [OpenSSH Key Management, Part 1](https://www.funtoo.org/OpenSSH_Key_Management,_Part_1)
+* [OpenSSH Key Management, Part 2](https://www.funtoo.org/OpenSSH_Key_Management,_Part_2)
+* [OpenSSH Key Management, Part 3](https://www.funtoo.org/OpenSSH_Key_Management,_Part_3)
+
+### Forges
+
+* [GitHub | Connect with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
+* [GitLab | Use SSH keys to communicate with GitLab](https://docs.gitlab.com/ee/user/ssh.html)
+* [Codeberg | Adding an SSH key to your account](https://docs.codeberg.org/security/ssh-key/)
