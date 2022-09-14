@@ -12,9 +12,8 @@ productive tools that are available under UNIX, GNU/Linux, BSD, OSX, PowerShell 
 
 Many of these tools work and have done for many years, but there are some new alternatives that are coming through that
 build and modernise on these tools without breaking the core functionality. Here I detail some of the tools and why you
-might want to use them.
-
-## Why?
+might want to use them. Each tool has a brief introduction with some example output shown and then some `aliases` listed
+that you can drop into `~/.bash_aliases` or `~/.oh-my-zsh/custom/aliases` to use on your system.
 
 
 ## Alternatives
@@ -42,7 +41,7 @@ cases.
 ### `lsd`
 
 [`lsd`](https://github.com/Peltoche/lsd) is `ls`Deluxe and is very similar to [`exa`](#exa) but with a few additions
-such as icons
+such as icons. You c
 
 ### `tldr`
 
