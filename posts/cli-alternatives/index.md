@@ -28,11 +28,35 @@ that you can drop into `~/.bash_aliases` or `~/.oh-my-zsh/custom/aliases` to use
 for command line programmes which will often cover many use cases and save you having to read the rather dry `man` pages
 for functions.
 
+#### Aliases
+
+``` bash
+
+```
+
 ### `duf`
 
 [duf](https://github.com/muesli/duf)
 
+#### Aliases
+
+``` bash
+
+```
+
 ### `exa`
+
+#### Aliases
+
+``` bash
+
+```
+
+#### Aliases
+
+``` bash
+
+```
 
 ### `fd`
 
@@ -40,13 +64,34 @@ for functions.
 (i.e. decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use
 cases.
 
+#### Aliases
+
+``` bash
+
+```
+
 ### `lsd`
 
 [`lsd`](https://github.com/Peltoche/lsd) is `ls`Deluxe and is very similar to [`exa`](#exa) but with a few additions
-such as icons. You c
+such as icons.
+
+#### Aliases
+
+``` bash
+alias ls='lsd'
+alias l='ls -lha'
+alias lla='ls -la'
+alias lt='ls --tree'
+```
 
 ### `tldr`
 
+
+#### Aliases
+
+``` bash
+
+```
 
 ## Installation
 
@@ -69,7 +114,7 @@ sudo apt-install bat duf exa fd lsd tldr
 
 ``` bash
 brew install bat duf exa fd lsd tldr
-``**
+```
 
 ### Windows
 
