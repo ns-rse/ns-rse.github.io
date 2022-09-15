@@ -12,6 +12,7 @@ website:
   navbar:
     right:
       - about.qmd
+      - links.qmd
       - icon: github
         href: https://github.com/ns-rse
       - icon: twitter
