@@ -176,10 +176,10 @@ scoop install lsd
 
 ## Links
 
-* [bat: A cat(1) clone with wings.](https://github.com/sharkdp/bat)
+* [bat](https://github.com/sharkdp/bat)
 * [cheat](https://opensource.com/article/22/6/linux-cheat-command)
 * [duf](https://github.com/muesli/duf)
-* [exa · a modern replacement for ls](https://the.exa.website/)
+* [exa](https://the.exa.website/)
 * [fd](https://github.com/sharkdp/fd)
 * [lsd](https://github.com/Peltoche/lsd)
 * [tldr](https://tldr.sh/)
