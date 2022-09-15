@@ -22,12 +22,29 @@ that you can drop into `~/.bash_aliases` or `~/.oh-my-zsh/custom/aliases` to use
 
 [`bat`](https://github.com/sharkdp/bat) is "_A `cat(1)` clone with wings._"
 
+
+#### Examples
+
+``` bash
+
+```
+#### Aliases
+
+``` bash
+
+```
+
 ### `cheat`
 
 [`cheat`](https://opensource.com/article/22/6/linux-cheat-command) is actually a web-service that returns short "cheats"
 for command line programmes which will often cover many use cases and save you having to read the rather dry `man` pages
 for functions.
 
+#### Examples
+
+``` bash
+
+```
 #### Aliases
 
 ``` bash
@@ -38,6 +55,11 @@ for functions.
 
 [duf](https://github.com/muesli/duf)
 
+#### Examples
+
+``` bash
+
+```
 #### Aliases
 
 ``` bash
@@ -46,12 +68,22 @@ for functions.
 
 ### `exa`
 
+#### Examples
+
+``` bash
+
+```
 #### Aliases
 
 ``` bash
 
 ```
 
+#### Examples
+
+``` bash
+
+```
 #### Aliases
 
 ``` bash
@@ -64,6 +96,11 @@ for functions.
 (i.e. decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use
 cases.
 
+#### Examples
+
+``` bash
+
+```
 #### Aliases
 
 ``` bash
@@ -74,6 +111,12 @@ cases.
 
 [`lsd`](https://github.com/Peltoche/lsd) is `ls`Deluxe and is very similar to [`exa`](#exa) but with a few additions
 such as icons.
+
+#### Examples
+
+``` bash
+
+```
 
 #### Aliases
 
@@ -86,6 +129,12 @@ alias lt='ls --tree'
 
 ### `tldr`
 
+
+#### Examples
+
+``` bash
+
+```
 
 #### Aliases
 
