@@ -11,8 +11,9 @@ more than one account on a forge, for example a personal and work account.
 
 ## Background
 
-Typically when pushing changes to a forge such as [GitHub](https://github.com), [GitLab](https://gitlab.com) or
-[Codeberg](https://codeberg.org) you use an SSH (*S*ecure *SH*ell) key to authenticate that you have permission to.
+Typically when pushing and pulling changes to a forge such as [GitHub](https://github.com), [GitLab](https://gitlab.com)
+or [Codeberg](https://codeberg.org) you use an SSH (*S*ecure *SH*ell) key to authenticate that you have permission to
+access the repository.
 
 ## SSH Keys
 
