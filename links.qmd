@@ -1,0 +1,25 @@
+---
+title: "Links"
+image: img/links.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/nshephardRSE
+    - icon: github
+      text: Github
+      href: https://github.com/ns-rse
+---
+
+I've a few other sites...
+
+| Site                                               | Description                                                                                                |
+|:---------------------------------------------------|:-----------------------------------------------------------------------------------------------------------|
+| [kimura](https://kimura.no-ip.info)                | A [Dokuwiki](https://www.dokuwiki.org/dokuwiki) site where I keep notes.                                   |
+| [Flickr](https://www.flickr.com/photos/slackline)  | Photography (mostly landscape, climbing and cats).                                                         |
+| [neil-snaps.co.uk](https://neil-snaps.co.uk)       | Where I fail to monetise my photography.                                                                   |
+| [SheffieldBoulder.uk](https://sheffieldboulder.uk) | Another [Dokuwiki](https://www.dokuwiki.org/dokuwiki) site detailing artificial boulders around Sheffield. |
+| [GitLab](https://gitlab.com/nshephard/)            | Git repos.                                                                                                 |
+| [GitHub (Personal)](https://github.com/slackline)  | Git repos.                                                                                                 |
+| [GitHub (Work)](https://github.com/ns-rse)         | Git repos.                                                                                                 |

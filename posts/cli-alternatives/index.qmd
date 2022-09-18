@@ -1,0 +1,411 @@
+---
+title: "Linux Command Line Alternatives"
+author: "Neil Shephard"
+date: "2022-09-18"
+categories: [code, linux, bash]
+image: "https://live.staticflickr.com/3793/12059147393_1b75269246_k.jpg"
+---
+
+The command line is my second home when sat at a computer ([Emacs](https://www.gnu.org/software/emacs/) is my first ;-)
+and the [UNIX Philosophy](https://en.wikipedia.org/wiki/Unix_philosophy) is the key to the huge amount of highly
+productive tools that are available under UNIX, GNU/Linux, BSD, OSX, PowerShell etc.
+
+Many of these tools work and have done for many years, but there are some new alternatives that are coming through that
+build and modernise on these tools without breaking the core functionality. Here I detail some of the tools and why you
+might want to use them. Each tool has a brief introduction with some example output shown and then some `aliases` listed
+that you can drop into `~/.bash_aliases` or `~/.oh-my-zsh/custom/aliases` to use on your system.
+
+
+## Alternatives
+
+### `bat`
+
+[`bat`](https://github.com/sharkdp/bat) is "_A `cat(1)` clone with wings._". It automatically uses syntax highlighting
+and integrates with git if a file is version controlled to show changes and lots more. You can pipe input to it,
+including from e.g. `curl -s https://server.com/some_file`
+
+
+#### Examples
+
+``` bash
+❱ bat pyproject.toml
+───────┬──────────────────────────────────────────────
+       │ File: pyproject.toml
+───────┼──────────────────────────────────────────────
+   1   │ [build-system]
+   2   │ requires = [
+   3   │   "setuptools",
+   4   │   "versioneer==0.26",
+   5   │   "wheel"]
+   6   │ build-backend = "setuptools.build_meta"
+   7   │
+   8   │ [tool.black]
+   9   │ line-length = 120
+  10   │ target-version = ['py38', 'py39', 'py310']
+  11   │ include = '\.pyi?$'
+───────┴──────────────────────────────────────────────
+```
+
+
+#### Configuration
+
+You can generate a default configuration file with
+
+``` bash
+bat --generate-config-file
+```
+
+This will be saved at `~/.config/bat/config` and you can edit it as desired.
+
+
+### `cheat`
+
+[`cheat`](https://opensource.com/article/22/6/linux-cheat-command) is actually a web-service that returns short "cheats"
+for command line programmes which will often cover many use cases and save you having to read the rather dry `man` pages
+for functions.
+
+#### Examples
+
+``` bash
+❱ cheat cheat
+ cheat:cheat
+# To see example usage of a program:
+cheat <command>
+
+# To edit a cheatsheet
+cheat -e <command>
+
+# To list available cheatsheets
+cheat -l
+
+# To search available cheatsheets
+cheat -s <command>
+
+# To get the current `cheat' version
+cheat -v
+
+ tldr:cheat
+# cheat
+# Create and view interactive cheat sheets on the command-line.
+# More information: <https://github.com/cheat/cheat>.
+
+# Show example usage of a command:
+cheat command
+
+# Edit the cheat sheet for a command:
+cheat -e command
+
+# List the available cheat sheets:
+cheat -l
+
+# Search available the cheat sheets for a specified command name:
+cheat -s command
+
+# Get the current cheat version:
+cheat -v
+```
+
+#### Aliases
+
+You don't need to install anything to use this, instead define an [alias]() for your shell (e.g. in
+`~/.bashrc`/`~/.zshrc`/`~/.oh-my-zsh/custom/aliases.zsh`)
+
+``` bash
+## Linux commands https://github.com/chubin/cheat.sheets
+cheat () {
+    curl cheat.sh/"$@"
+}
+```
+
+### `duf`
+
+[duf](https://github.com/muesli/duf) is a nice alternative to the traditional `du` and `df` commands which report disk
+usage and file/directory usage respectively.
+
+#### Examples
+
+``` bash
+❱ tldr duf
+
+  duf
+
+  Disk Usage/Free Utility.
+  More information: https://github.com/muesli/duf.
+
+  - List accessible devices:
+    duf
+
+  - List everything (such as pseudo, duplicate or inaccessible file systems):
+    duf --all
+
+  - Only show specified devices or mount points:
+    duf path/to/directory1 path/to/directory2 ...
+
+  - Sort the output by a specified criteria:
+  duf --sort size|used|avail|usage
+
+❱ duf
+╭──────────────────────────────────────────────────────────────────────────────────────────────╮
+│ 4 local devices                                                                              │
+├────────────┬────────┬───────┬────────┬───────────────────────────────┬──────┬────────────────┤
+│ MOUNTED ON │   SIZE │  USED │  AVAIL │              USE%             │ TYPE │ FILESYSTEM     │
+├────────────┼────────┼───────┼────────┼───────────────────────────────┼──────┼────────────────┤
+│ /          │  19.5G │  9.5G │   9.0G │ [#########...........]  48.9% │ ext4 │ /dev/mmcblk0p2 │
+│ /boot      │ 199.8M │ 38.8M │ 161.0M │ [###.................]  19.4% │ vfat │ /dev/mmcblk0p1 │
+│ /home      │   9.3G │  3.7G │   5.0G │ [########............]  40.4% │ ext4 │ /dev/mmcblk0p3 │
+│ /mnt/usb   │   4.5T │  3.2T │   1.1T │ [##############......]  71.3% │ ext4 │ /dev/sda1      │
+╰────────────┴────────┴───────┴────────┴───────────────────────────────┴──────┴────────────────╯
+╭───────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ 6 special devices                                                                                 │
+├────────────────┬────────┬────────┬────────┬───────────────────────────────┬──────────┬────────────┤
+│ MOUNTED ON     │   SIZE │   USED │  AVAIL │              USE%             │ TYPE     │ FILESYSTEM │
+├────────────────┼────────┼────────┼────────┼───────────────────────────────┼──────────┼────────────┤
+│ /dev           │   3.7G │     0B │   3.7G │                               │ devtmpfs │ dev        │
+│ /dev/shm       │   3.9G │     0B │   3.9G │                               │ tmpfs    │ tmpfs      │
+│ /run           │   3.9G │ 812.0K │   3.9G │ [....................]   0.0% │ tmpfs    │ run        │
+│ /run/user/1001 │ 789.3M │  20.0K │ 789.3M │ [....................]   0.0% │ tmpfs    │ tmpfs      │
+│ /run/user/966  │ 789.3M │  24.0K │ 789.2M │ [....................]   0.0% │ tmpfs    │ tmpfs      │
+│ /tmp           │   3.9G │   4.0K │   3.9G │ [....................]   0.0% │ tmpfs    │ tmpfs      │
+╰────────────────┴────────┴────────┴────────┴───────────────────────────────┴──────────┴────────────╯
+
+
+```
+
+### `fd`
+
+[`fd`](https://github.com/sharkdp/fd) is an alternative to `find` that is easier to use. It is "opinionated"
+(i.e. decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use
+cases. It works directly with regular expressions.
+
+#### Examples
+
+``` bash
+❱ tldr fd
+
+  fd
+
+  An alternative to `find`.
+  Aims to be faster and easier to use than `find`.
+  More information: https://github.com/sharkdp/fd.
+
+  - Recursively find files matching the given pattern in the current directory:
+    fd pattern
+
+  - Find files that begin with "foo":
+    fd '^foo'
+
+  - Find files with a specific extension:
+    fd --extension txt
+
+  - Find files in a specific directory:
+    fd pattern path/to/directory
+
+  - Include ignored and hidden files in the search:
+    fd --hidden --no-ignore pattern
+
+  - Execute a command on each search result returned:
+    fd pattern --exec command
+```
+
+### `jq`
+
+[`jq`](https://stedolan.github.io/jq/) is to [JSON]() (JavaScript Object Notation) what `awk`/`grep`/`sed` is to text
+files. It allows parsing, searching and selecting of JSON files, which if you've not encountered them before take a bit
+of getting used to.
+
+#### Examples
+
+Details of using `jq` are really beyond the scope of this short article, like `awk` its almost a language in itself.
+
+``` bash
+❱ tldr jq
+
+  jq
+
+  A command-line JSON processor that uses a domain-specific language.
+  More information: https://stedolan.github.io/jq/manual/.
+
+  - Execute a specific expression (print a colored and formatted json):
+    cat path/to/file.json | jq '.'
+
+  - Execute a specific script:
+    cat path/to/file.json | jq --from-file path/to/script.jq
+
+  - Pass specific arguments:
+    cat path/to/file.json | jq --arg "name1" "value1" --arg "name2" "value2" ... '. + $ARGS.named'
+
+  - Print specific keys:
+    cat path/to/file.json | jq '.key1, .key2, ...'
+
+  - Print specific array items:
+    cat path/to/file.json | jq '.[index1], .[index2], ...'
+
+  - Print all array items/object keys:
+    cat path/to/file.json | jq '.[]'
+
+  - Add/remove specific keys:
+    cat path/to/file.json | jq '. +|- {"key1": "value1", "key2": "value2", ...}'
+
+```
+
+### `lsd`
+
+[`lsd`](https://github.com/Peltoche/lsd) is `ls`Deluxe and is very similar to [`exa`](#exa) but with a few additions
+such as icons.
+
+#### Examples
+
+``` bash
+❱ l
+.rw-r--r-- neil neil  144 B  Sun Aug 14 19:56:53 2022  #.gitlab-ci.yml#
+drwxr-xr-x neil neil  4.0 KB Thu Sep 15 22:21:25 2022  .
+drwxrwxr-x root users 4.0 KB Tue Aug 30 20:46:37 2022  ..
+drwxr-xr-x neil neil  4.0 KB Thu Sep 15 22:21:56 2022  .git
+drwxr-xr-x neil neil  4.0 KB Sun Aug 14 21:51:03 2022  .github
+.rw-r--r-- neil neil  613 B  Sun Aug 14 21:44:38 2022  .gitignore
+.rw-r--r-- neil neil  151 B  Sun Aug 14 19:56:13 2022  .gitlab-ci.yml
+drwxr-xr-x neil neil  4.0 KB Thu Sep 15 22:21:25 2022  .quarto
+.rw-r--r-- neil neil  386 B  Thu Sep 15 22:05:23 2022  _quarto.yaml
+.rw-r--r-- neil neil  263 B  Sun Aug 14 10:59:13 2022  _quarto.yml~
+drwxr-xr-x neil neil  4.0 KB Thu Sep 15 22:05:24 2022  _site
+.rw-r--r-- neil neil  1.1 KB Thu Sep 15 22:05:23 2022  about.qmd
+.rw-r--r-- neil neil  455 B  Sun Aug 14 11:02:13 2022  about.qmd~
+drwxr-xr-x neil neil  4.0 KB Thu Sep 15 22:05:23 2022  img
+.rw-r--r-- neil neil  185 B  Sun Aug 14 22:22:04 2022  index.qmd
+.rw-r--r-- neil neil  191 B  Sun Aug 14 10:59:13 2022  index.qmd~
+.rw-r--r-- neil neil   34 KB Sun Aug 14 21:14:38 2022  LICENSE
+.rw-r--r-- neil neil  1.7 KB Thu Sep 15 22:05:23 2022  links.qmd
+.rw-r--r-- neil neil  237 B  Thu Sep 15 21:46:30 2022  links.qmd~
+drwxr-xr-x neil neil  4.0 KB Wed Sep 14 20:24:25 2022  posts
+.rw-r--r-- neil neil  378 B  Thu Aug 25 23:20:16 2022  README.md
+.rw-r--r-- neil neil   13 B  Sun Aug 14 21:58:38 2022  requirements.txt
+.rw-r--r-- neil neil   17 B  Sun Aug 14 21:24:35 2022  styles.css
+drwxr-xr-x neil neil  4.0 KB Thu Aug 25 23:20:16 2022  www
+```
+
+#### Aliases
+
+``` bash
+alias ls='lsd'
+alias l='ls -lha'
+alias lla='ls -la'
+alias lt='ls --tree'
+```
+
+### `tldr`
+
+[`tldr`](https://tldr.sh/) is very similar to [`cheat`](#cheat) in that it shows short, simple examples of using a
+command. There are a number of different clients written in [C](https://github.com/tldr-pages/tldr-c-client),
+[Node](https://github.com/tldr-pages/tldr-node-client) and [Python](https://github.com/tldr-pages/tldr-python-client) as
+well as a few others. It depends on `jq` so you will have to install that if you want to use `yq`.
+
+#### Examples
+
+``` bash
+❱ tldr tldr
+
+  tldr
+
+  Display simple help pages for command-line tools from the tldr-pages project.
+  More information: https://tldr.sh.
+
+  - Print the tldr page for a specific command (hint: this is how you got here!):
+    tldr command
+
+  - Print the tldr page for a specific subcommand:
+    tldr command-subcommand
+
+  - Print the tldr page for a command for a specific [p]latform:
+    tldr -p android|linux|osx|sunos|windows command
+
+  - [u]pdate the local cache of tldr pages:
+    tldr -u
+
+```
+
+
+### `yq`
+
+[`yq`](https://kislyuk.github.io/yq/) is to [YAML](https://yaml.org/) (YAML Ain't Markup Language) what [`jq`](#jq) is
+to JSON. Written in Python it allows fast and efficient parsing, searching and selecting of YAML files.
+
+#### Examples
+
+``` bash
+❱ tldr yq
+
+  yq
+
+  A lightweight and portable command-line YAML processor.
+  More information: https://mikefarah.gitbook.io/yq/.
+
+  - Output a YAML file, in pretty-print format (v4+):
+    yq eval path/to/file.yaml
+
+  - Output a YAML file, in pretty-print format (v3):
+    yq read path/to/file.yaml --colors
+
+  - Output the first element in a YAML file that contains only an array (v4+):
+    yq eval '.[0]' path/to/file.yaml
+
+  - Output the first element in a YAML file that contains only an array (v3):
+    yq read path/to/file.yaml '[0]'
+
+  - Set (or overwrite) a key to a value in a file (v4+):
+    yq eval '.key = "value"' --inplace path/to/file.yaml
+
+  - Set (or overwrite) a key to a value in a file (v3):
+    yq write --inplace path/to/file.yaml 'key' 'value'
+
+  - Merge two files and print to stdout (v4+):
+    yq eval-all 'select(filename == "path/to/file1.yaml") * select(filename == "path/to/file2.yaml")' path/to/file1.yaml path/to/file2.yaml
+
+  - Merge two files and print to stdout (v3):
+    yq merge path/to/file1.yaml path/to/file2.yaml --colors
+
+```
+
+## Installation
+
+Most of these programmes will be available in your systems package manager, if they are not you should consult the
+project page directly for install instructions.
+
+### Linux
+
+``` bash
+# Gentoo
+emerge -av bat duf fd jq lsd tldr yq
+
+# Arch
+pacman -Syu bat duf fd jq lsd tldr yq
+
+# Ubuntu
+sudo apt-install bat duf fd jq lsd tldr yq
+```
+
+### OSX
+
+``` bash
+brew install bat duf fd jq lsd tldr yq
+```
+
+### Windows
+
+**WARNING** None of these have been tested I do not have access to a Windows system running PowerShell. They use
+[Scoop](https://scoop.sh/) a command-line installer for Windows.
+
+``` bash
+scoop install lsd
+```
+
+## Links
+
+* [bat](https://github.com/sharkdp/bat)
+* [cheat](https://opensource.com/article/22/6/linux-cheat-command)
+* [duf](https://github.com/muesli/duf)
+* [exa](https://the.exa.website/)
+* [fd](https://github.com/sharkdp/fd)
+* [jq](https://stedolan.github.io/jq/)
+* [lsd](https://github.com/Peltoche/lsd)
+* [tldr](https://tldr.sh/)
+* [yq](https://kislyuk.github.io/yq/)
