@@ -9,9 +9,10 @@ image: https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg
 Learn about installing and configuring [Pre-commit](https://pre-commit.com/) to lint your code before making Git commits.
 
 [Pre-commit](https://pre-commit.com/) is a powerful tool for executing a range of hooks prior to making commits to your
-Git history. This is useful because it means you can automatically run a range of linting tools on your code across an
-array of languages to ensure your code is up-to-scratch _before_ you make the commit. Thus your Git history doesn't end
-up littered with commits such as "_Tidying up_" or "_Placating the linting deity_".
+Git history. This is useful because it means you can automatically run a range of
+[linting](https://ns-rse.github.io/posts/linting/) tools on your code across an array of languages to ensure your code
+is up-to-scratch _before_ you make the commit. Thus your Git history doesn't end up littered with commits such as
+"_Tidying up_" or "_Linting_".
 
 Pre-commit is written in Python but that isn't a limitation as it will lint YAML, JSON, C, JavaScript, Go, Rust, TOML,
 Terraform, Jupyter Notebooks, and so on. The list of [supported hooks](https://pre-commit.com/hooks.html) is vast.
@@ -30,24 +31,26 @@ Hero!](https://srse-git-github-zero2hero.netlify.app/) offered by the [Research 
 Engineering](https://rse.shef.ac.uk) at the University of Sheffield and developed by Alumni [Anna
 Krystalli](https://annakrystalli.me/).
 
-Typically when you have initialised a directory to be under Git version control the settings and configuration are
-stored in the `.git/` sub-directory. There is the `.git/config` file for the repositories configuration but also the
-`.git/hooks/` directory that is populated with a host of `*.sample` files with various different names that give you an
-in-road into what different hooks you might want to run. Its worth spending a little time reading through these if you
-haven't done so yet.
+When you have initialised a directory to be under Git version control the settings and configuration are stored in the
+`.git/` sub-directory. There is the `.git/config` file for the repositories configuration but also the `.git/hooks/`
+directory that is populated with a host of `*.sample` files with various different names that give you an in-road into
+what different hooks you might want to run. Its worth spending a little time reading through these if you haven't done
+so yet as they provide useful examples of how various hooks work.
 
 ### Why pre-commit hooks?
 
-Typically when writing code you should [lint](https://rse.shef.ac.uk/blog/2022-04-19-linting/) your code to ensure it
+Typically when writing code you should [lint](https://ns-rse.github.io/posts/linting/) your code to ensure it
 complies to agreed style guides and remove any "[code smells](https://en.wikipedia.org/wiki/Code_smell)" that may be
 lingering (code that violates design principles). It won't guarantee that your code is perfect but its a good starting
-point to improving it. Experienced coders are typically in a good habit of doing these checks manually prior to making
-commits, although smart people will have configured their Integrated Development Environment (IDE) to apply many such
+point to improving it. People who write a lot of code have good habits of doing these checks manually prior to making
+commits. Experienced coders will have configured their Integrated Development Environment (IDE) to apply many such
 "hooks" on saving a file they have been working on.
 
-But at some point you have to make a commit to save your work and that is where pre-commit comes in to play because it
-will run all the hooks you configure it to when you try making a commit. If any of the hooks fail then your commit is
-_not_ made and you have to correct them before a commit can be made.
+At regular points in your work flow you have to save your work and check it into Git by making a commit and that is
+where `pre-commit` comes in to play because it will run all the hooks you configure it to each time you try make a
+commit. If any of the hooks fail then your commit is _not_ made. In some cases `pre-commit` will automatically correct
+the errors (e.g. removing trailing white-space) but in others you have to correct them before a commit can be
+successfully made.
 
 Initially this can be jarring, but it saves you, and more importantly those who you are asking to review your code in
 your as yet to be created pull request, time and effort as it ensures your code meets the required style and is a little
@@ -59,13 +62,37 @@ Pre-commit is written in Python and so you will need Python installed on your sy
 there is little else extra that is required to be manually installed as pre-commit installs virtual environments
 specific for each enabled hook for you.
 
+If your systems package manager includes pre-commit you can install it system wide.
+
+```bash
+emerge -av pre-commit           # Gentoo
+pacman -Syu pre-commit          # Arch
+sudo apt-get install pre-commit # Debian/Ubuntu
+brew install pre-commit         # Homebrew (OSX)
+```
+
+Alternatively you can install it under your account or virtual environment.
+
+```bash
+pip install pre-commit
+conda install -c conda-forge pre-commit
+```
+
+If you are working on a Python project then you should include `pre-commit` as a requirement (either in
+`requirements-dev.txt`) or in `setup.cfg`.
+
+
 ## Configuration
 
 Configuration of pre-commit is via a file in the root of your Git version controlled directory called
 `./.pre-commit-config.yaml`. This file should be included in your Git repository.
 
 ```bash
+# Empty configuration
+touch .pre-commit-config.yaml
 git add .pre-commit-config.yaml
+# Auto-generate basic configuration
+pre-commit sample-config
 ```
 
 Each hook is associated with a repository (`repo`) and a version (`rev`). Many are available from the
@@ -91,22 +118,23 @@ repos:
           - id: check-yaml
 ```
 
-But some are from dedicated repositories, for example the following runs both [Black]() and [Flake8]() on your code and
-should follow under the above (with the same level of indenting to be valid YAML).
+Some are from dedicated repositories, for example the following runs both [Black](https://github.com/psf/black) and
+[Flake8](https://flake8.pycqa.org/en/latest/) on your code and should follow under the above (with the same level of
+indenting to be valid YAML).
 
 ```yaml
-    - repo: https://github.com/psf/black
-      rev: 22.6.0
-      hooks:
-          - id: black
-            types: [python]
+  - repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+        - id: black
+          types: [python]
 
-    - repo: https://gitlab.com/pycqa/flake8.git
-      rev: 3.9.2
-      hooks:
-          - id: flake8
-            additional_dependencies: [flake8-print]
-            types: [python]
+  - repo: https://gitlab.com/pycqa/flake8.git
+    rev: 3.9.2
+    hooks:
+        - id: flake8
+          additional_dependencies: [flake8-print]
+          types: [python]
 ```
 
 An extensive list of [supported hooks](https://pre-commit.com/hooks.html) is available. It lists the repository from
@@ -140,7 +168,9 @@ systems](https://pre-commit.com/#usage-in-continuous-integration).
 ### GitHub
 
 GitHub actions reside in the `.github/workflows/` directory of your project. A simple pre-commit action is available on
-the Marketplace at [pre-commit/action](https://github.com/marketplace/actions/pre-commit)
+the Marketplace at [pre-commit/action](https://github.com/marketplace/actions/pre-commit). Copy this template to
+`.github/workflows/pre-commit.yml` and include it in your Git repository (`git add .github/workflows/pre-commit.yml &&
+git commit -m "Adding pre-commit GitHub Action" && git push`).
 
 
 ### GitLab
