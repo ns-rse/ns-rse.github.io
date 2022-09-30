@@ -36,5 +36,5 @@ knitr::opts_chunk$set(
 #  renv:::renv_download_method()
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  Sys.setenv(RENV_DOWNLOAD_FILE_METHOD = getOption("download.file.method"))
+#  Sys.setenv(RENV_DOWNLOAD_METHOD = getOption("download.file.method"))
 

@@ -1,5 +1,19 @@
 [
   {
+    "objectID": "links.html",
+    "href": "links.html",
+    "title": "Links",
+    "section": "",
+    "text": "Site\nDescription\n\n\n\n\nkimura\nA Dokuwiki site where I keep notes.\n\n\nFlickr\nPhotography (mostly landscape, climbing and cats).\n\n\nneil-snaps.co.uk\nWhere I fail to monetise my photography.\n\n\nSheffieldBoulder.uk\nAnother Dokuwiki site detailing artificial boulders around Sheffield.\n\n\nGitLab\nGit repos.\n\n\nGitHub (Personal)\nGit repos.\n\n\nGitHub (Work)\nGit repos."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ns-rse",
+    "section": "",
+    "text": "code\n\n\nlinux\n\n\nbash\n\n\n\n\n\n\n\n\n\n\n\nSep 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -7,18 +21,60 @@
     "text": "Here you’ll find posts about Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ns-rse",
+    "objectID": "posts/pre-commit/index.html",
+    "href": "posts/pre-commit/index.html",
+    "title": "Pre-Commit : Protecting your future self",
     "section": "",
-    "text": "code\n\n\nlinux\n\n\nbash\n\n\n\n\n\n\n\n\n\n\n\nSep 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
+    "text": "Learn about installing and configuring Pre-commit to lint your code before making Git commits.\nPre-commit is a powerful tool for executing a range of hooks prior to making commits to your Git history. This is useful because it means you can automatically run a range of linting tools on your code across an array of languages to ensure your code is up-to-scratch before you make the commit. Thus your Git history doesn’t end up littered with commits such as “Tidying up” or “Linting”.\nPre-commit is written in Python but that isn’t a limitation as it will lint YAML, JSON, C, JavaScript, Go, Rust, TOML, Terraform, Jupyter Notebooks, and so on. The list of supported hooks is vast."
   },
   {
-    "objectID": "links.html",
-    "href": "links.html",
-    "title": "Links",
-    "section": "",
-    "text": "Site\nDescription\n\n\n\n\nkimura\nA Dokuwiki site where I keep notes.\n\n\nFlickr\nPhotography (mostly landscape, climbing and cats).\n\n\nneil-snaps.co.uk\nWhere I fail to monetise my photography.\n\n\nSheffieldBoulder.uk\nAnother Dokuwiki site detailing artificial boulders around Sheffield.\n\n\nGitLab\nGit repos.\n\n\nGitHub (Personal)\nGit repos.\n\n\nGitHub (Work)\nGit repos."
+    "objectID": "posts/pre-commit/index.html#background",
+    "href": "posts/pre-commit/index.html#background",
+    "title": "Pre-Commit : Protecting your future self",
+    "section": "Background",
+    "text": "Background\n\nWhat is a “hook”?\nIn computing a “hook” refers to something that is run prior to or in response to a requested action. In the context of the current discussion we are talking about hooks that relate to actions undertaken in Git version control and specifically actions that are run before a “commit” is made.\nFor those unfamiliar with version control and Git in particular this likely all sounds alien. If you are new to the world of version control and Git I can highly recommend the Git & Github through GitKraken Client - From Zero to Hero! offered by the Research Software Engineering at the University of Sheffield and developed by Alumni Anna Krystalli.\nWhen you have initialised a directory to be under Git version control the settings and configuration are stored in the .git/ sub-directory. There is the .git/config file for the repositories configuration but also the .git/hooks/ directory that is populated with a host of *.sample files with various different names that give you an in-road into what different hooks you might want to run. Its worth spending a little time reading through these if you haven’t done so yet as they provide useful examples of how various hooks work.\n\n\nWhy pre-commit hooks?\nTypically when writing code you should lint your code to ensure it complies to agreed style guides and remove any “code smells” that may be lingering (code that violates design principles). It won’t guarantee that your code is perfect but its a good starting point to improving it. People who write a lot of code have good habits of doing these checks manually prior to making commits. Experienced coders will have configured their Integrated Development Environment (IDE) to apply many such “hooks” on saving a file they have been working on.\nAt regular points in your work flow you have to save your work and check it into Git by making a commit and that is where pre-commit comes in to play because it will run all the hooks you configure it to each time you try make a commit. If any of the hooks fail then your commit is not made. In some cases pre-commit will automatically correct the errors (e.g. removing trailing white-space) but in others you have to correct them before a commit can be successfully made.\nInitially this can be jarring, but it saves you, and more importantly those who you are asking to review your code in your as yet to be created pull request, time and effort as it ensures your code meets the required style and is a little bit cleaner before being sent out for review."
+  },
+  {
+    "objectID": "posts/pre-commit/index.html#installation",
+    "href": "posts/pre-commit/index.html#installation",
+    "title": "Pre-Commit : Protecting your future self",
+    "section": "Installation",
+    "text": "Installation\nPre-commit is written in Python and so you will need Python installed on your system in order to use it. Aside from that there is little else extra that is required to be manually installed as pre-commit installs virtual environments specific for each enabled hook for you.\nIf your systems package manager includes pre-commit you can install it system wide.\nemerge -av pre-commit           # Gentoo\npacman -Syu pre-commit          # Arch\nsudo apt-get install pre-commit # Debian/Ubuntu\nbrew install pre-commit         # Homebrew (OSX)\nAlternatively you can install it under your account or virtual environment.\npip install pre-commit\nconda install -c conda-forge pre-commit\nIf you are working on a Python project then you should include pre-commit as a requirement (either in requirements-dev.txt) or in setup.cfg."
+  },
+  {
+    "objectID": "posts/pre-commit/index.html#configuration",
+    "href": "posts/pre-commit/index.html#configuration",
+    "title": "Pre-Commit : Protecting your future self",
+    "section": "Configuration",
+    "text": "Configuration\nConfiguration of pre-commit is via a file in the root of your Git version controlled directory called ./.pre-commit-config.yaml. This file should be included in your Git repository.\n# Empty configuration\ntouch .pre-commit-config.yaml\ngit add .pre-commit-config.yaml\n# Auto-generate basic configuration\npre-commit sample-config\nEach hook is associated with a repository (repo) and a version (rev). Many are available from the https://github.com/pre-commit/pre-commit-hooks\nrepos:\n  - repo: https://github.com/pre-commit/pre-commit-hooks\n      rev: v4.3.0 # Use the ref you want to point at\n      hooks:\n          - id: trailing-whitespace\n            types: [file, text]\n          - id: check-docstring-first\n          - id: check-case-conflict\n          - id: end-of-file-fixer\n            types: [python]\n          - id: requirements-txt-fixer\n          - id: mixed-line-ending\n            types: [python]\n            args: [--fix=no]\n          - id: debug-statements\n          - id: fix-byte-order-marker\n          - id: check-yaml\nSome are from dedicated repositories, for example the following runs both Black and Flake8 on your code and should follow under the above (with the same level of indenting to be valid YAML).\n  - repo: https://github.com/psf/black\n    rev: 22.6.0\n    hooks:\n        - id: black\n          types: [python]\n\n  - repo: https://gitlab.com/pycqa/flake8.git\n    rev: 3.9.2\n    hooks:\n        - id: flake8\n          additional_dependencies: [flake8-print]\n          types: [python]\nAn extensive list of supported hooks is available. It lists the repository from which the hook is derived along with its name."
+  },
+  {
+    "objectID": "posts/pre-commit/index.html#usage",
+    "href": "posts/pre-commit/index.html#usage",
+    "title": "Pre-Commit : Protecting your future self",
+    "section": "Usage",
+    "text": "Usage\nOnce installed and configured there really isn’t much to be said for using pre-commit, just make commits, the hooks you have configured will run.\nYou can optionally run pre-commit manually in a repository that has been configured.\npre-commit run --all-files # Across all files/hooks\npre-commit run <hook_id>   # Specific hook"
+  },
+  {
+    "objectID": "posts/pre-commit/index.html#updating",
+    "href": "posts/pre-commit/index.html#updating",
+    "title": "Pre-Commit : Protecting your future self",
+    "section": "Updating",
+    "text": "Updating\nYou can update hooks by running pre-commit autoupdate."
+  },
+  {
+    "objectID": "posts/pre-commit/index.html#pre-commit-cicd",
+    "href": "posts/pre-commit/index.html#pre-commit-cicd",
+    "title": "Pre-Commit : Protecting your future self",
+    "section": "Pre-commit CI/CD",
+    "text": "Pre-commit CI/CD\nIdeally contributors will have setup their system to work with pre-commit and be running such checks prior to making pushes. But as a backup you can enable running pre-commit as part of your Continuous Integration/Development pipeline. Here we show how to enable this on both GitLab and GitHub although similar methods are available for many continuous integration systems.\n\nGitHub\nGitHub actions reside in the .github/workflows/ directory of your project. A simple pre-commit action is available on the Marketplace at pre-commit/action. Copy this template to .github/workflows/pre-commit.yml and include it in your Git repository (git add .github/workflows/pre-commit.yml && git commit -m \"Adding pre-commit GitHub Action\" && git push).\n\n\nGitLab\nIf you use GitLab the following article describes how to configure a CI job to run as part of your repository.\n\nHow to use pre-commit to automatically correct commits and merge requests with GitLab CI"
+  },
+  {
+    "objectID": "posts/pre-commit/index.html#links",
+    "href": "posts/pre-commit/index.html#links",
+    "title": "Pre-Commit : Protecting your future self",
+    "section": "Links",
+    "text": "Links\n\nPre-commit\nSupported hooks\nGitHub Action\nGitLab CI"
   },
   {
     "objectID": "posts/git-ssh/index.html",
@@ -68,62 +124,6 @@
     "title": "Git : Custom SSH credentials for git repositories",
     "section": "Links",
     "text": "Links\n\nSSH\n\nSSH Academy\nOpenSSH Key Management, Part 1\nOpenSSH Key Management, Part 2\nOpenSSH Key Management, Part 3\n\n\n\nForges\n\nGitHub | Connect with SSH\nGitLab | Use SSH keys to communicate with GitLab\nCodeberg | Adding an SSH key to your account"
-  },
-  {
-    "objectID": "posts/pre-commit/index.html",
-    "href": "posts/pre-commit/index.html",
-    "title": "Pre-Commit : Protecting your future self",
-    "section": "",
-    "text": "Learn about installing and configuring Pre-commit to lint your code before making Git commits.\nPre-commit is a powerful tool for executing a range of hooks prior to making commits to your Git history. This is useful because it means you can automatically run a range of linting tools on your code across an array of languages to ensure your code is up-to-scratch before you make the commit. Thus your Git history doesn’t end up littered with commits such as “Tidying up” or “Placating the linting deity”.\nPre-commit is written in Python but that isn’t a limitation as it will lint YAML, JSON, C, JavaScript, Go, Rust, TOML, Terraform, Jupyter Notebooks, and so on. The list of supported hooks is vast."
-  },
-  {
-    "objectID": "posts/pre-commit/index.html#background",
-    "href": "posts/pre-commit/index.html#background",
-    "title": "Pre-Commit : Protecting your future self",
-    "section": "Background",
-    "text": "Background\n\nWhat is a “hook”?\nIn computing a “hook” refers to something that is run prior to or in response to a requested action. In the context of the current discussion we are talking about hooks that relate to actions undertaken in Git version control and specifically actions that are run before a “commit” is made.\nFor those unfamiliar with version control and Git in particular this likely all sounds alien. If you are new to the world of version control and Git I can highly recommend the Git & Github through GitKraken Client - From Zero to Hero! offered by the Research Software Engineering at the University of Sheffield and developed by Alumni Anna Krystalli.\nTypically when you have initialised a directory to be under Git version control the settings and configuration are stored in the .git/ sub-directory. There is the .git/config file for the repositories configuration but also the .git/hooks/ directory that is populated with a host of *.sample files with various different names that give you an in-road into what different hooks you might want to run. Its worth spending a little time reading through these if you haven’t done so yet.\n\n\nWhy pre-commit hooks?\nTypically when writing code you should lint your code to ensure it complies to agreed style guides and remove any “code smells” that may be lingering (code that violates design principles). It won’t guarantee that your code is perfect but its a good starting point to improving it. Experienced coders are typically in a good habit of doing these checks manually prior to making commits, although smart people will have configured their Integrated Development Environment (IDE) to apply many such “hooks” on saving a file they have been working on.\nBut at some point you have to make a commit to save your work and that is where pre-commit comes in to play because it will run all the hooks you configure it to when you try making a commit. If any of the hooks fail then your commit is not made and you have to correct them before a commit can be made.\nInitially this can be jarring, but it saves you, and more importantly those who you are asking to review your code in your as yet to be created pull request, time and effort as it ensures your code meets the required style and is a little bit cleaner before being sent out for review."
-  },
-  {
-    "objectID": "posts/pre-commit/index.html#installation",
-    "href": "posts/pre-commit/index.html#installation",
-    "title": "Pre-Commit : Protecting your future self",
-    "section": "Installation",
-    "text": "Installation\nPre-commit is written in Python and so you will need Python installed on your system in order to use it. Aside from that there is little else extra that is required to be manually installed as pre-commit installs virtual environments specific for each enabled hook for you."
-  },
-  {
-    "objectID": "posts/pre-commit/index.html#configuration",
-    "href": "posts/pre-commit/index.html#configuration",
-    "title": "Pre-Commit : Protecting your future self",
-    "section": "Configuration",
-    "text": "Configuration\nConfiguration of pre-commit is via a file in the root of your Git version controlled directory called ./.pre-commit-config.yaml. This file should be included in your Git repository.\ngit add .pre-commit-config.yaml\nEach hook is associated with a repository (repo) and a version (rev). Many are available from the https://github.com/pre-commit/pre-commit-hooks\nrepos:\n  - repo: https://github.com/pre-commit/pre-commit-hooks\n      rev: v4.3.0 # Use the ref you want to point at\n      hooks:\n          - id: trailing-whitespace\n            types: [file, text]\n          - id: check-docstring-first\n          - id: check-case-conflict\n          - id: end-of-file-fixer\n            types: [python]\n          - id: requirements-txt-fixer\n          - id: mixed-line-ending\n            types: [python]\n            args: [--fix=no]\n          - id: debug-statements\n          - id: fix-byte-order-marker\n          - id: check-yaml\nBut some are from dedicated repositories, for example the following runs both Black and Flake8 on your code and should follow under the above (with the same level of indenting to be valid YAML).\n    - repo: https://github.com/psf/black\n      rev: 22.6.0\n      hooks:\n          - id: black\n            types: [python]\n\n    - repo: https://gitlab.com/pycqa/flake8.git\n      rev: 3.9.2\n      hooks:\n          - id: flake8\n            additional_dependencies: [flake8-print]\n            types: [python]\nAn extensive list of supported hooks is available. It lists the repository from which the hook is derived along with its name."
-  },
-  {
-    "objectID": "posts/pre-commit/index.html#usage",
-    "href": "posts/pre-commit/index.html#usage",
-    "title": "Pre-Commit : Protecting your future self",
-    "section": "Usage",
-    "text": "Usage\nOnce installed and configured there really isn’t much to be said for using pre-commit, just make commits, the hooks you have configured will run.\nYou can optionally run pre-commit manually in a repository that has been configured.\npre-commit run --all-files # Across all files/hooks\npre-commit run <hook_id>   # Specific hook"
-  },
-  {
-    "objectID": "posts/pre-commit/index.html#updating",
-    "href": "posts/pre-commit/index.html#updating",
-    "title": "Pre-Commit : Protecting your future self",
-    "section": "Updating",
-    "text": "Updating\nYou can update hooks by running pre-commit autoupdate."
-  },
-  {
-    "objectID": "posts/pre-commit/index.html#pre-commit-cicd",
-    "href": "posts/pre-commit/index.html#pre-commit-cicd",
-    "title": "Pre-Commit : Protecting your future self",
-    "section": "Pre-commit CI/CD",
-    "text": "Pre-commit CI/CD\nIdeally contributors will have setup their system to work with pre-commit and be running such checks prior to making pushes. But as a backup you can enable running pre-commit as part of your Continuous Integration/Development pipeline. Here we show how to enable this on both GitLab and GitHub although similar methods are available for many continuous integration systems.\n\nGitHub\nGitHub actions reside in the .github/workflows/ directory of your project. A simple pre-commit action is available on the Marketplace at pre-commit/action\n\n\nGitLab\nIf you use GitLab the following article describes how to configure a CI job to run as part of your repository.\n\nHow to use pre-commit to automatically correct commits and merge requests with GitLab CI"
-  },
-  {
-    "objectID": "posts/pre-commit/index.html#links",
-    "href": "posts/pre-commit/index.html#links",
-    "title": "Pre-Commit : Protecting your future self",
-    "section": "Links",
-    "text": "Links\n\nPre-commit\nSupported hooks\nGitHub Action\nGitLab CI"
   },
   {
     "objectID": "posts/linting/index.html",
