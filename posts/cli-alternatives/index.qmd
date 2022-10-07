@@ -117,6 +117,15 @@ cheat () {
 }
 ```
 
+### `difftastic`
+
+[difftastic](https://difftastic.wilfred.me.uk/) ([GitHub](https://github.com/wilfred/difftastic)) is
+an alternative to the default GNU `diff` packaged with most systems. It is "aware" of some 30 or so
+programming languages and will show diffs side-by-side rather than the traditional linear manner. It
+integrates easily with Git so when you `git diff` it uses `difft` to show the differences.
+
+Highly recommended, but don't take my word for it, give it a whirl yourself.
+
 ### `duf`
 
 [duf](https://github.com/muesli/duf) is a nice alternative to the traditional `du` and `df` commands which report disk
