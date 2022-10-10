@@ -46,16 +46,17 @@ point to improving it. People who write a lot of code have good habits of doing 
 commits. Experienced coders will have configured their Integrated Development Environment (IDE) to apply many such
 "hooks" on saving a file they have been working on.
 
-At regular points in your work flow you have to save your work and check it into Git by making a commit and that is
+At regular points in your work flow you save your work and check it into Git by making a commit and that is
 where `pre-commit` comes in to play because it will run all the hooks it has been configured to run against the files
 you are including in your commit. If any of the hooks fail then your commit is _not_ made. In some cases `pre-commit`
 will automatically correct the errors (e.g. removing trailing white-space; applying
 [black](https://github.com/psf/black) formatting if configured) but in others you have to correct them yourself before a
-commit can be successfully made.
+commit can be successfully made. Long term linting your code is beneficial (see [Linting - What is all the fluff
+about?](https://ns-rse.github.io/posts/linting/)).
 
-Initially this can be jarring, but it saves you, and more importantly those who you are asking to review your code in
-your as yet to be created pull request, time and effort as it ensures your code meets the required style and is a little
-bit cleaner before being sent out for review.
+Initially this can be jarring, but it saves you, and those who you are asking to review your code in your as yet to be
+created pull request, time and effort as it ensures your code meets the required style and is a little bit cleaner
+before being sent out for review.
 
 ## Installation
 
