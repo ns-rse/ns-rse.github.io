@@ -47,10 +47,11 @@ commits. Experienced coders will have configured their Integrated Development En
 "hooks" on saving a file they have been working on.
 
 At regular points in your work flow you have to save your work and check it into Git by making a commit and that is
-where `pre-commit` comes in to play because it will run all the hooks you configure it to each time you try make a
-commit. If any of the hooks fail then your commit is _not_ made. In some cases `pre-commit` will automatically correct
-the errors (e.g. removing trailing white-space) but in others you have to correct them before a commit can be
-successfully made.
+where `pre-commit` comes in to play because it will run all the hooks it has been configured to run against the files
+you are including in your commit. If any of the hooks fail then your commit is _not_ made. In some cases `pre-commit`
+will automatically correct the errors (e.g. removing trailing white-space; applying
+[black](https://github.com/psf/black) formatting if configured) but in others you have to correct them yourself before a
+commit can be successfully made.
 
 Initially this can be jarring, but it saves you, and more importantly those who you are asking to review your code in
 your as yet to be created pull request, time and effort as it ensures your code meets the required style and is a little
@@ -60,7 +61,7 @@ bit cleaner before being sent out for review.
 
 Pre-commit is written in Python and so you will need Python installed on your system in order to use it. Aside from that
 there is little else extra that is required to be manually installed as pre-commit installs virtual environments
-specific for each enabled hook for you.
+specific for each enabled hook.
 
 If your systems package manager includes pre-commit you can install it system wide.
 
@@ -79,24 +80,36 @@ conda install -c conda-forge pre-commit
 ```
 
 If you are working on a Python project then you should include `pre-commit` as a requirement (either in
-`requirements-dev.txt`) or in `setup.cfg`.
+`requirements-dev.txt`) or under the `dev` section of `[options.extras_require]` in your `setup.cfg` as shown below.
+
+```
+[options.extras_require]
+dev =
+  pre-commit
+  pytest
+  pytest-cov
+```
 
 
 ## Configuration
 
 Configuration of pre-commit is via a file in the root of your Git version controlled directory called
-`./.pre-commit-config.yaml`. This file should be included in your Git repository.
+`./.pre-commit-config.yaml`. This file should be included in your Git repository, you can create a blank file or
+`pre-commit` can generate a sample configuration for you.
 
 ```bash
 # Empty configuration
 touch .pre-commit-config.yaml
-git add .pre-commit-config.yaml
 # Auto-generate basic configuration
 pre-commit sample-config
+git add .pre-commit-config.yaml
 ```
 
+### Hooks
+
 Each hook is associated with a repository (`repo`) and a version (`rev`). Many are available from the
-`https://github.com/pre-commit/pre-commit-hooks`
+`https://github.com/pre-commit/pre-commit-hooks`. The default set of `pre-commit` hooks might look like the following.
+
 
 ```yaml
 repos:
@@ -118,8 +131,11 @@ repos:
           - id: check-yaml
 ```
 
-Some are from dedicated repositories, for example the following runs both [Black](https://github.com/psf/black) and
-[Flake8](https://flake8.pycqa.org/en/latest/) on your code and should follow under the above (with the same level of
+### Hooks from External Repositories
+
+Some hooks are available from dedicated repositories, for example the following runs
+[Black](https://github.com/psf/black), [Flake8](https://flake8.pycqa.org/en/latest/) and
+[Pylint](https://pylint.pycqa.org/en/latest/) on your code and should follow under the above (with the same level of
 indenting to be valid YAML).
 
 ```yaml
@@ -135,21 +151,73 @@ indenting to be valid YAML).
         - id: flake8
           additional_dependencies: [flake8-print]
           types: [python]
+  - repo: https://github.com/pycqa/pylint
+    rev: v2.15.3
+    hooks:
+        - id: pylint
 ```
 
 An extensive list of [supported hooks](https://pre-commit.com/hooks.html) is available. It lists the repository from
 which the hook is derived along with its name.
 
+### Local Hooks
+
+You can also define [new hook](https://pre-commit.com/#new-hooks) and configure them under the `- repo: local`.
+
+```yaml
+  - repo: local
+    hooks:
+      - id: <id>
+        name: <descriptive name>
+        language: python
+        entry:
+        types: [python]
+
+```
+
+For some examples of locally defined hooks see the [Pandas
+.pre-commit-config.yaml](https://github.com/pandas-dev/pandas/blob/main/.pre-commit-config.yaml).
+
 ## Usage
 
-Once installed and configured there really isn't much to be said for using pre-commit, just make commits, the hooks you
-have configured will run.
+Before `pre-commit` will run you need to install it within your repository. This puts the file
+`.git/hooks/pre-commit` in place that contains the hooks you have configured to run. To install this you should have
+your `.pre-commit-config.yaml` in place and then run the following.
 
-You can optionally run `pre-commit` manually in a repository that has been configured.
+```bash
+pre-commit install
+```
+
+Once installed and configured there really isn't much to be said for using `pre-commit`, just make commits and before
+you can make a successful commit `pre-commit` must run with all the hooks you have configured passing. By default
+`pre-commit` only runs on files that are staged and ready to be committed, if you have unstaged files these will be
+stashed prior to running the `pre-commit` hook and restored afterwards. Should you wish to run these manually without
+making a commit then, after activating a virtual environment if you are using one simply, or you can make a `git commit`.
+
+```bash
+pre-commit run
+```
+
+If any of the configured hooks fail then the commit will not be made. Some hooks such as
+[black](https://github.com/psf/black) may reformat files in place and you can then make another commit recording those
+changes and the hook should pass. Its important to pay close attention to the output.
+
+If you want to run a specific hook you simply add the `<id>` after `run`.
+
+```bash
+pre-commit run <id>
+```
+
+Or if you want to force running against all files (except unstaged ones) you can do so.
 
 ```bash
 pre-commit run --all-files # Across all files/hooks
-pre-commit run <hook_id>   # Specific hook
+```
+
+And these two options can be combined to run a specific hook against all files.
+
+```bash
+pre-commit run <id> --all-files
 ```
 
 ## Updating
@@ -160,8 +228,8 @@ You can update hooks by running `pre-commit autoupdate`.
 ## Pre-commit CI/CD
 
 Ideally contributors will have setup their system to work with pre-commit and be running such checks prior to making
-pushes. But as a backup you can enable running pre-commit as part of your Continuous Integration/Development
-pipeline. Here we show how to enable this on both [GitLab](https://gitlab.com) and [GitHub](https://github.com) although
+pushes. It is however useful to enable running pre-commit as part of your Continuous Integration/Development
+pipeline (CI/CD). This can be done with both [GitLab](https://gitlab.com) and [GitHub](https://github.com) although
 similar methods are available for many [continuous integration
 systems](https://pre-commit.com/#usage-in-continuous-integration).
 
@@ -169,8 +237,12 @@ systems](https://pre-commit.com/#usage-in-continuous-integration).
 
 GitHub actions reside in the `.github/workflows/` directory of your project. A simple pre-commit action is available on
 the Marketplace at [pre-commit/action](https://github.com/marketplace/actions/pre-commit). Copy this template to
-`.github/workflows/pre-commit.yml` and include it in your Git repository (`git add .github/workflows/pre-commit.yml &&
-git commit -m "Adding pre-commit GitHub Action" && git push`).
+`.github/workflows/pre-commit.yml` and include it in your Git repository.
+
+```bash
+git add .github/workflows/pre-commit.yml
+git commit -m "Adding pre-commit GitHub Action" && git push
+```
 
 
 ### GitLab
