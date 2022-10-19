@@ -1,0 +1,49 @@
+---
+title: "Python Packages 1 : Setup"
+author: "nshephard"
+date: "2022-11-30"
+categories: [code, analysis, python, packages, packaging, git, github, gitlab]
+image: https://live.staticflickr.com/65535/52433320790_70a4ce0bf4_k.jpg
+---
+
+This is the first in a series of posts aims to describe the basics of setting up, configuring, documenting, and
+publishing a Python package, incorporating some good practices such as licensing, contributing guidelines, automated
+linting and testing both locally and using CI/CD (Continuous Integration/Development),
+
+I dislike using the term "_Best Practice_" to describe what I'm advocating and prefer describing it as  "_Good
+Practice_" because I know what I'm doing isn't perfect. I welcome
+[feedback](https://github.com/ns-rse/ns-rse.github.io/issues) if you've spotted an error (no matter how small, even
+typos) , think I've missed out something, or could improve somewhere, or if you just think I'm plain wrong, please do
+get in touch and let me know.
+
+There are many introductions to [Python]() but this series of posts is not meant to be one of them. Rather it is assumed you
+have some familiarity with writing Python code and know some basics such that it is an interpreted language rather than
+one that requires a compiling. You will likely have written some code and are wondering how to structure it into a
+package that you can make available to others. Further it is assumed you are familiar with using [Git](https://git.vc)
+and online Forge's such as [GitHub](https://www.github.com)/[GitLab](https://gitlab.com)/etc.
+
+
+# Initialising a Repository
+
+The simplest way to start a repository is to initialise it on GitHub/GitLab and then clone it locally. If you already
+have a directory under version control locally you should add an `origin` so that you have a remote back-up and make
+your code Open Source and available to others to work on and collaborate with.
+
+## Key Files
+
+### `README.md`
+
+
+### `LICENSE.md`
+
+### `CONTRIBUTING.md`
+
+# Python Package Structure
+
+## Configuration Files
+
+## Modules/Sub-Modules
+
+## Documentation
+
+## Tests
