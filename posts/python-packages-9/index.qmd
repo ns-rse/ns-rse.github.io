@@ -1,0 +1,16 @@
+---
+title: "Python Packages 9 : Package Managers"
+author: "nshephard"
+date: "2022-11-30"
+categories: [code, analysis, python, packages, packaging, git, github, gitlab]
+image: https://live.staticflickr.com/5532/11233363983_59bfa8f4ad_k.jpg
+---
+
+# Poetry
+
+# PDM
+
+# Links
+
+* [Poetry](https://python-poetry.org)
+* [PDM](https://pdm.fming.dev/latest/)
