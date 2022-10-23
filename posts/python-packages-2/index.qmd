@@ -1,0 +1,12 @@
+---
+title: "Python Packages 2 : Package Strucutre"
+author: "nshephard"
+date: "2022-11-30"
+categories: [code, analysis, python, packages, packaging, git, github, gitlab]
+image: https://live.staticflickr.com/6089/6028541766_10939e3f1b_k.jpg
+---
+
+This is the second post in a series on Python Packaging that describes how to structure your Python Package in terms of
+modules, sub-modules, tests and documentation.
+
+# Links
