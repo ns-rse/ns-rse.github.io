@@ -1,0 +1,21 @@
+---
+title: "Python Packages 4 : Testing"
+author: "nshephard"
+date: "2022-11-30"
+categories: [code, analysis, python, packages, packaging, git, github, gitlab]
+image: https://live.staticflickr.com/6127/6022481682_ea01737b19_k.jpg
+---
+
+This is the fourth in a series of posts about Python Packaging and covers writing unit and regression tests for your
+package.
+
+# Links
+
+* [pytest](https://docs.pytest.org/en/latest/)
+
+## PyTest Extensions
+
+* [pytest-cov](https://github.com/pytest-dev/pytest-cov)
+* [pytest-mpl](https://github.com/matplotlib/pytest-mpl)
+* [pytest-regtest](https://gitlab.com/uweschmitt/pytest-regtest)
+* [pytest-xdist](https://github.com/pytest-dev/pytest-xdist)
