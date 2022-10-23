@@ -1,0 +1,12 @@
+---
+title: "Python Packages 3 : Initial Package"
+author: "nshephard"
+date: "2022-11-30"
+categories: [code, analysis, python, packages, packaging, git, github, gitlab]
+image: https://live.staticflickr.com/3873/14573117547_c9d461e52f_k.jpg
+---
+
+This is the third post in a series on Python Package that sets up a very basic Python Package that we can test and
+document.
+
+# Links
