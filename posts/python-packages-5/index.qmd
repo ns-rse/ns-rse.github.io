@@ -1,0 +1,17 @@
+---
+title: "Python Packages 5 : Linting"
+author: "nshephard"
+date: "2022-11-30"
+categories: [code, analysis, python, packages, packaging, git, github, gitlab]
+image: https://live.staticflickr.com/8170/7941683994_afac5a59f9_k.jpg
+---
+
+This is the fifth in a series of posts about writing Python Packages and covers linting.
+
+
+# Links
+
+* [black](https://github.com/psf/black)
+* [flake8](https://github.com/pycqa/flake8)
+* [mypy](http://www.mypy-lang.org/)
+* [pylint](https://github.com/PyCQA/pylint)
