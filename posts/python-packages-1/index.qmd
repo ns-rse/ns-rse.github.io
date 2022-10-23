@@ -29,16 +29,44 @@ The simplest way to start a repository is to initialise it on GitHub/GitLab and 
 have a directory under version control locally you should add an `origin` so that you have a remote back-up and make
 your code Open Source and available to others to work on and collaborate with.
 
+## License
+
+During the initialisation of a repository you can choose a license
+
 ## Key Files
 
 ### `README.md`
 
+This is the front page and is what visitors to your repository will first read. It should contain an overview of what
+your package is used for along with simple installation instructions and usage, although these can be replaced by links
+to more formal documentation if you have written it. Typically when starting a project though you won't have written the
+documentation so having these sections in your initial `README.md` is important.
+
+```
+# My Package
+
+Welcome, this is the repository for <my package> which is software to help perform important tasks.
+
+# Installation
+
+To clone and install the software from this repository...
+
+git clone
+cd my-package
+pip install -e .
+
+# Usage
+
+```
 
 ### `LICENSE.md`
+
+If you initialised your repository on GitHub or GitLab then you may have already included a license in your repository.
 
 ### `CONTRIBUTING.md`
 
 # Python Package Structure
+
 
 ## Configuration Files
 
