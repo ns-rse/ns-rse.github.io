@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/python-packages-7/index.html",
       "/posts/cli-alternatives/index.html",
       "/posts/pre-commit/index.html",
       "/posts/git-ssh/index.html",

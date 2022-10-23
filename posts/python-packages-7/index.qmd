@@ -1,0 +1,296 @@
+---
+title: "Python Packages 7 : Versioning"
+author: "nshephard"
+date: "2022-11-30"
+categories: [code, analysis, python, packages, packaging, git, github, gitlab, versioning, versions]
+image: https://live.staticflickr.com/8120/29788683310_219c089934_k.jpg
+---
+
+This is the seventh in a series of posts on Python Packaging. This post covers the concepts of versioning of Python
+packages and will cover manual and automated versioning using
+[versioneer](https://github.com/python-versioneer/python-versioneer) to aid automated deployment of new packages to PyPI.
+
+# Semantic Versioning
+
+**TODO** Describe [Semantic versioning](https://semver.org) and why people might use it.
+
+
+# Manually Versioning Code
+
+There are several methods of manually versioning your code. You can add a `version` field to the `metadata` in
+`setup.cfg` as shown below.
+
+```
+[metdata]
+name = package-name
+version = 0.1.0
+description = An example package
+long_decsription = file: README.md
+author = you
+license = GNU GPLv3
+```
+
+Alternatively you can define this in the `__version__` field of your package within the `package-name/__init__.py` file.
+
+```python
+"""Package Name"""
+__version__ = 0.1.0
+```
+
+This version will then be used when you build your package with `python -m build`.
+
+
+# Automated Versioning with Versioneer
+
+The downside to manually versioning your code is that you have to remember to update the string manually when you are
+ready to make a release and it doesn't automatically tie into the tags you might apply in Git to your commits.
+
+The [versioneer](https://github.com/python-versioneer/python-versioneer) package seeks to solve this problem.
+
+> This is a tool for managing a recorded version number in distutils/setuptools-based python projects. The goal is to
+> remove the tedious and error-prone "update the embedded version string" step from your release process. Making a new
+> release should be as easy as recording a new tag in your version-control system, and maybe making new tarballs.
+
+
+The [installation instructions](https://github.com/python-versioneer/python-versioneer/blob/master/INSTALL.md) are
+concise and clear and should be easy to follow. Configuration is through a section in `setup.cfg` and typically the
+required style is `pep440` but it is worth being aware that `versioneer` produces versions that indicates if you're
+branch `HEAD` is ahead of the last `git tag` that was applied and that these are not compliant with
+[PEP440](https://peps.python.org/pep-0440/). The side effect of this is that you will not be able to upload your package
+to [PyPI](https://pypi.org) either manually or via a GitHub Action (more on this below). If you want to force PEP40
+compliance then you should use `style = pep440-pre` which whilst indicating information about how far ahead of the last
+tag the current commit is still produces valid PEP440 versions.
+
+## Configure `setup.cfg`/`pyproject.toml`
+
+You need to add configuration to `setup.cfg` or `pyproject.toml`. The `versionfile_source` /`versionfile_build`
+directories are typically the package name if you have followed the structure suggested in the [previous
+article](python-packages-3), but see the [versioneer
+documentation](https://github.com/python-versioneer/python-versioneer/blob/master/INSTALL.md) for further details. If
+your [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) contain a prefix then you should include it. If your
+package unpacks to a specific directory then include it under `parentdir_prefix`.
+
+<p class="codeblock-label">setup.cfg</p>
+```
+[versioneer]
+VCS = git
+style = pep440
+versionfile_source = <package_name>/_version.py
+versionfile_build = <package_name>/_version.py
+tag_prefix = v
+parentdir_prefix =
+```
+
+<p class="codeblock-label">pyproject.toml</p>
+```
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "<package_name>/_version.py"
+versionfile_build = "<package_name>/_version.py"
+tag_prefix = ""
+parentdir_prefix = ""
+```
+
+## Install
+
+You can now install `versioneer` into your package, there are two options `--vendor` or `--no-vendor` to choose
+between. Typically I would opt for `--vendor` as the non-vendored mode is experimental and requires additional
+configuration options in `pyproject.toml` (see [versioneer
+documentation](https://github.com/python-versioneer/python-versioneer/blob/master/INSTALL.md) for further details).
+
+<p class="codeblock-label">Install versioneer</p>
+```bash
+versioneer install --vendor
+```
+
+This will install files and stage them automatically, remember to stage your changes to `setup.cfg` / `pyproject.toml`
+before committing.
+
+## Build
+
+When it comes to building I found that the current version of [build](https://pypa-build.readthedocs.io/en/latest/)
+(0.8.0 as of writing) by default creates a virtual environment to build the package under and this resulted in an error
+about `versioneer` not being installed (see [related issue
+#192](https://github.com/python-versioneer/python-versioneer/issues/192), although I was using the default `style =
+pep440`). My solution was to try using the `--no-isolation` (`-n`) flag to build so that a virtual environment was not used.
+
+<p class="codeblock-label">Building your package</p>
+```bash
+python -m build --no-isolation
+  * Getting dependencies for sdist...
+
+```
+
+You should find your package builds and the resulting `.tar.gz` and `.whl` files include the version calculated by
+`versioneer` and that it will be based on the most recent tag. If your branch is ahead of the last tag then it will
+include information on how far ahead it is.
+
+## Excluding `<package>/_version.py`
+
+You may wish to exclude the `<package>/_version.py` from some of your linting if for example you are using
+[pre-commit](https://ns-rse.github.io/posts/pre-commit).  At the command line you can exclude a file from being included
+in `flake8` analyses with `--exclude=<patterns>` and so at the command line you would.
+
+<p class="codeblock-label">flake8 excluding _version.py</p>
+```bash
+flake8 --exclude=<package>/_version.py
+```
+
+If you are using `flake8` in `pre-commit` then you can add and `args` entry to the `.pre-commit-config.yaml`
+configuration file as shown below.
+
+<p class="codeblock-label">.pre-commit-config.yaml excluding _version.py</p>
+```yaml
+  - repo: https://gitlab.com/pycqa/flake8.git
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+        args: ["--exclude=topostats/_version.py"]
+        additional_dependencies: [flake8-print]
+        types: [python]
+```
+
+## GitHub Action
+
+The GitHub Action [gh-action-pypi-publish](https://github.com/pypa/gh-action-pypi-publish) is available to automate
+publishing to PyPI. You will have to [generate a PYPI token](https://pypi.org/help/#apitoken) (and similarly one for
+[test PyPI](https://test.pypi.org)) and store these under _Settings > Secrets > Actions_ with the names `PYPI_API_TOKEN`
+and `TEST_PYPI_API_TOKEN` respectively.  You can then include the following GitHub Action under
+`.github/workflow/pypi.yaml`.
+
+<p class="codeblock-label">GitHub Action to publish to PyPI</p>
+```yaml
+name: Publish package to PyPi
+
+on:
+  push:
+    branches:
+      - master
+      # - test/branch    # Uncomment and replace with the branch you are testing on
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    name: Publish package to PyPi
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+      - name: Installing the package
+        run: |
+          pip3 install versioneer
+          pip3 install .
+          pip3 install .[pypi]
+      - name: Build package
+        run: |
+          python -m build --no-isolation
+      - name: Publish package to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          repository_url: https://test.pypi.org/legacy/
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+      - name: Publish package to PyPI
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+```
+
+
+# Step-by-step
+
+1. `pip install versioneer`
+2. Modify `pyproject.toml` or `setup.cfg` (I use the later). It is __vital_ that the `tag_prefix` is correct.
+
+```
+[versioneer]
+VCS = git
+style = pep440
+versionfile_source = clarity/_version.py
+versionfile_build = clarity/_version.py
+tag_prefix = v
+parentdir_prefix =
+```
+
+3. If using non-vendored mode further modify `pyproject.toml`
+4. Add `import versioneer` and additional lines to obtain version to `setup.py`
+
+```python
+"""Package setup"""
+from setuptools import setup
+import versioneer
+
+setup(
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
+)
+```
+
+5. Run `versioneer install --[no-]vendor` (I have used `--no-vendor` so far).
+6. Add `versioneer` to the `[pypi]` requirements section of `setup.cfg`
+
+```
+   [options.extras_require]
+   pypi =
+     build
+     versioneer
+   #+END_SRC
+```
+
+7. `pip install .[pypi]`
+8. Add the `pypi.yaml` to `./.github/workflows/` directory.
+
+```yaml
+     name: Publish package to PyPi
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    name: Publish package to PyPi
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+      - name: Installing the package
+        run: |
+          pip3 install .
+          pip3 install .[pypi]
+      - name: Build package
+        run: |
+          python -m build --no-isolation
+      - name: Publish package to Test PyPI
+        if: github.event_name == 'push'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+      - name: Publish package to PyPI
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+```
+
+9. Add new repository secrets for [PYPI_API_TOKEN](https://pypi.org/) and [TEST_PYPI_API_TOKEN](https://test.pypi.org)
+   under _Settings > Secrets > Actions_ you have  to generate the tokens on both PyPI and Test PyPI.
+
+# Links
+
+* [Semantic versioning](https://semver.org)
+* [versioneer](https://github.com/python-versioneer/python-versioneer)

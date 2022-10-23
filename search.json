@@ -1,26 +1,5 @@
 [
   {
-    "objectID": "links.html",
-    "href": "links.html",
-    "title": "Links",
-    "section": "",
-    "text": "Site\nDescription\n\n\n\n\nkimura\nA Dokuwiki site where I keep notes.\n\n\nFlickr\nPhotography (mostly landscape, climbing and cats).\n\n\nneil-snaps.co.uk\nWhere I fail to monetise my photography.\n\n\nSheffieldBoulder.uk\nAnother Dokuwiki site detailing artificial boulders around Sheffield.\n\n\nGitLab\nGit repos.\n\n\nGitHub (Personal)\nGit repos.\n\n\nGitHub (Work)\nGit repos."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ns-rse",
-    "section": "",
-    "text": "code\n\n\nlinux\n\n\nbash\n\n\n\n\n\n\n\n\n\n\n\nSep 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Here you’ll find posts about Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
-  },
-  {
     "objectID": "posts/pre-commit/index.html",
     "href": "posts/pre-commit/index.html",
     "title": "Pre-Commit : Protecting your future self",
@@ -222,5 +201,68 @@
     "title": "Linux Command Line Alternatives",
     "section": "Links",
     "text": "Links\n\nbat\ncheat\nduf\nexa\nfd\njq\nlsd\ntldr\nyq"
+  },
+  {
+    "objectID": "posts/python-packages-7/index.html",
+    "href": "posts/python-packages-7/index.html",
+    "title": "Python Packages 7 : Versioning",
+    "section": "",
+    "text": "This is the seventh in a series of posts on Python Packaging. This post covers the concepts of versioning of Python packages and will cover manual and automated versioning using versioneer to aid automated deployment of new packages to PyPI."
+  },
+  {
+    "objectID": "posts/python-packages-7/index.html#configure-setup.cfgpyproject.toml",
+    "href": "posts/python-packages-7/index.html#configure-setup.cfgpyproject.toml",
+    "title": "Python Packages 7 : Versioning",
+    "section": "Configure setup.cfg/pyproject.toml",
+    "text": "Configure setup.cfg/pyproject.toml\nYou need to add configuration to setup.cfg or pyproject.toml. The versionfile_source /versionfile_build directories are typically the package name if you have followed the structure suggested in the previous article, but see the versioneer documentation for further details. If your git tags contain a prefix then you should include it. If your package unpacks to a specific directory then include it under parentdir_prefix.\n\nsetup.cfg\n\n[versioneer]\nVCS = git\nstyle = pep440\nversionfile_source = <package_name>/_version.py\nversionfile_build = <package_name>/_version.py\ntag_prefix = v\nparentdir_prefix =\n\npyproject.toml\n\n[tool.versioneer]\nVCS = \"git\"\nstyle = \"pep440\"\nversionfile_source = \"<package_name>/_version.py\"\nversionfile_build = \"<package_name>/_version.py\"\ntag_prefix = \"\"\nparentdir_prefix = \"\""
+  },
+  {
+    "objectID": "posts/python-packages-7/index.html#install",
+    "href": "posts/python-packages-7/index.html#install",
+    "title": "Python Packages 7 : Versioning",
+    "section": "Install",
+    "text": "Install\nYou can now install versioneer into your package, there are two options --vendor or --no-vendor to choose between. Typically I would opt for --vendor as the non-vendored mode is experimental and requires additional configuration options in pyproject.toml (see versioneer documentation for further details).\n\nInstall versioneer\n\nversioneer install --vendor\nThis will install files and stage them automatically, remember to stage your changes to setup.cfg / pyproject.toml before committing."
+  },
+  {
+    "objectID": "posts/python-packages-7/index.html#build",
+    "href": "posts/python-packages-7/index.html#build",
+    "title": "Python Packages 7 : Versioning",
+    "section": "Build",
+    "text": "Build\nWhen it comes to building I found that the current version of build (0.8.0 as of writing) by default creates a virtual environment to build the package under and this resulted in an error about versioneer not being installed (see related issue #192, although I was using the default style = pep440). My solution was to try using the --no-isolation (-n) flag to build so that a virtual environment was not used.\n\nBuilding your package\n\npython -m build --no-isolation\n  * Getting dependencies for sdist...\nYou should find your package builds and the resulting .tar.gz and .whl files include the version calculated by versioneer and that it will be based on the most recent tag. If your branch is ahead of the last tag then it will include information on how far ahead it is."
+  },
+  {
+    "objectID": "posts/python-packages-7/index.html#excluding-package_version.py",
+    "href": "posts/python-packages-7/index.html#excluding-package_version.py",
+    "title": "Python Packages 7 : Versioning",
+    "section": "Excluding <package>/_version.py",
+    "text": "Excluding <package>/_version.py\nYou may wish to exclude the <package>/_version.py from some of your linting if for example you are using pre-commit. At the command line you can exclude a file from being included in flake8 analyses with --exclude=<patterns> and so at the command line you would.\n\nflake8 excluding _version.py\n\nflake8 --exclude=<package>/_version.py\nIf you are using flake8 in pre-commit then you can add and args entry to the .pre-commit-config.yaml configuration file as shown below.\n\n.pre-commit-config.yaml excluding _version.py\n\n  - repo: https://gitlab.com/pycqa/flake8.git\n    rev: 3.9.2\n    hooks:\n      - id: flake8\n        args: [\"--exclude=topostats/_version.py\"]\n        additional_dependencies: [flake8-print]\n        types: [python]"
+  },
+  {
+    "objectID": "posts/python-packages-7/index.html#github-action",
+    "href": "posts/python-packages-7/index.html#github-action",
+    "title": "Python Packages 7 : Versioning",
+    "section": "GitHub Action",
+    "text": "GitHub Action\nThe GitHub Action gh-action-pypi-publish is available to automate publishing to PyPI. You will have to generate a PYPI token (and similarly one for test PyPI) and store these under Settings > Secrets > Actions with the names PYPI_API_TOKEN and TEST_PYPI_API_TOKEN respectively. You can then include the following GitHub Action under .github/workflow/pypi.yaml.\n\nGitHub Action to publish to PyPI\n\nname: Publish package to PyPi\n\non:\n  push:\n    branches:\n      - master\n      # - test/branch    # Uncomment and replace with the branch you are testing on\njobs:\n  build-release:\n    runs-on: ubuntu-latest\n    name: Publish package to PyPi\n    steps:\n      - uses: actions/checkout@v3\n        with:\n          fetch-depth: 0\n      - name: Setup Python\n        uses: actions/setup-python@v3\n        with:\n          python-version: 3.9\n      - name: Installing the package\n        run: |\n          pip3 install versioneer\n          pip3 install .\n          pip3 install .[pypi]\n      - name: Build package\n        run: |\n          python -m build --no-isolation\n      - name: Publish package to Test PyPI\n        uses: pypa/gh-action-pypi-publish@release/v1\n        with:\n          user: __token__\n          repository_url: https://test.pypi.org/legacy/\n          password: ${{ secrets.TEST_PYPI_API_TOKEN }}\n      - name: Publish package to PyPI\n        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')\n        uses: pypa/gh-action-pypi-publish@release/v1\n        with:\n          user: __token__\n          password: ${{ secrets.PYPI_API_TOKEN }}"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ns-rse",
+    "section": "",
+    "text": "code\n\n\nanalysis\n\n\npython\n\n\npackages\n\n\npackaging\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nversioning\n\n\nversions\n\n\n\n\n\n\n\n\n\n\n\nNov 30, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nlinux\n\n\nbash\n\n\n\n\n\n\n\n\n\n\n\nSep 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "links.html",
+    "href": "links.html",
+    "title": "Links",
+    "section": "",
+    "text": "Site\nDescription\n\n\n\n\nkimura\nA Dokuwiki site where I keep notes.\n\n\nFlickr\nPhotography (mostly landscape, climbing and cats).\n\n\nneil-snaps.co.uk\nWhere I fail to monetise my photography.\n\n\nSheffieldBoulder.uk\nAnother Dokuwiki site detailing artificial boulders around Sheffield.\n\n\nGitLab\nGit repos.\n\n\nGitHub (Personal)\nGit repos.\n\n\nGitHub (Work)\nGit repos."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Here you’ll find posts about Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
   }
 ]
