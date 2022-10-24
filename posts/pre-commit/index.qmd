@@ -249,6 +249,7 @@ pipeline (CI/CD). This can be done with both [GitLab](https://gitlab.com) and [G
 similar methods are available for many [continuous integration
 systems](https://pre-commit.com/#usage-in-continuous-integration).
 
+
 ### GitHub
 
 GitHub actions reside in the `.github/workflows/` directory of your project. A simple pre-commit action is available on
@@ -268,6 +269,28 @@ If you use GitLab the following article describes how to configure a CI job to r
 * [How to use pre-commit to automatically correct commits and merge requests with GitLab CI](https://stackoverflow.com/collectives/gitlab/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g)
 
 
+### pre-commit.ci
+
+There is also [pre-commit.ci](https://pre-commit.ci/) which offers integration with GitHub (GitLab and other forges are
+in the pipeline). This "_enforces that issues are descovered but also fixes the issues automatically, letting developers
+focus their time on more valuable problems_". Configuration is via the `.pre-commit-config.yaml` under a dedicated `ci:`
+section and a default configuration is shown below.
+
+```yaml
+ci:
+    autofix_commit_msg: |
+        [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+        for more information, see https://pre-commit.ci
+    autofix_prs: true
+    autoupdate_branch: ''
+    autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+    autoupdate_schedule: weekly
+    skip: []
+    submodules: false
+```
+
+Its possible to explicitly skip particular tests within this pipeline via a list under `skip: []`.
 
 
 ## Links

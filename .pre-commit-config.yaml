@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0  # Use the ref you want to point at
+    hooks:
+      - id: trailing-whitespace
+        types: [file, text]
+      - id: check-docstring-first
+      - id: check-case-conflict
+      - id: end-of-file-fixer
+        types: [file, text]
+      - id: requirements-txt-fixer
+      - id: check-byte-order-marker
+      - id: check-yaml
+
+  - repo: https://github.com/lorenzwalthert/precommit
+    rev: 0.3.2
+    hooks:
+      - id: parsable-R
+      # - id: spell-check
+      - id: lintr

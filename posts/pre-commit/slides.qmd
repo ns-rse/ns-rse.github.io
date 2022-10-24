@@ -76,16 +76,14 @@ add some files to the branch, stage and commit them, and then push them to the r
 them into the main branch.
 :::
 
-## A simple function
+## A simple :snake: function
 
-Here we have a simple  :python: function.
+import pandas as pd
 
-```{.python}
-import numpy as np
 from pathlib import Path
 
-def [multiply(x: Union[int, float], y: Union[int, float]) -> float:
-    """Multipley two numbers
+def find_and_load_files(file_path: Union[int, float], y: Union[int, float]) -> float:
+    """Multiply two numbers
 
     Parameters
     ----------
