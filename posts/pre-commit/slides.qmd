@@ -76,29 +76,6 @@ add some files to the branch, stage and commit them, and then push them to the r
 them into the main branch.
 :::
 
-## A simple :snake: function
-
-import pandas as pd
-
-from pathlib import Path
-
-def find_and_load_files(file_path: Union[int, float], y: Union[int, float]) -> float:
-    """Multiply two numbers
-
-    Parameters
-    ----------
-    x: Union[int, float]
-        First variable to multiply.
-    y: Union[int, float]
-        Second variable to multiply.
-
-    Returns
-    -------
-    float
-        The product of multiplying x by y
-    """
-    return x * y
-```
 
 ## Linting and Testing
 
@@ -118,4 +95,74 @@ Similarly it is good practice to lint your code to ensure it conforms to style g
 We'll take a short digression to look at how these two steps work.
 :::
 
-##
+
+## A simple :snake: function
+
+[`sample.py`](sample.py)
+
+```
+import numpy as np
+import pandas as pd
+
+from pathlib import Path
+
+def find_and_load_files(file_path: Union[str, Path], file_type: str) -> List:
+    """Recursively find and load files of the stated type along the given file path.
+    """
+    # We have a really long comment on this line just for demonstration purposes so that we can generate a few errors that need linting
+    try:
+        return Path(file_path).rglob(f"*{file_type}")
+    except:
+        raise
+```
+
+::: {.notes}
+This is a simple function in Python that we'll use to demonstrate linting and tests. You don't need to be too familiar
+with Python to understand and follow along but a quick explanation is that a few libraries are imported, then the
+function find_and_load_files is defined, it takes two arguments a file path and a file type and it will try to
+recursively find all files ending with the given extension along that path, and if an exception is encountered it is raised.
+:::
+
+
+## Testing
+
+
+::: {.notes}
+:::
+
+
+## Linting
+
+Lots of tools for linting...
+
+* [black](https://github.com/psf/black) PEP8 compliance.
+* [flake8](https://flake8.pycqa.org/en/latest/) PEP8 compliance.
+* [pylint](https://pylint.pycqa.org/en/latest/index.html) PEP8 compliance, code smells and refactoring suggestions.
+* [mypy](http://mypy-lang.org/) Typehint checking.
+
+::: {.notes}
+:::
+
+
+## Linting manually...
+
+```
+black sample.py
+flake8 sample.py
+pylint sample.py
+mypy sample.py
+```
+
+::: {.notes}
+:::
+
+
+## Linting with IDE
+
+Popular IDEs have tools to run linting automatically on file save...
+
+* Emacs : [blacken](https://github.com/pythonic-emacs/blacken) / [Flycheck](https://www.flycheck.org/en/latest/)
+* VSCode : [Python](https://code.visualstudio.com/docs/python/linting) /
+* PyCharm : [black](https://plugins.jetbrains.com/plugin/10563-black-pycharm) /
+  [Mypy](https://plugins.jetbrains.com/plugin/11086-mypy) / [flake8](https://plugins.jetbrains.com/plugin/11563-flake8-support)
+* IntelliJ :
