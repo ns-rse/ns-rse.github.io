@@ -9,7 +9,7 @@ format:
     show-slide-number: speaker
     # embed-resources: true
     # standalone: true
-footer: "**slides**: []() - **source** [github.com/ns-rse/ns-rse.github.io/](https://github.com/ns-rse/ns-rse.github.io/)"
+footer: "**slides**: []() - **source** [github.com/ns-rse/ns-rse.github.io/](https://github.com/ns-rse/ns-rse.github.io/posts/pre-commit-slides.qmd)"
 from: markdown+emoji
 ---
 
@@ -154,6 +154,13 @@ mypy sample.py
 ```
 
 ::: {.notes}
+If you were running linting manually then you would have to invoke each and run them against a specific file, or all
+files in a project directory. The later might actually cause some problems because if you are working on an existing
+code based which hasn't been linted already and these could potentially be changed (certainly black lints files in place
+applying its opinionated style). When you then come to commit you may end up with the blame associated with code that
+you only formatted. There are ways around this using Git's `--ignore-rev` flag to store commits in a file
+`.git-blame-ignore-revs` that lists the hashes for which blame is to be ignored (see
+[article](https://akrabat.com/ignoring-revisions-with-git-blame/))
 :::
 
 
@@ -164,5 +171,6 @@ Popular IDEs have tools to run linting automatically on file save...
 * Emacs : [blacken](https://github.com/pythonic-emacs/blacken) / [Flycheck](https://www.flycheck.org/en/latest/)
 * VSCode : [Python](https://code.visualstudio.com/docs/python/linting) /
 * PyCharm : [black](https://plugins.jetbrains.com/plugin/10563-black-pycharm) /
-  [Mypy](https://plugins.jetbrains.com/plugin/11086-mypy) / [flake8](https://plugins.jetbrains.com/plugin/11563-flake8-support)
-* IntelliJ :
+  [Mypy](https://plugins.jetbrains.com/plugin/11086-mypy) /
+  [flake8](https://plugins.jetbrains.com/plugin/11563-flake8-support)
+* RStudio : [lintr](https://lintr.r-lib.org/index.html)
