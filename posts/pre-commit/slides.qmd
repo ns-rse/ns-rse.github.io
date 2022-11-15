@@ -21,14 +21,14 @@ from: markdown+emoji
 + `pre-commit` installation
 + `pre-commit` configuration
 + `pre-commit` demo.
-
++ `pre-commit.ci`
 ::: {.notes}
 :::
 
 ## Git
 
 ![](https://imgs.xkcd.com/comics/git.png)
-
+Source : [xkcd (1597) Git ](https://xkcd.com/1597/)
 ::: {.notes}
 :::
 
@@ -100,15 +100,14 @@ We'll take a short digression to look at how these two steps work.
 
 [`sample.py`](sample.py)
 
-```
+```{.python}
 import numpy as np
 import pandas as pd
 
 from pathlib import Path
 
-def find_and_load_files(file_path: Union[str, Path], file_type: str) -> List:
-    """Recursively find and load files of the stated type along the given file path.
-    """
+def find_and_load_files(file_path: Union[str, Path], file_ext: str) -> List:
+    """Recursively find files of the stated type along the given file path."""
     # We have a really long comment on this line just for demonstration purposes so that we can generate a few errors that need linting
     try:
         return Path(file_path).rglob(f"*{file_type}")
@@ -146,7 +145,7 @@ Lots of tools for linting...
 
 ## Linting manually...
 
-```
+```{.bash}
 black sample.py
 flake8 sample.py
 pylint sample.py
@@ -163,6 +162,81 @@ you only formatted. There are ways around this using Git's `--ignore-rev` flag t
 [article](https://akrabat.com/ignoring-revisions-with-git-blame/))
 :::
 
+## Linting manually - `black`
+
+```
+
+```
+
+::: {.notes}
+:::
+
+### Linting manually - `flake8`
+
+```{.bash}
+❱ flake8 sample.py
+sample.py:1:1: D100 Missing docstring in public module
+sample.py:1:1: F401 'numpy as np' imported but unused
+sample.py:2:1: F401 'pandas as pd' imported but unused
+sample.py:7:36: F821 undefined name 'Union'
+sample.py:7:73: F821 undefined name 'List'
+sample.py:8:80: E501 line too long (87 > 79 characters)
+sample.py:9:80: E501 line too long (135 > 79 characters)
+sample.py:12:5: E722 do not use bare 'except'
+```
+
+::: {.notes}
+:::
+
+### Linting manually - `pylint`
+
+```{.bash}
+❱ pylint sample.py
+PYLINTHOME is now '/home/neil/.cache/pylint' but obsolescent '/home/neil/.pylint.d' is found; you can safely remove the latter
+************* Module sample
+sample.py:9:0: C0301: Line too long (135/120) (line-too-long)
+sample.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+sample.py:7:35: E0602: Undefined variable 'Union' (undefined-variable)
+sample.py:7:72: E0602: Undefined variable 'List' (undefined-variable)
+sample.py:12:4: W0706: The except handler raises immediately (try-except-raise)
+sample.py:4:0: C0411: standard import "from pathlib import Path" should be placed before "import numpy as np" (wrong-import-order)
+sample.py:1:0: W0611: Unused numpy imported as np (unused-import)
+sample.py:2:0: W0611: Unused pandas imported as pd (unused-import)
+
+-------------------------------------
+Your code has been rated at -10.00/10
+```
+
+::: {.notes}
+:::
+
+### Linting manually - `mypy`
+
+```
+❱ mypy sample.py
+/home/neil/.virtualenvs/python3_10/lib/python3.10/site-packages/numpy/__init__.pyi:636: error: Positional-only parameters are only supported in Python 3.8 and greater
+Found 1 error in 1 file (errors prevented further checking)
+```
+
+::: {.notes**
+:::
+
+## Testing
+
+Tests ensure code works as expected.
+
+**TODO** Write tests for above function.
+```{.python}
+```
+
+### Testing - `pytest**
+
+**TODO** Example of running tests.
+
+```{.bash}
+```
+::: {.notes}
+:::
 
 ## Linting with IDE
 
@@ -174,3 +248,55 @@ Popular IDEs have tools to run linting automatically on file save...
   [Mypy](https://plugins.jetbrains.com/plugin/11086-mypy) /
   [flake8](https://plugins.jetbrains.com/plugin/11563-flake8-support)
 * RStudio : [lintr](https://lintr.r-lib.org/index.html)
+
+::: {.notes}
+Many popular Integrated Development Environments support linting of code on the fly or on saving files, Emacs has
+`blacken` and `flycheck` modes, the later of which will run `flake8`.
+
+VSCode has a Python module for linting.
+
+PyCharm has plugins for `black`, `mypy` and `flake8`
+
+RStudio has support for the `lintr` package (as does Emacs).
+
+Using these tools is sensible as it can highlight quickly and early on problems with your code. Applying `black`
+automatically also takes out some mental overhead in thinking about whether you are using the correct formatting whilst
+writing code allowing you to focus on the problem you are trying to solve.
+:::
+
+
+## Committing
+
+Ultimately you commit your changes then...
+
+* Push to `origin`
+* Open a Pull Request.
+* See if test passes all CI tests.
+* Await feedback and hopefully approval.
+
+::: {.notes}
+:::
+
+
+## Problems
+
+* Automated tests fail.
+* Linting fails.
+
+
+::: {.notes}
+:::
+
+
+## Pre-commit
+
+*
+
+::: {.notes}
+This is where `pre-commit` comes to the rescue. Its a Python package that uses Git Hooks to run checks _before_ a commit
+is made, hence the name! It can take care of running all the manual linting and tests for you and automate part of your
+workflow.
+
+
+Hooks are scripts that reside in `.git/hooks/`
+:::
