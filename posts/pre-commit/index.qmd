@@ -90,7 +90,7 @@ Configuration of pre-commit is via a file in the root of your Git version contro
 # Empty configuration
 touch .pre-commit-config.yaml
 # Auto-generate basic configuration
-pre-commit sample-config
+pre-commit sample-config > .pre-commit-config.yaml
 git add .pre-commit-config.yaml
 ```
 
@@ -112,11 +112,6 @@ repos:
           - id: end-of-file-fixer
             types: [python]
           - id: requirements-txt-fixer
-          - id: mixed-line-ending
-            types: [python]
-            args: [--fix=no]
-          - id: debug-statements
-          - id: fix-byte-order-marker
           - id: check-yaml
 ```
 
