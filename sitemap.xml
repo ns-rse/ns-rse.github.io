@@ -2,30 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/posts/pre-commit/index.html</loc>
-    <lastmod>2022-10-23T13:28:11.603Z</lastmod>
+    <lastmod>2022-11-16T14:26:19.385Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/ns-rse/ns-rse.github.io/posts/pre-commit-updates/index.html</loc>
+    <lastmod>2022-11-16T14:26:20.141Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/posts/git-ssh/index.html</loc>
-    <lastmod>2022-10-23T13:28:12.479Z</lastmod>
+    <lastmod>2022-11-16T14:26:20.549Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/posts/linting/index.html</loc>
-    <lastmod>2022-10-23T13:28:13.215Z</lastmod>
+    <lastmod>2022-11-16T14:26:21.105Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/posts/cli-alternatives/index.html</loc>
-    <lastmod>2022-10-23T13:28:13.803Z</lastmod>
+    <lastmod>2022-11-16T14:26:21.569Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/index.html</loc>
-    <lastmod>2022-10-23T13:28:14.347Z</lastmod>
+    <lastmod>2022-11-16T14:26:21.965Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/links.html</loc>
-    <lastmod>2022-10-23T13:28:14.675Z</lastmod>
+    <lastmod>2022-11-16T14:26:22.261Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/about.html</loc>
-    <lastmod>2022-10-23T13:28:14.991Z</lastmod>
+    <lastmod>2022-11-16T14:26:22.585Z</lastmod>
   </url>
 </urlset>

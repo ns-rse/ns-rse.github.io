@@ -25,7 +25,7 @@
     "href": "posts/pre-commit/index.html#configuration",
     "title": "Pre-Commit : Protecting your future self",
     "section": "Configuration",
-    "text": "Configuration\nConfiguration of pre-commit is via a file in the root of your Git version controlled directory called .pre-commit-config.yaml. This file should be included in your Git repository, you can create a blank file or pre-commit can generate a sample configuration for you.\n# Empty configuration\ntouch .pre-commit-config.yaml\n# Auto-generate basic configuration\npre-commit sample-config\ngit add .pre-commit-config.yaml\n\nHooks\nEach hook is associated with a repository (repo) and a version (rev) within it. Many are available from the https://github.com/pre-commit/pre-commit-hooks. The default set of pre-commit hooks might look like the following.\nrepos:\n  - repo: https://github.com/pre-commit/pre-commit-hooks\n      rev: v4.3.0 # Use the ref you want to point at\n      hooks:\n          - id: trailing-whitespace\n            types: [file, text]\n          - id: check-docstring-first\n          - id: check-case-conflict\n          - id: end-of-file-fixer\n            types: [python]\n          - id: requirements-txt-fixer\n          - id: mixed-line-ending\n            types: [python]\n            args: [--fix=no]\n          - id: debug-statements\n          - id: fix-byte-order-marker\n          - id: check-yaml\n\n\nHooks from External Repositories\nSome hooks are available from dedicated repositories, for example the following runs Black, Flake8 and Pylint on your code and should follow under the above (with the same level of indenting to be valid YAML).\n  - repo: https://github.com/psf/black\n    rev: 22.6.0\n    hooks:\n        - id: black\n          types: [python]\n\n  - repo: https://gitlab.com/pycqa/flake8.git\n    rev: 3.9.2\n    hooks:\n        - id: flake8\n          additional_dependencies: [flake8-print]\n          types: [python]\n  - repo: https://github.com/pycqa/pylint\n    rev: v2.15.3\n    hooks:\n        - id: pylint\nAn extensive list of supported hooks is available. It lists the repository from which the hook is derived along with its name.\n\n\nLocal Hooks\nYou can also define new hook and configure them under the - repo: local.\n  - repo: local\n    hooks:\n      - id: <id>\n        name: <descriptive name>\n        language: python\n        entry:\n        types: [python]\nFor some examples of locally defined hooks see the Pandas .pre-commit-config.yaml."
+    "text": "Configuration\nConfiguration of pre-commit is via a file in the root of your Git version controlled directory called .pre-commit-config.yaml. This file should be included in your Git repository, you can create a blank file or pre-commit can generate a sample configuration for you.\n# Empty configuration\ntouch .pre-commit-config.yaml\n# Auto-generate basic configuration\npre-commit sample-config > .pre-commit-config.yaml\ngit add .pre-commit-config.yaml\n\nHooks\nEach hook is associated with a repository (repo) and a version (rev) within it. Many are available from the https://github.com/pre-commit/pre-commit-hooks. The default set of pre-commit hooks might look like the following.\nrepos:\n  - repo: https://github.com/pre-commit/pre-commit-hooks\n      rev: v4.3.0 # Use the ref you want to point at\n      hooks:\n          - id: trailing-whitespace\n            types: [file, text]\n          - id: check-docstring-first\n          - id: check-case-conflict\n          - id: end-of-file-fixer\n            types: [python]\n          - id: requirements-txt-fixer\n          - id: check-yaml\n\n\nHooks from External Repositories\nSome hooks are available from dedicated repositories, for example the following runs Black, Flake8 and Pylint on your code and should follow under the above (with the same level of indenting to be valid YAML).\n  - repo: https://github.com/psf/black\n    rev: 22.6.0\n    hooks:\n        - id: black\n          types: [python]\n\n  - repo: https://gitlab.com/pycqa/flake8.git\n    rev: 3.9.2\n    hooks:\n        - id: flake8\n          additional_dependencies: [flake8-print]\n          types: [python]\n  - repo: https://github.com/pycqa/pylint\n    rev: v2.15.3\n    hooks:\n        - id: pylint\nAn extensive list of supported hooks is available. It lists the repository from which the hook is derived along with its name.\n\n\nLocal Hooks\nYou can also define new hook and configure them under the - repo: local.\n  - repo: local\n    hooks:\n      - id: <id>\n        name: <descriptive name>\n        language: python\n        entry:\n        types: [python]\nFor some examples of locally defined hooks see the Pandas .pre-commit-config.yaml."
   },
   {
     "objectID": "posts/pre-commit/index.html#usage",
@@ -54,6 +54,48 @@
     "title": "Pre-Commit : Protecting your future self",
     "section": "Links",
     "text": "Links\n\nPre-commit\nSupported hooks\nGitHub Action\nGitLab CI"
+  },
+  {
+    "objectID": "posts/pre-commit-updates/index.html",
+    "href": "posts/pre-commit-updates/index.html",
+    "title": "Pre-Commit : Customising and Updating",
+    "section": "",
+    "text": "Pre-commit is a tool for running hooks prior to making commits to your Git history. If you’re not familiar with it then you may want to read the earlier post Pre-Commit : Protecting your future self. This article discusses updating pre-commit and is prompted by a change in the flake8 repository."
+  },
+  {
+    "objectID": "posts/pre-commit-updates/index.html#pre-commit-hooks",
+    "href": "posts/pre-commit-updates/index.html#pre-commit-hooks",
+    "title": "Pre-Commit : Customising and Updating",
+    "section": "Pre-commit hooks",
+    "text": "Pre-commit hooks\nA lot of the power of pre-commit comes from the vast array of hooks that are available that users make available. These are included under repos: section of the .pre-commit-config.yaml and typically require a minimum of the repo: and the rev: to use and then optionally a hooks: section. The sample-config that pre-commit will auto-generate looks like…\nrepos:\n-   repo: https://github.com/pre-commit/pre-commit-hooks\n    rev: v4.3.0\n    hooks:\n    -   id: trailing-whitespace\n    -   id: end-of-file-fixer\n    -   id: check-yaml\n    -   id: check-added-large-files\nAfter finding a repository and hook that you wish to use hooks repository you need to add it to your .pre-commit-config.yaml. Here we add the pylint repository and whilst it only has one hook we explicitly add it.\nrepos:\n-   repo: https://github.com/pre-commit/pre-commit-hooks\n    rev: v4.3.0\n    hooks:\n    -   id: trailing-whitespace\n    -   id: end-of-file-fixer\n    -   id: check-yaml\n    -   id: check-added-large-files\n-   repo: https://github.com/PyCQA/pylint\n    rev: v2.15.5\n    hooks:\n    -   id: pylint\nIf a repository has more than one hook available then it can be enabled by listing its id: as is the case in the hooks above for the pre-commit-hooks repository."
+  },
+  {
+    "objectID": "posts/pre-commit-updates/index.html#local-hooks",
+    "href": "posts/pre-commit-updates/index.html#local-hooks",
+    "title": "Pre-Commit : Customising and Updating",
+    "section": "Local Hooks",
+    "text": "Local Hooks\nIn some instances the provisioned repositories do not always meet the requirements. One example of this is the pylint action which parses the code-base to detect errors using pylint. Typically most Python packages have their own dependencies but because the Pylint action pulls down and uses its own virtual environment these packages are not installed. As a consequence pylint reports a lot of import-error as its unable to import the required dependencies.\nThe solution to this is to write a local hook, which instead of defining a GitHub repository as the repo: uses the value local. Thus to run pylint in a local environment from pre-commit you would add the following to your .pre-commit-config.yaml\nrepos:\n-   repo: https://github.com/pre-commit/pre-commit-hooks\n    rev: v4.3.0\n    hooks:\n    -   id: trailing-whitespace\n    -   id: end-of-file-fixer\n    -   id: check-yaml\n    -   id: check-added-large-files\n# -   repo: https://github.com/PyCQA/pylint\n#     rev: v2.15.5\n#     hooks:\n#     -   id: pylint\n-   repo: local\n    hooks:\n    -   id: pylint\n        name: PyLint\n        entry: python -m pylint.__main__\n        language: system\n        files: \\.py$\nFor this to work you would have to ensure that you have a virtual environment activated that includes the package dependencies, including pylint, when you make you git commit so that pre-commit can find and import all the required packages."
+  },
+  {
+    "objectID": "posts/pre-commit-updates/index.html#updating-pre-commit",
+    "href": "posts/pre-commit-updates/index.html#updating-pre-commit",
+    "title": "Pre-Commit : Customising and Updating",
+    "section": "Updating pre-commit",
+    "text": "Updating pre-commit\nAfter adding a new repo and hook it will not be immediately ready to use as the environment has not been initialised. You can wait until your next commit or force this with the autoupdate option. This will update all repositories that are defined in your configuration.\n$ pre-commit autoupdate\nUpdating https://github.com/pre-commit/pre-commit-hooks ... updating v3.2.0 -> v4.3.0.\nUpdating https://github.com/PyCQA/pylint ... [INFO] Initializing environment for https://github.com/PyCQA/pylint.\nalready up to date."
+  },
+  {
+    "objectID": "posts/pre-commit-updates/index.html#repository-changes",
+    "href": "posts/pre-commit-updates/index.html#repository-changes",
+    "title": "Pre-Commit : Customising and Updating",
+    "section": "Repository Changes",
+    "text": "Repository Changes\nSometimes, albeit rarely, repositories change their location as was the case recently when flake8 moved from GitLab to GitHub. As a consequence any pre-commit that uses flake8 repo/hook and configured to run in Continuous Integration pipelines failed as it was unable to download and run the flake8 environment. The solution is simply to update the repo:.\nBefore this change the entry for flake8 looked like…\n-   repo: https://gitlab.com/pycqa/flake8.git\n    rev: 3.9.2\n    hooks:\n    -   id: flake8\n        additional_dependencies: [flake8-print]\n        args: [\"topostats\", \"tests\"]\n        types: [python]\nTo update to use the new repository it should point to github.com as shown below.\n-   repo: https://github.com/pycqa/flake8.git\n    rev: 3.9.2\n    hooks:\n    -   id: flake8\n        additional_dependencies: [flake8-print]\n        args: [\"topostats\", \"tests\"]\n        types: [python]\nAfter making this change you have to pre-commit autoupdate to force downloading and updating from the new source, otherwise your existing older revision will be used locally."
+  },
+  {
+    "objectID": "posts/pre-commit-updates/index.html#links",
+    "href": "posts/pre-commit-updates/index.html#links",
+    "title": "Pre-Commit : Customising and Updating",
+    "section": "Links",
+    "text": "Links\n\nPre-Commit : Protecting your future self\nPre-commit\nPre-commit hooks\npylint\nflake8"
   },
   {
     "objectID": "posts/git-ssh/index.html",
@@ -207,20 +249,20 @@
     "href": "index.html",
     "title": "ns-rse",
     "section": "",
-    "text": "code\n\n\nlinux\n\n\nbash\n\n\n\n\n\n\n\n\n\n\n\nSep 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
+    "text": "Pre-Commit : Customising and Updating\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\npre-commit\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nLinux Command Line Alternatives\n\n\n\n\n\n\n\ncode\n\n\nlinux\n\n\nbash\n\n\n\n\n\n\n\n\n\n\n\nSep 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\n  \n\n\n\n\nPre-Commit : Protecting your future self\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nGit : Custom SSH credentials for git repositories\n\n\n\n\n\n\n\nssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nLinting - What is all the fluff about?\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "links.html",
     "href": "links.html",
     "title": "Links",
     "section": "",
-    "text": "Site\nDescription\n\n\n\n\nkimura\nA Dokuwiki site where I keep notes.\n\n\nFlickr\nPhotography (mostly landscape, climbing and cats).\n\n\nneil-snaps.co.uk\nWhere I fail to monetise my photography.\n\n\nSheffieldBoulder.uk\nAnother Dokuwiki site detailing artificial boulders around Sheffield.\n\n\nGitLab\nGit repos.\n\n\nGitHub (Personal)\nGit repos.\n\n\nGitHub (Work)\nGit repos."
+    "text": "I’ve a few other sites…\n\n\n\nSite\nDescription\n\n\n\n\nkimura\nA Dokuwiki site where I keep notes.\n\n\nFlickr\nPhotography (mostly landscape, climbing and cats).\n\n\nneil-snaps.co.uk\nWhere I fail to monetise my photography.\n\n\nSheffieldBoulder.uk\nAnother Dokuwiki site detailing artificial boulders around Sheffield.\n\n\nGitLab\nGit repos.\n\n\nGitHub (Personal)\nGit repos.\n\n\nGitHub (Work)\nGit repos."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Here you’ll find posts about Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
+    "text": "Hi, I’m Neil and work as a Research Software Engineer at the University of Sheffield. My education started with BSc in Zoology and Genetics followed by a MSc in Genetic Epidemiology. I spent time as a Genetics Statistician before shifting to Medical Statistics and working on Clinical Trials where I learnt GNU/Linux system administration, reproducible research practices and R before a stint as a Data Scientist at a telematics company where I not only learnt Python but about good software development practices.\nHere you’ll find posts about Research Software Engineering, Git/GitHub/GitLab, GNU/Linux (Gentoo, Arch, OpenWRT), Python, Bash, R, Emacs, Org-mode, Statistics, Genetics, Evolution and more.\nWhen not working I enjoy climbing, running, cycling, cooking, hiking, photography, gardening and spending time with my family."
   }
 ]
