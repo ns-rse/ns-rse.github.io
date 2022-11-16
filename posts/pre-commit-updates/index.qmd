@@ -1,0 +1,151 @@
+---
+title: "Pre-Commit : Customising and Updating"
+author: "nshephard"
+date: "2022-11-15"
+categories: [code, analysis, linting, git, github, gitlab, pre-commit]
+image: https://live.staticflickr.com/65535/52358442614_416d014454_k.jpg
+---
+
+[Pre-commit](https://pre-commit.com/) is a tool for running hooks prior to making commits to your Git history. If you're
+not familiar with it then you may want to read the earlier post [Pre-Commit : Protecting your future
+self](https://ns-rse.github.io/posts/pre-commit/). This article discusses updating `pre-commit` and is prompted by a
+change in the `flake8` repository.
+
+
+## Pre-commit hooks
+
+A lot of the power of `pre-commit` comes from the vast array of [hooks](https://pre-commit.com/hooks.html) that are
+available that users make available. These are included under `repos:` section of the `.pre-commit-config.yaml` and
+typically require a minimum of the `repo:` and the `rev:` to use and then optionally a `hooks:` section. The
+`sample-config` that `pre-commit` will auto-generate looks like...
+
+
+``` {.yaml}
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+```
+
+After finding a repository and hook that you wish to use [hooks](https://pre-commit.com/hooks.html) repository you need
+to add it to your `.pre-commit-config.yaml`. Here we add the [`pylint`](https://github.com/PyCQA/pylint) repository and
+whilst it only has one hook we explicitly add it.
+
+
+``` {.yaml}
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+-   repo: https://github.com/PyCQA/pylint
+    rev: v2.15.5
+    hooks:
+    -   id: pylint
+```
+
+If a repository has more than one `hook` available then it can be enabled by listing its `id:` as is the case in the
+`hooks` above for the `pre-commit-hooks` repository.
+
+## Local Hooks
+
+In some instances the provisioned repositories do not always meet the requirements. One example of this is the
+[pylint action](https://github.com/pycqa/pylint) which parses the code-base to detect errors using
+[pylint](https://pylint.pycqa.org/en/latest/). Typically most Python packages have their own dependencies but because
+the Pylint action pulls down and uses its own virtual environment these packages are not installed. As a consequence
+`pylint` reports a lot of `import-error` as its unable to import the required dependencies.
+
+The solution to this is to write a local hook, which instead of defining a GitHub repository as the `repo:` uses the
+value `local`. Thus to run `pylint` in a local environment from `pre-commit` you would add the following to your `.pre-commit-config.yaml`
+
+``` {.yaml}
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+# -   repo: https://github.com/PyCQA/pylint
+#     rev: v2.15.5
+#     hooks:
+#     -   id: pylint
+-   repo: local
+    hooks:
+    -   id: pylint
+        name: PyLint
+        entry: python -m pylint.__main__
+        language: system
+        files: \.py$
+```
+
+For this to work you would have to ensure that you have a virtual environment activated that includes the package
+dependencies, including `pylint`, when you make you `git commit` so that `pre-commit` can find and import all the
+required packages.
+
+## Updating `pre-commit`
+
+After adding a new repo and hook it will not be immediately ready to use as the environment has not been
+initialised. You can wait until your next commit or force this with the `autoupdate` option. This will update _all_
+repositories that are defined in your configuration.
+
+``` {.bash}
+$ pre-commit autoupdate
+Updating https://github.com/pre-commit/pre-commit-hooks ... updating v3.2.0 -> v4.3.0.
+Updating https://github.com/PyCQA/pylint ... [INFO] Initializing environment for https://github.com/PyCQA/pylint.
+already up to date.
+```
+
+
+## Repository Changes
+
+Sometimes, albeit rarely, repositories change their location as was the case recently when
+[flake8](https://gitlab.com/PyCQA/flake8) moved from [GitLab](https://gitlab.com) to
+[GitHub](https://github.com/PyCQA/flake8). As a consequence any `pre-commit` that uses `flake8` repo/hook and configured
+to run in Continuous Integration pipelines failed as it was unable to download and run the `flake8` environment. The
+solution is simply to update the `repo:`.
+
+Before this change the entry for `flake8` looked like...
+
+``` {.yaml}
+-   repo: https://gitlab.com/pycqa/flake8.git
+    rev: 3.9.2
+    hooks:
+    -   id: flake8
+        additional_dependencies: [flake8-print]
+        args: ["topostats", "tests"]
+        types: [python]
+```
+
+To update to use the new repository it should point to `github.com` as shown below.
+
+``` {.yaml}
+-   repo: https://github.com/pycqa/flake8.git
+    rev: 3.9.2
+    hooks:
+    -   id: flake8
+        additional_dependencies: [flake8-print]
+        args: ["topostats", "tests"]
+        types: [python]
+```
+
+
+After making this change you have to `pre-commit autoupdate` to force downloading and updating from the new source,
+otherwise your existing older revision will be used locally.
+
+
+## Links
+
+* [Pre-Commit : Protecting your future self](https://ns-rse.github.io/posts/pre-commit/)
+* [Pre-commit](https://pre-commit.com/)
+* [Pre-commit hooks](https://pre-commit.com/hooks.html)
+* [pylint](https://github.com/PyCQA/pylint)
+* [flake8](https://github.com/PyCQA/flake8)
