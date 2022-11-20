@@ -7,9 +7,16 @@ about:
     - icon: twitter
       text: Twitter
       href: https://twitter.com/nshephardRSE
+      rel: me
     - icon: github
       text: Github
       href: https://github.com/ns-rse
+      rel: me
+    - icon: mastodon
+      text: Mastodon
+      href: https://fosstodon.org/@nshephard
+      rel: me
+
 ---
 
 I've a few other sites...
