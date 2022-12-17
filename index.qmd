@@ -9,4 +9,11 @@ listing:
   filter-ui: false
 page-layout: full
 title-block-banner: true
+project:
+  preview:
+    port: 9999
+    host: 127.0.0.1
+    browser: true
+    watch-inputs: true
+    navigate: true
 ---
