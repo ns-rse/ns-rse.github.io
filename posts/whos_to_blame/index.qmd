@@ -6,7 +6,8 @@ categories: [code, analysis, git, github, gitlab, blame]
 image: https://live.staticflickr.com/65535/52065067830_734d0ebd51_k.jpg
 ---
 
-[Git blame](https://www.git-scm.com/docs/git-blame) shows who made changes to which line of code most recently.
+[Git blame](https://www.git-scm.com/docs/git-blame) shows who made changes to which line of code for a given point in
+its history.
 
 # Alias
 
@@ -25,11 +26,13 @@ its possible to alias /praise/ people or simply as /who/.
 # Usage
 
 Git blame works on individual files and so requires a filename, there are a host of options, for example ~-e~ prints the
-authors email address ~-w~ ignores changes to white space and ~-L 10,20~ restricts output to the specified line range
+authors email address ~-w~ ignores changes to white space and ~-L 10,20~ restricts output to the specified line
+range. If you want a the blame for a specific revision then you must include the hash.
 
 ```bash
-  git blame -e -w -L 10,20 git_blame.org
+  git blame -e -w -L 10,20 f923la git_blame.org
 ```
+
 
 
 For more detailed information on the array of options refer to the [official documentation](https://www.git-scm.com/docs/git-blame) or see `git blame --help`.
