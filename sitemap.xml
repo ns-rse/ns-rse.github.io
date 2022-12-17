@@ -2,34 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/about.html</loc>
-    <lastmod>2022-11-28T22:36:51.381Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/ns-rse/ns-rse.github.io/index.html</loc>
-    <lastmod>2022-11-28T22:36:53.337Z</lastmod>
+    <lastmod>2022-12-17T19:41:41.047Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/posts/linting/index.html</loc>
-    <lastmod>2022-11-28T22:36:53.973Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/ns-rse/ns-rse.github.io/posts/pre-commit/index.html</loc>
-    <lastmod>2022-11-28T22:36:54.513Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/ns-rse/ns-rse.github.io/posts/cli-alternatives/index.html</loc>
-    <lastmod>2022-11-28T22:36:54.949Z</lastmod>
+    <lastmod>2022-12-17T19:41:41.947Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/posts/pre-commit-updates/index.html</loc>
-    <lastmod>2022-11-28T22:36:55.317Z</lastmod>
+    <lastmod>2022-12-17T19:41:42.335Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/posts/git-ssh/index.html</loc>
-    <lastmod>2022-11-28T22:36:55.685Z</lastmod>
+    <lastmod>2022-12-17T19:41:42.711Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/ns-rse/ns-rse.github.io/posts/cli-alternatives/index.html</loc>
+    <lastmod>2022-12-17T19:41:43.155Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/ns-rse/ns-rse.github.io/posts/pre-commit/index.html</loc>
+    <lastmod>2022-12-17T19:41:43.623Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/ns-rse/ns-rse.github.io/posts/whos_to_blame/index.html</loc>
+    <lastmod>2022-12-17T19:41:43.963Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/ns-rse/ns-rse.github.io/index.html</loc>
+    <lastmod>2022-12-17T19:41:44.371Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/ns-rse/ns-rse.github.io/links.html</loc>
-    <lastmod>2022-11-28T22:36:55.993Z</lastmod>
+    <lastmod>2022-12-17T19:41:44.659Z</lastmod>
   </url>
 </urlset>
