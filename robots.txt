@@ -1,1 +1,1 @@
-Sitemap: https://github.com/ns-rse/ns-rse.github.io/sitemap.xml
+Sitemap: https://ns-rse.github.io/sitemap.xml

@@ -158,7 +158,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/nshephardRSE" rel="me"><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/nshephardRSE" rel=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="me"><i class="bi bi-rss" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -223,23 +228,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><a href="https://www.git-scm.com/docs/git-blame">Git blame</a> shows who made changes to which line of code for a given point in its history.</p>
 <section id="alias" class="level1">
 <h1>Alias</h1>
-<p>Some people don’t like the pejorative nature of the world /blame/. That’s ok though, with a tweak to our configuration its possible to alias /praise/ people or simply as /who/.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># blame alias</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> config <span class="at">--global</span> alias.praise blame</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> praise <span class="at">-L1,30</span> git_blame.org</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># who alias</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> config <span class="at">--global</span> alias.who blame</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> who <span class="at">-L1,30</span> git_blame.org</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Some people don’t like the pejorative nature of the world <em>blame</em>. That’s ok though, with a tweak to our configuration its possible to alias <em>praise</em> people or simply as <em>who</em>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># blame alias</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> alias.praise blame</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> praise <span class="at">-L1,30</span> git_blame.org</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># who alias</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> alias.who blame</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> who <span class="at">-L1,30</span> git_blame.org</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="usage" class="level1">
 <h1>Usage</h1>
 <p>Git blame works on individual files and so requires a filename, there are a host of options, for example <sub>-e</sub> prints the authors email address <sub>-w</sub> ignores changes to white space and ~-L 10,20~ restricts output to the specified line range. If you want a the blame for a specific revision then you must include the hash.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">git</span> blame <span class="at">-e</span> <span class="at">-w</span> <span class="at">-L</span> 10,20 f923la git_blame.org</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> blame <span class="at">-e</span> <span class="at">-w</span> <span class="at">-L</span> 10,20 f923la git_blame.org</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For more detailed information on the array of options refer to the <a href="https://www.git-scm.com/docs/git-blame">official documentation</a> or see <code>git blame --help</code>.</p>
 </section>
 <section id="ignoring-blame" class="level1">
 <h1>Ignoring blame</h1>
-<p>Sometimes the case arises where you want to ignore blame. Perhaps the most common example is when an existing code base has been <a href="">linted</a> to conform to a particular style guide. Looking at who performed these changes is not informative and masks who made the changes and why. Its possible to ignore specific commits on the command line with <code>--ignore-revs &lt;hash&gt; &lt;file&gt;</code>, but it will quickly become tedious to remember to ignore all blame across multiple commits. Fortunately you can save the commits to ignore to the file <code>.git-blame-ignore-revs</code> (along with comments) so that they are stored. The full commit (40 characters) of hashes should be used.</p>
+<p>Sometimes the case arises where you want to ignore blame. Perhaps the most common example is when an existing code base has been <a href="../linting">linted</a> to conform to a particular style guide. Looking at who performed these changes is not informative and masks who made the changes and why. Its possible to ignore specific commits on the command line with <code>--ignore-revs &lt;hash&gt; &lt;file&gt;</code>, but it will quickly become tedious to remember to ignore all blame across multiple commits. Fortunately you can save the commits to ignore to the file <code>.git-blame-ignore-revs</code> (along with comments) so that they are stored. The full commit (40 characters) of hashes should be used.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PEP8 compliance for module X</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">c00177a6121f86c001f338feff3280fd576fdbf3</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
