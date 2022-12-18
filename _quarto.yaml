@@ -17,11 +17,15 @@ website:
       - links.qmd
       - icon: github
         href: https://github.com/ns-rse
+        rel: me
       - icon: twitter
         href: https://twitter.com/nshephardRSE
       - icon: rss
         href: index.xml
-format:
+        rel: me
+      - icon: mastodon
+        href: https://fosstodon.org/@nshephard
+        rel: me
   html:
     theme: vapor
     css: styles.css
