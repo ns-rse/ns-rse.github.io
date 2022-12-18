@@ -9,6 +9,8 @@ project:
     - "*.yaml"
 website:
   title: "ns-rse"
+  site-url: https://ns-rse.github.io/
+  description: "Software development in a Research Environment"
   navbar:
     right:
       - about.qmd
@@ -17,6 +19,8 @@ website:
         href: https://github.com/ns-rse
       - icon: twitter
         href: https://twitter.com/nshephardRSE
+      - icon: rss
+        href: index.xml
 format:
   html:
     theme: vapor
