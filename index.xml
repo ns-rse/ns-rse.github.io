@@ -33,7 +33,7 @@
 </section>
 <section id="usage" class="level1">
 <h1>Usage</h1>
-<p>Git blame works on individual files and so requires a filename, there are a host of options, for example <sub>-e</sub> prints the authors email address <sub>-w</sub> ignores changes to white space and ~-L 10,20~ restricts output to the specified line range. If you want a the blame for a specific revision then you must include the hash.</p>
+<p>Git blame works on individual files and so requires a filename, there are a host of options, for example <code>-e</code> prints the authors email address <code>-w</code> ignores changes to white space and <code>-L 10,20</code> restricts output to the specified line range. If you want a the blame for a specific revision then you must include the hash.</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">git</span> blame <span class="at" style="color: #657422;">-e</span> <span class="at" style="color: #657422;">-w</span> <span class="at" style="color: #657422;">-L</span> 10,20 f923la git_blame.org</span></code></pre></div>
 <p>For more detailed information on the array of options refer to the <a href="https://www.git-scm.com/docs/git-blame">official documentation</a> or see <code>git blame --help</code>.</p>
 </section>
