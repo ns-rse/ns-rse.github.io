@@ -9,19 +9,6 @@ image: https://live.staticflickr.com/65535/52065067830_734d0ebd51_k.jpg
 [Git blame](https://www.git-scm.com/docs/git-blame) shows who made changes to which line of code for a given point in
 its history.
 
-# Alias
-
-Some people don't like the pejorative nature of the world _blame_. That's ok though, with a tweak to our configuration
-its possible to alias _praise_ people or simply as _who_.
-
-```bash
-# blame alias
-git config --global alias.praise blame
-git praise -L1,30 git_blame.org
-# who alias
-git config --global alias.who blame
-git who -L1,30 git_blame.org
-```
 
 # Usage
 
@@ -34,17 +21,34 @@ git blame -e -w -L 10,20 f923la git_blame.org
 ```
 
 
+# Alias
 
-For more detailed information on the array of options refer to the [official documentation](https://www.git-scm.com/docs/git-blame) or see `git blame --help`.
+Some people don't like the pejorative nature of the word `blame`. That's ok though, with a tweak to our configuration
+its possible to use the alias `praise` or simply `who`.
+
+```bash
+# blame alias
+git config --global alias.praise blame
+git praise -L1,30 git_blame.org
+# who alias
+git config --global alias.who blame
+git who -L1,30 git_blame.org
+```
+
+
+
+
+For more detailed information on the array of options refer to the [official
+documentation](https://www.git-scm.com/docs/git-blame) or see `git blame --help`.
 
 # Ignoring blame
 
 Sometimes the case arises where you want to ignore blame. Perhaps the most common example is when an existing code base
-has been [linted](../linting) to conform to a particular style guide. Looking at who performed these changes is not informative and
-masks who made the changes and why.  Its possible to ignore specific commits on the command line with `--ignore-revs
-<hash> <file>`, but it will quickly become tedious to remember to ignore all blame across multiple commits. Fortunately
-you can save the commits to ignore to the file `.git-blame-ignore-revs` (along with comments) so that they are
-stored. The full commit (40 characters) of hashes should be used.
+has been [linted](../linting) to conform to a particular style guide. Looking at who performed these changes is not
+informative and masks who made the changes and why.  Its possible to ignore specific commits on the command line with
+`--ignore-revs <hash> <file>`, but it will quickly become tedious to remember to ignore all blame across multiple
+commits. Fortunately you can save the commits to ignore to the file `.git-blame-ignore-revs` (along with comments) so
+that they are stored. The full commit (40 characters) of hashes should be used.
 
 ```bash
 # PEP8 compliance for module X
