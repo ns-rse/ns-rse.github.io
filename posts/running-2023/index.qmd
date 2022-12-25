@@ -1,0 +1,49 @@
+---
+title: "Running in 2022"
+author: "nshephard"
+date: "2022-12-131"
+categories: [quarto, running]
+image: https://live.staticflickr.com/65535/52065067830_734d0ebd51_k.jpg
+---
+
+I started running in 2019. It never appealed but I needed to get regular exercise easily from my doorstep as despite
+commuting by bike for most of my life and cycling between 12-20km daily it wasn't enough and more recently I prefer
+running over cycling because of the dire attitude of a fair proportion of motorists towards cyclists.
+
+I also like data and record my runs (and cycles) using. A long time ago I used to use Endomondo but
+didn't like the idea of sharing my personal location data with a random company so went private and now use the privacy
+respecting  [OpenTracks]() (converting existing logs promted me to write the Python package [tcx2gpx]() to convert the
+GPS traces to something OpenTracks would import).
+
+I use [Emacs]() for most of my work, often using [Org-mode]() which offers literate programming via [Org-Babel]() and so
+my logged runs/cycles/hikes/climbs are summarised in Org-mode and then converted to HTML and uploaded to my Virtual
+Private Server (VPS) where I host my own website (using [Nginx]()) and I can see my progress at
+[online](https://kimura.no-ip.info/~arch/training/training.html).
+
+At some point early in 2022 I decided to set myself an arbitrary goal of running at least 1200km in the year. It seemed
+a nice round number at 100km/month. This post summarises the data collected during that period and serves as a learning
+exercise for me to refresh/improve my [R](https://www.r-project.org) and [Quarto](https://www.quarto.org) knowledge.
+
+# Data
+
+My data is captured using [~org-capture~]() in an ASCII text file, but its wrapped in an [org-mode table](). For the
+purpose of this post I have saved this to a CSV so that it can be included in the page itself, but in order to do so I
+wrote the following chunk which determines where to load the file from.
+
+## Captuing Data in Emacs Org-mode
+
+
+# Summary
+
+## Number of Runs
+
+## Distance
+
+## Pace
+
+## When Do I Run?
+
+I'm much more a morning person and typically go out running on an empty stomach as I find it quite unpleasant to have a
+bellyful of food jiggling around inside me. But what days of the week and times do I actually go running? I can answer
+this with only a low degree of accuracy because whilst I do try to log my runs immediately after having completed them
+(post-stretching!) I don't always do so.
