@@ -137,7 +137,7 @@ You can now configure, on a repository basis, which SSH key is used by Git when 
 
 ## Commit verification with SSH
 
-Verification of commits is a usefl security feature, but beyond the scope of this article but as doing so with SSH keys is a
+Verification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys is a
 recently supported feature on GitHub (see blog [SSH commit verification now
 supported](https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/)) I felt it worth
 mentioning.

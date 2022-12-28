@@ -63,7 +63,6 @@ generating graphs and renders correctly.
 #| code-tools: true
 #| warning: false
 #| label: load-data
-library(clock)
 library(dplyr)
 library(ggdark)
 library(ggplot2)
@@ -74,6 +73,7 @@ library(lubridate)
 library(orgutils)
 library(plotly)
 library(readr)
+library(reshape2)
 library(scales)
 library(stringr)
 
