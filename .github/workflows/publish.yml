@@ -12,8 +12,12 @@ jobs:
       contents: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v31
 
+      - name: Install dependencies
+      - run: |
+          sudo apt-get update -yq
+          sudo apt-get update -yq libcurl
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2.0.3
         with:
