@@ -10,6 +10,10 @@ listing:
   filter-ui: false
 page-layout: full
 title-block-banner: true
+execute:
+  code-fold: true
+  code-tools: true
+  code-link: true
 project:
   preview:
     port: 9999
