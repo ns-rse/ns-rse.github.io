@@ -824,6 +824,26 @@ httpgd server running at:
 
 Then just create your plots and hey-presto the graphs appear at the URL. :mage:
 
+## renv
+
+In order to have this page publish correctly I had to initialise a [renv](https://rstudio.github.io/renv/) within the
+repository and include the `renv.lockfile` so that the GitHub action/workflow installed all of the packages I use and
+their dependencies in the runner that renders the blog.
+
+Whilst I'm familiar with virtual environments under Python this is something relatively new to me for R so I won't write
+much other than the process involved initialising the environment, installing the dependencies then updating the
+lockfile.
+
+```R
+> renv::init()
+> install.packages(c("dplyr", "ggdark", "ggridges", "hms", "knitr", "lubridate", "orgutils", "plotly", "readr",
+                     "scales", "stringr"))
+> renv::snapshot()
+> q()
+git add renv.lockfile
+```
+
+
 # Conclusion
 
 Its been a fun exercise digging back into [R](https://www.r-project.org) and learning more about
