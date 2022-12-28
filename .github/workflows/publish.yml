@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get update -yq libcurl
+          sudo apt-get update libcurl
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2.0.3
         with:
