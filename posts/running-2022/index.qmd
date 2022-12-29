@@ -113,11 +113,13 @@ if(current_env["hostname"] == "kimura") {
                time_min = lubridate::period_to_seconds(time) / 60,
                pace = as.numeric(time) / (60 * distance)) |>
         dplyr::select(-c(Date, Route, Time, Pace, year_month_day, hour, min, sec))
-    readr::write_csv(data, file="running_2022.csv")
+    # readr::write_csv(data, file="running_2022.csv")
+    save(data, file="data.RData")
 
 } else {
     # Otherwise we load parsed data.
-    data <- readr::read_csv(file="running_2022.csv", col_names = TRUE)
+    # data <- readr::read_csv(file="running_2022.csv", col_names = TRUE)
+    load("data.RData")
 }
 
 summary_data <- data  |>
