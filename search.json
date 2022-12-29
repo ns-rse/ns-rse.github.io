@@ -119,6 +119,104 @@
     "text": "Links\n\nPre-Commit : Protecting your future self\nPre-commit\nPre-commit hooks\npylint\nflake8"
   },
   {
+    "objectID": "posts/running-2022/index.html",
+    "href": "posts/running-2022/index.html",
+    "title": "Running in 2022",
+    "section": "",
+    "text": "I started running 🏃 in 2019. It never appealed but I needed to get regular exercise easily from my doorstep as despite commuting by bike for most of my life and cycling between 12-20km daily it wasn’t enough for me. Whilst I’ve always cycled for commuting and cycling was delightful during the pandemic lockdowns I’ve since enjoyed it an increasing number of motorists seen to have little to no regard for the safety of pedestrians and cyclists. As a consequence I prefer running over cycling these days and get most of my aerobic exercise on two feet rather than two wheels."
+  },
+  {
+    "objectID": "posts/running-2022/index.html#number-of-runs",
+    "href": "posts/running-2022/index.html#number-of-runs",
+    "title": "Running in 2022",
+    "section": "Number of Runs",
+    "text": "Number of Runs\nHow often I go running varies depending on the distance I’ve done recently and more importantly whether I’m carrying an injury of some sort.\n\n\nCode\nmonth <- data |> ggplot(aes(year_month)) +\n    geom_bar() +\n    dark_theme_bw() +\n    ylab(\"Runs\") +\n    xlab(\"Month/Year\") +\n    scale_x_datetime(breaks = date_breaks(\"1 month\"), labels=date_format(\"%B\")) +\n    theme(axis.text.x = element_text(angle=30, hjust=1))\nggplotly(month)\n\n\n\n\nRuns by month\n\n\nCode\nweek <- data |> ggplot(aes(year_week)) +\n    geom_bar() +\n    dark_theme_bw() +\n    ylab(\"Runs\") +\n    xlab(\"Week\") +\n    scale_x_datetime(breaks = date_breaks(\"2 weeks\")) + ##, labels=date_format(\"%w\")) +\n    theme(axis.text.x = element_text(angle=30, hjust=1))\nggplotly(week)\n\n\n\n\nRuns by week\n\nRuns per by Month and Week\n\n–"
+  },
+  {
+    "objectID": "posts/running-2022/index.html#distance",
+    "href": "posts/running-2022/index.html#distance",
+    "title": "Running in 2022",
+    "section": "Distance",
+    "text": "Distance\nI prefer longer runs, I often feel I’m only getting going and into a rhythm after 3-5km and therefore struggle to find motivation to go out for short runs. That said, whilst I can run > 21km (half-marathon) distances I don’t do so often and past experience tells me that if I run too much I end up injuring myself.\n\n\nCode\ndistance_time <- data |>\n    ggplot(aes(date, distance)) +\n    geom_line() +\n    geom_smooth(method=\"loess\") +\n    dark_theme_bw() +\n    ylab(\"Distance (km)\") +\n    xlab(\"Date\") +\n    # scale_color_gradientn(colors = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\")) +\n    theme(legend.position = \"right\") +\n    scale_x_datetime(breaks = date_breaks(\"1 month\"), labels=date_format(\"%b\"))\nggplotly(distance_time)\n\n\n\n\nDistance of Runs.\n\n\n\nDistance By Month\nMarch was a fallow month for running as I had a sore knee and a month of work and so I did a lot of cycling (A57 Snake Pass when it was closed, a morning jaunt to Bakewell and back) and DIY around the home and garden (finishing off a patio). I also had to ease off from mid-November and most of December due to a sore thigh.\n\n\nCode\nbar_distance_month <- data |> ggplot(aes(year_month)) +\n    geom_bar(aes(weight = distance)) +\n    dark_theme_bw() +\n    ylab(\"Distance (km)\") +\n    xlab(\"Month/Year\")  +\n    scale_x_datetime(breaks = date_breaks(\"1 month\"), labels=date_format(\"%B\"))\n    ## theme(axis.text.x = element_text(angle=30, hjust=1))\nggplotly(bar_distance_month)\n\n\n\n\nBar Chart\n\n\nCode\nbox_distance_month <- data |> ggplot(aes(year_month, distance)) +\n    geom_boxplot(aes(factor(year_month), distance)) +\n    dark_theme_bw() +\n    ylab(\"Distance (km)\") +\n    xlab(\"Month/Year\")\n    ## scale_x_datetime(breaks = date_breaks(\"1 month\")) + ##, labels=date_format(\"%B\"))\n    ## theme(axis.text.x = element_text(angle=30, hjust=1))\nggplotly(box_distance_month)\n\n\n\n\nBox Plot\n\n\nCode\nridge_distance_month <- data |> ggplot(aes(x=distance, y=factor(year_month), group=year_month, fill=after_stat(x))) +\n    # geom_density_ridges_gradient(scale=1, gradient_lwd=1.) +\n    geom_density_ridges_gradient(gradient_lwd=1.) +\n    scale_x_continuous(expand = c(0, 0)) +\n    scale_fill_viridis_c(name=\"Distance (km)\", option=\"C\") +\n    dark_theme_bw() +\n    ylab(\"Year\") +\n    xlab(\"Distance (km)\") ## +\n    ## scale_y_datetime(breaks = date_breaks(\"1 month\"), labels=date_format(\"%B\"))\n## ggplotly(ridge_distance_month)\nridge_distance_month\n\n\nPicking joint bandwidth of 0.942\n\n\nCode\ndev.off()\n\n\nnull device \n          1 \n\n\n\n\n\nRidge Density\n\n\n\nDistance per month.\n\n\n\nDistance By Week\n\n\nCode\nbar_distance_week <- data |> ggplot(aes(year_week)) +\n    geom_bar(aes(weight = distance)) +\n    dark_theme_bw() +\n    ylab(\"Distance (km)\") +\n    xlab(\"Month/Year\")  +\n    ## scale_x_datetime(breaks = date_breaks(\"1 month\"), labels=date_format(\"%w\"))\n    theme(axis.text.x = element_text(angle=30, hjust=1))\n\nggplotly(bar_distance_week)\n\n\n\n\nBar Chart\n\n\nCode\nbox_distance_week <- data |> ggplot(aes(factor(year_week), distance)) +\n    geom_boxplot() +\n    dark_theme_bw() +\n    ylab(\"Distance (km)\") +\n    xlab(\"Month/Year\") +\n    ## scale_x_datetime(breaks = date_breaks(\"2 weeks\")) + ##, labels=date_format(\"%w\")) +\n    theme(axis.text.x = element_text(angle=30, hjust=1))\nggplotly(box_distance_week)\n\n\n\n\nBox Plot\n\nDistance per week.\n\n\n\nRuns v Distance\nLets look at how the number of runs per week affects the overall distance covered. Do I keep to a consistent distance if I’m doing less runs by doing longer runs? We can look at that by plotting the number of runs per week against either the total distance or the mean distance for that week. If I do fewer longer runs there should be a downwards trend, with weeks where I only run once having very high values, and weeks where I do multiple runs having very low means.\n\n\nCode\ntmp_data <- data |>\n    group_by(year_week) |>\n    summarise(runs = n(),\n              distance_total= sum(distance),\n              distance_mean = mean(distance))\nruns_distance_total<- tmp_data |>\n    ggplot(aes(runs, distance_total)) +\n    geom_point(aes(color=distance_mean, size=distance_mean, alpha=0.45)) +\n    geom_smooth(method=\"loess\") +\n    dark_theme_bw() +\n    ylab(\"Total Distance (km)\") +\n    xlab(\"Runs (km)\") +\n    scale_color_gradientn(colors = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\")) +\n    theme(legend.position = \"right\")\nggplotly(runs_distance_total, tooltip = c(\"year_week\", \"distance_total\", \"distance_mean\"))\n\n\n\n\nTotal Distance\n\n\nCode\nruns_distance_mean <- tmp_data |>\n    ggplot(aes(runs, distance_mean, label=year_week)) +\n    geom_point(aes(color=distance_total, size=distance_total, alpha=0.45)) +\n    geom_smooth(method=\"loess\") +\n    dark_theme_bw() +\n    ylab(\"Mean Distance (km)\") +\n    xlab(\"Runs (km)\") +\n    scale_color_gradientn(colors = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\")) +\n    theme(legend.position = \"right\")\nggplotly(runs_distance_mean, tooltip = c(\"year_week\", \"distance_total\", \"distance_mean\"))\n\n\n\n\nMean Distance\n\nRuns per week v Distance"
+  },
+  {
+    "objectID": "posts/running-2022/index.html#pace",
+    "href": "posts/running-2022/index.html#pace",
+    "title": "Running in 2022",
+    "section": "Pace",
+    "text": "Pace\nI like pushing myself and going fast, I perhaps stupidly and against much perceived wisdom, think that if I’m able to hold a conversation then I’m not trying hard enough (in reality I rarely try as I always run on my own).\nBefore looking at pace over time its interesting to look at the relationship between distance and time. Obviously longer runs are going to take longer, but is the relationship linear or do I get slower the further I go?\n\n\nCode\nno_outliers <- data |>\n    dplyr::filter(pace < 7)\npace_timeseries<- data |>\n    ggplot(aes(date, pace)) +\n    geom_point(aes(color=distance, size=distance)) +\n    geom_smooth(method=\"loess\", data=no_outliers) +\n    dark_theme_bw() +\n    ylab(\"Pace (min/km)\") +\n    xlab(\"Date\") +\n    scale_color_gradientn(colors = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\")) +\n    theme(legend.position = \"right\") +\n    scale_x_datetime(breaks = date_breaks(\"1 month\"), labels=date_format(\"%b\"))\nggplotly(pace_timeseries)\n\n\n\n\nPace over time by distance.\n\n\nThe relationship between distance and pace is interesting, one might expect that the pace decreases with the overall distance, but it depends on the terrain. Most of my shorter runs involved a fair proportion of uphill as I live in the bottom of a valley and my typical circuit takes me up the valley to some extent before turning around and heading back. Longer runs I would typically get out of the valley and run along fairly flat ground before heading back down and I think this is what causes the dip in the below graph (excluding outliers) in the range of 11-14km, but further distances I tire and so my pace drops.\n\n\nCode\ndistance_time_all <- data |>\n    ggplot(aes(distance, pace)) +\n    geom_point(aes(color=distance, size=distance)) +\n    geom_smooth(method=\"loess\") +\n    dark_theme_bw() +\n    ylab(\"Pace (min/km)\") +\n    xlab(\"Distance\") +\n    scale_color_gradientn(colors = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\")) +\n    theme(legend.position = \"right\")\nggplotly(distance_time_all)\n\n\n\n\nAll\n\n\nCode\ndistance_time_excl_outliers <- data |>\n    dplyr::filter(pace < 7) |>\n    ggplot(aes(distance, pace)) +\n    geom_point(aes(color=distance, size=distance)) +\n    geom_smooth(method=\"loess\") +\n    dark_theme_bw() +\n    ylab(\"Pace (min/km)\") +\n    xlab(\"Distance\") +\n    scale_color_gradientn(colors = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\")) +\n    theme(legend.position = \"right\")\nggplotly(distance_time_excl_outliers)\n\n\n\n\nExcluding Outliers\n\nDistance v Pace.\n\n\nPace By Month\n\n\nCode\nbox_pace_month <- data |> ggplot(aes(factor(year_month), pace)) +\n    geom_boxplot() +\n    dark_theme_bw() +\n    ylab(\"Pace (min/km)\") +\n    xlab(\"Month/Year\") ## +\n## scale_x_datetime(breaks = date_breaks(\"2 weeks\"), labels=date_format(\"%B\"))\nggplotly(box_pace_month)\n\n\n\n\nBox Plot\n\n\nCode\nridge_pace_month <- data |> ggplot(aes(x=pace, y=factor(year_month), group=year_month, fill=after_stat(x))) +\n    # geom_density_ridges_gradient(scale=1, gradient_lwd=1.) +\n    geom_density_ridges_gradient(scale=1, gradient_lwd=1.) +\n    scale_x_continuous(expand = c(0, 0)) +\n    # scale_y_discrete(expand = expansion(mult = c(0.01, 0.25))) +\n    scale_fill_viridis_c(name=\"Pace (min/km)\", option=\"C\") +\n    dark_theme_bw() +\n    ylab(\"Year\") +\n    xlab(\"Pace (min/km)\") ## +\n##     scale_x_datetime(breaks = date_breaks(\"1 month\"), labels=date_format(\"%B\"))\n## ggplotly(ridge_pace_month)\nridge_pace_month\n\n\n\n\n\nRidge Density\n\n\n\nPace per month.\n\n\n\nPace By Week\n\n\nCode\nbox_pace_week <- data |> ggplot(aes(factor(year_week), pace)) +\n    geom_boxplot() +\n    dark_theme_bw() +\n    ylab(\"Pace (min/km)\") +\n    xlab(\"Month/Year\") +\n    ## scale_x_datetime(breaks = date_breaks(\"2 weeks\"), labels=date_format(\"%w\")) +\n    theme(axis.text.x = element_text(angle=30, hjust=1))\nggplotly(box_pace_week)\n\n\n\n\nPace per week."
+  },
+  {
+    "objectID": "posts/running-2022/index.html#when-do-i-run",
+    "href": "posts/running-2022/index.html#when-do-i-run",
+    "title": "Running in 2022",
+    "section": "When Do I Run?",
+    "text": "When Do I Run?\nI’m much more a morning person and typically go out running on an empty stomach as I find it quite unpleasant to have a bellyful of food jiggling around inside me. But what days of the week and times do I actually go running? I can answer this with only a low degree of accuracy because whilst I do try to log my runs immediately after having completed them (post-stretching!) I don’t always do so.\n\n\nCode\nwhen_I_run <- data |> ggplot(aes(logged_at)) +\n    geom_bar() +\n    dark_theme_bw() +\n    xlab(\"Time of Day\") +\n    ylab(\"N\")\nggplotly(when_I_run)\n\n\n\n\nWhen I go running.\n\n\n\nDoes distance differ with time of day?\nIf I go out running in the morning I usually go further because I work five days a week and lunch-time runs have to fit within an hour. As you can see I don’t generally run in the evening as I don’t like exercising with food in my stomach.\n\n\nCode\nwhen_I_run_distance <- data |> ggplot(aes(logged_at, distance)) +\n    geom_point(aes(color=distance, size=distance)) +\n    geom_smooth() +\n    dark_theme_bw() +\n    xlab(\"Time of Day\") +\n    ylab(\"Distance\") +\n    scale_color_gradientn(colors = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\")) +\n    theme(legend.position = \"right\") ## +\n    ## scale_x_datetime(breaks = date_breaks(\"1 hour\"), labels=date_format(\"%H\"))\nggplotly(when_I_run_distance)\n\n\n\n\nTime of Day v Distance.\n\n\n\n\nDoes pace differ with time of day?\nAs I’ve mentioned I somewhat counter-intuitively get a faster mean pace when going further distances. Does this feature come through with the time of day and do I run faster in the morning or at other times. The graph below plots the time of day against the pace with the distance denoted by the size and colour of points.\n\n\nCode\nwhen_I_run_pace <- data |> ggplot(aes(logged_at, pace)) +\n    geom_point(aes(color=distance, size=distance)) +\n    geom_smooth() +\n    dark_theme_bw() +\n    xlab(\"Time of Day\") +\n    ylab(\"Pace\") +\n    scale_color_gradientn(colors = c(\"#00AFBB\", \"#E7B800\", \"#FC4E07\")) +\n    theme(legend.position = \"right\") ## +\n    ## scale_x_datetime(breaks = date_breaks(\"1 hour\"), labels=date_format(\"%H\"))\nggplotly(when_I_run_pace)\n\n\n\n\nWhen I go running v pace.\n\n\nI could go on and on making different types of plots but I think that is sufficient for now."
+  },
+  {
+    "objectID": "posts/running-2022/index.html#code-folding",
+    "href": "posts/running-2022/index.html#code-folding",
+    "title": "Running in 2022",
+    "section": "Code Folding",
+    "text": "Code Folding\nIt should be possible to set options at the global level by setting the following in the site index.qmd.\nexecute:\n  code-fold: true\n  code-tools: true\n  code-link: true\nI’m using the blogging feature of Quarto and so tried as well as adding it to the YAML header for the post itself (i.e. posts/running-2022/index.qmd) but it didn’t seem to have any effect, the code chunks were still displayed. I could however set this on a per-chunk basis though so each code chunk carries the options.\n#| code-fold: true\n#| code-link: true\n#| code-tools: true\n#| warning: false"
+  },
+  {
+    "objectID": "posts/running-2022/index.html#table-and-figure-caption-locations-are-configurable",
+    "href": "posts/running-2022/index.html#table-and-figure-caption-locations-are-configurable",
+    "title": "Running in 2022",
+    "section": "Table and Figure caption locations are configurable",
+    "text": "Table and Figure caption locations are configurable\nYou can specify the location of table and figure captions. Unfortunately this doesn’t appear to render correctly when using the blogging feature and all captions are still at the bottom.\n#| fig-cap-location: [top|bottom|margin]\n#| tbl-cap-location: [top|bottom|margin]"
+  },
+  {
+    "objectID": "posts/running-2022/index.html#two-for-the-price-of-one",
+    "href": "posts/running-2022/index.html#two-for-the-price-of-one",
+    "title": "Running in 2022",
+    "section": "Two for the price of one",
+    "text": "Two for the price of one\nIts possible to include two figures in a code chunk and have them both displayed.\n#| label: pace-per-month\n#| fig-cap: \"Pace per month.\"\n#| fig-subcap:\n#|    - \"Bar Chart\"\n#|    - \"Box Plot\"\n#|    - \"Ridge Density\"\n#| fig-alt: \"A plot of pace per month/week in 2022.\"\nIn the output format of the blog these do not appear side by side, but rather underneath each other. Captions were by default underneath each picture which is perhaps ok when reading as a PDF but this is rendered as HTML and I would prefer these to be at the top so that readers see the heading as they scroll down (I’m often torn about figure headings and labels and feel they should be included in the image itself so they are retained if/when they are used elsewhere)."
+  },
+  {
+    "objectID": "posts/running-2022/index.html#plotly-plays-with-quarto",
+    "href": "posts/running-2022/index.html#plotly-plays-with-quarto",
+    "title": "Running in 2022",
+    "section": "Plotly plays with Quarto",
+    "text": "Plotly plays with Quarto\nUsing the plotly R package with Quarto “Just Works”, the plots render nicely in the page and are zoom-able with tool-tips appearing over key points."
+  },
+  {
+    "objectID": "posts/running-2022/index.html#some-graphs-appear-where-i-dont-expect-them-to",
+    "href": "posts/running-2022/index.html#some-graphs-appear-where-i-dont-expect-them-to",
+    "title": "Running in 2022",
+    "section": "Some graphs appear where I don’t expect them to",
+    "text": "Some graphs appear where I don’t expect them to\nAstute readers will notice that some of the ridge plot graphs appear more than once. I couldn’t work out why this was, the code does not specify that they should be shown again. For example the Ridge Density plot for total Distance by Month also appeared under the total Distance by Week. To try working around this I attempted to explicitly use dev.off() after the initial generation of the first Ridge Density Plot, but this had the undesired effect of including output from the call and an additional code-chunk. Not one I’ve sorted yet. 🤔"
+  },
+  {
+    "objectID": "posts/running-2022/index.html#emojis",
+    "href": "posts/running-2022/index.html#emojis",
+    "title": "Running in 2022",
+    "section": "Emoji’s",
+    "text": "Emoji’s\nTo include emoji’s in the Markdown it’s necessary to add the following to the header of the specific page (i.e. posts/running_2022/index.qmd)\nfrom: markdown+emoji\nText based emoji names (e.g. :thinking: 🤔 ; :snake 🐍 ; :tada: 🎉) are then automatically included when rendering."
+  },
+  {
+    "objectID": "posts/running-2022/index.html#formatting-datestimes-in-axes",
+    "href": "posts/running-2022/index.html#formatting-datestimes-in-axes",
+    "title": "Running in 2022",
+    "section": "Formatting Dates/Times in Axes",
+    "text": "Formatting Dates/Times in Axes\nI’ve a few more niggles to round out such as the formatting of the months/weeks which I should probably do up-front rather than leaving them as POSIXct objects and then trying to format them in ggplot2."
+  },
+  {
+    "objectID": "posts/running-2022/index.html#previewing-graphs",
+    "href": "posts/running-2022/index.html#previewing-graphs",
+    "title": "Running in 2022",
+    "section": "Previewing Graphs",
+    "text": "Previewing Graphs\nOne very nice feature I discovered recently courtesy of a short video by Bruno Rodrigues (thanks Bruno 👍) is the ability to preview graphs in the browser. This is unlikely to be something you need if you use RStudio but as with most things I use Emacs and Emacs Speaks Statistics and so normally I get an individual X-window appearing showing the plot. Instead we can use the httpgd package to start web-server that renders the images. It keeps a history of lots that have been produced and you can scroll back and forth through them.\n> httpgd::hgd()\nhttpgd server running at:\n  http://127.0.0.1:42729/live?token=beRmYcSn\nThen just create your plots and hey-presto the graphs appear at the URL. 🧙"
+  },
+  {
+    "objectID": "posts/running-2022/index.html#renv",
+    "href": "posts/running-2022/index.html#renv",
+    "title": "Running in 2022",
+    "section": "renv",
+    "text": "renv\nIn order to have this page publish correctly I had to initialise a renv within the repository and include the renv.lockfile so that the GitHub action/workflow installed all of the packages I use and their dependencies in the runner that renders the blog.\nWhilst I’m familiar with virtual environments under Python this is something relatively new to me for R so I won’t write much other than the process involved initialising the environment, installing the dependencies then updating the lockfile.\n> renv::init()\n> install.packages(c(\"dplyr\", \"ggdark\", \"ggridges\", \"hms\", \"knitr\", \"lubridate\", \"orgutils\", \"plotly\", \"readr\",\n                     \"scales\", \"stringr\"))\n> renv::snapshot()\n> q()\ngit add renv.lockfile"
+  },
+  {
     "objectID": "posts/git-ssh/index.html",
     "href": "posts/git-ssh/index.html",
     "title": "Git : Custom SSH credentials for git repositories",
@@ -158,7 +256,7 @@
     "href": "posts/git-ssh/index.html#commit-verification-with-ssh",
     "title": "Git : Custom SSH credentials for git repositories",
     "section": "Commit verification with SSH",
-    "text": "Commit verification with SSH\nVerification of commits is a usefl security feature, but beyond the scope of this article but as doing so with SSH keys is a recently supported feature on GitHub (see blog SSH commit verification now supported) I felt it worth mentioning."
+    "text": "Commit verification with SSH\nVerification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys is a recently supported feature on GitHub (see blog SSH commit verification now supported) I felt it worth mentioning."
   },
   {
     "objectID": "posts/git-ssh/index.html#links",
@@ -277,7 +375,7 @@
     "href": "index.html",
     "title": "ns-rse",
     "section": "",
-    "text": "Who’s to Blame\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nblame\n\n\n\n\n\n\n\n\n\n\n\nDec 17, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nPre-Commit : Customising and Updating\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\npre-commit\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nLinux Command Line Alternatives\n\n\n\n\n\n\n\ncode\n\n\nlinux\n\n\nbash\n\n\n\n\n\n\n\n\n\n\n\nSep 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\n  \n\n\n\n\nGit : Custom SSH credentials for git repositories\n\n\n\n\n\n\n\nssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nPre-Commit : Protecting your future self\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nLinting - What is all the fluff about?\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
+    "text": "Running in 2022\n\n\n\n\n\n\n\nquarto\n\n\nrunning\n\n\nemacs\n\n\nliterate programming\n\n\n\n\n\n\n\n\n\n\n\nDec 31, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nWho’s to Blame\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nblame\n\n\n\n\n\n\n\n\n\n\n\nDec 17, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nPre-Commit : Customising and Updating\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\npre-commit\n\n\n\n\n\n\n\n\n\n\n\nNov 15, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nLinux Command Line Alternatives\n\n\n\n\n\n\n\ncode\n\n\nlinux\n\n\nbash\n\n\n\n\n\n\n\n\n\n\n\nSep 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\n  \n\n\n\n\nGit : Custom SSH credentials for git repositories\n\n\n\n\n\n\n\nssh\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\nkeychain\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nPre-Commit : Protecting your future self\n\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nlinting\n\n\ngit\n\n\ngithub\n\n\ngitlab\n\n\n\n\n\n\n\n\n\n\n\nAug 28, 2022\n\n\nnshephard\n\n\n\n\n\n\n  \n\n\n\n\nLinting - What is all the fluff about?\n\n\n\n\n\n\n\ncode\n\n\nlinting\n\n\npython\n\n\nR\n\n\n\n\n\n\n\n\n\n\n\nAug 18, 2022\n\n\nNeil Shephard\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "links.html",
