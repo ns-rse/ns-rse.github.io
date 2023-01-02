@@ -107,7 +107,7 @@ can configure each repository to use a specific key ([source](https://superuser.
 
 ```bash
 cd a/git/repository
-git config core.sshCommand "ssh -i ~/.ssh/different_ed25519 -F /dev/null"
+git config core.sshCommand "ssh -i ~/.ssh/work_ed25519 -F /dev/null"
 git config --local user.name "Username"
 git config --local user.email "repos@username.com"
 ```
@@ -117,22 +117,65 @@ enter this directly to the configuration file yourself.
 
 ```
 [core]
-    sshCommand = ssh -i ~/.ssh/different_ed25519 -F /dev/null
+    sshCommand = ssh -i ~/.ssh/work_ed25519 -F /dev/null
 [user]
     name = Username
     email = repos@username.com
 ```
 
 What is this doing? Well it's instructing Git to run ssh using the private key file (with the `-i` flag to specify the
-`identity_file`) that is located at `~/.ssh/different_ed25519`. Providing you have...
+`identity_file`) that is located at `~/.ssh/work_ed25519`. Providing you have...
 
-a) Already uploaded the public key (`different_ed25519.pub`) to your GitHub account.
+a) Already uploaded the public key (`work_ed25519.pub`) to your GitHub account.
 b) Stored this key in a Keychain as described above.
 
 ...you shouldn't be prompted for a password.
 
 You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote
-`origin` (typically a forge such as GitHub, GitLab, Codeberg or so forth).
+`origin` (typically a forge such as GitHub, GitLab, Codeberg or so forth). If however you have multiple projects you
+wish to setup with an alternative SSH key configuration it can be tedious to configure each repository. Thankfully
+Git >= 2.13 introduced [Conditional includes](https://git-scm.com/docs/git-config#_conditional_includes) to the
+configuration.
+
+## Conditional Includes
+
+You global configuration is stored in `~/.gitconfig` and defines key variables such `user` and `name`, the default
+`editor` and many other options, including a customised `sshCommand` as was added above to a local `.git/config` file.
+
+Git 2.13 introduced the aforementioned [Conditional includes](https://git-scm.com/docs/git-config#_conditional_includes)
+which works "_by setting a `includeIf.<condition>.path` variable to the name of the file to be included.". For our
+current case-use the `<condition>` we are interested in is whether the `path`, which is interpreted as a pattern, is a
+`gitdir` then we include what follows.
+
+For example, we place all of our work related Git repositories under the `~/work/` directory and wish to use
+`~/.ssh/work_ed25519` for these and keep all of our personal repositories elsewhere and wish to use our main
+`~/.ssh/id_ed25519` key for those.
+
+Out `~/.gitconfig` should look like
+
+```
+[user]
+    name = Your Name
+    email = your.personal@email.com
+
+[includeIf "gitdir:~/work/"]    # Directory paths ending in '/** has the globbing wildcard '**' added by default.
+    path = ~/work/.gitconfig_work
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_ed25519 -F /dev/null
+```
+
+Then our `~/work/.gitconfig_work` can contain the alternative values we wish to use for all repositories under the `~/work/`
+directory.
+
+```
+[user]
+    name = Your Name
+    email = your.work@email.com
+
+[core]
+    sshCommand = ssh -i ~/.ssh/work_ed25519 -F /dev/null
+```
 
 
 ## Commit verification with SSH
