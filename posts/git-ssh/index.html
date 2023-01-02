@@ -269,22 +269,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="git-per-repository-configuration">Git Per Repository Configuration</h2>
 <p>We now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be desirable if you have two accounts on the same forge e.g.&nbsp;both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you can configure each repository to use a specific key (<a href="https://superuser.com/a/912281">source</a>). At the command line…</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> a/git/repository</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config core.sshCommand <span class="st">"ssh -i ~/.ssh/different_ed25519 -F /dev/null"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config core.sshCommand <span class="st">"ssh -i ~/.ssh/work_ed25519 -F /dev/null"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.name <span class="st">"Username"</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.email <span class="st">"repos@username.com"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This adds the following to the repositories configuration which is stored under <code>.git/config</code> and you can of course enter this directly to the configuration file yourself.</p>
 <pre><code>[core]
-    sshCommand = ssh -i ~/.ssh/different_ed25519 -F /dev/null
+    sshCommand = ssh -i ~/.ssh/work_ed25519 -F /dev/null
 [user]
     name = Username
     email = repos@username.com</code></pre>
-<p>What is this doing? Well it’s instructing Git to run ssh using the private key file (with the <code>-i</code> flag to specify the <code>identity_file</code>) that is located at <code>~/.ssh/different_ed25519</code>. Providing you have…</p>
+<p>What is this doing? Well it’s instructing Git to run ssh using the private key file (with the <code>-i</code> flag to specify the <code>identity_file</code>) that is located at <code>~/.ssh/work_ed25519</code>. Providing you have…</p>
 <ol type="a">
-<li>Already uploaded the public key (<code>different_ed25519.pub</code>) to your GitHub account.</li>
+<li>Already uploaded the public key (<code>work_ed25519.pub</code>) to your GitHub account.</li>
 <li>Stored this key in a Keychain as described above.</li>
 </ol>
 <p>…you shouldn’t be prompted for a password.</p>
-<p>You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote <code>origin</code> (typically a forge such as GitHub, GitLab, Codeberg or so forth).</p>
+<p>You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote <code>origin</code> (typically a forge such as GitHub, GitLab, Codeberg or so forth). If however you have multiple projects you wish to setup with an alternative SSH key configuration it can be tedious to configure each repository. Thankfully Git &gt;= 2.13 introduced <a href="https://git-scm.com/docs/git-config#_conditional_includes">Conditional includes</a> to the configuration.</p>
+</section>
+<section id="conditional-includes" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-includes">Conditional Includes</h2>
+<p>You global configuration is stored in <code>~/.gitconfig</code> and defines key variables such <code>user</code> and <code>name</code>, the default <code>editor</code> and many other options, including a customised <code>sshCommand</code> as was added above to a local <code>.git/config</code> file.</p>
+<p>Git 2.13 introduced the aforementioned <a href="https://git-scm.com/docs/git-config#_conditional_includes">Conditional includes</a> which works “_by setting a <code>includeIf.&lt;condition&gt;.path</code> variable to the name of the file to be included.”. For our current case-use the <code>&lt;condition&gt;</code> we are interested in is whether the <code>path</code>, which is interpreted as a pattern, is a <code>gitdir</code> then we include what follows.</p>
+<p>For example, we place all of our work related Git repositories under the <code>~/work/</code> directory and wish to use <code>~/.ssh/work_ed25519</code> for these and keep all of our personal repositories elsewhere and wish to use our main <code>~/.ssh/id_ed25519</code> key for those.</p>
+<p>Out <code>~/.gitconfig</code> should look like</p>
+<pre><code>[user]
+    name = Your Name
+    email = your.personal@email.com
+
+[includeIf "gitdir:~/work/"]    # Directory paths ending in '/** has the globbing wildcard '**' added by default.
+    path = ~/work/.gitconfig_work
+
+[core]
+    sshCommand = ssh -i ~/.ssh/id_ed25519 -F /dev/null</code></pre>
+<p>Then our <code>~/work/.gitconfig_work</code> can contain the alternative values we wish to use for all repositories under the <code>~/work/</code> directory.</p>
+<pre><code>[user]
+    name = Your Name
+    email = your.work@email.com
+
+[core]
+    sshCommand = ssh -i ~/.ssh/work_ed25519 -F /dev/null</code></pre>
 </section>
 <section id="commit-verification-with-ssh" class="level2">
 <h2 class="anchored" data-anchor-id="commit-verification-with-ssh">Commit verification with SSH</h2>
