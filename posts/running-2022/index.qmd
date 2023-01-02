@@ -50,12 +50,11 @@ runs](#capturing-data-in-emacs-org-mode).
 
 My data is captured using [org-capture](https://orgmode.org/manual/Capture.html) in an ASCII text file (for more on
 this setup see [below](#capturing-data-in-emacs-org-mode)), but its wrapped in an [org-mode
-table](https://orgmode.org/manual/Tables.html). For the purpose of this post I have saved this to a CSV having done some
-redaction and data formatting so that it can be included in the page itself. The following code chunk determines where
-to load the file from. If I'm working on the file locally the original data is loaded and parsed before
-writing to CSV. In GitHub pages, the Action (CI/CD) pipeline won't have access to the original and so by saving it as a
-CSV file and including it as part of the repository it means I can instead load the file the code that follows
-generating graphs and renders correctly.
+table](https://orgmode.org/manual/Tables.html). For the purpose of this post I have saved this to a `.RData` file having
+done some redaction and data formatting so that it can be included in the page itself. The following code chunk
+determines where to load the file from. If I'm working on the file locally the original data is loaded and parsed before
+saving to `.RData`. In GitHub pages, the Action (CI/CD) pipeline won't have access to the original instead it load the
+`.RData` file and its good to go with generating graphs and renders correctly.
 
 ```{r}
 #| code-fold: true
@@ -103,6 +102,7 @@ if(current_env["hostname"] == "kimura") {
         mutate(date = lubridate::ymd_hm(date),
                year_month = floor_date(date, "month"),
                year_week = floor_date(date, "week"),
+               year_day = lubridate::wday(date, week_start=1, label=TRUE, abbr=FALSE),
                logged_at = hms::as_hms(date),
                min = as.integer(min),
                sec = as.integer(sec),
@@ -128,9 +128,12 @@ summary_data <- data  |>
                              list(sum=sum,
                                   mean=mean,
                                   sd=sd,
+                                  median=median,
+#                                  quantile=quantile,
                                   min=min,
                                   max=max),
                              .names = "{.col}_{.fn}"))
+
 ```
 
 # Summary
@@ -144,7 +147,15 @@ In total in 2022 I went out running `r nrow(data)` times and covered a total dis
 `r summary_data[["time_sum"]]` (mean : `r summary_data[["time_mean"]]`; standard deviation
 `r summary_data[["time_sd"]]`; median : `r summary_data[["time_median"]]`).
 
-**TODO** - Calculate the interquartile range, tricky with `across()` used above? :thinking:
+The longest run I did was the [Edale Skyline](https://www.dpfr.org.uk/pages/view/skyline) (
+`r summary_data[["distance_max"]]`km in `r summary_data[["time_max"]] / 60`mins) although I started in Hope and
+went anti-clockwise rather than the "race" circuit of starting in Edale and ascending Ringing Roger then going
+clockwise. This meant I had slightly less ascent to do. However by around 28-29km coming off of Kinder and passing Hope
+Cross my legs (well the tendons going into my groin!) were complaining a lot and so I basically walked the remainder up
+to Win Hill and very tentatively jogged back down into Hope. This data point is a bit of an outlier and so is excluded
+from some plots. For some reason this value isn't correctly shown in the table below.
+
+**TODO** - Calculate the inter-quartile range, tricky with `across()` used above? :thinking:
 
 
 ```{r}
@@ -166,7 +177,7 @@ summary_data |>
     knitr::kable(digits=3)
 
 ```
-
+For some reason
 
 ## Number of Runs
 
@@ -369,41 +380,10 @@ ggplotly(runs_distance_mean, tooltip = c("year_week", "distance_total", "distanc
 ## Pace
 
 I like pushing myself and going fast, I perhaps stupidly and against much perceived wisdom, think that if I'm able to
-hold a conversation then I'm not trying hard enough (in reality I rarely try as I always run on my own).
+hold a conversation then I'm not trying hard enough (in reality I rarely try talking as I always run on my own).
 
 Before looking at pace over time its interesting to look at the relationship between distance and time. Obviously longer
 runs are going to take longer, but is the relationship linear or do I get slower the further I go?
-
-```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: pace-overtime
-#| fig-cap: "Pace over time by distance."
-#| fig-alt: "A plot of distance per month/week in 2022."
-no_outliers <- data |>
-    dplyr::filter(pace < 7)
-pace_timeseries<- data |>
-    ggplot(aes(date, pace)) +
-    geom_point(aes(color=distance, size=distance)) +
-    geom_smooth(method="loess", data=no_outliers) +
-    dark_theme_bw() +
-    ylab("Pace (min/km)") +
-    xlab("Date") +
-    scale_color_gradientn(colors = c("#00AFBB", "#E7B800", "#FC4E07")) +
-    theme(legend.position = "right") +
-    scale_x_datetime(breaks = date_breaks("1 month"), labels=date_format("%b"))
-ggplotly(pace_timeseries)
-```
-
-The relationship between distance and pace is interesting, one might expect that the pace decreases with the overall
-distance, but it depends on the terrain. Most of my shorter runs involved a fair proportion of uphill as I live in the
-bottom of a valley and my typical circuit takes me up the valley to some extent before turning around and heading
-back. Longer runs I would typically get out of the valley and run along fairly flat ground before heading back down and
-I think this is what causes the dip in the below graph (excluding outliers) in the range of 11-14km, but further
-distances I tire and so my pace drops.
 
 ```{r}
 #| code-fold: true
@@ -440,6 +420,42 @@ distance_time_excl_outliers <- data |>
 ggplotly(distance_time_excl_outliers)
 ```
 
+
+The relationship between distance and pace is interesting, one might expect that the pace decreases with the overall
+distance, but it depends on the terrain. Most of my shorter runs involved a fair proportion of uphill as I live in the
+bottom of a valley and my typical circuit takes me up the valley to some extent before turning around and heading
+back. Longer runs I would typically get out of the valley and run along fairly flat ground before heading back down and
+I think this is what causes the dip in the above graph (excluding outliers) in the range of 11-14km, but further
+distances I tire and so my pace drops.
+
+Looking at pace over time it increases as the year progresses but then runs are getting gradually longer, and I know I
+changed the route to include more hills. Strangely getting COVID at the end of August didn't appear to negatively impact
+my pace although running with an injury late November/December did (I should probably have had a break but wanted to
+reach my goal so dialled down the frequency and distance).
+
+```{r}
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| warning: false
+#| fig-cap-location: top
+#| label: pace-overtime
+#| fig-cap: "Pace over time by distance."
+#| fig-alt: "A plot of distance per month/week in 2022."
+no_outliers <- data |>
+    dplyr::filter(pace < 7)
+pace_timeseries<- data |>
+    ggplot(aes(date, pace)) +
+    geom_point(aes(color=distance, size=distance)) +
+    geom_smooth(method="loess", data=no_outliers) +
+    dark_theme_bw() +
+    ylab("Pace (min/km)") +
+    xlab("Date") +
+    scale_color_gradientn(colors = c("#00AFBB", "#E7B800", "#FC4E07")) +
+    theme(legend.position = "right") +
+    scale_x_datetime(breaks = date_breaks("1 month"), labels=date_format("%b"))
+ggplotly(pace_timeseries)
+```
 
 
 
@@ -506,7 +522,11 @@ ggplotly(box_pace_week)
 I'm much more a morning person and typically go out running on an empty stomach as I find it quite unpleasant to have a
 bellyful of food jiggling around inside me. But what days of the week and times do I actually go running? I can answer
 this with only a low degree of accuracy because whilst I do try to log my runs immediately after having completed them
-(post-stretching!) I don't always do so.
+(post-stretching!) I don't always do so and so the times below reflect the times I logged the climb rather than
+started.
+
+In the summer when it gets light early I'll sometimes go out running at 06:00 but clearly these are not reflected in the
+logged times.
 
 ```{r}
 #| code-fold: true
@@ -516,13 +536,40 @@ this with only a low degree of accuracy because whilst I do try to log my runs i
 #| fig-cap-location: top
 #| label: when-I-run
 #| fig-cap: "When I go running."
-#| fig-alt: "Time of day I go running"
+#| fig-subcap:
+#|    - "Day"
+#|    - "Time"
+#|    - "Month v Time"
+#|    - "Day v Time"
+#| fig-alt: "When I go running"
+what_day_I_run <- data  |> ggplot(aes(year_day)) +
+    geom_bar() +
+    dark_theme_bw() +
+    xlab("Day of Week") +
+    ylab("N")
+ggplotly(what_day_I_run)
 when_I_run <- data |> ggplot(aes(logged_at)) +
     geom_bar() +
     dark_theme_bw() +
     xlab("Time of Day") +
     ylab("N")
 ggplotly(when_I_run)
+what_time_I_run_by_month <- data |> ggplot(aes(year_month, logged_at)) +
+    geom_point() +
+    geom_smooth(method="loess") +
+    dark_theme_bw() +
+    xlab("Month") +
+    ylab("Time of Day")
+ggplotly(what_time_I_run_by_month)
+what_time_I_run_each_day <- data |> ggplot(aes(year_day, logged_at)) +
+    geom_point() +
+    geom_smooth(method="loess") +
+    dark_theme_bw() +
+    xlab("Day of Week") +
+    ylab("Time of Day")
+ggplotly(what_time_I_run_each_day)
+
+
 ```
 
 ### Does distance differ with time of day?
@@ -667,7 +714,7 @@ e [b]  Blood
 automatically because that field is set to be `%U` in the template. The cursor is located in the `Route` column because
 the field content is `%?` which means user input is required. The `Distance`, `Time` and `Notes` fields are completed
 although the Pace field should be left blank since the formula at the bottom of the table (`#+TBLFM: $5=uconvert($4/$3,
-(min+s)/km);L`) calculates this automatically for on on saving
+(min+s)/km);L`) calculates this automatically on saving.
 
 ``` lisp
 Capture buffer, Finish 'C-c C-c', refile 'C-c C-w', abort 'C-c C-k'
@@ -675,12 +722,12 @@ Capture buffer, Finish 'C-c C-c', refile 'C-c C-w', abort 'C-c C-k'
 ```
 
 Once all the fields are completed press `C-c C-c` to save the changes and the row is added to the table in the file
-`~/path/to/running.log`.  This file forms part of my `training.org` (its pulled in using the main document `training.org`
+`~/path/to/running.log`.  This file forms part of my `training.org` (its pulled into the main document `training.org`
 using `#+INCLUDE: ~/path/to/running.org`), but the data is used and processed using [R](https://www.r-project.org). How
-does the data get from the org-format into the R session for summarising and using? This is part of the amazing magic
-that is Org-mode and Org-babel for literate programming. A source code chunk can be defined with a `:var` option which
-refers to the table you want to include. In this my source block does some processing of the table to tidy up the dates
-into something R understands and is shown below.
+does the data get from the org-format table into the R session as a data frame for summarising and using? This is part
+of the amazing magic that is [Org-babel](https://orgmode.org/worg/org-contrib/babel/) for literate programming. A source
+code chunk can be defined with a `:var` option which refers to the table you want to include. In this my source block
+does some processing of the table to tidy up the dates into something R understands and is shown below.
 
 ``` lisp
 #+begin_src R :session *training-R* :eval yes :exports none :var running_table=running-log  :colnames nil :results output silent
@@ -712,7 +759,7 @@ table available in the R session as the dataframe `running_table`.
 
 # Quarto - Things I've learnt
 
-Here are a list about Quarto of things I've learnt whilst preparing this document
+Some things I've learnt about Quarto whilst preparing this document.
 
 ## Code Folding
 
@@ -725,10 +772,10 @@ execute:
   code-link: true
 ```
 
-I'm using the [blogging](https://quarto.org/docs/websites/website-blog.html) feature of Quarto and
-so tried as well as adding it to the YAML header for the post itself (i.e. `posts/running-2022/index.qmd`) but it didn't
-seem to have any effect, the code chunks were still displayed. I could however set this on a per-chunk basis though so
-each code chunk carries the options.
+I'm using the [blogging](https://quarto.org/docs/websites/website-blog.html) feature of Quarto but adding this to the
+site `index.qmd` didn't work when previewed locally. I tried adding it to the YAML header for the post itself
+(i.e. `posts/running-2022/index.qmd`) but no joy, the code chunks were still displayed. I could however set this on a
+per-chunk basis though so each code chunk carries the options.
 
 ``` yaml
 #| code-fold: true
@@ -739,7 +786,12 @@ each code chunk carries the options.
 
 ## Table and Figure caption locations are configurable
 
-You can specify the location of [table](https://quarto.org/docs/authoring/tables.html#caption-location) and
+Captions were by default underneath each picture which is perhaps ok when reading as a PDF but this is rendered as HTML
+and I would prefer these to be at the top so that readers see the heading as they scroll down (I'm often torn about
+figure headings and labels and feel they should be included in the image itself so they are retained if/when they are
+used elsewhere).
+
+Fortunately you can specify the location of [table](https://quarto.org/docs/authoring/tables.html#caption-location) and
 [figure](https://quarto.org/docs/authoring/figures.html#caption-locations) captions. Unfortunately this doesn't appear
 to render correctly when using the blogging feature and all captions are still at the bottom.
 
@@ -750,7 +802,7 @@ to render correctly when using the blogging feature and all captions are still a
 
 ## Two for the price of one
 
-Its possible to include two figures in a code chunk and have them both displayed.
+Its possible to include two or more sub-figures in a code chunk and have them both displayed.
 
 ``` yaml
 #| label: pace-per-month
@@ -758,14 +810,10 @@ Its possible to include two figures in a code chunk and have them both displayed
 #| fig-subcap:
 #|    - "Bar Chart"
 #|    - "Box Plot"
-#|    - "Ridge Density"
 #| fig-alt: "A plot of pace per month/week in 2022."
 ```
 
-In the output format of the blog these do _not_ appear side by side, but rather underneath each other. Captions were by
-default underneath each picture which is perhaps ok when reading as a PDF but this is rendered as HTML and I would
-prefer these to be at the top so that readers see the heading as they scroll down (I'm often torn about figure headings
-and labels and feel they should be included in the image itself so they are retained if/when they are used elsewhere).
+In the output format of the blog these do _not_ appear side by side, but rather underneath each other.
 
 ## Plotly plays with Quarto
 
@@ -860,6 +908,7 @@ this automatically and on the fly as I log runs in 2023 and beyond.
 + [Training Summary](https://kimura.no-ip.info/~arch/training/training.html)
 + [Emacs](https://www.gnu.org/software/emacs/)
 * [OrgMode](https://orgmode.org/)
++ [Org-babel](https://orgmode.org/worg/org-contrib/babel/)
 + [R](https://www.r-project.org/)
 + [Emacs Speaks Statistics](https://ess.r-project.org)
 * [Quarto](https://quarto.org)
