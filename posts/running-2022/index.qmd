@@ -17,11 +17,12 @@ execute:
   warning: false
 ---
 
-I started running :running: in 2019. It never appealed but I needed to get regular exercise easily from my doorstep as
-despite commuting by bike for most of my life and cycling between 12-20km daily it wasn't enough for me. Whilst I've
-always cycled for commuting and cycling was delightful during the pandemic lockdowns I've since enjoyed it an increasing
-number of motorists seen to have little to no regard for the safety of pedestrians and cyclists. As a consequence I
-prefer running over cycling these days and get most of my aerobic exercise on two feet rather than two wheels.
+I started running :running: in 2019. It never used to appeal but I wanted to get more regular exercise easily from my
+doorstep as despite commuting by bike for most of my life and cycling between 12-20km daily it wasn't enough for
+me. Whilst I've always cycled for commuting and cycling was delightful during the pandemic lockdowns I've since enjoyed
+it less and less as it seems an increasing number of motorists seen to have little to no regard for the safety of
+pedestrians and cyclists. As a consequence I prefer running over cycling these days and get most of my aerobic exercise
+on two feet rather than two wheels.
 
 # Background
 
@@ -41,8 +42,11 @@ R and output to HTML which I host on my VPS. I can view my progress
 At some point early in 2022 I decided to set myself an arbitrary goal of running at least 1200km in the year. It seemed
 a nice round number at 100km/month. This post summarises the data collected during that period and serves as a learning
 exercise for me to refresh/improve my [R](https://www.r-project.org) and [Quarto](https://www.quarto.org)
-knowledge, the code chunks are hidden by default but can be easily expanded if you wish to look at them. I've summarised
-some of the features I've learnt about Quarto and I've explained how I use [Emacs Org-mode to capture my
+knowledge. I used to use [R](https://www.r-project.org) when I worked as a Medical Statistician but
+for the last five years or so I've mainly used [Python](https://www.python.org) for work reasons. I'm keen to use
+[Quarto](https://www.quarto.org) as its a very neat literate programming framework (this blog is written in Quarto). The
+code chunks are hidden by default but can be easily expanded if you wish to look at them. I've summarised some of the
+features I've learnt about Quarto and I've explained how I use [Emacs Org-mode to capture my
 runs](#capturing-data-in-emacs-org-mode).
 
 
@@ -50,11 +54,11 @@ runs](#capturing-data-in-emacs-org-mode).
 
 My data is captured using [org-capture](https://orgmode.org/manual/Capture.html) in an ASCII text file (for more on
 this setup see [below](#capturing-data-in-emacs-org-mode)), but its wrapped in an [org-mode
-table](https://orgmode.org/manual/Tables.html). For the purpose of this post I have saved this to a `.RData` file having
-done some redaction and data formatting so that it can be included in the page itself. The following code chunk
-determines where to load the file from. If I'm working on the file locally the original data is loaded and parsed before
-saving to `.RData`. In GitHub pages, the Action (CI/CD) pipeline won't have access to the original instead it load the
-`.RData` file and its good to go with generating graphs and renders correctly.
+table](https://orgmode.org/manual/Tables.html). For the purpose of this post I have imported, filtered and redacted some
+of the data saved this to a `.RData` file having so that it works with the GitHub Action that produces the blog. The
+following code chunk determines where to load the file from. If I'm working on the file locally the original data is
+loaded and parsed before saving to `.RData`. In GitHub pages, the Action (CI/CD) pipeline won't have access to the
+original instead it load the `.RData` file and its good to go with generating graphs and renders correctly.
 
 ```{r}
 #| code-fold: true
@@ -522,8 +526,7 @@ ggplotly(box_pace_week)
 I'm much more a morning person and typically go out running on an empty stomach as I find it quite unpleasant to have a
 bellyful of food jiggling around inside me. But what days of the week and times do I actually go running? I can answer
 this with only a low degree of accuracy because whilst I do try to log my runs immediately after having completed them
-(post-stretching!) I don't always do so and so the times below reflect the times I logged the climb rather than
-started.
+(post-stretching!) I don't always do so and so the times below reflect the times I logged the run rather than started.
 
 In the summer when it gets light early I'll sometimes go out running at 06:00 but clearly these are not reflected in the
 logged times.
@@ -633,15 +636,15 @@ I could go on and on making different types of plots but I think that is suffici
 # Capturing Data in Emacs Org-mode
 
 I thought it would be worthwhile including a section on how I capture data. Its not perfect (yet!) because as mentioned
-I use [OpenTracks](https://opentracksapp.com/) to log my runs. This saves data to a [GPX]() file on finishing on my
-phone and I use [SyncThing](https://syncthing.net) to back these up automatically to my server using a run condition so
-it only tries to do so when the phone is connected to my home WiFi network and the phone is plugged in. At some point I
-will take advantage of this and develop a dashboard that loads the GPX data and allows interactive exploration as well
-as summarising the data similar to that which I've presented here. But life is busy so for now I manually capture the
-summary statistics using [Org-mode](https://orgmode.org) and [Org Capture
-templates](https://orgmode.org/manual/Capture.html).
+I use [OpenTracks](https://opentracksapp.com/) to log my runs. This saves data to a
+[GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format) file on finishing on my phone and I use
+[SyncThing](https://syncthing.net) to back these up automatically to my server using a run condition so it only tries to
+do so when the phone is connected to my home WiFi network and the phone is charging. At some point I will take advantage
+of this and develop a dashboard that loads the GPX data and allows interactive exploration as well as summarising the
+data similar to that which I've presented here. But life is busy so for now I manually capture the summary statistics
+using [Org-mode](https://orgmode.org) and [Org Capture templates](https://orgmode.org/manual/Capture.html).
 
-I have a file which contains and [Org table](https://orgmode.org/manual/Tables.html) as shown below.
+I have a file `~/path/to/running.org` which contains an [Org table](https://orgmode.org/manual/Tables.html) as shown below.
 
 ```
 #+CAPTION: Running Log
@@ -656,10 +659,10 @@ I have a file which contains and [Org table](https://orgmode.org/manual/Tables.h
 ```
 
 The layout is I think self-explanatory and each time I want to log a run I could open the file `C-x C-f
-~/path/to/running.org`, navigate to the top of the file and start entering details manually. But that is a bit slow and
-instead I wrote an [Org-capture](https://orgmode.org/manual/Capture.html) rule to capture runs (and many other
-things). Writing these was initially a bit tricky (as I'm a slow learner) but I now understand the structure and can
-quickly add new entries to capture items where I want them to be, saving me time in the long run.
+~/path/to/running.org`, navigate to the top of the file and start entering details manually in a new row. But that is a
+bit slow and instead I wrote an [Org-capture](https://orgmode.org/manual/Capture.html) rule to capture runs (and many
+other things). Writing these was initially a bit tricky (as I'm a slow learner) but I now understand the structure and
+can quickly add new entries to capture items where I want them to be, saving me time in the long run.
 
 ``` lisp
 (use-package org-capture
@@ -705,31 +708,31 @@ Select a capture template
 e [r]  Logging a run
 e [c]  Logging a cycle
 e [h]  Logging a hike
-e [m]  Weight & Waist/Hop
+e [m]  Weight & Waist/Hip
 e [s]  Steps
 e [b]  Blood
 ```
 
 ...and I can choose what activity to log, hit `r` for a run and a new buffer appears, the date and time is entered
 automatically because that field is set to be `%U` in the template. The cursor is located in the `Route` column because
-the field content is `%?` which means user input is required. The `Distance`, `Time` and `Notes` fields are completed
-although the Pace field should be left blank since the formula at the bottom of the table (`#+TBLFM: $5=uconvert($4/$3,
-(min+s)/km);L`) calculates this automatically on saving.
+the field content is `%?` which means user input is required. The `Distance`, `Time` and `Notes` fields are also
+completed although the `Pace` field should be left blank since the formula at the bottom of the table (`#+TBLFM:
+$5=uconvert($4/$3, (min+s)/km);L`) calculates this automatically on saving.
 
 ``` lisp
 Capture buffer, Finish 'C-c C-c', refile 'C-c C-w', abort 'C-c C-k'
-| [2022-12-27 Tue 11:29] |  | km | min + s | | |
+| [2022-12-27 Tue 11:29] | Out for a run | 10.8km | 54min + 12s | | Fun run in the snow. |
 ```
 
 Once all the fields are completed press `C-c C-c` to save the changes and the row is added to the table in the file
-`~/path/to/running.log`.  This file forms part of my `training.org` (its pulled into the main document `training.org`
+`~/path/to/running.org`.  This file forms part of my `training.org` (its pulled into the main document `training.org`
 using `#+INCLUDE: ~/path/to/running.org`), but the data is used and processed using [R](https://www.r-project.org). How
-does the data get from the org-format table into the R session as a data frame for summarising and using? This is part
-of the amazing magic that is [Org-babel](https://orgmode.org/worg/org-contrib/babel/) for literate programming. A source
-code chunk can be defined with a `:var` option which refers to the table you want to include. In this my source block
-does some processing of the table to tidy up the dates into something R understands and is shown below.
+does the data get from the org-formatted table into the R session as a data frame for summarising and using? This is
+part of the amazing magic that is [Org-babel](https://orgmode.org/worg/org-contrib/babel/) for literate programming. A
+source code chunk can be defined with a `:var` option which refers to the table you want to include. In this my source
+block does some processing of the table to tidy up the dates into something R understands and is shown below.
 
-``` lisp
+``` r
 #+begin_src R :session *training-R* :eval yes :exports none :var running_table=running-log  :colnames nil :results output silent
   running_table %<>% mutate(distance = as.double(str_replace(Distance, "km", "")),
              time = str_replace(Time, "min \\+ ", " "),
@@ -754,7 +757,9 @@ does some processing of the table to tidy up the dates into something R understa
 
 The key to getting the Org-mode table (which has the `#+NAME: running-log`) into the R session (which is set to
 `:session *training-R*` and is evaluated `:eval yes`) is the option `:var running_table=running-log` which makes the
-table available in the R session as the dataframe `running_table`.
+table available in the R session as the dataframe `running_table`. As you'll see from the very first code chunk at the
+top of this post because this document is written in [Quarto](https://www.quarto.org) I instead use the
+`orgutils::readOrg()` package/function to read the table into R directly.
 
 
 # Quarto - Things I've learnt
@@ -784,7 +789,7 @@ per-chunk basis though so each code chunk carries the options.
 #| warning: false
 ```
 
-## Table and Figure caption locations are configurable
+## Table and Figure caption locations ~~are~~ should be configurable
 
 Captions were by default underneath each picture which is perhaps ok when reading as a PDF but this is rendered as HTML
 and I would prefer these to be at the top so that readers see the heading as they scroll down (I'm often torn about
@@ -843,18 +848,18 @@ from: markdown+emoji
 Text based emoji names (e.g. `:thinking:` :thinking: ; `:snake` :snake: ; `:tada:` :tada:) are then automatically
 included when rendering.
 
-# R - Things I've ~~remembered~~ forgotten
+# R - Things I've ~~forgotten~~ remembered
 
-Its been a few years since I used R on a daily basis when working as a medical statistician. These days I mostly use
-Python and do very little data analysis. As a consequence I thought I'd forgotten a bunch of things I used to know how
-to do, but this exercise has reminded me that I perhaps have some vestigial remnants of my old knowledge
+Its been a few years since I used R on a daily basis. As a consequence I thought I'd forgotten a bunch of things I used
+to know how to do, but this exercise has reminded me that I perhaps have some vestigial remnants of my old knowledge
 lingering. Some things I had to look up and, unsurprisingly, the available tools, functions/methods have evolved in that
 time (viz. [tidyr](https://tidyr.tidyverse.org/) is now more generic and simpler than [reshape2]()).
 
 ## Formatting Dates/Times in Axes
 
 I've a few more niggles to round out such as the formatting of the months/weeks which I should probably do up-front
-rather than leaving them as POSIXct objects and then trying to format them in `ggplot2`.
+in the dataframe rather leaving them as POSIXct objects as then the and then the `ggplot2` functions
+`scale_x_datetime()` can be used directly (in some places I convert to factors which doesn't help).
 
 ## Previewing Graphs
 
@@ -880,7 +885,7 @@ In order to have this page publish correctly I had to initialise a [renv](https:
 repository and include the `renv.lockfile` so that the GitHub action/workflow installed all of the packages I use and
 their dependencies in the runner that renders the blog.
 
-Whilst I'm familiar with virtual environments under Python this is something relatively new to me for R so I won't write
+Whilst I'm familiar with virtual environments under Python this is something relatively new to me for R. I won't write
 much other than the process involved initialising the environment, installing the dependencies then updating the
 lockfile.
 
