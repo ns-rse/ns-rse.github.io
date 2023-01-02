@@ -153,9 +153,7 @@ went anti-clockwise rather than the "race" circuit of starting in Edale and asce
 clockwise. This meant I had slightly less ascent to do. However by around 28-29km coming off of Kinder and passing Hope
 Cross my legs (well the tendons going into my groin!) were complaining a lot and so I basically walked the remainder up
 to Win Hill and very tentatively jogged back down into Hope. This data point is a bit of an outlier and so is excluded
-from some plots.
-
-For some reason this value isn't correctly shown in the table below.
+from some plots. For some reason this value isn't correctly shown in the table below.
 
 **TODO** - Calculate the inter-quartile range, tricky with `across()` used above? :thinking:
 
