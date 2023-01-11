@@ -10,7 +10,7 @@ format:
     show-slide-number: speaker
     # embed-resources: true
     # standalone: true
-footer: "**slides**: []() ; **source** [github.com/ns-rse/ns-rse.github.io/](https://github.com/ns-rse/ns-rse.github.io/assets/pre-commit-slides.qmd)"
+footer: "[github.com/ns-rse/ns-rse.github.io](https://github.com/ns-rse/ns-rse.github.io): [slides](https://github.com/ns-rse/ns-rse.github.io/assets/pre-commit-slides.html) ; [source](https://github.com/ns-rse/ns-rse.github.io/assets/pre-commit-slides.qmd)"
 ---
 
 
@@ -20,7 +20,7 @@ footer: "**slides**: []() ; **source** [github.com/ns-rse/ns-rse.github.io/](htt
 + Background Statistical Genetics, Medical Statistics and Data Scientist for Telematics Company
 + Blog Post (2022-10-10) : [pre-commit : Protecting your future self](https://rse.shef.ac.uk/blog/pre-commit/)
 
-![pre-commit : Protecting your future self](pre-commit-blog-qr.png)
+![](pre-commit-blog-qr.png)
 
 ::: {.notes}
 Good morning/afternoon, my name is Neil Shephard and I'm a Research Software Engineer at the University of
@@ -165,7 +165,7 @@ def test_find_files():
     """Test the find_files() function"""
     py_files = find_files(file_path="./", file_ext=".py")
     assert isinstance(py_files, list)
-    assert "sample.py" is in py_files
+    assert "sample.py" in py_files
 ```
 
 ::: {.notes}
@@ -177,7 +177,7 @@ checked to be a lit and the presence of `sample.py` in that list is checked.
 
 ## Linting and Style Guides
 
-Python has the [PEP8]() style guide which sets out a consistent way to write code, naming function, classes and methods.
+Python has the [PEP8](https://pep8.org/) style guide sets out a consistent way to write code, naming function, classes and methods.
 Lots of tools for linting...
 
 * [black](https://github.com/psf/black) PEP8 compliance.
@@ -188,34 +188,35 @@ Lots of tools for linting...
 :::
 
 
-## Linting manually...
+## Linting and Testing manually...
 
 ```{.bash}
 black sample.py
 flake8 sample.py
 pylint sample.py
+pytest test_sample.py
 ```
 
 ::: {.notes}
 If you were running linting manually then you would have to invoke each and run them against a specific file, or all
-files in a project directory. The later might actually cause some problems because if you are working on an existing
-code based which hasn't been linted already these could potentially be changed (certainly black lints files in place
-applying its opinionated style). When you then come to commit you may end up with the blame associated with code that
-you only formatted rather than wrote. There are ways around this using Git's `--ignore-rev` flag to store commits in a
-file `.git-blame-ignore-revs` that lists the hashes for which blame is to be ignored (see
+files in a project directory. Running black against your code base could actually cause problems as it will reformat
+files in place using its opinionated style. You would then have to commit those changes and the blame would be
+associated with code that you only formatted rather than wrote. There are ways around this using Git's `--ignore-rev`
+flag to store commits in a file `.git-blame-ignore-revs` that lists the hashes for which blame is to be ignored (see
 [article](https://akrabat.com/ignoring-revisions-with-git-blame/))
 :::
 
-## Linting manually - `black`
+:::{.scrollable}
+## Linting manually
+
+`black`
 
 ```
-
+❱ black sample.py
+All done! ✨ 🍰 ✨
+1 file changed.
 ```
-
-::: {.notes}
-:::
-
-### Linting manually - `flake8`
+`flake8`
 
 ```{.bash}
 ❱ flake8 sample.py
@@ -229,10 +230,7 @@ sample.py:9:80: E501 line too long (135 > 79 characters)
 sample.py:12:5: E722 do not use bare 'except'
 ```
 
-::: {.notes}
-:::
-
-### Linting manually - `pylint`
+`pylint`
 
 ```{.bash}
 ❱ pylint sample.py
@@ -251,7 +249,18 @@ sample.py:2:0: W0611: Unused pandas imported as pd (unused-import)
 Your code has been rated at -10.00/10
 ```
 
+**TODO** Add output from running test_sample.py
+```{.bash}
+❱ pylint test_sample.py
+
+```
+:::
 ::: {.notes}
+Running each of these manually is four separate commands. This takes you the developer time to switch to a terminal,
+make sure your virtual environment is activated and your in the same directory as your work, then run the commands.
+
+You then correct any errors and repeat the cycle, albeit a little quicker and all of this before you can commit your
+changes to git....
 :::
 
 ## ..._then_ you can commit and push
@@ -259,8 +268,11 @@ Your code has been rated at -10.00/10
 ![](gitsave_fire-300x2101.png)
 
 ::: {.notes}
-Git work cycles encourages regular saving of work, checking it into Git by making a commit. You only have to leave the
-building if the fire-alarm is going off.
+Git work cycles encourages regular saving of work, by staging and committing work into Git. Periodically
+you should Git push to ensure your work is backed up just in case of fires and such like.
+
+But the process of repeatedly linting and testing your code quickly becomes time consuming and tedious and you may even
+forget to do so before making commits. This means there is potential 
 :::
 
 <!-- ### Linting manually - `mypy` -->
@@ -276,8 +288,9 @@ building if the fire-alarm is going off.
 
 ## Automate with [pre-commit](https://pre-commit.com)
 
-* Uses Git Hooks to run checks automatically.
-* Large number of
+* Uses [Git Hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) to run checks automatically.
+* Large number of [supported hooks](https://pre-commit.com/hooks.html) available to use.
+* Written in Python but hooks for most languages.
 
 
 
@@ -286,7 +299,7 @@ building if the fire-alarm is going off.
 * Actions that are run prior to or in response to a given action.
 
 ```{.bash code-line-numbers="9"}
- ls -lha .git/hooks
+❱ ls -lha .git/hooks
 drwxr-xr-x neil neil 4.0 KB Mon Oct 24 10:26:37 2022  .
 drwxr-xr-x neil neil 4.0 KB Tue Jan  3 18:48:37 2023  ..
 .rwxr-xr-x neil neil 478 B  Sun Aug 14 13:35:27 2022  applypatch-msg.sample
@@ -315,27 +328,221 @@ As you can see from the directory listing there are a number of different stages
 name of this talk gives away, the key hook of interest here is the `pre-commit` hook.
 
 These are Bash scripts and you could sit down and craft your own script to undertake all the tasks you wish to run prior
-to making commits. However
+to making commits. However pre-commit and its array of hooks takes the need to do this out of your hands.
 :::
 
-## Testing
+## System installation of pre-commit
 
-Tests ensure code works as expected.
+:::: {.columns}
 
-**TODO** Write tests for above function.
-```{.python}
+::: {.column width="50%"}
+**Python Package**
+
+``` {.bash}
+❱ workon a_virtual_env
+❱ pip install pre-commit
+
+❱ conda activate conda_env
+❱ conda install -c \
+        conda-forge pre-commit
+```
+:::
+
+::: {.column width="50%"}
+**GNU/Linux**
+
+``` {.bash}
+# Arch
+❱ pacman -Syu python-pre-commit
+# Gentoo
+❱ emerge -av pre-commit
+# Debian/Ubuntu
+❱ sudo apt install pre-commit    
 ```
 
-### Testing - `pytest`
-
-**TODO** Example of running tests.
+**OSX**
 
 ```{.bash}
+❱ brew install pre-commit
 ```
-::: {.notes}
 :::
 
-## Linting with IDE
+::::
+::: {.notes}
+As pre-commit is a Python package the typically way to install it is within a virtual environment using the `pip`
+command which will install it from the Python Package Index or if you use Conda for your virtual environments its
+available on the `conda-forge`. 
+
+If you use GNU/Linux then many package managers have pre-commit available in the package repositories to install
+and some examples of how to install the relevant packages under Arch, Gentoo and Ubuntu are shown.
+
+The OSX package manager homebrew also includes pre-commit so you can `brew install`.
+:::
+
+:::{.scrollable}
+## Configuring pre-commit
+
+Uses `.pre-commit-config.yaml` in the root of a project under Git version control.
+
+``` {.yaml}
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0  # Use the ref you want to point at
+    hooks:
+      - id: trailing-whitespace
+        types: [file, text]
+      - id: end-of-file-fixer
+        types: [file, text]
+      - id: check-docstring-first
+      - id: check-case-conflict
+      - id: requirements-txt-fixer
+      - id: check-byte-order-marker
+      - id: check-yaml
+
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+        types: [python]
+        additional_dependencies: ['click==8.0.4']
+        args: ["--extend-exclude", "plotting.py"]
+
+  - repo: https://github.com/pycqa/flake8.git
+    rev: 5.0.4
+    hooks:
+      - id: flake8
+        args: ["--extend-exclude=_version.py"]
+        additional_dependencies: [flake8-print]
+        types: [python]
+        
+  - repo: local
+    hooks:
+      - id: pylint
+        args: ["--rcfile=.pylintrc"]
+        name: Pylint
+        entry: python -m pylint
+        language: system
+        files: \.py$
+
+  - repo: local
+    hooks:
+      -id: pytest
+      name: pytest
+      entry: pytest --cov
+      language:system
+```
+
+:::
+::: {.notes}
+Configuration of pre-commit is via a YAML file called `.pre-commit-config.yaml` in the root of a project that is under
+Git version control.
+
+The top-level defines `repos:` and you then enable and configure each of the `pre-commit` hooks you wish to use for your
+repository under its own `- repo` section. This example is configured to run the main `pre-commit-hooks` as well as the
+`black`, `flake8` and `pylint` hooks.
+
+
+Lets take a look at how a `pre-commit` hook is configured by focusing on the `black` checker.
+:::
+
+::: {.scrollable}
+## Hook configuration
+
+``` {.yaml}
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+        types: [python]
+        additional_dependencies: ['click==8.0.4']
+        args: ["--extend-exclude", "plotting.py"]
+```
+:::
+::: {.notes}
+pre-commit hooks are typically host on a GitHub (or other forge) and the `-repo:` field defines the URL from which a
+virtual environment will be downloaded and installed for running the hook. Each hook has a `rev`ision that the user can
+explicitly specify.  Repositories than have one or more `hooks` which have unique `id`'s in this case `black` which
+works with files of `types` python. An additional dependency on `click` is defined and then additional arguments are
+passed to black to extend the list of excluded files, in this case excluding the file `plotting.py`.
+:::
+
+::: {.scrollable}
+## Local Hook Configuration
+
+```
+  - repo: local
+    hooks:
+      -id: pytest
+      name: pytest
+      entry: pytest --cov
+      language: system
+```
+:::
+::: {.notes}
+Both the `pylint` and `pytest` hooks are configured differently, the `repo` here is local, which means that rather than
+downloading a virtual environment to run the hook its going to use your existing local environment. This is because the
+environments that are available online do not include the packages that need to be installed to lint and test the code
+and so instead `pre-commit` uses the `system` where it is being run, i.e. the virtual environment you have activated.
+:::
+
+## Installing pre-commit for a project
+
+Install within a Git repository with
+
+``` {.bash}
+❱ git add .pre-commit-config
+❱ pre-commit --version
+❱ pre-commit install
+pre-commit installed at .git/hooks/pre-commit
+```
+::: {.notes}
+Now that `pre-commit` is installed on your system and a configuration file has been added to your repository we can
+install the `pre-commit` hook in the repository. You can first check that `pre-commit` is available using the
+`--version` flag and then install it.
+:::
+
+
+:::: {.scrollable}
+## Check existing Files
+
+``` {.bash}
+❱ pre-commit run --all-files
+[INFO] Initializing environment for https://github.com/pre-commit/pre-commit-hooks.
+[INFO] Initializing environment for https://github.com/psf/black.
+[INFO] Initializing environment for https://github.com/pycqa/flake8.git.
+[INFO] Installing environment for https://github.com/pre-commit/pre-commit-hooks.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+[INFO] Installing environment for https://github.com/psf/black.
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+[INFO] Installing environment for https://github.com/pycqa/flake8.git
+[INFO] Once installed this environment will be reused.
+[INFO] This may take a few minutes...
+Check Yaml...............................................................Passed
+Fix End of Files.........................................................Passed
+Trim Trailing Whitespace.................................................Failed
+- hook id: trailing-whitespace
+- exit code: 1
+
+Files were modified by this hook. Additional output:
+
+Fixing sample.py
+
+black....................................................................Passed
+flake8...................................................................Passed
+pylint...................................................................Passed
+pytest...................................................................Passed
+```
+::::
+::: {.notes}
+Normally `pre-commit` only runs against the files that have been changed in a given commit and so on first installation
+it would be wise to run it against all files. Here we see it failed the "Trim trailing-whitespace" check and the file
+was modified.
+:::
+
+
+## Bonus - Linting with IDE
 
 Popular IDEs have tools to run linting automatically on file save...
 
