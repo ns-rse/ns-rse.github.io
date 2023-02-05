@@ -104,41 +104,41 @@ ci:
 Setup is relatively straight-forward, head to [https://pre-commit.ci](https://pre-commit.ci) and sign-in with your
 GitHub account and grant `pre-commit.ci` access to your account.
 
-![](/img/pre-commit-ci/pre-commit-ci.png)
+![](img/pre-commit-ci.png)
 
 Once you have granted access you can choose which repositories `pre-commit.ci` has access to. It is possible to grant
 access to all repositories but I would recommend doing so on a per-repository basis so you know and are in control of
 what is happening across your repositories. If you have administration rights to organisation repositories these should
 be listed in the "_Select repositories_" pull-down menu.
 
-![](/img/pre-commit-ci/github-pre-commit-access.png)
+![](img/github-pre-commit-access.png)
 
 ### `pre-commit.ci` jobs
 
 When logged into `pre-commit.ci` using your GitHub account you are presented with a page similar to the following which
 lists the accounts and any organisations that you have authorised `pre-commit.ci` to access.
 
-![](/img/pre-commit-ci/account-pre-commit-ci.png)
+![](img/account-pre-commit-ci.png)
 
 You can follow the links through to view the history of jobs run be `pre-commit.ci` and whether they pass or fail. The
 page shows the current status and provides both Markdown and reStructured Text code for adding badges to your source
 documents (e.g. the Markdown badge can be added to your repositories top-level `README.md` and the badge will be
 displayed on GitHub)
 
-![](/img/pre-commit-ci/pre-commit-ci-pass2.png)
+![](img/pre-commit-ci-pass2.png)
 
 You can click through and see the results of a given run and when they
 [pass](https://results.pre-commit.ci/run/github/168173540/1674062271.Tj4xDOxqRFu3CDIPhXkMJA) they look similar to the
 output you would have seen when making commits locally.
 
-![](/img/pre-commit-ci/pre-commit-ci-pass3.png)
+![](img/pre-commit-ci-pass3.png)
 
 But sometimes things will [fail](https://results.pre-commit.ci/run/github/168173540/1674061180.-2Eo_dbfRAGrukip387Nhg)
 as shown below where the `trailing-whitespace` hook failed and the file was modified. But since `pre-commit.ci` corrects
 and pushes such changes automatically you can see at the bottom that these changes were pushed to the Pull Request from
 which the originated.
 
-![](/img/pre-commit-ci/pre-commit-ci-fail.png)
+![](img/pre-commit-ci-fail.png)
 
 
 ## GitLab
@@ -180,7 +180,7 @@ Access Tokens_ you can create a new token with an expiry date. You must then cre
 
 Once you have done this your CI/CD pipeline should show at the very start the `.pre` stage...
 
-![](/img/pre-commit-ci/gitlab-pre-commit-pipeline.png)
+![](img/gitlab-pre-commit-pipeline.png)
 
 ...and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to
 download and intialise all of the environments for each configured hook unlike [`pre-commit.ci`](https://pre-commit.ci)
@@ -188,7 +188,7 @@ download and intialise all of the environments for each configured hook unlike [
 also have to download and initialise the environments).
 
 
-![](/img/pre-commit-ci/gitlab-pre-commit-pipeline-pass.png)
+![](img/gitlab-pre-commit-pipeline-pass.png)
 
 
 ## Summary
