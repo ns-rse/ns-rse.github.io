@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/pre-commit-ci/index.html",
       "/posts/running-2022/index.html",
       "/posts/whos_to_blame/index.html",
       "/posts/pre-commit-updates/index.html",

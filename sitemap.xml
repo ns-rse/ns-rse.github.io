@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ns-rse.github.io/about.html</loc>
-    <lastmod>2023-01-02T17:10:16.101Z</lastmod>
+    <loc>https://ns-rse.github.io/index.html</loc>
+    <lastmod>2023-02-05T22:08:36.965Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/linting/index.html</loc>
-    <lastmod>2023-01-02T17:10:17.101Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ns-rse.github.io/posts/pre-commit-updates/index.html</loc>
-    <lastmod>2023-01-02T17:10:17.542Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ns-rse.github.io/posts/running-2022/index.html</loc>
-    <lastmod>2023-01-02T17:10:28.038Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ns-rse.github.io/posts/git-ssh/index.html</loc>
-    <lastmod>2023-01-02T17:10:28.474Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ns-rse.github.io/posts/cli-alternatives/index.html</loc>
-    <lastmod>2023-01-02T17:10:28.986Z</lastmod>
-  </url>
-  <url>
-    <loc>https://ns-rse.github.io/posts/pre-commit/index.html</loc>
-    <lastmod>2023-01-02T17:10:29.490Z</lastmod>
+    <loc>https://ns-rse.github.io/posts/pre-commit-ci/index.html</loc>
+    <lastmod>2023-02-05T22:08:37.869Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/whos_to_blame/index.html</loc>
-    <lastmod>2023-01-02T17:10:29.858Z</lastmod>
+    <lastmod>2023-02-05T22:08:38.289Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/index.html</loc>
-    <lastmod>2023-01-02T17:10:30.370Z</lastmod>
+    <loc>https://ns-rse.github.io/posts/git-ssh/index.html</loc>
+    <lastmod>2023-02-05T22:08:38.749Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ns-rse.github.io/posts/running-2022/index.html</loc>
+    <lastmod>2023-02-05T22:08:49.613Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ns-rse.github.io/posts/cli-alternatives/index.html</loc>
+    <lastmod>2023-02-05T22:08:50.137Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ns-rse.github.io/posts/pre-commit-updates/index.html</loc>
+    <lastmod>2023-02-05T22:08:50.569Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ns-rse.github.io/posts/linting/index.html</loc>
+    <lastmod>2023-02-05T22:08:51.161Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ns-rse.github.io/posts/pre-commit/index.html</loc>
+    <lastmod>2023-02-05T22:08:51.649Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ns-rse.github.io/about.html</loc>
+    <lastmod>2023-02-05T22:08:51.989Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/links.html</loc>
-    <lastmod>2023-01-02T17:10:30.694Z</lastmod>
+    <lastmod>2023-02-05T22:08:52.337Z</lastmod>
   </url>
 </urlset>
