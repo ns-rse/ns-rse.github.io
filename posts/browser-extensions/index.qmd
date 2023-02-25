@@ -1,0 +1,151 @@
+---
+title: "Browser Extensions"
+author: "nshephard"
+date: "2023-03-25"
+categories: [browser, firefox, opera, vivaldi, extensions]
+image: https://live.staticflickr.com/65535/52703385696_6455dcef49_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 3
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+Most people use web-browsers a fair bit. There are a number of extensions available which make their use more
+stream-lined and efficient. This post covers those that I use. If there is something that you use regularly and find
+useful I'd love to hear about it (see links at top of page).
+
+## Browser Choice
+
+I deliberately eschew Chrome and even its open-source relative [Chromium](https://chromium.org/) because of the tracking
+built into the system. Instead I use [Firefox](https://www.mozilla.com/firefox) as my main browser and for work I use
+[Opera](https://www.opera.com/). I've also dabbled with [Vivaldi](https://vivaldi.com/) which I quite like and should
+use more.
+
+Most of the plugins discussed here work across browsers, although for Opera and Vivaldi it is often the case of
+installing the Chrome extensions which work because of the development/toolkit on which the browser is based.
+
+## Plugins/Extensions
+
+Plugins/extensions add additional functionality to your browser. I use many for blocking adverts and trackers and I list
+those below and find they make browsing cleaner and faster (I also block many such sites via my router but that is a
+separate post). But protecting your privacy is not the only purpose of extensions, many can streamline your browser
+usage and workflow and that is the main focus of this article.
+
+Firefox Extensions are available at [Firefox Extensions](https://addons.mozilla.org/en-GB/firefox/extensions/), as
+mentioned those for Opera and Vivaldi are typically installed via the [Chrome Web
+Store](https://chrome.google.com/webstore/category/extensions).
+
+### [BibItNow](https://addons.mozilla.org/en-US/firefox/addon/bibitnow/)
+
+This is invaluable if you undertake any academic work and use citations. Once installed it adds a short-cut for
+generating [BibTex](http://www.bibtex.org/) and other citation formats from the page being visited. This can then be
+copy and pasted into your database with a few keystrokes.
+
+It is possible to customise the fields that are included e.g. by default _Abtract_ is not included, but its something I
+like to include in my citation database for a quick overview of what a paper is about.
+
+### [Copy URL to Clipboard](https://github.com/asamuzaK/url2clipboard)
+
+Links are the blood of the internet and when reading and taking notes I like to link to the source I am using. This
+plugin makes it a doddle and will create a link to the page that is being viewed (or highlighted text) to a range of
+formats including [Markdown](https://www.markdownguide.org/), [Org-mode](https://orgmode.org),
+[LaTeX](https://www.latex-project.org/),
+[reStructuredText](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html).
+
+Binding each link type to specific keys means its incredibly easy to copy and paste links from browser to
+[Emacs](https://www.gnu.org/software/emacs/) (where I do most of my writing).
+
+
+### [Unpaywall](https://unpaywall.org/products/extension)
+
+Many papers are, unfairly given the research that paid for them is often from the public purse, behind
+PayWalls. Thankfully with the rise of pre-print servers such as [arXiv](https://arxiv.org/),
+[biorXiv](https://www.biorxiv.org/), [F1000](https://f1000research.com/) and the forthcoming
+[Octopus](https://octopus.ac) pre-prints and alternatives to pay-walled articles are available and
+[Unpaywall](https://unpaywall.org/products/extension) is a plugin that automatically finds them for you. Install it and
+when you visit an articles page if its behind a paywall but available freely elsewhere a green-symbol with an unlocked
+padlock appears on the right-hand side of your browser. If its not available this is a locked padlock on a grey
+background.
+
+### [BrowserPass](https://github.com/browserpass/browserpass-extension)
+
+Everyone should use a Password Manager of some description, I use [Pass: The Standard Unix Password
+Manager](https://www.passwordstore.org/) and to get it to work seamlessly with my browsers I use
+[BrowserPass](https://github.com/browserpass/browserpass-extension). It requires a little configuration so read the
+GitHub page carefully but once working it is seamless. I visit a web-site and because I organise my passwords to include
+the URL all I need to do is use `Ctrl-Shift-f` and if my GPG key is unlocked the password is entered for me. My GPG key
+is unlocked using my [Yubikey]() so if this isn't plugged in and unlocked I'm prompted to do so. Makes logging in to
+web-sites so much faster.
+
+### [org-capture](https://github.com/sprig/org-capture-extension)
+
+Probably only useful if you use the amazing "Capture" web-site, title and selected text to Emacs in Org-mode via
+[org-protocol](https://orgmode.org/worg/org-contrib/org-protocol.html).
+
+
+### [GitLab Notify](https://github.com/Mikescops/gitlab-notify-extension)
+
+Get notifications from GitLab in your browser.
+
+### [Octotree](https://www.octotree.io/)
+
+Not used this much as I only discovered it recently whilst working on this article but it improves navigation of GitHub
+repositories. The main, free, feature that is of most use is a sidebar to aid navigation of a repositories code. This
+can be pinned if required.
+
+## Keyboard Shortcuts
+
+Binding actions you take with extensions to keyboard short-cuts can save a considerable amount of time, particularly if
+you are a heavy typist, as it saves the small amount of time taken to move the hand to the mouse, locate the pointer and
+move it to where it needs to be.
+
+Not every extension has shortcuts associated with it, but for those that do in Firefox you can configure this by going
+to [Add-ons and themes](about:addons) and at the top-right of the page listing the installed extensions, adjacent to
+_Manage Your Extensions_ is a cog. Left-click on this once and a menu appears and at the bottom you can select _Manage
+Extension Shortcuts_. This allows you to bind "key-chords" (combinations of keys) to each plugins action. If there are
+conflicts (i.e. the same key-binding is bound to two actions) then these are highlighted and can be corrected.
+
+## Summary
+
+These are but a few of the vast array of productivity extensions you can make use of. Which you find useful and would
+use will be dependent on your browser usage and work
+
+### Productivity Extensions
+
+| Extension                                                             | Description                                                                                                                                                                       | Shortcut                                |
+|-----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
+| [BibItNow!](https://addons.mozilla.org/en-US/firefox/addon/bibitnow/) | Creates BibTex and other citation formats from web-pages. Really useful when browsing for journal articles, books and other sites that you want to add to your citation database. | `Alt-C`                                 |
+| [Copy URL to Clipboard](https://github.com/asamuzaK/url2clipboard)    | Copy the URL of a page along with its title (or selected text) to any number of different link formats.                                                                           | `Alt-m` (Markdown); `Alt-o` (Org-mode). |
+| [Unpaywall](https://unpaywall.org/products/extension)                 | Automatically provides links to free versions of pay-walled journal articles and books.                                                                                           | Not Required                            |
+| [BrowserPass](https://github.com/browserpass/browserpass-extension)   | Auto-fill website login details stored in your [Pass: The Standard Unix Password Manager](https://www.passwordstore.org/).                                                        | `Ctrl+Shift-F`                          |
+| [org-capture](https://github.com/sprig/org-capture-extension)         | "Capture" web-site, title and selected text to Emacs via [org-protocol](https://orgmode.org/worg/org-contrib/org-protocol.html).                                                  | `Ctrl-Shift-L`                          |
+| [GitLab Notify](https://github.com/Mikescops/gitlab-notify-extension) | Get notifications from GitLab in your browser.                                                                                                                                    | Not Available                           |
+| [Sci-Hub Now!](https://github.com/0x01h/sci-hub-now)                  | Access papers on Sci-Hub.                                                                                                                                                         | Not Available                           |
+
+
+### Privacy Protecting Extensions
+
+I've not gone into detail about the privacy protecting extensions I use but have listed them below. There is
+overlap/redundancy in what I'm using but that's not necessarily a bad thing. I do find it breaks some sites
+(e.g. Amazon) but that isn't necessarily a bad thing as it encourages me to shop more ethically and I can always switch
+browsers if needs be.
+
+| Extension                                                                                               | Description                                                                                                                                                                                                                                               |
+|---------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [ClearURLs](https://docs.clearurls.xyz/1.26.1/)                                                         | Automatically remove tracking elements from URLs to help protect your privacy.                                                                                                                                                                            |
+| [CookieBlock](https://karelkubicek.github.io/post/cookieblock)                                          | Automating Cookie Consent and GDPR Violation Detection.                                                                                                                                                                                                   |
+| [DecentralEyes](https://decentraleyes.org/)                                                             | Protects you against tracking through "free", centralized, content delivery. It prevents a lot of requests from reaching networks like Google Hosted Libraries, and serves local files to keep sites from breaking. Complements regular content blockers. |
+| [DuckDuckGo Privacy Essentials](https://addons.mozilla.org/en-US/firefox/addon/duckduckgo-for-firefox/) | Tracker blocking, cookie protection, DuckDuckGo private search, email protection, HTTPS upgrading and more.                                                                                                                                                                                                                                                          |
+| [HTTPS Everywhere](https://www.eff.org/https-everywhere)                                                | From the Electronic Frontier Foundation, retired 2023 as most browser can be [set up to use HTTPS by Default](https://www.eff.org/https-everywhere/set-https-default-your-browser)                                                                        |
+| [I don't care about cookies 3.4.6](https://www.i-dont-care-about-cookies.eu/)                           | Get rid of cookie warnings from almost all websites.                                                                                                                                                                                                      |
+| [Temporary Containers](https://github.com/stoically/temporary-containers)                               | [Enhance your privacy in Firefox with Temporary COntainers](https://medium.com/@stoically/enhance-your-privacy-in-firefox-with-temporary-containers-33925cd6cd21)                                                                                         |
+| [UTM Remover](https://addons.mozilla.org/en-US/firefox/addon/utm-remover/)                              | Remove Google Analytics UTM tracking parameters fromURLS for privacy.                                                                                                                                                                                     |
+| [UntrackMe](https://addons.mozilla.org/en-US/firefox/addon/untrack-me/)                                 | Removes parts of URLs that track you (also worth enabling [Do Not Track](https://support.mozilla.org/en-US/kb/how-do-i-turn-do-not-track-feature)).                                                                                                       |
+| [uBlock Origin](https://ublockorigin.com/)                                                              | Block adverts                                                                                                                                                                                                                                             |
