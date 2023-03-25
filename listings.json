@@ -2,14 +2,15 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/python-packaging/index.html",
       "/posts/browser-extensions/index.html",
       "/posts/pre-commit-ci/index.html",
       "/posts/running-2022/index.html",
       "/posts/whos_to_blame/index.html",
       "/posts/pre-commit-updates/index.html",
       "/posts/cli-alternatives/index.html",
-      "/posts/git-ssh/index.html",
       "/posts/pre-commit/index.html",
+      "/posts/git-ssh/index.html",
       "/posts/linting/index.html"
     ]
   }
