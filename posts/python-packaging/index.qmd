@@ -145,8 +145,8 @@ where your package is hosted, your username and the package name.
 ``` {.toml}
 [project.urls]
 Source = "https://gitlab.com/username/my_package"
-Source = "https://gitlab.com/username/my_package/issues"
-Source = "https://username.gitlab.com/my_package"
+Bug_Tracker = "https://gitlab.com/username/my_package/issues"
+Documentation = "https://username.gitlab.com/my_package"
 ```
 
 ### `project.optional-dependencies`
