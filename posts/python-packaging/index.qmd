@@ -290,12 +290,16 @@ count = true
 
 ### `tool.setuptools_scm`
 
-[setuptools~scm~](https://github.com/pypa/setuptools_scm/) is a simple to use extension to setuptools that dynamically
-sets the package version based on the version control data.
+[setuptools_scm](https://github.com/pypa/setuptools_scm/) is a simple to use extension to setuptools that dynamically
+sets the package version based on the version control data. It is important to note that by default `setuptools_scm`
+will attempt to bump the version of the release. The following configuration forces the use of the current `git tag`.
 
 ``` {.toml}
 [tool.setuptools_scm]
 write_to = "tcx2gpx/_version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
+git_describe_command = "git describe --tags"
 ```
 
 ### `tool.ruff`
@@ -324,7 +328,7 @@ to use when tagging versions of your software to work with `setuptools_scm`.
 
 ## Setuptools-scm
 
-[setuptools-scm](https://github.com/pypa/setuptools_scm) is simpler to setup and use than
+[setuptools_scm](https://github.com/pypa/setuptools_scm) is simpler to setup and use than
 [versioneer](https://github.com/python-versioneer/python-versioneer) as it relies solely on configuration
 via `pyproject.toml` rather than being dependent on now deprecated `setup.py`.
 
@@ -342,6 +346,9 @@ dynamic = ["version"]
 
 [tool.setuptools_scm]
 write_to "pkg/_version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
+git_describe_command = "git describe --tags"
 ```
 
 
@@ -516,6 +523,7 @@ used it.
 - [PyPA : Building and Distributing Packages with Setuptools](https://setuptools.pypa.io/en/latest/userguide/index.html)
 - [PyPA : Specifications](https://packaging.python.org/en/latest/specifications/)
 - [Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
+- [Python package structure information — pyOpenSci Python Packaging Guide](https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html)
 - [Packaging Data files in a Python Distribution](https://github.com/wimglenn/resources-example)
 - [PDM - Python package and Dependency Manager](https://pdm.fming.dev/latest/)
 - [Why you shouldn\'t invoke setup.py directly](https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html)

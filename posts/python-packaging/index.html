@@ -470,9 +470,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="tool.setuptools_scm" class="level3">
 <h3 class="anchored" data-anchor-id="tool.setuptools_scm"><code>tool.setuptools_scm</code></h3>
-<p><a href="https://github.com/pypa/setuptools_scm/">setuptools<sub>scm</sub></a> is a simple to use extension to setuptools that dynamically sets the package version based on the version control data.</p>
+<p><a href="https://github.com/pypa/setuptools_scm/">setuptools_scm</a> is a simple to use extension to setuptools that dynamically sets the package version based on the version control data. It is important to note that by default <code>setuptools_scm</code> will attempt to bump the version of the release. The following configuration forces the use of the current <code>git tag</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">setuptools_scm</span><span class="kw">]</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">write_to</span> <span class="op">=</span> <span class="st">"tcx2gpx/_version.py"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">write_to</span> <span class="op">=</span> <span class="st">"tcx2gpx/_version.py"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="dt">version_scheme</span> <span class="op">=</span> <span class="st">"post-release"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dt">local_scheme</span> <span class="op">=</span> <span class="st">"no-local-version"</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="dt">git_describe_command</span> <span class="op">=</span> <span class="st">"git describe --tags"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="tool.ruff" class="level3">
 <h3 class="anchored" data-anchor-id="tool.ruff"><code>tool.ruff</code></h3>
@@ -489,7 +492,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>It is worth taking a moment to read and understand about <a href="https://semver.org/">Semantic Versioning</a> which you are likely to use when tagging versions of your software to work with <code>setuptools_scm</code>.</p>
 <section id="setuptools-scm" class="level2">
 <h2 class="anchored" data-anchor-id="setuptools-scm">Setuptools-scm</h2>
-<p><a href="https://github.com/pypa/setuptools_scm">setuptools-scm</a> is simpler to setup and use than <a href="https://github.com/python-versioneer/python-versioneer">versioneer</a> as it relies solely on configuration via <code>pyproject.toml</code> rather than being dependent on now deprecated <code>setup.py</code>.</p>
+<p><a href="https://github.com/pypa/setuptools_scm">setuptools_scm</a> is simpler to setup and use than <a href="https://github.com/python-versioneer/python-versioneer">versioneer</a> as it relies solely on configuration via <code>pyproject.toml</code> rather than being dependent on now deprecated <code>setup.py</code>.</p>
 <p>As shown above you should have set the minimum versions of <code>"setuptools&gt;=45"</code> and <code>"setuptools_scm[toml]&gt;=6.2"</code>, <code>dynamic = ["version"]</code> under <code>project</code> and set the <code>write_to = "pkg/_version.py"</code> (<strong>NB</strong> substitute <code>pkg</code> for your package directory, whether its <code>src</code> or the package name).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>[build<span class="op">-</span>system]</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>requires <span class="op">=</span> [<span class="st">"setuptools&gt;=65.6.3"</span>, <span class="st">"setuptools_scm[toml]&gt;=6.2"</span>]</span>
@@ -498,7 +501,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>dynamic <span class="op">=</span> [<span class="st">"version"</span>]</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>[tool.setuptools_scm]</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>write_to <span class="st">"pkg/_version.py"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>write_to <span class="st">"pkg/_version.py"</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>version_scheme <span class="op">=</span> <span class="st">"post-release"</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>local_scheme <span class="op">=</span> <span class="st">"no-local-version"</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>git_describe_command <span class="op">=</span> <span class="st">"git describe --tags"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="including-version-in-sphinx-documentation" class="level3">
 <h3 class="anchored" data-anchor-id="including-version-in-sphinx-documentation">Including Version in Sphinx Documentation</h3>
 <p>If you have Sphinx documentation you can add the following to <sub>docs/conf.py</sub></p>
@@ -618,6 +624,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html">PyPA : Building and Distributing Packages with Setuptools</a></li>
 <li><a href="https://packaging.python.org/en/latest/specifications/">PyPA : Specifications</a></li>
 <li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">Packaging Python Projects</a></li>
+<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
 <li><a href="https://github.com/wimglenn/resources-example">Packaging Data files in a Python Distribution</a></li>
 <li><a href="https://pdm.fming.dev/latest/">PDM - Python package and Dependency Manager</a></li>
 <li><a href="https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html">Why you shouldn't invoke setup.py directly</a></li>
