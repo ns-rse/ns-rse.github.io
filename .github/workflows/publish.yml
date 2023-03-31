@@ -24,7 +24,7 @@ jobs:
           version: 1.3.14
 
       - name: Install Quarto Extensions
-        run:
+        run: |
           quarto install --no-prompt extension jmbuhr/quarto-qrcode
           quarto install --no-prompt extension mcanouil/quarto-elevator
 
