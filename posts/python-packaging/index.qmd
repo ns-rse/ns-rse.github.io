@@ -516,6 +516,7 @@ used it.
 - [PyPA : Building and Distributing Packages with Setuptools](https://setuptools.pypa.io/en/latest/userguide/index.html)
 - [PyPA : Specifications](https://packaging.python.org/en/latest/specifications/)
 - [Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
+- [Python package structure information — pyOpenSci Python Packaging Guide](https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html)
 - [Packaging Data files in a Python Distribution](https://github.com/wimglenn/resources-example)
 - [PDM - Python package and Dependency Manager](https://pdm.fming.dev/latest/)
 - [Why you shouldn\'t invoke setup.py directly](https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html)
