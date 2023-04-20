@@ -37,9 +37,7 @@ blog). Fortunately Sphinx and incorporate documentation written in
 
 ```{python}
 extensions = [
-    ...
     "myst_parser",
-    ...
 ]
 ```
 
@@ -157,7 +155,6 @@ directories to generate documentation from
 
 ```{python}
 extensions = [
-    ...
     "autoapi.extension",
 ]
 
@@ -182,7 +179,6 @@ You need to include it as in the list of `extensions` of `docs/conf.py`
 
 ```{python}
 extensions = [
-    ...
     "sphinx_multiversion",
 ]
 ```
@@ -223,7 +219,7 @@ building the documentation dependencies of your package so they can be easily in
 `pyproject.toml` to configure and manage your package, if you are unfamiliar with the packaging process see my post on
 [Python Packaging](https://ns-rse.github.io/posts/python-packaging/).
 
-```{python}
+```{cfg}
 [project.optional-dependencies]
 
 docs = [
