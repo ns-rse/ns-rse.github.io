@@ -1,0 +1,255 @@
+---
+title: "Sphinx Documentation"
+author: "nshephard"
+date: "2023-03-25"
+categories: [quarto, python, documentation, sphinx, github actions]
+image: https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+How to generate documentation websites for your Python package using [Sphinx](https://www.sphinx-doc.org/en/master/),
+include API documentation automatically, build multiple versions across releases and automatically build and host them
+on GitHub Pages.
+
+![[_This is going on my blog_ Picture by
+me.](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)
+
+
+# `index.rst`
+
+
+## Including Markdown
+
+I already know [Markdown]() fairly well and would rather use that to write documents (as I do with this
+blog). Fortunately Sphinx and incorporate documentation written in
+[Markdown](https://github.com/ryanfox/sphinx-markdown-tables) using the
+[`myst_parser`](https://myst-parser.readthedocs.io/en/latest/) package. Simply include it in the `extensions`.
+
+```{python}
+extensions = [
+    ...
+    "myst_parser",
+    ...
+]
+```
+
+
+By default it works with extensions of `.md` but if there are other flavours you wish to include (e.g. `.Rmd` for
+RMarkdown or `.qmd` for Quarto) you add them to the `source_suffix` in `docs/conf.py`
+
+
+```{python}
+source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
+```
+
+### Tables
+
+If you have tables in Markdown (and its likely that you will) then you will need the
+[`sphinx-markdown-tables`](https://github.com/ryanfox/sphinx-markdown-tables) package which ensures they are rendered
+correctly.
+
+### Mermaid Diagrams
+
+Further Sphinx has support for [Mermaid]() diagrams that have been written in Markdown documents via the
+[`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid) package. This means that you can include all
+sorts of neat diagrams such as the Git Graph shown below.
+
+```{mermaid}
+%%{init: {'theme': 'base', 'gitGraph': {'rotateCommitLabel': true}
+         }
+}%%
+    gitGraph
+       commit id: "Last feature"
+       commit id: "v0.1.0"
+       branch "v0.1 fixes"
+       commit "This branch is for fixes to v0.1"
+       branch "Missing JSON files for v0.1"
+       commit id: "Add missing JSON to v0.1.0 branch"
+       checkout "v0.1 fixes"
+       merge "Missing JSON files for v0.1"
+       commit id: "v0.1.1"
+       checkout main
+       commit id: "Feature1 for v0.2.0"
+       commit id: "Feature2 for v0.2.0"
+       commit id: "v0.2.0"
+       branch "v0.2 fixes"
+       commit id: "This branch is for fixes to v0.2"
+       branch "Missing JSON files for v0.2"
+       commit id: "Add missing JSON to v0.2.0 branch"
+       checkout "v0.2 fixes"
+       merge "Missing JSON files for v0.2"
+       branch "More changes for v0.2"
+       commit id: "Update Cadenza logo"
+       commit id: "Update README"
+       checkout "v0.2 fixes"
+       merge "More changes for v0.2"
+       commit id: "v0.2.1"
+       checkout main
+       commit id: "Cadenza Baseline"
+       commit id: "Unit Tests for evaluators"
+       commit id: "Unit Tests for enhancers"
+       commit id: "v0.3.0"
+       branch "v0.3 fixes"
+       commit id: "This branch is for fixes to v0.3"
+       branch "Fixing something in the future on v0.3"
+       commit id: "Fix something in the future"
+       checkout "v0.3 fixes"
+       merge "Fixing something in the future on v0.3"
+       checkout "v0.2 fixes"
+       branch "Fixing something in the future on v0.2"
+       commit id: "Fix the same problem on v0.2 branch"
+       checkout "v0.2 fixes"
+       merge "Fixing something in the future on v0.2"
+       commit id: "v0.2.2"
+       checkout "v0.3 fixes"
+       commit id: "v0.3.1"
+       checkout main
+       commit id: "Refactor HAAQI"
+       commit id: "Refactor HASQI"
+       commit id: "Refactor HASPI"
+       commit id: "v0.4.0"
+       branch "v0.4 fixes"
+       commit id: "This branch is for fixes to v0.4"
+       checkout "main"
+       commit id: "First of many new features"
+       checkout "v0.4 fixes"
+       branch "Fix something in v0.4"
+       commit id: "Fix problem 1 on v0.4"
+       commit id: "Fix problem 2 on v0.4"
+       checkout "v0.4 fixes"
+       merge "Fix something in v0.4"
+       commit id: "v0.4.1"
+       checkout main
+       commit id: "Lots more enhancements"
+```
+# Including API Documentation
+
+As you write your package its is good practice include [docstrings]() for each module/class/method/function that you
+write. For Python there are several different styles for writing these, my personal preference is for [numpydoc
+style](https://numpydoc.readthedocs.io/en/latest/format.html) but regardless of your preference you should write them as
+they are invaluable to users (including your future self) to understand how the code works and with many modern
+Integrated Development Environments (IDEs) supporting functionality to show the documentation for functions as you type
+they are an invaluable reference.
+
+Whilst it is useful to have this API available in an IDE as you work it is also useful to include the reference on a
+packages website and this is relatively straight-forward with Sphinx which provides the
+[`sphinx-apidoc`](https://numpydoc.readthedocs.io/en/latest/format.html) command to generate documentation from the
+embedded docstrings. However, rather than learning the intricacies of using this command the package Sphinx extensions
+[sphinx-autoapi](https://sphinx-autoapi.readthedocs.io/en/latest/) can be leveraged to automatically build the API
+documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it
+means you do not have to include the `.rst` files that `sphinx-apidoc` generates in your repository they are generated
+on the fly when Sphinx builds each version of the documentation.
+
+
+Configuration is via `docs/conf.py` and the package needs referencing in the `extensions` section then
+[configuring](https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html) at a bare minimum which
+directories to generate documentation from
+
+```{python}
+extensions = [
+    ...
+    "autoapi.extension",
+]
+
+autoapi_dirs = ["../mypackage"]
+```
+
+There are a lot of subtle configuration options and I would recommend reading the
+[documentation](https://sphinx-autoapi.readthedocs.io/en/latest/) and working through the
+[Tutorials](https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html) and [How To
+Guides](https://sphinx-autoapi.readthedocs.io/en/latest/how_to.html).
+
+
+
+# Multiple Versions
+
+Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation
+and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision
+documentation for each version that is available. Fortunately the Sphinx extension
+[sphinx-multiversion](https://holzhaus.github.io/sphinx-multiversion/master/) makes this relatively painless.
+
+You need to include it as in the list of `extensions` of `docs/conf.py`
+
+```{python}
+extensions = [
+    ...
+    "sphinx_multiversion",
+]
+```
+
+## Configuring Versions
+
+### Sidebar
+
+For versions to not just be built but available you need to include a section on your site that allows selecting which
+version of the documentation to view.
+
+### Tags/Branches
+
+If no options are set then `sphinx-multiversion` will build documentation for _all_ branhces, which is probably
+undesirable. Typically you want to restrict this to the released versions which are identified by [git tags]() and
+perhaps your `main`/`master` branch.
+
+
+
+# Themes
+
+There are a number of different themes available for including in your package. Which is used is defined by the
+`html_theme` variable in `docs/conf.py`. I like the
+[`pydata-sphinx-theme`](https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html) that is used by
+[Pandas](https://pandas.pydata.org)/[Matplotlib](https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html).
+
+```{python}
+html_theme = "pydata_sphinx_theme"
+```
+
+
+
+# Package Dependencies
+
+Since the documentation is part of your package it is important to include all of the dependencies that are required for
+building the documentation dependencies of your package so they can be easily installed and are available to Sphinx
+(since Sphinx will try loading anything listed in your `docs/conf.py`). These days you should really be using
+`pyproject.toml` to configure and manage your package, if you are unfamiliar with the packaging process see my post on
+[Python Packaging](https://ns-rse.github.io/posts/python-packaging/).
+
+```{python}
+[project.optional-dependencies]
+
+docs = [
+  "Sphinx",
+  "myst_parser",
+  "numpydoc",
+  "pydata_sphinx_theme",
+  "sphinx-autoapi",
+  "sphinx-autodoc-typehints",
+  "sphinx-multiversion",
+  "sphinx_markdown_tables",
+  "sphinx_rtd_theme",
+  "sphinxcontrib-mermaid",
+]
+```
+# Building and Deploying on GitHub Pages
+
+
+# Links
+
++ [Sphinx](https://www.sphinx-doc.org/en/master/)
+
+## Sphinx Extensions
+
++ [`myst_parser`](https://myst-parser.readthedocs.io/en/latest/)
++ [`sphinx-autoapi`](https://sphinx-autoapi.readthedocs.io/en/latest/)
++ [`sphinx-markdown-tables`](https://github.com/ryanfox/sphinx-markdown-tables)
++ [`sphinx-multiversion`](https://holzhaus.github.io/sphinx-multiversion/master/)
++ [`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid)
