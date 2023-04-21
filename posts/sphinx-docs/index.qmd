@@ -1,7 +1,7 @@
 ---
 title: "Sphinx Documentation"
 author: "nshephard"
-date: "2023-03-25"
+date: "2023-04-23"
 categories: [quarto, python, documentation, sphinx, github actions]
 image: https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg
 from: markdown+emoji
@@ -18,24 +18,66 @@ execute:
 ---
 
 How to generate documentation websites for your Python package using [Sphinx](https://www.sphinx-doc.org/en/master/),
-include API documentation automatically, build multiple versions across releases and automatically build and host them
-on GitHub Pages.
+including generating API documentation automatically, build multiple versions across releases and automatically build
+and host them on GitHub Pages.
 
 ![[_This is going on my blog_ Picture by
 me.](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)
 
+# Pre-requisites
+
+The instructions here assume that you have your Python package well structured, under version control and backed up on
+[GItHub](https://github.com).
+
+# Initial Setup
+
+Sphinx comes with the [`sphinx-quickstart`](https://www.sphinx-doc.org/en/master/man/sphinx-quickstart.html) interactive
+tool which will help setup your repository with a basic `conf.py` and `Makefile`. There are a number of command line
+options but is also interactive. I like to keep the source and build directories separate and so use the `--sep` flag as
+well as the `--makefile` flag to generate a `Makefile` for building documentation on GNU/Linux or OSX (if you use M$-Win
+the use the `--batchfile` flag instead).
+
+I keep documentation under `docs/` directory within the root of the package directory.
+
+```{bash}
+#| eval: false
+cd ~/path/to/package
+mkdir docs
+cd docs
+sphinx-quickstart --makefile
+```
+
+# `conf.py`
+
+Configuration is via a `conf.py` file as you read through this document you will see reference to adding/modifying
+various sections of the this file.  The automatically generated `conf.py` produced by `sphinx-quickstart` is well
+commented and instructive on how to use it to configure Sphinx.
+
+Key sections are the list of `extensions` that your documentation uses.
 
 # `index.rst`
 
+The front-page of your website, typically `index.html` for static sites, is derived from `index.rst`. You can write
+welcome details about your project and link to other pages you have written. Typically I write all but the front matter
+in Markdown.
+
+```
+#| eval: false
+Welcome to my packages documentation
+====================================
+
+This is my package, there are many packages like it but this one is mine.
+```
 
 ## Including Markdown
 
-I already know [Markdown]() fairly well and would rather use that to write documents (as I do with this
-blog). Fortunately Sphinx and incorporate documentation written in
+I already know [Markdown](https://www.markdownguide.org/) fairly well and would rather use that to write documents (as I do with this
+blog). Fortunately Sphinx can incorporate documentation written in
 [Markdown](https://github.com/ryanfox/sphinx-markdown-tables) using the
 [`myst_parser`](https://myst-parser.readthedocs.io/en/latest/) package. Simply include it in the `extensions`.
 
 ```{python}
+#| eval: false
 extensions = [
     "myst_parser",
 ]
@@ -47,10 +89,29 @@ RMarkdown or `.qmd` for Quarto) you add them to the `source_suffix` in `docs/con
 
 
 ```{python}
+#| eval: false
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 ```
 
-### Tables
+In your `index.rst` you can then list the Markdown filenames, without extensions. For example if you have an
+`installation.md` and `configuration.md` place them in the same directory as `index.rst` (the root `docs/`) directory
+and have in your `index.rst` have...
+
+```
+#| eval: false
+Welcome to my packages documentation
+====================================
+
+This is my package, there are many packages like it but this one is mine.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Getting Started
+   introduction
+   configuration
+```
+
+### Markdown Tables
 
 If you have tables in Markdown (and its likely that you will) then you will need the
 [`sphinx-markdown-tables`](https://github.com/ryanfox/sphinx-markdown-tables) package which ensures they are rendered
@@ -58,86 +119,84 @@ correctly.
 
 ### Mermaid Diagrams
 
-Further Sphinx has support for [Mermaid]() diagrams that have been written in Markdown documents via the
-[`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid) package. This means that you can include all
-sorts of neat diagrams such as the Git Graph shown below.
+Further Sphinx has support for [Mermaid](https://mermaid.js.org/) diagrams that have been written in Markdown documents
+via the [`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid) package. This means that you can
+include all sorts of neat diagrams such as the Git Graph shown below.
 
-```{mermaid}
-%%{init: {'theme': 'base', 'gitGraph': {'rotateCommitLabel': true}
-         }
-}%%
-    gitGraph
-       commit id: "Last feature"
-       commit id: "v0.1.0"
-       branch "v0.1 fixes"
-       commit "This branch is for fixes to v0.1"
-       branch "Missing JSON files for v0.1"
-       commit id: "Add missing JSON to v0.1.0 branch"
-       checkout "v0.1 fixes"
-       merge "Missing JSON files for v0.1"
-       commit id: "v0.1.1"
-       checkout main
-       commit id: "Feature1 for v0.2.0"
-       commit id: "Feature2 for v0.2.0"
-       commit id: "v0.2.0"
-       branch "v0.2 fixes"
-       commit id: "This branch is for fixes to v0.2"
-       branch "Missing JSON files for v0.2"
-       commit id: "Add missing JSON to v0.2.0 branch"
-       checkout "v0.2 fixes"
-       merge "Missing JSON files for v0.2"
-       branch "More changes for v0.2"
-       commit id: "Update Cadenza logo"
-       commit id: "Update README"
-       checkout "v0.2 fixes"
-       merge "More changes for v0.2"
-       commit id: "v0.2.1"
-       checkout main
-       commit id: "Cadenza Baseline"
-       commit id: "Unit Tests for evaluators"
-       commit id: "Unit Tests for enhancers"
-       commit id: "v0.3.0"
-       branch "v0.3 fixes"
-       commit id: "This branch is for fixes to v0.3"
-       branch "Fixing something in the future on v0.3"
-       commit id: "Fix something in the future"
-       checkout "v0.3 fixes"
-       merge "Fixing something in the future on v0.3"
-       checkout "v0.2 fixes"
-       branch "Fixing something in the future on v0.2"
-       commit id: "Fix the same problem on v0.2 branch"
-       checkout "v0.2 fixes"
-       merge "Fixing something in the future on v0.2"
-       commit id: "v0.2.2"
-       checkout "v0.3 fixes"
-       commit id: "v0.3.1"
-       checkout main
-       commit id: "Refactor HAAQI"
-       commit id: "Refactor HASQI"
-       commit id: "Refactor HASPI"
-       commit id: "v0.4.0"
-       branch "v0.4 fixes"
-       commit id: "This branch is for fixes to v0.4"
-       checkout "main"
-       commit id: "First of many new features"
-       checkout "v0.4 fixes"
-       branch "Fix something in v0.4"
-       commit id: "Fix problem 1 on v0.4"
-       commit id: "Fix problem 2 on v0.4"
-       checkout "v0.4 fixes"
-       merge "Fix something in v0.4"
-       commit id: "v0.4.1"
-       checkout main
-       commit id: "Lots more enhancements"
+``` {mermaid}
+%%{init: {'theme': 'base', 'gitGraph': {'rotateCommitLabel': true}} }%%
+gitGraph
+   commit id: "Last feature"
+   commit id: "v0.1.0"
+   branch "v0.1 fixes"
+   commit "This branch is for fixes to v0.1"
+   branch "Missing JSON files for v0.1"
+   commit id: "Add missing JSON to v0.1.0 branch"
+   <!-- checkout "v0.1 fixes" -->
+   <!-- merge "Missing JSON files for v0.1" -->
+   <!-- commit id: "v0.1.1" -->
+   <!-- checkout main -->
+   <!-- commit id: "Feature1 for v0.2.0" -->
+   <!-- commit id: "Feature2 for v0.2.0" -->
+   <!-- commit id: "v0.2.0" -->
+   <!-- branch "v0.2 fixes" -->
+   <!-- commit id: "This branch is for fixes to v0.2" -->
+   <!-- branch "Missing JSON files for v0.2" -->
+   <!-- commit id: "Add missing JSON to v0.2.0 branch" -->
+   <!-- checkout "v0.2 fixes" -->
+   <!-- merge "Missing JSON files for v0.2" -->
+   <!-- branch "More changes for v0.2" -->
+   <!-- commit id: "Update Cadenza logo" -->
+   <!-- commit id: "Update README" -->
+   <!-- checkout "v0.2 fixes" -->
+   <!-- merge "More changes for v0.2" -->
+   <!-- commit id: "v0.2.1" -->
+   <!-- checkout main -->
+   <!-- commit id: "Cadenza Baseline" -->
+   <!-- commit id: "Unit Tests for evaluators" -->
+   <!-- commit id: "Unit Tests for enhancers" -->
+   <!-- commit id: "v0.3.0" -->
+   <!-- branch "v0.3 fixes" -->
+   <!-- commit id: "This branch is for fixes to v0.3" -->
+   <!-- branch "Fixing something in the future on v0.3" -->
+   <!-- commit id: "Fix something in the future" -->
+   <!-- checkout "v0.3 fixes" -->
+   <!-- merge "Fixing something in the future on v0.3" -->
+   <!-- checkout "v0.2 fixes" -->
+   <!-- branch "Fixing something in the future on v0.2" -->
+   <!-- commit id: "Fix the same problem on v0.2 branch" -->
+   <!-- checkout "v0.2 fixes" -->
+   <!-- merge "Fixing something in the future on v0.2" -->
+   <!-- commit id: "v0.2.2" -->
+   <!-- checkout "v0.3 fixes" -->
+   <!-- commit id: "v0.3.1" -->
+   <!-- checkout main -->
+   <!-- commit id: "Refactor HAAQI" -->
+   <!-- commit id: "Refactor HASQI" -->
+   <!-- commit id: "Refactor HASPI" -->
+   <!-- commit id: "v0.4.0" -->
+   <!-- branch "v0.4 fixes" -->
+   <!-- commit id: "This branch is for fixes to v0.4" -->
+   <!-- checkout "main" -->
+   <!-- commit id: "First of many new features" -->
+   <!-- checkout "v0.4 fixes" -->
+   <!-- branch "Fix something in v0.4" -->
+   <!-- commit id: "Fix problem 1 on v0.4" -->
+   <!-- commit id: "Fix problem 2 on v0.4" -->
+   <!-- checkout "v0.4 fixes" -->
+   <!-- merge "Fix something in v0.4" -->
+   <!-- commit id: "v0.4.1" -->
+   <!-- checkout main -->
+   <!-- commit id: "Lots more enhancements" -->
 ```
 # Including API Documentation
 
-As you write your package its is good practice include [docstrings]() for each module/class/method/function that you
-write. For Python there are several different styles for writing these, my personal preference is for [numpydoc
-style](https://numpydoc.readthedocs.io/en/latest/format.html) but regardless of your preference you should write them as
-they are invaluable to users (including your future self) to understand how the code works and with many modern
-Integrated Development Environments (IDEs) supporting functionality to show the documentation for functions as you type
-they are an invaluable reference.
+As you write your package its is good practice include [docstrings](https://realpython.com/documenting-python-code/) for
+each module/class/method/function that you write. For Python there are several different styles for writing these, my
+personal preference is for [numpydoc style](https://numpydoc.readthedocs.io/en/latest/format.html) but regardless of
+your preference you should write them as they are invaluable to users (including your future self) to understand how the
+code works and with many modern Integrated Development Environments (IDEs) supporting functionality to show the
+documentation for functions as you type they are an invaluable reference.
 
 Whilst it is useful to have this API available in an IDE as you work it is also useful to include the reference on a
 packages website and this is relatively straight-forward with Sphinx which provides the
@@ -151,9 +210,10 @@ on the fly when Sphinx builds each version of the documentation.
 
 Configuration is via `docs/conf.py` and the package needs referencing in the `extensions` section then
 [configuring](https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html) at a bare minimum which
-directories to generate documentation from
+directories to generate documentation from.
 
 ```{python}
+#| eval: false
 extensions = [
     "autoapi.extension",
 ]
@@ -178,6 +238,7 @@ documentation for each version that is available. Fortunately the Sphinx extensi
 You need to include it as in the list of `extensions` of `docs/conf.py`
 
 ```{python}
+#| eval: false
 extensions = [
     "sphinx_multiversion",
 ]
@@ -193,10 +254,31 @@ version of the documentation to view.
 ### Tags/Branches
 
 If no options are set then `sphinx-multiversion` will build documentation for _all_ branhces, which is probably
-undesirable. Typically you want to restrict this to the released versions which are identified by [git tags]() and
-perhaps your `main`/`master` branch.
+undesirable. Typically you want to restrict this to the released versions which are identified by [git
+tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and perhaps your `main`/`master` branch. If you prefix your
+tags with `v` and you want to build the documentation for the `HEAD` of your `main` (or `master`) branch then you should
+set options as shown below for `sphinx-multiversion`. I like to be able to test documentation builds and so I have a
+section that allows me to include a given branch.
 
 
+```{python}
+#| eval:false
+smv_tag_whitelist = r"^v\d+.*$"  # Tags begining with v#
+smv_branch_whitelist = r"^main$"  # main branch
+# If testing changes locally comment out the above and the smv_branch_whitelist below instead. Replace the branch name
+# you are working on ("ns-rse/testing-branch" in the example below) with the branch you are working on and run...
+#
+# cd docs
+# sphinx-multiversion . _build/html
+#
+# smv_branch_whitelist = r"^(main|ns-rse/testing-branch)$"  # main branch
+smv_released_pattern = r"^tags/.*$"  # Tags only
+# smv_released_pattern = r"^(/.*)|(main).*$"  # Tags and HEAD of main
+smv_outputdir_format = "{ref.name}"
+
+```
+
+If you are testing locally be sure to revert the commented sections so that the branch is not built on GitHub Pages.
 
 # Themes
 
@@ -206,6 +288,7 @@ There are a number of different themes available for including in your package. 
 [Pandas](https://pandas.pydata.org)/[Matplotlib](https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html).
 
 ```{python}
+#| eval: false
 html_theme = "pydata_sphinx_theme"
 ```
 
@@ -219,7 +302,8 @@ building the documentation dependencies of your package so they can be easily in
 `pyproject.toml` to configure and manage your package, if you are unfamiliar with the packaging process see my post on
 [Python Packaging](https://ns-rse.github.io/posts/python-packaging/).
 
-```{cfg}
+```{python}
+#| eval: false
 [project.optional-dependencies]
 
 docs = [
@@ -235,7 +319,87 @@ docs = [
   "sphinxcontrib-mermaid",
 ]
 ```
-# Building and Deploying on GitHub Pages
+
+Ensure all of these dependencies are installed in your Virtual Environment.
+
+```{bash}
+#| eval:false
+cd ~/path/to/package
+pip install .docs
+```
+
+# Building Documentation
+
+You are now ready to build your documentation locally.
+
+```{bash}
+#| eval:false
+cd ~/path/to/package/docs
+sphinx-multiversion
+```
+
+Output should reside under the `~/path/to/package/docs/_build/html/` directory and there should be a directory for every
+tag as well as `main` (or `master`).
+
+
+## Deploying on GitHub Pages
+
+The final stage is to leverage [GitHub Pages](https://pages.github.com/) to host your documentation. This can be
+achieved using a [GitHub Action](https://docs.github.com/en/actions). These are a way of running certain tasks
+automatically on GitHub in response to certain actions. You can configure your actions to use those defined by others. I
+found the [`action-sphinx-docs-to-gh-pages`](https://github.com/uibcdf/action-sphinx-docs-to-gh-pages) action for
+generating Sphinx documentation but it didn't support generating API documentation nor multiple versions of
+documentation so I have [forked](https://github.com/ns-rse/action-sphinx-docs-to-gh-pages) it and added this
+functionality (I intend to work with the authors and push the changes upstream).
+
+To use this action you need to create a file in `~/path/to/package/.github/workflows/` called
+`sphinx_docs_to_gh_pages.yaml` and copy and paste the following [YAML](https://yaml.org/).
+
+```{yaml}
+#| eval:false
+
+name: Sphinx docs to gh-pages
+
+on:
+  push:
+    # Uncomment if only tagged releases are to have documentation built
+    # tags:
+    #   - v*
+  workflow_dispatch:
+
+jobs:
+  sphinx_docs_to_gh-pages:
+    runs-on: ubuntu-latest
+    name: Sphinx docs to gh-pages
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v4.3.0
+        with:
+          python-version: 3.9
+      - name: Installing the Documentation requirements
+        run: |
+          pip3 install .[docs]
+      - name: Running Sphinx to gh-pages Action
+        # Uncomment if only tagged releases are to have documentation built
+        # if: startsWith(github.ref, 'refs/tags')
+        uses: ns-rse/action-sphinx-docs-to-gh-pages@main
+        with:
+          # When testing set this branch to your branch, when working switch to main. It WILL fail if not
+          # defined as it defaults to 'main'.
+          branch: main
+          dir_docs: docs
+          sphinxapiexclude: '../*setup* ../*tests* ../*.ipynb ../demo.py ../make_baseline.py ../jupyter_notebook_config.py ../demo_ftrs.py'
+          sphinxapiopts: '--separate -o . ../'
+          sphinxopts: ''
+          multiversion: true
+          multiversionopts: ''
+
+```
+
+Save, add and commit to your Git repository and push the changes to GitHub.
 
 
 # Links
@@ -249,3 +413,8 @@ docs = [
 + [`sphinx-markdown-tables`](https://github.com/ryanfox/sphinx-markdown-tables)
 + [`sphinx-multiversion`](https://holzhaus.github.io/sphinx-multiversion/master/)
 + [`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid)
+
+## GitHub
+
++ [GitHub Pages](https://pages.github.com/)
++ [GitHub Action](https://docs.github.com/en/actions)
