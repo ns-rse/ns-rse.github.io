@@ -249,7 +249,38 @@ extensions = [
 ### Sidebar
 
 For versions to not just be built but available you need to include a section on your site that allows selecting which
-version of the documentation to view.
+version of the documentation to view. Sidebars are included via HTML templates and you need to configure the path to
+this directory and the name of the HTML file within it. The following options in the `conf.py` configure the
+`_templates` directory and within it the `versioning.html` file.
+
+```{python}
+#| eval: false
+templates_path = [
+    "_templates",
+]
+
+html_sidebars = [
+    "versioning.html",
+]
+```
+
+The `versioning.html` file can take a number of formats, refer to the
+[documentation](https://holzhaus.github.io/sphinx-multiversion/master/templates.html) for all options, but the following
+is an example.
+
+```
+#| eval: false
+{% if versions %}
+<h3>{{ _('Versions') }}</h3>
+<ul>
+  {%- for item in versions %}
+  <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+  {%- endfor %}
+</ul>
+{% endif %}
+```
+
+Ensure this file is under Git version control, it is needed to build your pages on GitHub.
 
 ### Tags/Branches
 
@@ -262,7 +293,7 @@ section that allows me to include a given branch.
 
 
 ```{python}
-#| eval:false
+#| eval: false
 smv_tag_whitelist = r"^v\d+.*$"  # Tags begining with v#
 smv_branch_whitelist = r"^main$"  # main branch
 # If testing changes locally comment out the above and the smv_branch_whitelist below instead. Replace the branch name
@@ -323,7 +354,7 @@ docs = [
 Ensure all of these dependencies are installed in your Virtual Environment.
 
 ```{bash}
-#| eval:false
+#| eval: false
 cd ~/path/to/package
 pip install .docs
 ```
@@ -333,7 +364,7 @@ pip install .docs
 You are now ready to build your documentation locally.
 
 ```{bash}
-#| eval:false
+#| eval: false
 cd ~/path/to/package/docs
 sphinx-multiversion
 ```
@@ -355,16 +386,11 @@ functionality (I intend to work with the authors and push the changes upstream).
 To use this action you need to create a file in `~/path/to/package/.github/workflows/` called
 `sphinx_docs_to_gh_pages.yaml` and copy and paste the following [YAML](https://yaml.org/).
 
-```{yaml}
-#| eval:false
-
+```
 name: Sphinx docs to gh-pages
 
 on:
   push:
-    # Uncomment if only tagged releases are to have documentation built
-    # tags:
-    #   - v*
   workflow_dispatch:
 
 jobs:
@@ -383,8 +409,6 @@ jobs:
         run: |
           pip3 install .[docs]
       - name: Running Sphinx to gh-pages Action
-        # Uncomment if only tagged releases are to have documentation built
-        # if: startsWith(github.ref, 'refs/tags')
         uses: ns-rse/action-sphinx-docs-to-gh-pages@main
         with:
           # When testing set this branch to your branch, when working switch to main. It WILL fail if not
