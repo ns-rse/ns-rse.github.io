@@ -26,8 +26,8 @@ me.](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)](https://li
 
 # Pre-requisites
 
-The instructions here assume that you have your Python package well structured, under version control and backed up on
-[GItHub](https://github.com).
+The instructions here assume that you have your [Python Packaging](https://ns-rse.github.io/posts/python-packaging/)
+well structured, under version control and backed up on [GItHub](https://github.com).
 
 # Initial Setup
 
@@ -121,17 +121,43 @@ correctly.
 
 Further Sphinx has support for [Mermaid](https://mermaid.js.org/) diagrams that have been written in Markdown documents
 via the [`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid) package. This means that you can
-include all sorts of neat diagrams such as the Git Graph shown below.
+include all sorts of neat diagrams such as [Git Graph](https://mermaid.live/edit#pako:eNqlVl1v2jAU_SuWJcQLQ4kTWpI31o-tU7tupX2ZeDHJDVhNbOQ4HS3iv-8mIRPQpBBKHrDjc66Pfc91vKKBCoH6tNNZCSmMT1ZdM4cEuj7pTnkK3R7pzoT5pvli3s1HtTLcwIVKEmFu-RRifGt0BuuJJNUP2-tOp3xRkf8PBwWViNAnE3rLU0Mi4CbTMKH1mBerb_etrdGp5jKYb0ZIJJaQvudO6ONcpBUWW5HSJZYYRXJmXcQ7kaZCzsiP8f1PRMdQ8vbgO_JGYUiSbdomfN_ahN0mziF4Vplp0p6AnsFpMoop7bq5Ei5kPee63Hi7Cs52trkOyo6AvhvdzhdrylfJPZAz1i5nrGXO2OGcsRNyVq9aacDYXM6O0Pu0CLHoyAUPQb5xEquZOgB9uBpd3l2dsow2uoo9a2m6ahFf8XSJhWws-yc8jsgjpKaUAS88zrhROj2WIHERATTjUbzT6FPnUz516qJei2Xuj1QlYOZ5S0iCZy2JsryyiJL7zN0CFMsmamOWncYst9dywD7tVsk-WmWOTnkCZKHVNIak4pxemp_TVJictdjk9y5rWSIPEPEArU6-j0a_b5oib6HGx6F-3Xyg0m2sBfdTteDW71yx-kYXaLwWqAi3SL4SCX-rK0LamAX3Q0fupn5f1L4BK9_ZG2ccBWZ14AMSt_x5vMIiVS0NdavwUEzyk31zKiYgDSqhPYoakBfiFXCVcye0uP5NaE4LuX7OJ1ojLiu-K1ehQC9RP7_x9SjPjBq_yqDql5hLwWeaJ9XLBZd_lMJuxOO07FN_RZfU_-IOrb43OMfH8twzNhwOevSV-mdW_8xiA8-ybc_DP2_do29FCPxAM9dyhoOBw5xzzx6s_wG-Ijr0).
 
-``` {mermaid}
-%%{init: {'theme': 'base', 'gitGraph': {'rotateCommitLabel': true}} }%%
+```{mermaid}
+%%| fig-height: 2
+%%{init: { 'logLevel': 'debug', 'theme': 'base', 'gitGraph': {'showBranches': true,'showCommitLabel': true, 'rotateCommitLabel': true}} }%%
 gitGraph
-   commit id: "Last feature"
-   commit id: "v0.1.0"
-   branch "v0.1 fixes"
-   commit "This branch is for fixes to v0.1"
-   branch "Missing JSON files for v0.1"
-   commit id: "Add missing JSON to v0.1.0 branch"
+    commit
+    commit
+    branch bug1
+    checkout main
+    commit
+    checkout bug1
+    commit
+    commit
+    checkout main
+    branch bug2
+    checkout bug2
+    commit
+    commit
+    checkout bug1
+    commit
+    checkout main
+    merge bug1 tag: "v0.1.1"
+    checkout bug2
+    commit
+    commit
+    checkout main
+    merge bug2 tag: "v0.1.2"
+    commit
+<!-- %%{init: {'theme': 'base', 'gitGraph': {'rotateCommitLabel': true}} }%% -->
+<!-- gitGraph -->
+<!--    commit id: "Last feature" -->
+<!--    commit id: "v0.1.0" -->
+<!--    branch "v0.1 fixes" -->
+<!--    commit "This branch is for fixes to v0.1" -->
+<!--    branch "Missing JSON files for v0.1" -->
+<!--    commit id: "Add missing JSON to v0.1.0 branch" -->
    <!-- checkout "v0.1 fixes" -->
    <!-- merge "Missing JSON files for v0.1" -->
    <!-- commit id: "v0.1.1" -->
@@ -442,3 +468,6 @@ Save, add and commit to your Git repository and push the changes to GitHub.
 
 + [GitHub Pages](https://pages.github.com/)
 + [GitHub Action](https://docs.github.com/en/actions)
++ [Sphinx docs to GitHub Pages · Actions · GitHub
+  Marketplace](https://github.com/marketplace/actions/sphinx-docs-to-github-pages) ( [my
+  fork](https://github.com/ns-rse/action-sphinx-docs-to-gh-pages) with added `sphinx-multiversion` support).
