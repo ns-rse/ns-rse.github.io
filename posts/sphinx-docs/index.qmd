@@ -285,9 +285,8 @@ templates_path = [
     "_templates",
 ]
 
-html_sidebars = [
-    "versioning.html",
-]
+html_sidebars =  {"**":   "versioning.html",}
+
 ```
 
 The `versioning.html` file can take a number of formats, refer to the
