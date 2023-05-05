@@ -27,7 +27,7 @@ me.](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)](https://li
 # Pre-requisites
 
 The instructions here assume that you have your [Python Packaging](https://ns-rse.github.io/posts/python-packaging/)
-well structured, under version control and backed up on [GItHub](https://github.com).
+well structured, under version control and backed up on [GitHub](https://github.com).
 
 # Initial Setup
 
@@ -40,7 +40,6 @@ the use the `--batchfile` flag instead).
 I keep documentation under `docs/` directory within the root of the package directory.
 
 ```{bash}
-#| eval: false
 cd ~/path/to/package
 mkdir docs
 cd docs
@@ -62,7 +61,6 @@ welcome details about your project and link to other pages you have written. Typ
 in Markdown.
 
 ```
-#| eval: false
 Welcome to my packages documentation
 ====================================
 
@@ -98,7 +96,6 @@ In your `index.rst` you can then list the Markdown filenames, without extensions
 and have in your `index.rst` have...
 
 ```
-#| eval: false
 Welcome to my packages documentation
 ====================================
 
@@ -293,8 +290,7 @@ The `versioning.html` file can take a number of formats, refer to the
 [documentation](https://holzhaus.github.io/sphinx-multiversion/master/templates.html) for all options, but the following
 is an example.
 
-```
-#| eval: false
+```{html}
 {% if versions %}
 <h3>{{ _('Versions') }}</h3>
 <ul>
@@ -379,9 +375,8 @@ docs = [
 Ensure all of these dependencies are installed in your Virtual Environment.
 
 ```{bash}
-#| eval: false
 cd ~/path/to/package
-pip install .docs
+pip install .[docs]
 ```
 
 # Building Documentation
@@ -389,9 +384,9 @@ pip install .docs
 You are now ready to build your documentation locally.
 
 ```{bash}
-#| eval: false
 cd ~/path/to/package/docs
-sphinx-multiversion
+mkdir -p _build/html
+sphinx-multiversion . _build/html
 ```
 
 Output should reside under the `~/path/to/package/docs/_build/html/` directory and there should be a directory for every
@@ -411,7 +406,7 @@ functionality (I intend to work with the authors and push the changes upstream).
 To use this action you need to create a file in `~/path/to/package/.github/workflows/` called
 `sphinx_docs_to_gh_pages.yaml` and copy and paste the following [YAML](https://yaml.org/).
 
-```
+```{yaml}
 name: Sphinx docs to gh-pages
 
 on:
