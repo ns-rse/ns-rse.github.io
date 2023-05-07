@@ -20,6 +20,8 @@ execute:
 This post describes steps in creating a [Python](https://www.python/org) package. If you are looking for information on
 installing packages this is done using [Python PIP](https://pypi.org/).
 
+![[_Water and Light_ - Picture by Me](https://www.flickr.com/photos/slackline/52595884731/)](https://live.staticflickr.com/65535/52595884731_fb5c7d576e_k.jpg)
+
 [Python](https://www.python/org) packaging is in a constant state of flux. There is the official [Python
 Packaging User Guide](https://packaging.python.org/en/latest/) and the [Python Packaging
 Authority (PyPA)](https://www.pypa.io/en/latest/) which is probably the best resource to read but things change, and often
@@ -529,3 +531,4 @@ used it.
 - [Why you shouldn\'t invoke setup.py directly](https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html)
 - [python-versioneer/python-versioneer: version-string management for VCS-controlled trees](https://github.com/python-versioneer/python-versioneer)
 - [pypa/setuptools~scm~: the blessed package to manage your versions by scm tags](https://github.com/pypa/setuptools_scm)
+- [rye one-shop-stop for Python](https://github.com/mitsuhiko/rye)
