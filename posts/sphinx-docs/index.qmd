@@ -1,7 +1,7 @@
 ---
 title: "Sphinx Documentation"
 author: "nshephard"
-date: "2023-04-23"
+date: "2023-05-07"
 categories: [quarto, python, documentation, sphinx, github actions]
 image: https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg
 from: markdown+emoji
@@ -22,7 +22,7 @@ including generating API documentation automatically, build multiple versions ac
 and host them on GitHub Pages.
 
 ![[_This is going on my blog_ Picture by
-me.](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)
+Me.](https://www.flickr.com/photos/slackline/6891757680/)](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)
 
 # Pre-requisites
 
@@ -214,12 +214,16 @@ gitGraph
 ```
 # Including API Documentation
 
-As you write your package its is good practice include [docstrings](https://realpython.com/documenting-python-code/) for
+As you write your package it is good practice include [docstrings](https://realpython.com/documenting-python-code/) for
 each module/class/method/function that you write. For Python there are several different styles for writing these, my
 personal preference is for [numpydoc style](https://numpydoc.readthedocs.io/en/latest/format.html) but regardless of
-your preference you should write them as they are invaluable to users (including your future self) to understand how the
-code works and with many modern Integrated Development Environments (IDEs) supporting functionality to show the
-documentation for functions as you type they are an invaluable reference.
+your preference you should write them. They are invaluable to users (including your future self) to understand how the
+code works and as many modern Integrated Development Environments (IDEs) supporting functionality to show the
+documentation for functions as you type they are an invaluable reference. If you're an
+[Emacs](https://www.gnu.org/software/emacs/) user then you can leverage the
+[numpydoc](https://github.com/douglasdavis/numpydoc.el) package to automatically insert NumPy docstrings in Python
+function definitions based on the function definition, it automatically detects names, type hints, exceptions and return
+types to generate the docstring (yet another reason to use Emacs!).
 
 Whilst it is useful to have this API available in an IDE as you work it is also useful to include the reference on a
 packages website and this is relatively straight-forward with Sphinx which provides the
