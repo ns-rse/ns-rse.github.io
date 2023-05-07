@@ -4,6 +4,17 @@ author: "nshephard"
 date: "2022-08-28"
 categories: [code, analysis, linting, git, github, gitlab]
 image: https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
 ---
 
 [Pre-commit](https://pre-commit.com/) is a powerful tool for executing a range of hooks prior to making commits to your
@@ -261,8 +272,6 @@ git commit -m "Adding pre-commit GitHub Action" && git push
 If you use GitLab the following article describes how to configure a CI job to run as part of your repository.
 
 * [How to use pre-commit to automatically correct commits and merge requests with GitLab CI](https://stackoverflow.com/collectives/gitlab/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g)
-
-
 
 
 ## Links
