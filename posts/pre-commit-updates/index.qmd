@@ -11,14 +11,12 @@ not familiar with it then you may want to read the earlier post [Pre-Commit : Pr
 self](https://ns-rse.github.io/posts/pre-commit/). This article discusses updating `pre-commit` and is prompted by a
 change in the `flake8` repository.
 
-
 ## Pre-commit hooks
 
 A lot of the power of `pre-commit` comes from the vast array of [hooks](https://pre-commit.com/hooks.html) that are
 available that users make available. These are included under `repos:` section of the `.pre-commit-config.yaml` and
 typically require a minimum of the `repo:` and the `rev:` to use and then optionally a `hooks:` section. The
 `sample-config` that `pre-commit` will auto-generate looks like...
-
 
 ``` {.yaml}
 repos:
@@ -34,7 +32,6 @@ repos:
 After finding a repository and hook that you wish to use [hooks](https://pre-commit.com/hooks.html) repository you need
 to add it to your `.pre-commit-config.yaml`. Here we add the [`pylint`](https://github.com/PyCQA/pylint) repository and
 whilst it only has one hook we explicitly add it.
-
 
 ``` {.yaml}
 repos:
@@ -104,7 +101,6 @@ Updating https://github.com/PyCQA/pylint ... [INFO] Initializing environment for
 already up to date.
 ```
 
-
 ## Repository Changes
 
 Sometimes, albeit rarely, repositories change their location as was the case recently when
@@ -137,10 +133,8 @@ To update to use the new repository it should point to `github.com` as shown bel
         types: [python]
 ```
 
-
 After making this change you have to `pre-commit autoupdate` to force downloading and updating from the new source,
 otherwise your existing older revision will be used locally.
-
 
 ## Links
 
