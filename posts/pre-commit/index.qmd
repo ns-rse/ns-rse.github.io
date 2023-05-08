@@ -81,7 +81,7 @@ conda install -c conda-forge pre-commit
 If you are working on a Python project then you should include `pre-commit` as a requirement (either in
 `requirements-dev.txt`) or under the `dev` section of `[options.extras_require]` in your `setup.cfg` as shown below.
 
-```{python}
+```{.toml}
 [options.extras_require]
 dev =
   pre-commit
@@ -108,7 +108,7 @@ git add .pre-commit-config.yaml
 Each hook is associated with a repository (`repo`) and a version (`rev`) within it. Many are available from the
 `https://github.com/pre-commit/pre-commit-hooks`. The default set of `pre-commit` hooks might look like the following.
 
-```{yaml}
+```{.yaml}
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
       rev: v4.3.0 # Use the ref you want to point at
@@ -130,7 +130,7 @@ Some hooks are available from dedicated repositories, for example the following 
 [Pylint](https://pylint.pycqa.org/en/latest/) on your code and should follow under the above (with the same level of
 indenting to be valid YAML).
 
-```yaml
+```{.yaml}
   - repo: https://github.com/psf/black
     rev: 22.6.0
     hooks:
@@ -156,7 +156,7 @@ which the hook is derived along with its name.
 
 You can also define [new hook](https://pre-commit.com/#new-hooks) and configure them under the `- repo: local`.
 
-```yaml
+```{.yaml}
   - repo: local
     hooks:
       - id: <id>

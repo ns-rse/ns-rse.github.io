@@ -1,0 +1,168 @@
+---
+title: "Pre-Commit : Useful Hooks"
+author: "nshephard"
+date: "2022-05-07"
+categories: [code, analysis, linting, git, github, gitlab]
+image: https://live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+
+I'm a big fan of [pre-commit](https://pre-commit.com) and have written about it before (see posts on
+[pre-commit](https://ns-rse.github.io/posts/pre-commit/), [pre-commit CI](https://ns-rse.github.io/posts/pre-commit-ci/)
+and [pre-commit updating](https://ns-rse.github.io/posts/pre-commit-updating/)). This post discusses some of the
+[hooks](https://pre-commit.com/hooks) that I use and how to configure them.
+
+![[_Irridescent_ Picture by me](https://www.flickr.com/photos/slackline/52842122133/in/datetaken/)](https://live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg)
+
+## Python Linting
+
+### Ruff
+
+[ruff](https://github.com/charliermarsh/ruff) is a Python linter written in Rust which means its considerably faster
+than many native linters. It aims for parity with Flake8 and covers a lot of the linting that PyLint undertakes too. Its
+configured via `pyproject.toml` which makes incorporating it into your Python Package simple.
+
+
+```{.yaml}
+repos:
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.191
+    hooks:
+      - id: ruff
+```
+
+Configuration is, as noted, via `pyproject.toml` and you may find the post on [Python
+Packaging](https://ns-rse.github.io/posts/python-packaging/) worth reading to understand more on this.
+
+```{.toml}
+[tool.ruff]
+exclude = []
+# per-file-ignores = []
+line-length = 120
+target-version = "py310"
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F", "R", "S", "W", "U"]
+unfixable = []
+```
+
+
+### Black
+
+[Black](https://black.readthedocs.io/en/stable/index.html) is an opinionated formatter for Python that is
+[PEP8](https://pep8.org/) compliant. By using `black` to format your code you end up with a consistent style across the
+code base and commit changes end up being minimal. This helps speed up code-review of pull-requests.
+
+```{.yaml}
+repos:
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+        types: [python]
+```
+
+Configuration is, as noted, via `pyproject.toml` and you may find the post on [Python
+Packaging](https://ns-rse.github.io/posts/pre-commit-updating/) worth reading to understand more on this.
+
+```{.toml}
+[tool.black]
+line-length = 120
+target-version = ["py38", "py39", "py310"]
+include = "\\.pyi?$"
+```
+
+## Markdown Linting
+
+[markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) is a useful and highly configurable hook for
+linting [Markdown](https://www.markdownguide.org) and [CommonMark](https://commonmark.org/). I wanted to use it on this
+blog though which is written using [Quarto](https://quarto.org/docs/authoring/markdown-basics.html) and therefore uses
+[PandocMarkdown](https://pandoc.org/MANUAL.html#pandocs-markdown) with files that have extension `.qmd`. I therefore
+enable the hook in `.pre-commit-config.yaml` with a configuration file specified
+
+```yaml
+repos:
+- repo: https://github.com/DavidAnson/markdownlint-cli2
+  rev: v0.6.0
+  hooks:
+    - id: markdownlint-cli2
+      args: [.markdownlin-cli2.yaml]
+```
+
+..and add a sample configuration file is shown below and `markdownlint-cli2` picks this up automatically.
+
+```yaml
+# Configuration
+config:
+  # MD013 - line-length
+  line_length:
+    line_length: 120
+    code_blocks: false
+    tables: false
+  html:
+    allowed_elements:
+      - div
+
+# Globs
+globs:
+  - "**/*.qmd"
+  - "*.qmd"
+
+# Fix any fixable errors
+fix: false
+```
+
+## Emacs Lisp
+
+As I use [Emacs]() I have recourse to write some [Emacs Lisp]() and so its useful to applying formatting to my `.el`
+files before committing them. [lisp-format](https://github.com/eschulte/lisp-format) does the job nicely.
+
+```{.yaml}
+repos:
+  - repo: https://github.com/eschulte/lisp-format
+    rev: 088c8f78ca41204b44f2636275517ac09a2de6a9
+    hooks:
+      - id: lisp-format
+        name: formatter of lisp code
+        description: Run lisp-format against lisp files
+        language: script
+        files: \.(lisp|cl|asd|scm|el)$
+        entry: lisp-format -i
+```
+
+## Conclusion
+
+There are a *lot* of hooks out there to be used with [pre-commit](https://pre-commit.com) and incorporated into your
+Continuous Integration pipeline with [pre-commit.ci](https://pre-commit.ci). Which you find useful will depend to a
+large extent on the languages that you are using for any given project. Here I've focused mainly on common tools for
+Python Packages, Markdown and Lisp but you can find hooks for Docker, Ansible, Rust, Go, JavaScript, C++ and many
+more, there is even [gitlint](https://github.com/jorisroovers/gitlint) which lints your commit messages! Checkout the long list of available [hooks](https://pre-commit.com/hooks) and try some out.
+
+## Links
+
+### Related pre-commit posts
+
+* [pre-commit](https://ns-rse.github.io/posts/pre-commit/)
+* [pre-commit CI](https://ns-rse.github.io/posts/pre-commit-ci/)
+* [pre-commit updating](https://ns-rse.github.io/posts/pre-commit-updating/)
+
+### Pre-commit hooks
+
+* [pre-commit](https://pre-commit.com) ([pre-commit hooks](https://pre-commit.com/hooks))
+* [pre-commit.ci](https://pre-commit.ci)
+* [ruff](https://github.com/charliermarsh/ruff)
+* [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2)
+* [Black](https://black.readthedocs.io/en/stable/index.html)
+* [lisp-format](https://github.com/eschulte/lisp-format)
+* [gitlint](https://github.com/jorisroovers/gitlint)
