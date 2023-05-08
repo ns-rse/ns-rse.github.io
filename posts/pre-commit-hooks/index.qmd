@@ -33,7 +33,6 @@ and [pre-commit updating](https://ns-rse.github.io/posts/pre-commit-updating/)).
 than many native linters. It aims for parity with Flake8 and covers a lot of the linting that PyLint undertakes too. Its
 configured via `pyproject.toml` which makes incorporating it into your Python Package simple.
 
-
 ```{.yaml}
 repos:
   - repo: https://github.com/charliermarsh/ruff-pre-commit
@@ -56,7 +55,6 @@ target-version = "py310"
 fixable = ["A", "B", "C", "D", "E", "F", "R", "S", "W", "U"]
 unfixable = []
 ```
-
 
 ### Black
 
@@ -125,7 +123,8 @@ fix: false
 
 ## Emacs Lisp
 
-As I use [Emacs]() I have recourse to write some [Emacs Lisp]() and so its useful to applying formatting to my `.el`
+As I use [Emacs](https://www.gnu.org/software/emacs/) I have recourse to write some [Emacs
+Lisp](https://www.gnu.org/software/emacs/manual/html_node/eintr/) and so its useful to applying formatting to my `.el`
 files before committing them. [lisp-format](https://github.com/eschulte/lisp-format) does the job nicely.
 
 ```{.yaml}
@@ -147,7 +146,8 @@ There are a *lot* of hooks out there to be used with [pre-commit](https://pre-co
 Continuous Integration pipeline with [pre-commit.ci](https://pre-commit.ci). Which you find useful will depend to a
 large extent on the languages that you are using for any given project. Here I've focused mainly on common tools for
 Python Packages, Markdown and Lisp but you can find hooks for Docker, Ansible, Rust, Go, JavaScript, C++ and many
-more, there is even [gitlint](https://github.com/jorisroovers/gitlint) which lints your commit messages! Checkout the long list of available [hooks](https://pre-commit.com/hooks) and try some out.
+more, there is even [gitlint](https://github.com/jorisroovers/gitlint) which lints your commit messages! Checkout the
+long list of available [hooks](https://pre-commit.com/hooks) and try some out.
 
 ## Links
 
