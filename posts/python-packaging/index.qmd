@@ -90,9 +90,9 @@ includes the minimum versions and `setuptools_scm` extension for dynamically set
 ### `build-system`
 
 ``` {.toml}
-    [build-system]
-    requires = ["setuptools>=65.6.3", "setuptools_scm[tools]>=6.2", "wheel"]
-    build-backend = "setuptools.build_meta"
+[build-system]
+requires = ["setuptools>=65.6.3", "setuptools_scm[tools]>=6.2", "wheel"]
+build-backend = "setuptools.build_meta"
 ```
 
 Traditionally configuration of meta-data such as author, code repository and license was made via `setup.py` but you can
@@ -116,22 +116,24 @@ development (e.g. `black`. `flake8`, `ruff`, `pre-comit`, `pylint` etc.), nor th
 `pytest-regtest`, `pytest-cov` etc.), documentation (e.g. `Sphinx`, `numpydoc`, `sphinx_markdown_table`,
 `sphinx-autodoc-typehints`, `sphinxcontrib-mermaid` etc.) as these are defined in a separate section.
 
-    [project]
-    name = "my_package"
-    authors = [
-      {name = "Author 1", email="author1@somewhere.com"},
-      {name = "Author 2", email="author2@somewhere.com"},
-      {name = "Author 3", email="author3@somewhere.com"},
-    ]
-    description = "A package that does some magic!"
-    license = "GNU GPLv3 only"
-    readme = "README.md"
-    dynamic = ["version"]
-    dependencies = [
-      "numpy",
-      "pandas",
-      "tqdm",
-    ]
+``` {.toml}
+[project]
+name = "my_package"
+authors = [
+  {name = "Author 1", email="author1@somewhere.com"},
+  {name = "Author 2", email="author2@somewhere.com"},
+  {name = "Author 3", email="author3@somewhere.com"},
+]
+description = "A package that does some magic!"
+license = "GNU GPLv3 only"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = [
+  "numpy",
+  "pandas",
+  "tqdm",
+]
+```
 
 All other sections are considered subsections, either of `project` or `tool` and are defined under their own heading
 with `[project|tool].<package>[.<options>]`.
@@ -237,7 +239,7 @@ parlance, list in Python terms).
   tcx2gpx = ["*.yaml", "*.json"]
 ```
 
-####  `tool.pytest`
+#### `tool.pytest`
 
 ``` {.toml}
 [tool.pytest.ini_options]
