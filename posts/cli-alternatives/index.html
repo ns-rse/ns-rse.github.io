@@ -229,8 +229,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="bat" class="level3">
 <h3 class="anchored" data-anchor-id="bat"><code>bat</code></h3>
 <p><a href="https://github.com/sharkdp/bat"><code>bat</code></a> is “<em>A <code>cat(1)</code> clone with wings.</em>”. It automatically uses syntax highlighting and integrates with git if a file is version controlled to show changes and lots more. You can pipe input to it, including from e.g.&nbsp;<code>curl -s https://server.com/some_file</code></p>
-<section id="examples" class="level4">
-<h4 class="anchored" data-anchor-id="examples">Examples</h4>
+<section id="example---bat" class="level4">
+<h4 class="anchored" data-anchor-id="example---bat">Example - <code>bat</code></h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> bat pyproject.toml</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">───────┬──────────────────────────────────────────────</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       <span class="ex">│</span> File: pyproject.toml</span>
@@ -258,8 +258,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="cheat" class="level3">
 <h3 class="anchored" data-anchor-id="cheat"><code>cheat</code></h3>
 <p><a href="https://opensource.com/article/22/6/linux-cheat-command"><code>cheat</code></a> is actually a web-service that returns short “cheats” for command line programmes which will often cover many use cases and save you having to read the rather dry <code>man</code> pages for functions.</p>
-<section id="examples-1" class="level4">
-<h4 class="anchored" data-anchor-id="examples-1">Examples</h4>
+<section id="example---cheat" class="level4">
+<h4 class="anchored" data-anchor-id="example---cheat">Example - <code>cheat</code></h4>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> cheat cheat</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">cheat:cheat</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># To see example usage of a program:</span></span>
@@ -297,9 +297,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the current cheat version:</span></span>
 <span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="ex">cheat</span> <span class="at">-v</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="aliases" class="level4">
-<h4 class="anchored" data-anchor-id="aliases">Aliases</h4>
-<p>You don’t need to install anything to use this, instead define an <a href="">alias</a> for your shell (e.g.&nbsp;in <code>~/.bashrc</code>/<code>~/.zshrc</code>/<code>~/.oh-my-zsh/custom/aliases.zsh</code>)</p>
+<section id="aliases---cheat" class="level4">
+<h4 class="anchored" data-anchor-id="aliases---cheat">Aliases - <code>cheat</code></h4>
+<p>You don’t need to install anything to use this, instead define an <a href="https://www.gnu.org/software/bash/manual/html_node/Aliases.html">alias</a> for your shell (e.g.&nbsp;in <code>~/.bashrc</code>/<code>~/.zshrc</code>/<code>~/.oh-my-zsh/custom/aliases.zsh</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Linux commands https://github.com/chubin/cheat.sheets</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cheat ()</span> <span class="kw">{</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> cheat.sh/<span class="st">"</span><span class="va">$@</span><span class="st">"</span></span>
@@ -314,8 +314,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="duf" class="level3">
 <h3 class="anchored" data-anchor-id="duf"><code>duf</code></h3>
 <p><a href="https://github.com/muesli/duf">duf</a> is a nice alternative to the traditional <code>du</code> and <code>df</code> commands which report disk usage and file/directory usage respectively.</p>
-<section id="examples-2" class="level4">
-<h4 class="anchored" data-anchor-id="examples-2">Examples</h4>
+<section id="examples" class="level4">
+<h4 class="anchored" data-anchor-id="examples">Examples</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr duf</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">duf</span></span>
@@ -357,15 +357,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> /run/user/1001 │ 789.3M │  20.0K │ 789.3M │ [....................]   0.0% │ tmpfs    │ tmpfs      │</span>
 <span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> /run/user/966  │ 789.3M │  24.0K │ 789.2M │ [....................]   0.0% │ tmpfs    │ tmpfs      │</span>
 <span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="ex">│</span> /tmp           │   3.9G │   4.0K │   3.9G │ [....................]   0.0% │ tmpfs    │ tmpfs      │</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="ex">╰────────────────┴────────┴────────┴────────┴───────────────────────────────┴──────────┴────────────╯</span></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="ex">╰────────────────┴────────┴────────┴────────┴───────────────────────────────┴──────────┴────────────╯</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="fd" class="level3">
 <h3 class="anchored" data-anchor-id="fd"><code>fd</code></h3>
 <p><a href="https://github.com/sharkdp/fd"><code>fd</code></a> is an alternative to <code>find</code> that is easier to use. It is “opinionated” (i.e.&nbsp;decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use cases. It works directly with regular expressions.</p>
-<section id="examples-3" class="level4">
-<h4 class="anchored" data-anchor-id="examples-3">Examples</h4>
+<section id="example---fd" class="level4">
+<h4 class="anchored" data-anchor-id="example---fd">Example - <code>fd</code></h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr fd</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">fd</span></span>
@@ -395,9 +394,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="jq" class="level3">
 <h3 class="anchored" data-anchor-id="jq"><code>jq</code></h3>
-<p><a href="https://stedolan.github.io/jq/"><code>jq</code></a> is to <a href="">JSON</a> (JavaScript Object Notation) what <code>awk</code>/<code>grep</code>/<code>sed</code> is to text files. It allows parsing, searching and selecting of JSON files, which if you’ve not encountered them before take a bit of getting used to.</p>
-<section id="examples-4" class="level4">
-<h4 class="anchored" data-anchor-id="examples-4">Examples</h4>
+<p><a href="https://stedolan.github.io/jq/"><code>jq</code></a> is to <a href="https://www.json.org/json-en.html">JSON</a> (JavaScript Object Notation) what <code>awk</code>/<code>grep</code>/<code>sed</code> is to text files. It allows parsing, searching and selecting of JSON files, which if you’ve not encountered them before take a bit of getting used to.</p>
+<section id="example---jq" class="level4">
+<h4 class="anchored" data-anchor-id="example---jq">Example - <code>jq</code></h4>
 <p>Details of using <code>jq</code> are really beyond the scope of this short article, like <code>awk</code> its almost a language in itself.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr jq</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -430,9 +429,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="lsd" class="level3">
 <h3 class="anchored" data-anchor-id="lsd"><code>lsd</code></h3>
-<p><a href="https://github.com/Peltoche/lsd"><code>lsd</code></a> is <code>ls</code>Deluxe and is very similar to <a href="#exa"><code>exa</code></a> but with a few additions such as icons.</p>
-<section id="examples-5" class="level4">
-<h4 class="anchored" data-anchor-id="examples-5">Examples</h4>
+<p><a href="https://github.com/Peltoche/lsd"><code>lsd</code></a> is <code>ls</code>Deluxe and is very similar to <a href="../../posts/cli-alternatives/index.html#exa"><code>exa</code></a> but with a few additions such as icons.</p>
+<section id="example---lsd" class="level4">
+<h4 class="anchored" data-anchor-id="example---lsd">Example - <code>lsd</code></h4>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> l</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.rw-r--r--</span> neil neil  144 B  Sun Aug 14 19:56:53 2022  <span class="co">#.gitlab-ci.yml#</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span> neil neil  4.0 KB Thu Sep 15 22:21:25 2022  .</span>
@@ -459,8 +458,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="ex">.rw-r--r--</span> neil neil   17 B  Sun Aug 14 21:24:35 2022  styles.css</span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span> neil neil  4.0 KB Thu Aug 25 23:20:16 2022  www</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="aliases-1" class="level4">
-<h4 class="anchored" data-anchor-id="aliases-1">Aliases</h4>
+<section id="aliases---lsd" class="level4">
+<h4 class="anchored" data-anchor-id="aliases---lsd">Aliases - <code>lsd</code></h4>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> ls=<span class="st">'lsd'</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> l=<span class="st">'ls -lha'</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> lla=<span class="st">'ls -la'</span></span>
@@ -470,8 +469,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="tldr" class="level3">
 <h3 class="anchored" data-anchor-id="tldr"><code>tldr</code></h3>
 <p><a href="https://tldr.sh/"><code>tldr</code></a> is very similar to <a href="#cheat"><code>cheat</code></a> in that it shows short, simple examples of using a command. There are a number of different clients written in <a href="https://github.com/tldr-pages/tldr-c-client">C</a>, <a href="https://github.com/tldr-pages/tldr-node-client">Node</a> and <a href="https://github.com/tldr-pages/tldr-python-client">Python</a> as well as a few others. It depends on <code>jq</code> so you will have to install that if you want to use <code>yq</code>.</p>
-<section id="examples-6" class="level4">
-<h4 class="anchored" data-anchor-id="examples-6">Examples</h4>
+<section id="example---tldr" class="level4">
+<h4 class="anchored" data-anchor-id="example---tldr">Example - <code>tldr</code></h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr tldr</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">tldr</span></span>
@@ -495,8 +494,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="yq" class="level3">
 <h3 class="anchored" data-anchor-id="yq"><code>yq</code></h3>
 <p><a href="https://kislyuk.github.io/yq/"><code>yq</code></a> is to <a href="https://yaml.org/">YAML</a> (YAML Ain’t Markup Language) what <a href="#jq"><code>jq</code></a> is to JSON. Written in Python it allows fast and efficient parsing, searching and selecting of YAML files.</p>
-<section id="examples-7" class="level4">
-<h4 class="anchored" data-anchor-id="examples-7">Examples</h4>
+<section id="example---yq" class="level4">
+<h4 class="anchored" data-anchor-id="example---yq">Example - <code>yq</code></h4>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr yq</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="ex">yq</span></span>

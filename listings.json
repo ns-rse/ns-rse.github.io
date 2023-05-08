@@ -12,7 +12,8 @@
       "/posts/cli-alternatives/index.html",
       "/posts/pre-commit/index.html",
       "/posts/git-ssh/index.html",
-      "/posts/linting/index.html"
+      "/posts/linting/index.html",
+      "/posts/pre-commit-hooks/index.html"
     ]
   }
 ]

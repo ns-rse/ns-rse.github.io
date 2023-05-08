@@ -2,58 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ns-rse.github.io/links.html</loc>
-    <lastmod>2023-05-07T10:42:07.709Z</lastmod>
+    <lastmod>2023-05-08T21:47:58.051Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/linting/index.html</loc>
-    <lastmod>2023-05-07T10:42:08.641Z</lastmod>
+    <lastmod>2023-05-08T21:47:58.987Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pre-commit-ci/index.html</loc>
-    <lastmod>2023-05-07T10:42:09.101Z</lastmod>
+    <lastmod>2023-05-08T21:47:59.463Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/sphinx-docs/index.html</loc>
-    <lastmod>2023-05-07T10:42:15.937Z</lastmod>
+    <lastmod>2023-05-08T21:48:05.699Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/whos_to_blame/index.html</loc>
-    <lastmod>2023-05-07T10:42:16.285Z</lastmod>
+    <lastmod>2023-05-08T21:48:06.051Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/browser-extensions/index.html</loc>
-    <lastmod>2023-05-07T10:42:16.745Z</lastmod>
+    <lastmod>2023-05-08T21:48:06.515Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pre-commit/index.html</loc>
-    <lastmod>2023-05-07T10:42:17.225Z</lastmod>
+    <lastmod>2023-05-08T21:48:09.955Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/cli-alternatives/index.html</loc>
-    <lastmod>2023-05-07T10:42:17.689Z</lastmod>
+    <lastmod>2023-05-08T21:48:10.427Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</loc>
+    <lastmod>2023-05-08T21:48:10.811Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pre-commit-updates/index.html</loc>
-    <lastmod>2023-05-07T10:42:18.073Z</lastmod>
+    <lastmod>2023-05-08T21:48:11.211Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/running-2022/index.html</loc>
-    <lastmod>2023-05-07T10:42:28.618Z</lastmod>
+    <lastmod>2023-05-08T21:48:21.315Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/python-packaging/index.html</loc>
-    <lastmod>2023-05-07T10:42:29.430Z</lastmod>
+    <lastmod>2023-05-08T21:48:22.147Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/git-ssh/index.html</loc>
-    <lastmod>2023-05-07T10:42:29.846Z</lastmod>
+    <lastmod>2023-05-08T21:48:22.587Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/about.html</loc>
-    <lastmod>2023-05-07T10:42:30.146Z</lastmod>
+    <lastmod>2023-05-08T21:48:22.887Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/index.html</loc>
-    <lastmod>2023-05-07T10:42:30.670Z</lastmod>
+    <lastmod>2023-05-08T21:48:23.431Z</lastmod>
   </url>
 </urlset>

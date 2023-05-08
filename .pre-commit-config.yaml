@@ -14,4 +14,4 @@ repos:
   rev: v0.6.0
   hooks:
     - id: markdownlint-cli2
-      args: [.markdownlint-cli2.yaml]
+      args: []

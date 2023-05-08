@@ -26,25 +26,26 @@ installing packages this is done using [Python PIP](https://pypi.org/).
 Packaging User Guide](https://packaging.python.org/en/latest/) and the [Python Packaging
 Authority (PyPA)](https://www.pypa.io/en/latest/) which is probably the best resource to read but things change, and often
 quickly. The focus here is on the PyPA [Setuptools](https://setuptools.pypa.io/en/latest/index.html) using
-`pyproject.toml` which works with Python \>= 3.7, but you may wish to consider other packages such as [Poetry](#poetry)
-or [PDM](#PDM) which offer some advantages but with additional frameworks to learn.
+`pyproject.toml` which works with Python \>= 3.7, but you may wish to consider other packages such as
+[Poetry](index.qmd#poetry) or [PDM](index.qmd#PDM) which offer some advantages but with additional frameworks to learn.
 
 A few examples of Python packages that I have packaged are listed below, most have also been released to
 [PyPI](https://pypi.org/).
 
--   [tcx2gpx](https://pypi.org/project/tcx2gpx/) (personal)
--   [TopoStats](https://github.com/AFM-SPM/TopoStats/) (professional)
--   [clarity](https://github.com/claritychallenge/clarity) (professional)
--   [pgfinder](https://github.com/Mesnage-Org/pgfinder) (professional)
+- [tcx2gpx](https://pypi.org/project/tcx2gpx/) (personal)
+- [TopoStats](https://github.com/AFM-SPM/TopoStats/) (professional)
+- [clarity](https://github.com/claritychallenge/clarity) (professional)
+- [pgfinder](https://github.com/Mesnage-Org/pgfinder) (professional)
 
-# Package Structure
+## Package Structure
 
 You should place your code within a Git version controlled directory for your project. It is then normal to place all
 files in an organised hierarchy with a sub-directory of the same name for Python code, known as a \"flat\" structure and
 tests under `tests` directory. It is possible to have more than one directory containing code but for now I\'m sticking
 to the flat structure.
 
-    .
+```bash
+.
     ├── ./build
     ├── ./dist
     ├── ./
@@ -59,8 +60,9 @@ to the flat structure.
         ├── ./tests/test_module_a.py
         ├── ./tests/test_module_b.py
         └── ./tests/something/test_module_c.py
+```
 
-## `__init__.py`
+### `__init__.py`
 
 In older versions of Python (\<3.3) a `__init__.py` was required in every directory and sub-directory that was to be a
 module/sub-module. In more recent versions of Python (\>\\=3.3) they are not essential though as Python uses [namespace
@@ -68,7 +70,7 @@ packages](https://docs.python.org/3/reference/import.html#namespace-packages). B
 such a file in the top level of your directory. `__init__.py` files can be completely empty or they can contain code
 that is used throughout your package, such as setting up a logger.
 
-# Configuration `pyproject.toml`
+## Configuration `pyproject.toml`
 
 Package configuration has been and is in a state of flux, there was originally `setup.py` which was then complemented
 and gradually replaced by `setup.cfg`. The new method on the block though is `pyproject.toml` which, with a little
@@ -85,7 +87,7 @@ project metadata in pyproject.toml \| peps.python.org](https://peps.python.org/p
 A bare-bones `pyproject.toml` file should reside in the top level of your directory with the following (**NB** This
 includes the minimum versions and `setuptools_scm` extension for dynamically setting package version)...
 
-## `build-system`
+### `build-system`
 
 ``` {.toml}
 [build-system]
@@ -96,7 +98,7 @@ build-backend = "setuptools.build_meta"
 Traditionally configuration of meta-data such as author, code repository and license was made via `setup.py` but you can
 either specify some (or most) of this in `pyproject.toml` or a concurrent `setup.cfg`.
 
-## `project`
+### `project`
 
 This is the main body of the project description detailing `name`, `authors`, `description`, `readme`, `license`, `keywords`,
 `classifiers`, `dependencies` and `version` amongst other things.
@@ -113,7 +115,6 @@ The `dependencies` are those that are required for running the code. They should
 development (e.g. `black`. `flake8`, `ruff`, `pre-comit`, `pylint` etc.), nor those required for testing (e.g. `pytest`,
 `pytest-regtest`, `pytest-cov` etc.), documentation (e.g. `Sphinx`, `numpydoc`, `sphinx_markdown_table`,
 `sphinx-autodoc-typehints`, `sphinxcontrib-mermaid` etc.) as these are defined in a separate section.
-
 
 ``` {.toml}
 [project]
@@ -137,8 +138,7 @@ dependencies = [
 All other sections are considered subsections, either of `project` or `tool` and are defined under their own heading
 with `[project|tool].<package>[.<options>]`.
 
-
-### `project.urls`
+#### `project.urls`
 
 These are important as they define where people can find the `Source`, `Documentation` and `Bug_Tracker` amongst other
 things. There may be more fields that can be configured here but I\'ve not used the yet. Substitute these to reflect
@@ -151,7 +151,7 @@ Bug_Tracker = "https://gitlab.com/username/my_package/issues"
 Documentation = "https://username.gitlab.com/my_package"
 ```
 
-### `project.optional-dependencies`
+#### `project.optional-dependencies`
 
 This is where you list dependencies that are not required for running a package but are required for different aspects
 such as development, documentation, publishing to PyPI, additional Notebooks and so forth, the options are limitless.
@@ -195,7 +195,7 @@ notebooks = [
 ]
 ```
 
-### `project.scripts` (Entry Points)
+#### `project.scripts` (Entry Points)
 
 Entry points or `scripts` are a neat method of providing a simple command line interface to your package that links
 directly into a specific module to provide a command line interface to your programme.
@@ -207,16 +207,15 @@ These are defined under `project.scripts` section.
 tcx2gpx = "tcx2gpx:process"
 ```
 
-## `tool`
+### `tool`
 
-###  `tool.setuptools`
+#### `tool.setuptools`
 
 [setuptools](https://setuptools.pypa.io/en/latest/index.html) is perhaps the most common package for configuring Python
 packages and is the one that is being exposed here. Its configuration is multi-level depending on which component you
 are configuring.
 
-
-#### ~tool.setuptools.packages.find~
+##### `tool.setuptools.packages.find`
 
 Uses the `find` utility to search for packages to include, based on my understanding it looks for `__init__.py` in a
 directory and includes it (see above note about these no longer being required in every directory). Typically you would
@@ -230,7 +229,7 @@ include = ["tcx2gpx"]
 exclude = ["tests"]
 ```
 
-### ~tool.setuptools.package-data~
+#### `tool.setuptools.package-data`
 
 This allows additional, non `.py` files to be included, they are listed on a per package basis and are a table (in toml
 parlance, list in Python terms).
@@ -240,7 +239,7 @@ parlance, list in Python terms).
   tcx2gpx = ["*.yaml", "*.json"]
 ```
 
-###  `tool.pytest`
+#### `tool.pytest`
 
 ``` {.toml}
 [tool.pytest.ini_options]
@@ -256,7 +255,7 @@ filterwarnings = [
 
 ```
 
-### `tool.black`
+#### `tool.black`
 
 ``` toml
 [tool.black]
@@ -274,7 +273,7 @@ exclude = '''
 '''
 ```
 
-### `tool.flake8`
+#### `tool.flake8`
 
 The developers of Flake8 will not be supporting `pyproject.toml` for configuration. This is a shame but a work around is
 available in the form of [Flake8-pyproject](https://github.com/john-hen/Flake8-pyproject). Make sure to add this to your
@@ -290,7 +289,7 @@ max-line-length = 120
 count = true
 ```
 
-### `tool.setuptools_scm`
+#### `tool.setuptools_scm`
 
 [setuptools_scm](https://github.com/pypa/setuptools_scm/) is a simple to use extension to setuptools that dynamically
 sets the package version based on the version control data. It is important to note that by default `setuptools_scm`
@@ -304,7 +303,7 @@ local_scheme = "no-local-version"
 git_describe_command = "git describe --tags"
 ```
 
-### `tool.ruff`
+#### `tool.ruff`
 
 [ruff](https://github.com/charliermarsh/ruff) is a Python linter written in [Rust](https://www.rust-lang.org/) which is
 therefore very fast. It provides the same functionality as `black`, `flake8` and `pylint` and can auto-correct many
@@ -317,8 +316,7 @@ fixable = ["A", "B", "C", "D", "E", "F", "R", "S", "W", "U"]
 unfixable = []
 ```
 
-
-# Versioning
+## Versioning
 
 Typically the version is defined in the `__version__` variable/object in the top-level `__init__.py` or as a value in
 `[metadata]` of either `setup.cfg` or `pyproject.toml` but this has some downsides in that you have to remember to
@@ -328,7 +326,7 @@ versions of your commits.
 It is worth taking a moment to read and understand about [Semantic Versioning](https://semver.org/) which you are likely
 to use when tagging versions of your software to work with `setuptools_scm`.
 
-## Setuptools-scm
+### Setuptools-scm
 
 [setuptools_scm](https://github.com/pypa/setuptools_scm) is simpler to setup and use than
 [versioneer](https://github.com/python-versioneer/python-versioneer) as it relies solely on configuration
@@ -337,7 +335,6 @@ via `pyproject.toml` rather than being dependent on now deprecated `setup.py`.
  As shown above you should have set the minimum versions of `"setuptools>=45"` and `"setuptools_scm[toml]>=6.2"`,
  `dynamic = ["version"]` under `project` and set the `write_to = "pkg/_version.py"` (**NB** substitute `pkg` for your
  package directory, whether its `src` or the package name).
-
 
 ``` {.python}
 [build-system]
@@ -353,11 +350,9 @@ local_scheme = "no-local-version"
 git_describe_command = "git describe --tags"
 ```
 
-
-### Including Version in Sphinx Documentation
+#### Including Version in Sphinx Documentation
 
 If you have Sphinx documentation you can add the following to ~docs/conf.py~
-
 
 ``` {.python}
 from importlib.metadata import version
@@ -365,15 +360,13 @@ release = version("myproject")
 version = ".".join(release.split(".")[:2])
 ```
 
+## Building your Package
 
-# Building your Package
-
-## Generate Distribution Archive
+### Generate Distribution Archive
 
 In your package directory you can create a distribution of your package with the latest versions of `setuptools` and
 `wheel`. To do this in your virtual environment run the following. The documentation for how to do this is at [Building
 and Distributing Packages with Setuptools](https://setuptools.pypa.io/en/latest/setuptools.html).
-
 
 ``` {.toml}
 [build-system]
@@ -393,9 +386,7 @@ python -m build --no-isolation
 
 ...and the resulting package will be generated in the `dist/` directory.
 
-
-
-# Publishing to [PyPI](https://pypi.org)
+## Publishing to [PyPI](https://pypi.org)
 
 Before pushing the package to the main PyPi server it is prudent to test things out on
 [TestPyPI](https://test.pypi.org/) first. You must first generate an API Token from your account settings page. It needs
@@ -418,7 +409,7 @@ Once this is in place you are ready to use `twine` to upload the package using t
 twine upload --config-file ./.pypirc --repository testpypi dist/*
 ```
 
-## Testing Download
+### Testing Download
 
 After having uploaded your package to the TestPyPI server you should create a clean virtual environment and try
 installing the package from where you have just uploaded it. You can do this using `pip` and the `--index-url` and
@@ -430,7 +421,7 @@ pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://
 
 Once installed you can try running the code, scripts or notebooks associated with the package as you would normally.
 
-## Repeat for PyPI
+### Repeat for PyPI
 
 Once you are happy this is working you can repeat the process on the main [PyPI](https://pypi.org) server. You can add
 the token that you generate to `/.pypirc` under a separate heading.
@@ -444,7 +435,7 @@ the token that you generate to `/.pypirc` under a separate heading.
   password = pypi-dfkjh9384hdszfkjnkjahkjfhd3YAJKSHE0089asdf0lkjsjJLLS_-0942358JKHDKjhkljna39o854yurlaoisdvnzli8yw459872jkhlkjsdfkjhdfJZZZZZF
 ```
 
-## GitHub Action
+### GitHub Action
 
 Manually uploading is somewhat time consuming and tedious. Fortunately though with `setuptools_scm` in place and tokens
 generated we can automate the process of building and uploading packages to PyPI using the GitHub Action
@@ -488,39 +479,39 @@ steps:
       password: ${{ secrets.PYPI_API_TOKEN }}
 ```
 
-## Releasing via GitHub
+### Releasing via GitHub
 
 With `setuptools_scm` in place and a [GitHub Action](id:5e1f167e-5c0c-4206-b2ac-6694e08524d8) setup and configured it is
 now possible to make a release to PyPI via GitHub Releases.
 
-1.  Go to the Releases page (its linked from the right-hand side of the front-page).
-2.  Draft a New release.
-3.  Create a new tag using semantic versioning and select "_Create new tag v#.#.# on publish_".
-4.  Click the \"_Generate Release Notes_\" button, this adds all the titles for all Pull Requests, I\'ll often remove
+1. Go to the Releases page (its linked from the right-hand side of the front-page).
+2. Draft a New release.
+3. Create a new tag using semantic versioning and select "_Create new tag v#.#.# on publish_".
+4. Click the \"_Generate Release Notes_\" button, this adds all the titles for all Pull Requests, I\'ll often remove
     all these but leave the link to the `ChangeLog` that is generated for the release.
-5.  Write your release notes.
-6.  Select \"_Set as latest release_\".
-7.  Select \"_Create a discussion for this releases_\" and select \"_Announcements_\".
-8.  Click on \"_Publish Release_\".
+5. Write your release notes.
+6. Select \"_Set as latest release_\".
+7. Select \"_Create a discussion for this releases_\" and select \"_Announcements_\".
+8. Click on \"_Publish Release_\".
 
-# Packaging Frameworks
+## Packaging Frameworks
 
 There are some frameworks that are meant to ease the pain of this process and make it easier. I\'m yet to test these for
 two reasons. Firstly I wanted to understand what is going on rather than learn another framework. Secondly it was an
 additional framework to learn.
 
-## PDM
+### PDM
 
 [PDM](https://pdm.fming.dev/latest/) (Python package and Dependency Manager) handles all stages of setting up and
 creating a package and managing its dependencies. In essence its a tool for interactively generating the configuration
 files described above. I\'ve not yet.
 
-## Poetry
+### Poetry
 
 [Poetry](https://python-poetry.org/) is another package for managing packaging and dependencies. Again, I\'ve not yet
 used it.
 
-# Links
+## Links
 
 - [PyPA : Building and Distributing Packages with Setuptools](https://setuptools.pypa.io/en/latest/userguide/index.html)
 - [PyPA : Specifications](https://packaging.python.org/en/latest/specifications/)

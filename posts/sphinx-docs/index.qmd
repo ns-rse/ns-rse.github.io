@@ -24,12 +24,12 @@ and host them on GitHub Pages.
 ![[_This is going on my blog_ Picture by
 Me.](https://www.flickr.com/photos/slackline/6891757680/)](https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg)
 
-# Pre-requisites
+## Pre-requisites
 
 The instructions here assume that you have your [Python Packaging](https://ns-rse.github.io/posts/python-packaging/)
 well structured, under version control and backed up on [GitHub](https://github.com).
 
-# Initial Setup
+## Initial Setup
 
 Sphinx comes with the [`sphinx-quickstart`](https://www.sphinx-doc.org/en/master/man/sphinx-quickstart.html) interactive
 tool which will help setup your repository with a basic `conf.py` and `Makefile`. There are a number of command line
@@ -46,7 +46,7 @@ cd docs
 sphinx-quickstart --makefile
 ```
 
-# `conf.py`
+## `conf.py`
 
 Configuration is via a `conf.py` file as you read through this document you will see reference to adding/modifying
 various sections of the this file.  The automatically generated `conf.py` produced by `sphinx-quickstart` is well
@@ -54,23 +54,23 @@ commented and instructive on how to use it to configure Sphinx.
 
 Key sections are the list of `extensions` that your documentation uses.
 
-# `index.rst`
+## `index.rst`
 
 The front-page of your website, typically `index.html` for static sites, is derived from `index.rst`. You can write
 welcome details about your project and link to other pages you have written. Typically I write all but the front matter
 in Markdown.
 
-```
+```{bash}
 Welcome to my packages documentation
 ====================================
 
 This is my package, there are many packages like it but this one is mine.
 ```
 
-## Including Markdown
+### Including Markdown
 
-I already know [Markdown](https://www.markdownguide.org/) fairly well and would rather use that to write documents (as I do with this
-blog). Fortunately Sphinx can incorporate documentation written in
+I already know [Markdown](https://www.markdownguide.org/) fairly well and would rather use that to write documents (as I
+do with thisblog). Fortunately Sphinx can incorporate documentation written in
 [Markdown](https://github.com/ryanfox/sphinx-markdown-tables) using the
 [`myst_parser`](https://myst-parser.readthedocs.io/en/latest/) package. Simply include it in the `extensions`.
 
@@ -81,10 +81,8 @@ extensions = [
 ]
 ```
 
-
 By default it works with extensions of `.md` but if there are other flavours you wish to include (e.g. `.Rmd` for
 RMarkdown or `.qmd` for Quarto) you add them to the `source_suffix` in `docs/conf.py`
-
 
 ```{python}
 #| eval: false
@@ -95,7 +93,7 @@ In your `index.rst` you can then list the Markdown filenames, without extensions
 `installation.md` and `configuration.md` place them in the same directory as `index.rst` (the root `docs/`) directory
 and have in your `index.rst` have...
 
-```
+```{bash}
 Welcome to my packages documentation
 ====================================
 
@@ -108,13 +106,13 @@ This is my package, there are many packages like it but this one is mine.
    configuration
 ```
 
-### Markdown Tables
+#### Markdown Tables
 
 If you have tables in Markdown (and its likely that you will) then you will need the
 [`sphinx-markdown-tables`](https://github.com/ryanfox/sphinx-markdown-tables) package which ensures they are rendered
 correctly.
 
-### Mermaid Diagrams
+#### Mermaid Diagrams
 
 Further Sphinx has support for [Mermaid](https://mermaid.js.org/) diagrams that have been written in Markdown documents
 via the [`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid) package. This means that you can
@@ -212,7 +210,8 @@ gitGraph
    <!-- checkout main -->
    <!-- commit id: "Lots more enhancements" -->
 ```
-# Including API Documentation
+
+## Including API Documentation
 
 As you write your package it is good practice include [docstrings](https://realpython.com/documenting-python-code/) for
 each module/class/method/function that you write. For Python there are several different styles for writing these, my
@@ -234,7 +233,6 @@ documentation for you. This is particularly useful when you come to build multip
 means you do not have to include the `.rst` files that `sphinx-apidoc` generates in your repository they are generated
 on the fly when Sphinx builds each version of the documentation.
 
-
 Configuration is via `docs/conf.py` and the package needs referencing in the `extensions` section then
 [configuring](https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html) at a bare minimum which
 directories to generate documentation from.
@@ -253,9 +251,7 @@ There are a lot of subtle configuration options and I would recommend reading th
 [Tutorials](https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html) and [How To
 Guides](https://sphinx-autoapi.readthedocs.io/en/latest/how_to.html).
 
-
-
-# Multiple Versions
+## Multiple Versions
 
 Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation
 and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision
@@ -271,9 +267,9 @@ extensions = [
 ]
 ```
 
-## Configuring Versions
+### Configuring Versions
 
-### Sidebar
+#### Sidebar
 
 For versions to not just be built but available you need to include a section on your site that allows selecting which
 version of the documentation to view. Sidebars are included via HTML templates and you need to configure the path to
@@ -307,7 +303,7 @@ is an example.
 
 Ensure this file is under Git version control, it is needed to build your pages on GitHub.
 
-### Tags/Branches
+#### Tags/Branches
 
 If no options are set then `sphinx-multiversion` will build documentation for _all_ branhces, which is probably
 undesirable. Typically you want to restrict this to the released versions which are identified by [git
@@ -315,7 +311,6 @@ tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and perhaps your `main`
 tags with `v` and you want to build the documentation for the `HEAD` of your `main` (or `master`) branch then you should
 set options as shown below for `sphinx-multiversion`. I like to be able to test documentation builds and so I have a
 section that allows me to include a given branch.
-
 
 ```{python}
 #| eval: false
@@ -336,7 +331,7 @@ smv_outputdir_format = "{ref.name}"
 
 If you are testing locally be sure to revert the commented sections so that the branch is not built on GitHub Pages.
 
-# Themes
+## Themes
 
 There are a number of different themes available for including in your package. Which is used is defined by the
 `html_theme` variable in `docs/conf.py`. I like the
@@ -348,9 +343,7 @@ There are a number of different themes available for including in your package. 
 html_theme = "pydata_sphinx_theme"
 ```
 
-
-
-# Package Dependencies
+## Package Dependencies
 
 Since the documentation is part of your package it is important to include all of the dependencies that are required for
 building the documentation dependencies of your package so they can be easily installed and are available to Sphinx
@@ -383,7 +376,7 @@ cd ~/path/to/package
 pip install .[docs]
 ```
 
-# Building Documentation
+## Building Documentation
 
 You are now ready to build your documentation locally.
 
@@ -396,8 +389,7 @@ sphinx-multiversion . _build/html
 Output should reside under the `~/path/to/package/docs/_build/html/` directory and there should be a directory for every
 tag as well as `main` (or `master`).
 
-
-## Deploying on GitHub Pages
+### Deploying on GitHub Pages
 
 The final stage is to leverage [GitHub Pages](https://pages.github.com/) to host your documentation. This can be
 achieved using a [GitHub Action](https://docs.github.com/en/actions). These are a way of running certain tasks
@@ -449,12 +441,11 @@ jobs:
 
 Save, add and commit to your Git repository and push the changes to GitHub.
 
-
-# Links
+## Links
 
 + [Sphinx](https://www.sphinx-doc.org/en/master/)
 
-## Sphinx Extensions
+### Sphinx Extensions
 
 + [`myst_parser`](https://myst-parser.readthedocs.io/en/latest/)
 + [`sphinx-autoapi`](https://sphinx-autoapi.readthedocs.io/en/latest/)
@@ -462,7 +453,7 @@ Save, add and commit to your Git repository and push the changes to GitHub.
 + [`sphinx-multiversion`](https://holzhaus.github.io/sphinx-multiversion/master/)
 + [`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid)
 
-## GitHub
+### GitHub
 
 + [GitHub Pages](https://pages.github.com/)
 + [GitHub Action](https://docs.github.com/en/actions)

@@ -62,7 +62,6 @@ formats including [Markdown](https://www.markdownguide.org/), [Org-mode](https:/
 Binding each link type to specific keys means its incredibly easy to copy and paste links from browser to
 [Emacs](https://www.gnu.org/software/emacs/) (where I do most of my writing).
 
-
 ### [Unpaywall](https://unpaywall.org/products/extension)
 
 Many papers are, unfairly given the research that paid for them is often from the public purse, behind
@@ -81,14 +80,14 @@ Manager](https://www.passwordstore.org/) and to get it to work seamlessly with m
 [BrowserPass](https://github.com/browserpass/browserpass-extension). It requires a little configuration so read the
 GitHub page carefully but once working it is seamless. I visit a web-site and because I organise my passwords to include
 the URL all I need to do is use `Ctrl-Shift-f` and if my GPG key is unlocked the password is entered for me. My GPG key
-is unlocked using my [Yubikey]() so if this isn't plugged in and unlocked I'm prompted to do so. Makes logging in to
-web-sites so much faster.
+is unlocked using my
+[Yubikey](https://support.yubico.com/hc/en-us/articles/360013790259-Using-Your-YubiKey-with-OpenPGP) so if this isn't
+plugged in and unlocked I'm prompted to do so. Makes logging in to web-sites so much faster.
 
 ### [org-capture](https://github.com/sprig/org-capture-extension)
 
 Probably only useful if you use the amazing "Capture" web-site, title and selected text to Emacs in Org-mode via
 [org-protocol](https://orgmode.org/worg/org-contrib/org-protocol.html).
-
 
 ### [GitLab Notify](https://github.com/Mikescops/gitlab-notify-extension)
 
@@ -128,7 +127,6 @@ use will be dependent on your browser usage and work
 | [org-capture](https://github.com/sprig/org-capture-extension)         | "Capture" web-site, title and selected text to Emacs via [org-protocol](https://orgmode.org/worg/org-contrib/org-protocol.html).                                                  | `Ctrl-Shift-L`                          |
 | [GitLab Notify](https://github.com/Mikescops/gitlab-notify-extension) | Get notifications from GitLab in your browser.                                                                                                                                    | Not Available                           |
 | [Sci-Hub Now!](https://github.com/0x01h/sci-hub-now)                  | Access papers on Sci-Hub.                                                                                                                                                         | Not Available                           |
-
 
 ### Privacy Protecting Extensions
 

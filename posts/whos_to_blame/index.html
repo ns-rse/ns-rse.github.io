@@ -226,13 +226,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <p><a href="https://www.git-scm.com/docs/git-blame">Git blame</a> shows who made changes to which line of code for a given point in its history.</p>
-<section id="usage" class="level1">
-<h1>Usage</h1>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
 <p>Git blame works on individual files and so requires a filename, there are a host of options, for example <code>-e</code> prints the authors email address <code>-w</code> ignores changes to white space and <code>-L 10,20</code> restricts output to the specified line range. If you want a the blame for a specific revision then you must include the hash.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> blame <span class="at">-e</span> <span class="at">-w</span> <span class="at">-L</span> 10,20 f923la git_blame.org</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="alias" class="level1">
-<h1>Alias</h1>
+<section id="alias" class="level2">
+<h2 class="anchored" data-anchor-id="alias">Alias</h2>
 <p>Some people don’t like the pejorative nature of the word <code>blame</code>. That’s ok though, with a tweak to our configuration its possible to use the alias <code>praise</code> or simply <code>who</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># blame alias</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> alias.praise blame</span>
@@ -242,8 +242,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> who <span class="at">-L1,30</span> git_blame.org</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For more detailed information on the array of options refer to the <a href="https://www.git-scm.com/docs/git-blame">official documentation</a> or see <code>git blame --help</code>.</p>
 </section>
-<section id="ignoring-blame" class="level1">
-<h1>Ignoring blame</h1>
+<section id="ignoring-blame" class="level2">
+<h2 class="anchored" data-anchor-id="ignoring-blame">Ignoring blame</h2>
 <p>Sometimes the case arises where you want to ignore blame. Perhaps the most common example is when an existing code base has been <a href="../linting">linted</a> to conform to a particular style guide. Looking at who performed these changes is not informative and masks who made the changes and why. Its possible to ignore specific commits on the command line with <code>--ignore-revs &lt;hash&gt; &lt;file&gt;</code>, but it will quickly become tedious to remember to ignore all blame across multiple commits. Fortunately you can save the commits to ignore to the file <code>.git-blame-ignore-revs</code> (along with comments) so that they are stored. The full commit (40 characters) of hashes should be used.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PEP8 compliance for module X</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">c00177a6121f86c001f338feff3280fd576fdbf3</span></span>
@@ -257,16 +257,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .git-blame-ignore-revs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As of <a href="https://github.com/orgs/community/discussions/5033#discussioncomment-2318478">2022-03-08</a> GitHub will also <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file#ignore-commits-in-the-blame-view">ignore commits in the blame view</a> that are listed in <code>.git-blame-ignore-revs</code> providing this file is in the root of your project folder.</p>
 </section>
-<section id="links" class="level1">
-<h1>Links</h1>
-<section id="general" class="level2">
-<h2 class="anchored" data-anchor-id="general">General</h2>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="general" class="level3">
+<h3 class="anchored" data-anchor-id="general">General</h3>
 <ul>
 <li><a href="https://www.atlassian.com/git/tutorials/inspecting-a-repository/git-blame">Atlassian | git blame</a></li>
 </ul>
 </section>
-<section id="resources" class="level2">
-<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<section id="resources" class="level3">
+<h3 class="anchored" data-anchor-id="resources">Resources</h3>
 <ul>
 <li><a href="https://www.moxio.com/blog/43/ignoring-bulk-change-commits-with-git-blame">Ignoring bulk change commits with git blame</a></li>
 <li><a href="https://csswizardry.com/2017/05/little-things-i-like-to-do-with-git/#praise-people">Little things I like to do with Git</a></li>

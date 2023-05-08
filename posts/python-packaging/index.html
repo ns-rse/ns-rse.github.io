@@ -238,11 +238,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#tool" id="toc-tool" class="nav-link" data-scroll-target="#tool"><code>tool</code></a>
   <ul class="collapse">
-  <li><a href="#tool.setuptools" id="toc-tool.setuptools" class="nav-link" data-scroll-target="#tool.setuptools"><code>tool.setuptools</code></a>
-  <ul class="collapse">
-  <li><a href="#tool.setuptools.packages.find" id="toc-tool.setuptools.packages.find" class="nav-link" data-scroll-target="#tool.setuptools.packages.find"><sub>tool.setuptools.packages.find</sub></a></li>
-  </ul></li>
-  <li><a href="#tool.setuptools.package-data" id="toc-tool.setuptools.package-data" class="nav-link" data-scroll-target="#tool.setuptools.package-data"><sub>tool.setuptools.package-data</sub></a></li>
+  <li><a href="#tool.setuptools" id="toc-tool.setuptools" class="nav-link" data-scroll-target="#tool.setuptools"><code>tool.setuptools</code></a></li>
+  <li><a href="#tool.setuptools.package-data" id="toc-tool.setuptools.package-data" class="nav-link" data-scroll-target="#tool.setuptools.package-data"><code>tool.setuptools.package-data</code></a></li>
   <li><a href="#tool.pytest" id="toc-tool.pytest" class="nav-link" data-scroll-target="#tool.pytest"><code>tool.pytest</code></a></li>
   <li><a href="#tool.black" id="toc-tool.black" class="nav-link" data-scroll-target="#tool.black"><code>tool.black</code></a></li>
   <li><a href="#tool.flake8" id="toc-tool.flake8" class="nav-link" data-scroll-target="#tool.flake8"><code>tool.flake8</code></a></li>
@@ -290,7 +287,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52595884731/"><em>Water and Light</em> - Picture by Me</a></figcaption><p></p>
 </figure>
 </div>
-<p><a href="https://www.python/org">Python</a> packaging is in a constant state of flux. There is the official <a href="https://packaging.python.org/en/latest/">Python Packaging User Guide</a> and the <a href="https://www.pypa.io/en/latest/">Python Packaging Authority (PyPA)</a> which is probably the best resource to read but things change, and often quickly. The focus here is on the PyPA <a href="https://setuptools.pypa.io/en/latest/index.html">Setuptools</a> using <code>pyproject.toml</code> which works with Python &gt;= 3.7, but you may wish to consider other packages such as <a href="#poetry">Poetry</a> or <a href="#PDM">PDM</a> which offer some advantages but with additional frameworks to learn.</p>
+<p><a href="https://www.python/org">Python</a> packaging is in a constant state of flux. There is the official <a href="https://packaging.python.org/en/latest/">Python Packaging User Guide</a> and the <a href="https://www.pypa.io/en/latest/">Python Packaging Authority (PyPA)</a> which is probably the best resource to read but things change, and often quickly. The focus here is on the PyPA <a href="https://setuptools.pypa.io/en/latest/index.html">Setuptools</a> using <code>pyproject.toml</code> which works with Python &gt;= 3.7, but you may wish to consider other packages such as <a href="../../posts/python-packaging/index.html#poetry">Poetry</a> or <a href="../../posts/python-packaging/index.html#PDM">PDM</a> which offer some advantages but with additional frameworks to learn.</p>
 <p>A few examples of Python packages that I have packaged are listed below, most have also been released to <a href="https://pypi.org/">PyPI</a>.</p>
 <ul>
 <li><a href="https://pypi.org/project/tcx2gpx/">tcx2gpx</a> (personal)</li>
@@ -298,44 +295,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="https://github.com/claritychallenge/clarity">clarity</a> (professional)</li>
 <li><a href="https://github.com/Mesnage-Org/pgfinder">pgfinder</a> (professional)</li>
 </ul>
-<section id="package-structure" class="level1">
-<h1>Package Structure</h1>
+<section id="package-structure" class="level2">
+<h2 class="anchored" data-anchor-id="package-structure">Package Structure</h2>
 <p>You should place your code within a Git version controlled directory for your project. It is then normal to place all files in an organised hierarchy with a sub-directory of the same name for Python code, known as a "flat" structure and tests under <code>tests</code> directory. It is possible to have more than one directory containing code but for now I'm sticking to the flat structure.</p>
-<pre><code>.
-├── ./build
-├── ./dist
-├── ./
-├── ./my_package
-├── ./my_package/__init__.py
-├── ./my_package/module_a.py
-├── ./my_package/module_b.py
-├── ./my_package/something/module_c.py
-└── ./tests
-    ├── ./tests/conftest.py
-    ├── ./tests/resources
-    ├── ./tests/test_module_a.py
-    ├── ./tests/test_module_b.py
-    └── ./tests/something/test_module_c.py</code></pre>
-<section id="init__.py" class="level2">
-<h2 class="anchored" data-anchor-id="init__.py"><code>__init__.py</code></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ./build</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ./dist</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ./</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ./my_package</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ./my_package/__init__.py</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ./my_package/module_a.py</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ./my_package/module_b.py</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> ./my_package/something/module_c.py</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> ./tests</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> ./tests/conftest.py</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> ./tests/resources</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> ./tests/test_module_a.py</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="ex">├──</span> ./tests/test_module_b.py</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="ex">└──</span> ./tests/something/test_module_c.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="init__.py" class="level3">
+<h3 class="anchored" data-anchor-id="init__.py"><code>__init__.py</code></h3>
 <p>In older versions of Python (&lt;3.3) a <code>__init__.py</code> was required in every directory and sub-directory that was to be a module/sub-module. In more recent versions of Python (&gt;\=3.3) they are not essential though as Python uses <a href="https://docs.python.org/3/reference/import.html#namespace-packages">namespace packages</a>. But in most cases its simpler to include such a file in the top level of your directory. <code>__init__.py</code> files can be completely empty or they can contain code that is used throughout your package, such as setting up a logger.</p>
 </section>
 </section>
-<section id="configuration-pyproject.toml" class="level1">
-<h1>Configuration <code>pyproject.toml</code></h1>
+<section id="configuration-pyproject.toml" class="level2">
+<h2 class="anchored" data-anchor-id="configuration-pyproject.toml">Configuration <code>pyproject.toml</code></h2>
 <p>Package configuration has been and is in a state of flux, there was originally <code>setup.py</code> which was then complemented and gradually replaced by <code>setup.cfg</code>. The new method on the block though is <code>pyproject.toml</code> which, with a little tweaking and judicious choice of packages can handle everything.</p>
 <p>Setuptools is shifting towards using <code>pyproject.toml</code> and whilst it is still under development its already highly functional. It’s written in <a href="https://toml.io/en/">Tom's Obvious Minimal Language</a> and isn't too dissimilar in structure to <code>setup.cfg</code>.</p>
 <p>A useful reference for writing your configuration in <code>pyproject.toml</code> is <a href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html">Configuring setuptools using pyproject.toml files</a>. It is based around <a href="https://peps.python.org/pep-0621/">PEP 621 – Storing project metadata in pyproject.toml | peps.python.org</a>.</p>
 <p>A bare-bones <code>pyproject.toml</code> file should reside in the top level of your directory with the following (<strong>NB</strong> This includes the minimum versions and <code>setuptools_scm</code> extension for dynamically setting package version)…</p>
-<section id="build-system" class="level2">
-<h2 class="anchored" data-anchor-id="build-system"><code>build-system</code></h2>
+<section id="build-system" class="level3">
+<h3 class="anchored" data-anchor-id="build-system"><code>build-system</code></h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">build-system</span><span class="kw">]</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">requires</span> <span class="op">=</span> <span class="op">[</span><span class="st">"setuptools&gt;=65.6.3"</span><span class="op">,</span> <span class="st">"setuptools_scm[tools]&gt;=6.2"</span><span class="op">,</span> <span class="st">"wheel"</span><span class="op">]</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">build-backend</span> <span class="op">=</span> <span class="st">"setuptools.build_meta"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Traditionally configuration of meta-data such as author, code repository and license was made via <code>setup.py</code> but you can either specify some (or most) of this in <code>pyproject.toml</code> or a concurrent <code>setup.cfg</code>.</p>
 </section>
-<section id="project" class="level2">
-<h2 class="anchored" data-anchor-id="project"><code>project</code></h2>
+<section id="project" class="level3">
+<h3 class="anchored" data-anchor-id="project"><code>project</code></h3>
 <p>This is the main body of the project description detailing <code>name</code>, <code>authors</code>, <code>description</code>, <code>readme</code>, <code>license</code>, <code>keywords</code>, <code>classifiers</code>, <code>dependencies</code> and <code>version</code> amongst other things.</p>
 <p>The type of license you have chosen to apply to your package. For guidance see <a href="https://choosealicense.com/">Choose an Open Source License</a>.</p>
 <p>The <code>README</code> of your package which may be in <a href="https://www.markdownguide.org/">Markdown</a> or Restructured Text.</p>
@@ -358,16 +355,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tqdm"</span><span class="op">,</span></span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>All other sections are considered subsections, either of <code>project</code> or <code>tool</code> and are defined under their own heading with <code>[project|tool].&lt;package&gt;[.&lt;options&gt;]</code>.</p>
-<section id="project.urls" class="level3">
-<h3 class="anchored" data-anchor-id="project.urls"><code>project.urls</code></h3>
+<section id="project.urls" class="level4">
+<h4 class="anchored" data-anchor-id="project.urls"><code>project.urls</code></h4>
 <p>These are important as they define where people can find the <code>Source</code>, <code>Documentation</code> and <code>Bug_Tracker</code> amongst other things. There may be more fields that can be configured here but I've not used the yet. Substitute these to reflect where your package is hosted, your username and the package name.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">project</span><span class="kw">.</span><span class="dt">urls</span><span class="kw">]</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">Source</span> <span class="op">=</span> <span class="st">"https://gitlab.com/username/my_package"</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">Bug_Tracker</span> <span class="op">=</span> <span class="st">"https://gitlab.com/username/my_package/issues"</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="dt">Documentation</span> <span class="op">=</span> <span class="st">"https://username.gitlab.com/my_package"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="project.optional-dependencies" class="level3">
-<h3 class="anchored" data-anchor-id="project.optional-dependencies"><code>project.optional-dependencies</code></h3>
+<section id="project.optional-dependencies" class="level4">
+<h4 class="anchored" data-anchor-id="project.optional-dependencies"><code>project.optional-dependencies</code></h4>
 <p>This is where you list dependencies that are not required for running a package but are required for different aspects such as development, documentation, publishing to PyPI, additional Notebooks and so forth, the options are limitless.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">project</span><span class="kw">.</span><span class="dt">optional-dependencies</span><span class="kw">]</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">dev</span> <span class="op">=</span> <span class="op">[</span></span>
@@ -406,21 +403,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"jupyterthemes"</span><span class="op">,</span></span>
 <span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="project.scripts-entry-points" class="level3">
-<h3 class="anchored" data-anchor-id="project.scripts-entry-points"><code>project.scripts</code> (Entry Points)</h3>
+<section id="project.scripts-entry-points" class="level4">
+<h4 class="anchored" data-anchor-id="project.scripts-entry-points"><code>project.scripts</code> (Entry Points)</h4>
 <p>Entry points or <code>scripts</code> are a neat method of providing a simple command line interface to your package that links directly into a specific module to provide a command line interface to your programme.</p>
 <p>These are defined under <code>project.scripts</code> section.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">project</span><span class="kw">.</span><span class="dt">scripts</span><span class="kw">]</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">tcx2gpx</span> <span class="op">=</span> <span class="st">"tcx2gpx:process"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="tool" class="level2">
-<h2 class="anchored" data-anchor-id="tool"><code>tool</code></h2>
-<section id="tool.setuptools" class="level3">
-<h3 class="anchored" data-anchor-id="tool.setuptools"><code>tool.setuptools</code></h3>
+<section id="tool" class="level3">
+<h3 class="anchored" data-anchor-id="tool"><code>tool</code></h3>
+<section id="tool.setuptools" class="level4">
+<h4 class="anchored" data-anchor-id="tool.setuptools"><code>tool.setuptools</code></h4>
 <p><a href="https://setuptools.pypa.io/en/latest/index.html">setuptools</a> is perhaps the most common package for configuring Python packages and is the one that is being exposed here. Its configuration is multi-level depending on which component you are configuring.</p>
-<section id="tool.setuptools.packages.find" class="level4">
-<h4 class="anchored" data-anchor-id="tool.setuptools.packages.find"><sub>tool.setuptools.packages.find</sub></h4>
+<section id="tool.setuptools.packages.find" class="level5">
+<h5 class="anchored" data-anchor-id="tool.setuptools.packages.find"><code>tool.setuptools.packages.find</code></h5>
 <p>Uses the <code>find</code> utility to search for packages to include, based on my understanding it looks for <code>__init__.py</code> in a directory and includes it (see above note about these no longer being required in every directory). Typically you would want to exclude <code>tests/</code> from a package you are making as most users won’t need to run the test suite (if they do they would clone from the source repository).</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">setuptools</span><span class="kw">.</span><span class="dt">packages</span><span class="kw">.</span><span class="dt">find</span><span class="kw">]</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">where</span> <span class="op">=</span> <span class="op">[</span><span class="st">"."</span><span class="op">]</span></span>
@@ -428,14 +425,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="dt">exclude</span> <span class="op">=</span> <span class="op">[</span><span class="st">"tests"</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="tool.setuptools.package-data" class="level3">
-<h3 class="anchored" data-anchor-id="tool.setuptools.package-data"><sub>tool.setuptools.package-data</sub></h3>
+<section id="tool.setuptools.package-data" class="level4">
+<h4 class="anchored" data-anchor-id="tool.setuptools.package-data"><code>tool.setuptools.package-data</code></h4>
 <p>This allows additional, non <code>.py</code> files to be included, they are listed on a per package basis and are a table (in toml parlance, list in Python terms).</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  <span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">setuptools</span><span class="kw">.</span><span class="dt">packages-data</span><span class="kw">]</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">tcx2gpx</span> <span class="op">=</span> <span class="op">[</span><span class="st">"*.yaml"</span><span class="op">,</span> <span class="st">"*.json"</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="tool.pytest" class="level3">
-<h3 class="anchored" data-anchor-id="tool.pytest"><code>tool.pytest</code></h3>
+<section id="tool.pytest" class="level4">
+<h4 class="anchored" data-anchor-id="tool.pytest"><code>tool.pytest</code></h4>
 <div class="sourceCode" id="cb9"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">pytest</span><span class="kw">.</span><span class="dt">ini_options</span><span class="kw">]</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">minversion</span> <span class="op">=</span> <span class="st">"7.0"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="dt">addopts</span> <span class="op">=</span> <span class="st">"--cov --mpl"</span></span>
@@ -447,8 +444,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ignore::UserWarning"</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="tool.black" class="level3">
-<h3 class="anchored" data-anchor-id="tool.black"><code>tool.black</code></h3>
+<section id="tool.black" class="level4">
+<h4 class="anchored" data-anchor-id="tool.black"><code>tool.black</code></h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">black</span><span class="kw">]</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">line-length</span> <span class="op">=</span> <span class="dv">120</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">target-version</span> <span class="op">=</span> <span class="op">[</span><span class="st">"py38"</span><span class="op">,</span> <span class="st">"py39"</span><span class="op">,</span> <span class="st">"py310"</span><span class="op">,</span> <span class="st">"py311"</span><span class="op">]</span></span>
@@ -463,8 +460,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="vs">)</span></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="tool.flake8" class="level3">
-<h3 class="anchored" data-anchor-id="tool.flake8"><code>tool.flake8</code></h3>
+<section id="tool.flake8" class="level4">
+<h4 class="anchored" data-anchor-id="tool.flake8"><code>tool.flake8</code></h4>
 <p>The developers of Flake8 will not be supporting <code>pyproject.toml</code> for configuration. This is a shame but a work around is available in the form of <a href="https://github.com/john-hen/Flake8-pyproject">Flake8-pyproject</a>. Make sure to add this to your requirements section to ensure it is installed when people use <code>pre-commit</code>.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">flake8</span><span class="kw">]</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dt">ignore</span> <span class="op">=</span> <span class="op">[</span><span class="st">'</span><span class="vs">E231</span><span class="st">'</span><span class="op">,</span> <span class="st">'</span><span class="vs">E241</span><span class="st">'</span><span class="op">]</span></span>
@@ -474,8 +471,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="dt">max-line-length</span> <span class="op">=</span> <span class="dv">120</span></span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="dt">count</span> <span class="op">=</span> <span class="cn">true</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="tool.setuptools_scm" class="level3">
-<h3 class="anchored" data-anchor-id="tool.setuptools_scm"><code>tool.setuptools_scm</code></h3>
+<section id="tool.setuptools_scm" class="level4">
+<h4 class="anchored" data-anchor-id="tool.setuptools_scm"><code>tool.setuptools_scm</code></h4>
 <p><a href="https://github.com/pypa/setuptools_scm/">setuptools_scm</a> is a simple to use extension to setuptools that dynamically sets the package version based on the version control data. It is important to note that by default <code>setuptools_scm</code> will attempt to bump the version of the release. The following configuration forces the use of the current <code>git tag</code>.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">setuptools_scm</span><span class="kw">]</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">write_to</span> <span class="op">=</span> <span class="st">"tcx2gpx/_version.py"</span></span>
@@ -483,8 +480,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dt">local_scheme</span> <span class="op">=</span> <span class="st">"no-local-version"</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="dt">git_describe_command</span> <span class="op">=</span> <span class="st">"git describe --tags"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="tool.ruff" class="level3">
-<h3 class="anchored" data-anchor-id="tool.ruff"><code>tool.ruff</code></h3>
+<section id="tool.ruff" class="level4">
+<h4 class="anchored" data-anchor-id="tool.ruff"><code>tool.ruff</code></h4>
 <p><a href="https://github.com/charliermarsh/ruff">ruff</a> is a Python linter written in <a href="https://www.rust-lang.org/">Rust</a> which is therefore very fast. It provides the same functionality as <code>black</code>, <code>flake8</code> and <code>pylint</code> and can auto-correct many issues if configured to do so. A <a href="https://github.com/charliermarsh/ruff#usage">GitHub Actions</a> is also available. I'd recommend checking it out.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">ruff</span><span class="kw">]</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="dt">fixable</span> <span class="op">=</span> <span class="op">[</span><span class="st">"A"</span><span class="op">,</span> <span class="st">"B"</span><span class="op">,</span> <span class="st">"C"</span><span class="op">,</span> <span class="st">"D"</span><span class="op">,</span> <span class="st">"E"</span><span class="op">,</span> <span class="st">"F"</span><span class="op">,</span> <span class="st">"R"</span><span class="op">,</span> <span class="st">"S"</span><span class="op">,</span> <span class="st">"W"</span><span class="op">,</span> <span class="st">"U"</span><span class="op">]</span></span>
@@ -492,12 +489,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 </section>
 </section>
-<section id="versioning" class="level1">
-<h1>Versioning</h1>
+<section id="versioning" class="level2">
+<h2 class="anchored" data-anchor-id="versioning">Versioning</h2>
 <p>Typically the version is defined in the <code>__version__</code> variable/object in the top-level <code>__init__.py</code> or as a value in <code>[metadata]</code> of either <code>setup.cfg</code> or <code>pyproject.toml</code> but this has some downsides in that you have to remember to update the string manually when you are ready for a release and it doesn't tie in with using tags in Git to tag versions of your commits.</p>
 <p>It is worth taking a moment to read and understand about <a href="https://semver.org/">Semantic Versioning</a> which you are likely to use when tagging versions of your software to work with <code>setuptools_scm</code>.</p>
-<section id="setuptools-scm" class="level2">
-<h2 class="anchored" data-anchor-id="setuptools-scm">Setuptools-scm</h2>
+<section id="setuptools-scm" class="level3">
+<h3 class="anchored" data-anchor-id="setuptools-scm">Setuptools-scm</h3>
 <p><a href="https://github.com/pypa/setuptools_scm">setuptools_scm</a> is simpler to setup and use than <a href="https://github.com/python-versioneer/python-versioneer">versioneer</a> as it relies solely on configuration via <code>pyproject.toml</code> rather than being dependent on now deprecated <code>setup.py</code>.</p>
 <p>As shown above you should have set the minimum versions of <code>"setuptools&gt;=45"</code> and <code>"setuptools_scm[toml]&gt;=6.2"</code>, <code>dynamic = ["version"]</code> under <code>project</code> and set the <code>write_to = "pkg/_version.py"</code> (<strong>NB</strong> substitute <code>pkg</code> for your package directory, whether its <code>src</code> or the package name).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>[build<span class="op">-</span>system]</span>
@@ -511,8 +508,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>version_scheme <span class="op">=</span> <span class="st">"post-release"</span></span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>local_scheme <span class="op">=</span> <span class="st">"no-local-version"</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>git_describe_command <span class="op">=</span> <span class="st">"git describe --tags"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="including-version-in-sphinx-documentation" class="level3">
-<h3 class="anchored" data-anchor-id="including-version-in-sphinx-documentation">Including Version in Sphinx Documentation</h3>
+<section id="including-version-in-sphinx-documentation" class="level4">
+<h4 class="anchored" data-anchor-id="including-version-in-sphinx-documentation">Including Version in Sphinx Documentation</h4>
 <p>If you have Sphinx documentation you can add the following to <sub>docs/conf.py</sub></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib.metadata <span class="im">import</span> version</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>release <span class="op">=</span> version(<span class="st">"myproject"</span>)</span>
@@ -520,10 +517,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 </section>
 </section>
-<section id="building-your-package" class="level1">
-<h1>Building your Package</h1>
-<section id="generate-distribution-archive" class="level2">
-<h2 class="anchored" data-anchor-id="generate-distribution-archive">Generate Distribution Archive</h2>
+<section id="building-your-package" class="level2">
+<h2 class="anchored" data-anchor-id="building-your-package">Building your Package</h2>
+<section id="generate-distribution-archive" class="level3">
+<h3 class="anchored" data-anchor-id="generate-distribution-archive">Generate Distribution Archive</h3>
 <p>In your package directory you can create a distribution of your package with the latest versions of <code>setuptools</code> and <code>wheel</code>. To do this in your virtual environment run the following. The documentation for how to do this is at <a href="https://setuptools.pypa.io/en/latest/setuptools.html">Building and Distributing Packages with Setuptools</a>.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">build-system</span><span class="kw">]</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="dt">requires</span> <span class="op">=</span> <span class="op">[</span></span>
@@ -537,8 +534,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>…and the resulting package will be generated in the <code>dist/</code> directory.</p>
 </section>
 </section>
-<section id="publishing-to-pypi" class="level1">
-<h1>Publishing to <a href="https://pypi.org">PyPI</a></h1>
+<section id="publishing-to-pypi" class="level2">
+<h2 class="anchored" data-anchor-id="publishing-to-pypi">Publishing to <a href="https://pypi.org">PyPI</a></h2>
 <p>Before pushing the package to the main PyPi server it is prudent to test things out on <a href="https://test.pypi.org/">TestPyPI</a> first. You must first generate an API Token from your account settings page. It needs a name and the scope should be `Entire account (all projects)`. This token will be shown once so do <strong>not</strong> navigate away from the page until you have copied it.</p>
 <p>You use <a href="https://twine.readthedocs.io/en/latest/">twine</a> to upload the package and should create a <code>.pypirc</code> file in the root of the package directory that contains your API key and the username <code>__token__</code>. For the TestPyPI server it follows the following format.</p>
 <pre class="conf"><code>[testpypi]
@@ -546,14 +543,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   password = pypi-dfkjh9384hdszfkjnkjahkjfhd3YAJKSHE0089asdf0lkjsjJLLS_-0942358JKHDKjhkljna39o854yurlaoisdvnzli8yw459872jkhlkjsdfkjhasdfadsfasdf</code></pre>
 <p>Once this is in place you are ready to use <code>twine</code> to upload the package using the configuration file you have just created.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">twine</span> upload <span class="at">--config-file</span> ./.pypirc <span class="at">--repository</span> testpypi dist/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="testing-download" class="level2">
-<h2 class="anchored" data-anchor-id="testing-download">Testing Download</h2>
+<section id="testing-download" class="level3">
+<h3 class="anchored" data-anchor-id="testing-download">Testing Download</h3>
 <p>After having uploaded your package to the TestPyPI server you should create a clean virtual environment and try installing the package from where you have just uploaded it. You can do this using <code>pip</code> and the <code>--index-url</code> and <code>--extra-index-url</code>, the former installs your package from TestPyPI, the later installs dependencies from PyPI.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">--index-url</span> https://test.pypi.org/simple/ <span class="at">--extra-index-url</span> https://pypi.org/simple/ your-package</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Once installed you can try running the code, scripts or notebooks associated with the package as you would normally.</p>
 </section>
-<section id="repeat-for-pypi" class="level2">
-<h2 class="anchored" data-anchor-id="repeat-for-pypi">Repeat for PyPI</h2>
+<section id="repeat-for-pypi" class="level3">
+<h3 class="anchored" data-anchor-id="repeat-for-pypi">Repeat for PyPI</h3>
 <p>Once you are happy this is working you can repeat the process on the main <a href="https://pypi.org">PyPI</a> server. You can add the token that you generate to <code>/.pypirc</code> under a separate heading.</p>
 <pre class="conf"><code>[testpypi]
   username = __token__
@@ -562,8 +559,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   username = __token__
   password = pypi-dfkjh9384hdszfkjnkjahkjfhd3YAJKSHE0089asdf0lkjsjJLLS_-0942358JKHDKjhkljna39o854yurlaoisdvnzli8yw459872jkhlkjsdfkjhdfJZZZZZF</code></pre>
 </section>
-<section id="github-action" class="level2">
-<h2 class="anchored" data-anchor-id="github-action">GitHub Action</h2>
+<section id="github-action" class="level3">
+<h3 class="anchored" data-anchor-id="github-action">GitHub Action</h3>
 <p>Manually uploading is somewhat time consuming and tedious. Fortunately though with <code>setuptools_scm</code> in place and tokens generated we can automate the process of building and uploading packages to PyPI using the GitHub Action <a href="https://github.com/pypa/gh-action-pypi-publish">gh-action-pypi-publish</a> (read more about <a href="id:e19b6eb6-46b2-440a-ba35-be29feb33407">GitHub Actions</a>). You will have already generated a <a href="https://pypi.org/help/#apitoken">PYPI token</a> (and similarly one for <a href="https://test.pypi.org">test PyPI</a>) and these can stored on the projects GitHub account under <em>Settings &gt; Secrets &gt; Actions</em> with the names <code>PYPI_API_TOKEN</code> and <code>TEST_PYPI_API_TOKEN</code> respectively. You can then add the following GitHub Action under <code>.github/workflow/pypi.yaml</code>.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Publish package to PyPi</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -597,8 +594,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">user</span><span class="kw">:</span><span class="at"> __token__</span></span>
 <span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">password</span><span class="kw">:</span><span class="at"> ${{ secrets.PYPI_API_TOKEN }}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="releasing-via-github" class="level2">
-<h2 class="anchored" data-anchor-id="releasing-via-github">Releasing via GitHub</h2>
+<section id="releasing-via-github" class="level3">
+<h3 class="anchored" data-anchor-id="releasing-via-github">Releasing via GitHub</h3>
 <p>With <code>setuptools_scm</code> in place and a <a href="id:5e1f167e-5c0c-4206-b2ac-6694e08524d8">GitHub Action</a> setup and configured it is now possible to make a release to PyPI via GitHub Releases.</p>
 <ol type="1">
 <li>Go to the Releases page (its linked from the right-hand side of the front-page).</li>
@@ -612,20 +609,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 </section>
 </section>
-<section id="packaging-frameworks" class="level1">
-<h1>Packaging Frameworks</h1>
+<section id="packaging-frameworks" class="level2">
+<h2 class="anchored" data-anchor-id="packaging-frameworks">Packaging Frameworks</h2>
 <p>There are some frameworks that are meant to ease the pain of this process and make it easier. I'm yet to test these for two reasons. Firstly I wanted to understand what is going on rather than learn another framework. Secondly it was an additional framework to learn.</p>
-<section id="pdm" class="level2">
-<h2 class="anchored" data-anchor-id="pdm">PDM</h2>
+<section id="pdm" class="level3">
+<h3 class="anchored" data-anchor-id="pdm">PDM</h3>
 <p><a href="https://pdm.fming.dev/latest/">PDM</a> (Python package and Dependency Manager) handles all stages of setting up and creating a package and managing its dependencies. In essence its a tool for interactively generating the configuration files described above. I've not yet.</p>
 </section>
-<section id="poetry" class="level2">
-<h2 class="anchored" data-anchor-id="poetry">Poetry</h2>
+<section id="poetry" class="level3">
+<h3 class="anchored" data-anchor-id="poetry">Poetry</h3>
 <p><a href="https://python-poetry.org/">Poetry</a> is another package for managing packaging and dependencies. Again, I've not yet used it.</p>
 </section>
 </section>
-<section id="links" class="level1">
-<h1>Links</h1>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
 <li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html">PyPA : Building and Distributing Packages with Setuptools</a></li>
 <li><a href="https://packaging.python.org/en/latest/specifications/">PyPA : Specifications</a></li>

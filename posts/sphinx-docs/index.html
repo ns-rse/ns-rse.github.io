@@ -272,12 +272,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/6891757680/"><em>This is going on my blog</em> Picture by Me.</a></figcaption><p></p>
 </figure>
 </div>
-<section id="pre-requisites" class="level1">
-<h1>Pre-requisites</h1>
+<section id="pre-requisites" class="level2">
+<h2 class="anchored" data-anchor-id="pre-requisites">Pre-requisites</h2>
 <p>The instructions here assume that you have your <a href="https://ns-rse.github.io/posts/python-packaging/">Python Packaging</a> well structured, under version control and backed up on <a href="https://github.com">GitHub</a>.</p>
 </section>
-<section id="initial-setup" class="level1">
-<h1>Initial Setup</h1>
+<section id="initial-setup" class="level2">
+<h2 class="anchored" data-anchor-id="initial-setup">Initial Setup</h2>
 <p>Sphinx comes with the <a href="https://www.sphinx-doc.org/en/master/man/sphinx-quickstart.html"><code>sphinx-quickstart</code></a> interactive tool which will help setup your repository with a basic <code>conf.py</code> and <code>Makefile</code>. There are a number of command line options but is also interactive. I like to keep the source and build directories separate and so use the <code>--sep</code> flag as well as the <code>--makefile</code> flag to generate a <code>Makefile</code> for building documentation on GNU/Linux or OSX (if you use M$-Win the use the <code>--batchfile</code> flag instead).</p>
 <p>I keep documentation under <code>docs/</code> directory within the root of the package directory.</p>
 <pre class="{bash}"><code>cd ~/path/to/package
@@ -285,21 +285,21 @@ mkdir docs
 cd docs
 sphinx-quickstart --makefile</code></pre>
 </section>
-<section id="conf.py" class="level1">
-<h1><code>conf.py</code></h1>
+<section id="conf.py" class="level2">
+<h2 class="anchored" data-anchor-id="conf.py"><code>conf.py</code></h2>
 <p>Configuration is via a <code>conf.py</code> file as you read through this document you will see reference to adding/modifying various sections of the this file. The automatically generated <code>conf.py</code> produced by <code>sphinx-quickstart</code> is well commented and instructive on how to use it to configure Sphinx.</p>
 <p>Key sections are the list of <code>extensions</code> that your documentation uses.</p>
 </section>
-<section id="index.rst" class="level1">
-<h1><code>index.rst</code></h1>
+<section id="index.rst" class="level2">
+<h2 class="anchored" data-anchor-id="index.rst"><code>index.rst</code></h2>
 <p>The front-page of your website, typically <code>index.html</code> for static sites, is derived from <code>index.rst</code>. You can write welcome details about your project and link to other pages you have written. Typically I write all but the front matter in Markdown.</p>
-<pre><code>Welcome to my packages documentation
+<pre class="{bash}"><code>Welcome to my packages documentation
 ====================================
 
 This is my package, there are many packages like it but this one is mine.</code></pre>
-<section id="including-markdown" class="level2">
-<h2 class="anchored" data-anchor-id="including-markdown">Including Markdown</h2>
-<p>I already know <a href="https://www.markdownguide.org/">Markdown</a> fairly well and would rather use that to write documents (as I do with this blog). Fortunately Sphinx can incorporate documentation written in <a href="https://github.com/ryanfox/sphinx-markdown-tables">Markdown</a> using the <a href="https://myst-parser.readthedocs.io/en/latest/"><code>myst_parser</code></a> package. Simply include it in the <code>extensions</code>.</p>
+<section id="including-markdown" class="level3">
+<h3 class="anchored" data-anchor-id="including-markdown">Including Markdown</h3>
+<p>I already know <a href="https://www.markdownguide.org/">Markdown</a> fairly well and would rather use that to write documents (as I do with thisblog). Fortunately Sphinx can incorporate documentation written in <a href="https://github.com/ryanfox/sphinx-markdown-tables">Markdown</a> using the <a href="https://myst-parser.readthedocs.io/en/latest/"><code>myst_parser</code></a> package. Simply include it in the <code>extensions</code>.</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>extensions <span class="op">=</span> [</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"myst_parser"</span>,</span>
@@ -310,7 +310,7 @@ This is my package, there are many packages like it but this one is mine.</code>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>source_suffix <span class="op">=</span> {<span class="st">".rst"</span>: <span class="st">"restructuredtext"</span>, <span class="st">".md"</span>: <span class="st">"markdown"</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In your <code>index.rst</code> you can then list the Markdown filenames, without extensions. For example if you have an <code>installation.md</code> and <code>configuration.md</code> place them in the same directory as <code>index.rst</code> (the root <code>docs/</code>) directory and have in your <code>index.rst</code> have…</p>
-<pre><code>Welcome to my packages documentation
+<pre class="{bash}"><code>Welcome to my packages documentation
 ====================================
 
 This is my package, there are many packages like it but this one is mine.
@@ -320,12 +320,12 @@ This is my package, there are many packages like it but this one is mine.
    :caption: Getting Started
    introduction
    configuration</code></pre>
-<section id="markdown-tables" class="level3">
-<h3 class="anchored" data-anchor-id="markdown-tables">Markdown Tables</h3>
+<section id="markdown-tables" class="level4">
+<h4 class="anchored" data-anchor-id="markdown-tables">Markdown Tables</h4>
 <p>If you have tables in Markdown (and its likely that you will) then you will need the <a href="https://github.com/ryanfox/sphinx-markdown-tables"><code>sphinx-markdown-tables</code></a> package which ensures they are rendered correctly.</p>
 </section>
-<section id="mermaid-diagrams" class="level3">
-<h3 class="anchored" data-anchor-id="mermaid-diagrams">Mermaid Diagrams</h3>
+<section id="mermaid-diagrams" class="level4">
+<h4 class="anchored" data-anchor-id="mermaid-diagrams">Mermaid Diagrams</h4>
 <p>Further Sphinx has support for <a href="https://mermaid.js.org/">Mermaid</a> diagrams that have been written in Markdown documents via the <a href="https://github.com/mgaitan/sphinxcontrib-mermaid"><code>sphinxcontrib-mermaid</code></a> package. This means that you can include all sorts of neat diagrams such as <a href="https://mermaid.live/edit#pako:eNqlVl1v2jAU_SuWJcQLQ4kTWpI31o-tU7tupX2ZeDHJDVhNbOQ4HS3iv-8mIRPQpBBKHrDjc66Pfc91vKKBCoH6tNNZCSmMT1ZdM4cEuj7pTnkK3R7pzoT5pvli3s1HtTLcwIVKEmFu-RRifGt0BuuJJNUP2-tOp3xRkf8PBwWViNAnE3rLU0Mi4CbTMKH1mBerb_etrdGp5jKYb0ZIJJaQvudO6ONcpBUWW5HSJZYYRXJmXcQ7kaZCzsiP8f1PRMdQ8vbgO_JGYUiSbdomfN_ahN0mziF4Vplp0p6AnsFpMoop7bq5Ei5kPee63Hi7Cs52trkOyo6AvhvdzhdrylfJPZAz1i5nrGXO2OGcsRNyVq9aacDYXM6O0Pu0CLHoyAUPQb5xEquZOgB9uBpd3l2dsow2uoo9a2m6ahFf8XSJhWws-yc8jsgjpKaUAS88zrhROj2WIHERATTjUbzT6FPnUz516qJei2Xuj1QlYOZ5S0iCZy2JsryyiJL7zN0CFMsmamOWncYst9dywD7tVsk-WmWOTnkCZKHVNIak4pxemp_TVJictdjk9y5rWSIPEPEArU6-j0a_b5oib6HGx6F-3Xyg0m2sBfdTteDW71yx-kYXaLwWqAi3SL4SCX-rK0LamAX3Q0fupn5f1L4BK9_ZG2ccBWZ14AMSt_x5vMIiVS0NdavwUEzyk31zKiYgDSqhPYoakBfiFXCVcye0uP5NaE4LuX7OJ1ojLiu-K1ehQC9RP7_x9SjPjBq_yqDql5hLwWeaJ9XLBZd_lMJuxOO07FN_RZfU_-IOrb43OMfH8twzNhwOevSV-mdW_8xiA8-ybc_DP2_do29FCPxAM9dyhoOBw5xzzx6s_wG-Ijr0">Git Graph</a>.</p>
 <div class="cell" data-fig-height="2">
 <div class="cell-output-display">
@@ -431,8 +431,8 @@ gitGraph
 </section>
 </section>
 </section>
-<section id="including-api-documentation" class="level1">
-<h1>Including API Documentation</h1>
+<section id="including-api-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="including-api-documentation">Including API Documentation</h2>
 <p>As you write your package it is good practice include <a href="https://realpython.com/documenting-python-code/">docstrings</a> for each module/class/method/function that you write. For Python there are several different styles for writing these, my personal preference is for <a href="https://numpydoc.readthedocs.io/en/latest/format.html">numpydoc style</a> but regardless of your preference you should write them. They are invaluable to users (including your future self) to understand how the code works and as many modern Integrated Development Environments (IDEs) supporting functionality to show the documentation for functions as you type they are an invaluable reference. If you’re an <a href="https://www.gnu.org/software/emacs/">Emacs</a> user then you can leverage the <a href="https://github.com/douglasdavis/numpydoc.el">numpydoc</a> package to automatically insert NumPy docstrings in Python function definitions based on the function definition, it automatically detects names, type hints, exceptions and return types to generate the docstring (yet another reason to use Emacs!).</p>
 <p>Whilst it is useful to have this API available in an IDE as you work it is also useful to include the reference on a packages website and this is relatively straight-forward with Sphinx which provides the <a href="https://numpydoc.readthedocs.io/en/latest/format.html"><code>sphinx-apidoc</code></a> command to generate documentation from the embedded docstrings. However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
 <p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html">configuring</a> at a bare minimum which directories to generate documentation from.</p>
@@ -445,8 +445,8 @@ gitGraph
 </div>
 <p>There are a lot of subtle configuration options and I would recommend reading the <a href="https://sphinx-autoapi.readthedocs.io/en/latest/">documentation</a> and working through the <a href="https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html">Tutorials</a> and <a href="https://sphinx-autoapi.readthedocs.io/en/latest/how_to.html">How To Guides</a>.</p>
 </section>
-<section id="multiple-versions" class="level1">
-<h1>Multiple Versions</h1>
+<section id="multiple-versions" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-versions">Multiple Versions</h2>
 <p>Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision documentation for each version that is available. Fortunately the Sphinx extension <a href="https://holzhaus.github.io/sphinx-multiversion/master/">sphinx-multiversion</a> makes this relatively painless.</p>
 <p>You need to include it as in the list of <code>extensions</code> of <code>docs/conf.py</code></p>
 <div class="cell" data-execution_count="4">
@@ -454,10 +454,10 @@ gitGraph
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sphinx_multiversion"</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="configuring-versions" class="level2">
-<h2 class="anchored" data-anchor-id="configuring-versions">Configuring Versions</h2>
-<section id="sidebar" class="level3">
-<h3 class="anchored" data-anchor-id="sidebar">Sidebar</h3>
+<section id="configuring-versions" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-versions">Configuring Versions</h3>
+<section id="sidebar" class="level4">
+<h4 class="anchored" data-anchor-id="sidebar">Sidebar</h4>
 <p>For versions to not just be built but available you need to include a section on your site that allows selecting which version of the documentation to view. Sidebars are included via HTML templates and you need to configure the path to this directory and the name of the HTML file within it. The following options in the <code>conf.py</code> configure the <code>_templates</code> directory and within it the <code>versioning.html</code> file.</p>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>templates_path <span class="op">=</span> [</span>
@@ -477,8 +477,8 @@ gitGraph
 {% endif %}</code></pre>
 <p>Ensure this file is under Git version control, it is needed to build your pages on GitHub.</p>
 </section>
-<section id="tagsbranches" class="level3">
-<h3 class="anchored" data-anchor-id="tagsbranches">Tags/Branches</h3>
+<section id="tagsbranches" class="level4">
+<h4 class="anchored" data-anchor-id="tagsbranches">Tags/Branches</h4>
 <p>If no options are set then <code>sphinx-multiversion</code> will build documentation for <em>all</em> branhces, which is probably undesirable. Typically you want to restrict this to the released versions which are identified by <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tags</a> and perhaps your <code>main</code>/<code>master</code> branch. If you prefix your tags with <code>v</code> and you want to build the documentation for the <code>HEAD</code> of your <code>main</code> (or <code>master</code>) branch then you should set options as shown below for <code>sphinx-multiversion</code>. I like to be able to test documentation builds and so I have a section that allows me to include a given branch.</p>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>smv_tag_whitelist <span class="op">=</span> <span class="vs">r"^v\d+.*$"</span>  <span class="co"># Tags begining with v#</span></span>
@@ -498,15 +498,15 @@ gitGraph
 </section>
 </section>
 </section>
-<section id="themes" class="level1">
-<h1>Themes</h1>
+<section id="themes" class="level2">
+<h2 class="anchored" data-anchor-id="themes">Themes</h2>
 <p>There are a number of different themes available for including in your package. Which is used is defined by the <code>html_theme</code> variable in <code>docs/conf.py</code>. I like the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html"><code>pydata-sphinx-theme</code></a> that is used by <a href="https://pandas.pydata.org">Pandas</a>/<a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Matplotlib</a>.</p>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>html_theme <span class="op">=</span> <span class="st">"pydata_sphinx_theme"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="package-dependencies" class="level1">
-<h1>Package Dependencies</h1>
+<section id="package-dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h2>
 <p>Since the documentation is part of your package it is important to include all of the dependencies that are required for building the documentation dependencies of your package so they can be easily installed and are available to Sphinx (since Sphinx will try loading anything listed in your <code>docs/conf.py</code>). These days you should really be using <code>pyproject.toml</code> to configure and manage your package, if you are unfamiliar with the packaging process see my post on <a href="https://ns-rse.github.io/posts/python-packaging/">Python Packaging</a>.</p>
 <div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>[project.optional<span class="op">-</span>dependencies]</span>
@@ -528,15 +528,15 @@ gitGraph
 <pre class="{bash}"><code>cd ~/path/to/package
 pip install .[docs]</code></pre>
 </section>
-<section id="building-documentation" class="level1">
-<h1>Building Documentation</h1>
+<section id="building-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="building-documentation">Building Documentation</h2>
 <p>You are now ready to build your documentation locally.</p>
 <pre class="{bash}"><code>cd ~/path/to/package/docs
 mkdir -p _build/html
 sphinx-multiversion . _build/html</code></pre>
 <p>Output should reside under the <code>~/path/to/package/docs/_build/html/</code> directory and there should be a directory for every tag as well as <code>main</code> (or <code>master</code>).</p>
-<section id="deploying-on-github-pages" class="level2">
-<h2 class="anchored" data-anchor-id="deploying-on-github-pages">Deploying on GitHub Pages</h2>
+<section id="deploying-on-github-pages" class="level3">
+<h3 class="anchored" data-anchor-id="deploying-on-github-pages">Deploying on GitHub Pages</h3>
 <p>The final stage is to leverage <a href="https://pages.github.com/">GitHub Pages</a> to host your documentation. This can be achieved using a <a href="https://docs.github.com/en/actions">GitHub Action</a>. These are a way of running certain tasks automatically on GitHub in response to certain actions. You can configure your actions to use those defined by others. I found the <a href="https://github.com/uibcdf/action-sphinx-docs-to-gh-pages"><code>action-sphinx-docs-to-gh-pages</code></a> action for generating Sphinx documentation but it didn’t support generating API documentation nor multiple versions of documentation so I have <a href="https://github.com/ns-rse/action-sphinx-docs-to-gh-pages">forked</a> it and added this functionality (I intend to work with the authors and push the changes upstream).</p>
 <p>To use this action you need to create a file in <code>~/path/to/package/.github/workflows/</code> called <code>sphinx_docs_to_gh_pages.yaml</code> and copy and paste the following <a href="https://yaml.org/">YAML</a>.</p>
 <pre class="{yaml}"><code>name: Sphinx docs to gh-pages
@@ -576,13 +576,13 @@ jobs:
 <p>Save, add and commit to your Git repository and push the changes to GitHub.</p>
 </section>
 </section>
-<section id="links" class="level1">
-<h1>Links</h1>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
 <li><a href="https://www.sphinx-doc.org/en/master/">Sphinx</a></li>
 </ul>
-<section id="sphinx-extensions" class="level2">
-<h2 class="anchored" data-anchor-id="sphinx-extensions">Sphinx Extensions</h2>
+<section id="sphinx-extensions" class="level3">
+<h3 class="anchored" data-anchor-id="sphinx-extensions">Sphinx Extensions</h3>
 <ul>
 <li><a href="https://myst-parser.readthedocs.io/en/latest/"><code>myst_parser</code></a></li>
 <li><a href="https://sphinx-autoapi.readthedocs.io/en/latest/"><code>sphinx-autoapi</code></a></li>
@@ -591,8 +591,8 @@ jobs:
 <li><a href="https://github.com/mgaitan/sphinxcontrib-mermaid"><code>sphinxcontrib-mermaid</code></a></li>
 </ul>
 </section>
-<section id="github" class="level2">
-<h2 class="anchored" data-anchor-id="github">GitHub</h2>
+<section id="github" class="level3">
+<h3 class="anchored" data-anchor-id="github">GitHub</h3>
 <ul>
 <li><a href="https://pages.github.com/">GitHub Pages</a></li>
 <li><a href="https://docs.github.com/en/actions">GitHub Action</a></li>

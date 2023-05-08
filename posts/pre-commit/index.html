@@ -276,20 +276,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pre-commit</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge pre-commit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If you are working on a Python project then you should include <code>pre-commit</code> as a requirement (either in <code>requirements-dev.txt</code>) or under the <code>dev</code> section of <code>[options.extras_require]</code> in your <code>setup.cfg</code> as shown below.</p>
-<pre><code>[options.extras_require]
-dev =
-  pre-commit
-  pytest
-  pytest-cov</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">options</span><span class="kw">.</span><span class="dt">extras_require</span><span class="kw">]</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">dev</span> <span class="op">=</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pre-commit</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pytest</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">pytest-cov</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="configuration" class="level2">
 <h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
 <p>Configuration of pre-commit is via a file in the root of your Git version controlled directory called <code>.pre-commit-config.yaml</code>. This file should be included in your Git repository, you can create a blank file or <code>pre-commit</code> can generate a sample configuration for you.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Empty configuration</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> .pre-commit-config.yaml</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Auto-generate basic configuration</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">pre-commit</span> sample-config <span class="op">&gt;</span> .pre-commit-config.yaml</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .pre-commit-config.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="{bash}"><code># Empty configuration
+touch .pre-commit-config.yaml
+# Auto-generate basic configuration
+pre-commit sample-config &gt; .pre-commit-config.yaml
+git add .pre-commit-config.yaml</code></pre>
 <section id="hooks" class="level3">
 <h3 class="anchored" data-anchor-id="hooks">Hooks</h3>
 <p>Each hook is associated with a repository (<code>repo</code>) and a version (<code>rev</code>) within it. Many are available from the <code>https://github.com/pre-commit/pre-commit-hooks</code>. The default set of <code>pre-commit</code> hooks might look like the following.</p>

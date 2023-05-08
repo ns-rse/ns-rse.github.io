@@ -252,11 +252,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="git-global-ssh-configuration" class="level2">
 <h2 class="anchored" data-anchor-id="git-global-ssh-configuration">Git Global SSH Configuration</h2>
 <p>Typically your global configuration for which key to use is set in <code>~/.ssh/config</code> with an entry similar to the below.</p>
-<pre><code>Host github.com
-     User git
-     Port 22
-     PreferredAuthentications publickey
-     IdentityFile ~/.ssh/id_ed25519</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Host</span> github.com</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="ex">User</span> git</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     <span class="ex">Port</span> 22</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>     <span class="ex">PreferredAuthentications</span> publickey</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>     <span class="ex">IdentityFile</span> ~/.ssh/id_ed25519</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Here it uses the User name <code>git</code> on port <code>22</code>. The preferred authentication method is using a <code>publickey</code> and the private key used is stored locally at <code>~/.ssh/id_ed25519</code>.</p>
 <p>When asked to connect to a forge using SSH (e.g.&nbsp;<code>git pull</code> or <code>git push</code>) will look through the <code>~/.ssh/config</code> file to see if there is a configuration section that matches the target and if so use the configuration defined there-in. You will then be prompted for your SSH private key password.</p>
 <section id="what-are-keychains" class="level3">
@@ -273,11 +273,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.name <span class="st">"Username"</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> user.email <span class="st">"repos@username.com"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This adds the following to the repositories configuration which is stored under <code>.git/config</code> and you can of course enter this directly to the configuration file yourself.</p>
-<pre><code>[core]
-    sshCommand = ssh -i ~/.ssh/work_ed25519 -F /dev/null
-[user]
-    name = Username
-    email = repos@username.com</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[core]</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sshCommand</span> = ssh <span class="at">-i</span> ~/.ssh/work_ed25519 <span class="at">-F</span> /dev/null</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[user]</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">name</span> = Username</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">email</span> = repos@username.com</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>What is this doing? Well it’s instructing Git to run ssh using the private key file (with the <code>-i</code> flag to specify the <code>identity_file</code>) that is located at <code>~/.ssh/work_ed25519</code>. Providing you have…</p>
 <ol type="a">
 <li>Already uploaded the public key (<code>work_ed25519.pub</code>) to your GitHub account.</li>
@@ -292,22 +292,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Git 2.13 introduced the aforementioned <a href="https://git-scm.com/docs/git-config#_conditional_includes">Conditional includes</a> which works “_by setting a <code>includeIf.&lt;condition&gt;.path</code> variable to the name of the file to be included.”. For our current case-use the <code>&lt;condition&gt;</code> we are interested in is whether the <code>path</code>, which is interpreted as a pattern, is a <code>gitdir</code> then we include what follows.</p>
 <p>For example, we place all of our work related Git repositories under the <code>~/work/</code> directory and wish to use <code>~/.ssh/work_ed25519</code> for these and keep all of our personal repositories elsewhere and wish to use our main <code>~/.ssh/id_ed25519</code> key for those.</p>
 <p>Out <code>~/.gitconfig</code> should look like</p>
-<pre><code>[user]
-    name = Your Name
-    email = your.personal@email.com
-
-[includeIf "gitdir:~/work/"]    # Directory paths ending in '/** has the globbing wildcard '**' added by default.
-    path = ~/work/.gitconfig_work
-
-[core]
-    sshCommand = ssh -i ~/.ssh/id_ed25519 -F /dev/null</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[user]</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">name</span> = Your Name</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">email</span> = your.personal@email.com</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[includeIf</span> <span class="st">"gitdir:~/work/"</span>]    <span class="co"># Directory paths ending in '/** has the globbing wildcard '**' added by default.</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">path</span> = ~/work/.gitconfig_work</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[core]</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sshCommand</span> = ssh <span class="at">-i</span> ~/.ssh/id_ed25519 <span class="at">-F</span> /dev/null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Then our <code>~/work/.gitconfig_work</code> can contain the alternative values we wish to use for all repositories under the <code>~/work/</code> directory.</p>
-<pre><code>[user]
-    name = Your Name
-    email = your.work@email.com
-
-[core]
-    sshCommand = ssh -i ~/.ssh/work_ed25519 -F /dev/null</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[user]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">name</span> = Your Name</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">email</span> = your.work@email.com</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[core]</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">sshCommand</span> = ssh <span class="at">-i</span> ~/.ssh/work_ed25519 <span class="at">-F</span> /dev/null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="commit-verification-with-ssh" class="level2">
 <h2 class="anchored" data-anchor-id="commit-verification-with-ssh">Commit verification with SSH</h2>

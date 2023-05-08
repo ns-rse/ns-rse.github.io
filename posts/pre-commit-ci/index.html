@@ -281,20 +281,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="setup" class="level3">
 <h3 class="anchored" data-anchor-id="setup">Setup</h3>
 <p>Setup is relatively straight-forward, head to <a href="https://pre-commit.ci">https://pre-commit.ci</a> and sign-in with your GitHub account and grant <code>pre-commit.ci</code> access to your account.</p>
-<p><img src="img/pre-commit-ci.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/pre-commit-ci.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit CI</figcaption><p></p>
+</figure>
+</div>
 <p>Once you have granted access you can choose which repositories <code>pre-commit.ci</code> has access to. It is possible to grant access to all repositories but I would recommend doing so on a per-repository basis so you know and are in control of what is happening across your repositories. If you have administration rights to organisation repositories these should be listed in the “<em>Select repositories</em>” pull-down menu.</p>
-<p><img src="img/github-pre-commit-access.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/github-pre-commit-access.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Granting pre-commit.ci access to GitHub</figcaption><p></p>
+</figure>
+</div>
 </section>
 <section id="pre-commit.ci-jobs" class="level3">
 <h3 class="anchored" data-anchor-id="pre-commit.ci-jobs"><code>pre-commit.ci</code> jobs</h3>
 <p>When logged into <code>pre-commit.ci</code> using your GitHub account you are presented with a page similar to the following which lists the accounts and any organisations that you have authorised <code>pre-commit.ci</code> to access.</p>
-<p><img src="img/account-pre-commit-ci.png" class="img-fluid"></p>
-<p>You can follow the links through to view the history of jobs run be <code>pre-commit.ci</code> and whether they pass or fail. The page shows the current status and provides both Markdown and reStructured Text code for adding badges to your source documents (e.g.&nbsp;the Markdown badge can be added to your repositories top-level <code>README.md</code> and the badge will be displayed on GitHub)</p>
-<p><img src="img/pre-commit-ci-pass2.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/account-pre-commit-ci.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci account access</figcaption><p></p>
+</figure>
+</div>
+<p>You can follow the links through to view the history of jobs run by <code>pre-commit.ci</code> and whether they pass or fail. The page shows the current status and provides both Markdown and reStructured Text code for adding badges to your source documents (e.g.&nbsp;the Markdown badge can be added to your repositories top-level <code>README.md</code> and the badge will be displayed on GitHub)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/pre-commit-ci-pass2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs pass</figcaption><p></p>
+</figure>
+</div>
 <p>You can click through and see the results of a given run and when they <a href="https://results.pre-commit.ci/run/github/168173540/1674062271.Tj4xDOxqRFu3CDIPhXkMJA">pass</a> they look similar to the output you would have seen when making commits locally.</p>
-<p><img src="img/pre-commit-ci-pass3.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/pre-commit-ci-pass3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs pass</figcaption><p></p>
+</figure>
+</div>
 <p>But sometimes things will <a href="https://results.pre-commit.ci/run/github/168173540/1674061180.-2Eo_dbfRAGrukip387Nhg">fail</a> as shown below where the <code>trailing-whitespace</code> hook failed and the file was modified. But since <code>pre-commit.ci</code> corrects and pushes such changes automatically you can see at the bottom that these changes were pushed to the Pull Request from which the originated.</p>
-<p><img src="img/pre-commit-ci-fail.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/pre-commit-ci-fail.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs fail</figcaption><p></p>
+</figure>
+</div>
 </section>
 </section>
 <section id="gitlab" class="level2">
@@ -313,9 +343,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This uses the <code>pre-commit-autofix.yaml</code> from <a href="https://gitlab.com/yesolutions/">yesolutions</a> to run <code>pre-commit</code> and as the configuration shows automatically apply fixes <code>pre-commit</code> makes to your code. There are more options available for configuring this pipeline and they are documented <a href="https://gitlab.com/yesolutions/gitlab-ci-templates">here</a>.</p>
 <p>Because you are allowing a third-party pipeline to access your repository when pushing the changes <code>pre-commit</code> makes back to your repository for this to work you <em>must</em> create a <a href="https://docs.gitlab.com/ee/user/project/settings/project_access_tokens.html">project access token</a>. Under the repositories <em>Settings &gt; Access Tokens</em> you can create a new token with an expiry date. You must then create a CI/CD variable called <code>PRE_COMMIT_ACCESS_TOKEN</code> with this token as a value.</p>
 <p>Once you have done this your CI/CD pipeline should show at the very start the <code>.pre</code> stage…</p>
-<p><img src="img/gitlab-pre-commit-pipeline.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/gitlab-pre-commit-pipeline.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">GitLab pre-commit pipeline.</figcaption><p></p>
+</figure>
+</div>
 <p>…and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to download and intialise all of the environments for each configured hook unlike <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> (this is akin to writing your own <a href="https://docs.github.com/en/actions">GitHub Action</a> to run <code>pre-commit</code> which would also have to download and initialise the environments).</p>
-<p><img src="img/gitlab-pre-commit-pipeline-pass.png" class="img-fluid"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/gitlab-pre-commit-pipeline-pass.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Success! GitLab pre-commit hooks pass!</figcaption><p></p>
+</figure>
+</div>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
