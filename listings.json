@@ -3,6 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/posts/sphinx-docs/index.html",
+      "/posts/pre-commit-hooks/index.html",
       "/posts/python-packaging/index.html",
       "/posts/browser-extensions/index.html",
       "/posts/pre-commit-ci/index.html",
@@ -10,10 +11,9 @@
       "/posts/whos_to_blame/index.html",
       "/posts/pre-commit-updates/index.html",
       "/posts/cli-alternatives/index.html",
-      "/posts/pre-commit/index.html",
       "/posts/git-ssh/index.html",
-      "/posts/linting/index.html",
-      "/posts/pre-commit-hooks/index.html"
+      "/posts/pre-commit/index.html",
+      "/posts/linting/index.html"
     ]
   }
 ]
