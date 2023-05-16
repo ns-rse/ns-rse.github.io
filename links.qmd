@@ -16,7 +16,10 @@ about:
       text: Mastodon
       href: https://fosstodon.org/@nshephard
       rel: me
-
+    - icon: orcid
+      text: ORCiD
+      href: https://orcid.org/0000-0001-8301-6857
+      rel: me
 ---
 
 I've a few other sites...
