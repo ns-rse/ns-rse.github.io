@@ -30,3 +30,6 @@ format:
   html:
     theme: vapor
     css: styles.css
+author:
+  - name: Neil Shephard
+    orcid: 0000-0001-8301-6857
