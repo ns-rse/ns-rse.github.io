@@ -1,6 +1,5 @@
 ---
 title: "Running in 2022"
-author: "nshephard"
 date: "2022-12-31"
 categories: [quarto, running, emacs, literate programming]
 image: https://live.staticflickr.com/65535/51712855672_842703b364_k.jpg

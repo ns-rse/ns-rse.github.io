@@ -1,6 +1,5 @@
 ---
 title: "Git : Custom SSH credentials for git repositories"
-author: "nshephard"
 date: "2022-08-28"
 categories: [ssh, git, github, gitlab, keychain]
 image: https://live.staticflickr.com/65535/48816178863_85ee1fe7f1_k.jpg

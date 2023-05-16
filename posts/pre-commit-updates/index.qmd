@@ -1,6 +1,5 @@
 ---
 title: "Pre-Commit : Customising and Updating"
-author: "nshephard"
 date: "2022-11-15"
 categories: [code, analysis, linting, git, github, gitlab, pre-commit]
 image: https://live.staticflickr.com/65535/52358442614_416d014454_k.jpg
