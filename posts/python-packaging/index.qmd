@@ -1,6 +1,5 @@
 ---
 title: "Python Packaging"
-author: "nshephard"
 date: "2023-03-25"
 categories: [quarto, python, packaging, setuptools, github actions, pypi]
 image: https://live.staticflickr.com/65535/52595884731_fb5c7d576e_k.jpg

@@ -1,6 +1,5 @@
 ---
 title: "Pre-Commit : Protecting your future self"
-author: "nshephard"
 date: "2022-08-28"
 categories: [code, analysis, linting, git, github, gitlab]
 image: https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg

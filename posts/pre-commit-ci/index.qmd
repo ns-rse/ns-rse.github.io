@@ -1,6 +1,5 @@
 ---
 title: "Pre-Commit.ci : Integrating Pre-Commit into CI/CD"
-author: "nshephard"
 date: "2023-02-06"
 categories: [code, analysis, linting, git, github, gitlab]
 image: https://live.staticflickr.com/65535/52596382383_eefbf62543_k.jpg

@@ -1,6 +1,5 @@
 ---
 title: "Linting - What is all the fluff about?"
-author: "Neil Shephard"
 date: "2022-08-18"
 categories: [code, linting, python, R]
 image: "https://live.staticflickr.com/153/410254296_e518f48141_k.jpg"

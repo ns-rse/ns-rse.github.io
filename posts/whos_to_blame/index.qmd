@@ -1,6 +1,5 @@
 ---
 title: "Who's to Blame"
-author: "nshephard"
 date: "2022-12-17"
 categories: [code, analysis, git, github, gitlab, blame]
 image: https://live.staticflickr.com/65535/52065067830_734d0ebd51_k.jpg

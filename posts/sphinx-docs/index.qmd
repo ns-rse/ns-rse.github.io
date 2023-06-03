@@ -1,6 +1,5 @@
 ---
 title: "Sphinx Documentation"
-author: "nshephard"
 date: "2023-05-07"
 categories: [quarto, python, documentation, sphinx, github actions]
 image: https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg

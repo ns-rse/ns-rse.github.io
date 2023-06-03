@@ -12,6 +12,10 @@ about:
       text: Github
       href: https://github.com/ns-rse
       rel: me
+    - icon: gitlab
+      text: GitLab
+      href: https://gitlab.com/nshephard
+      rel: me
     - icon: mastodon
       text: Mastodon
       href: https://fosstodon.org/@nshephard
