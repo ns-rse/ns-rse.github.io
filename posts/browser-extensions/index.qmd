@@ -1,6 +1,5 @@
 ---
 title: "Browser Extensions"
-author: "nshephard"
 date: "2023-02-25"
 categories: [browser, firefox, opera, vivaldi, extensions]
 image: https://live.staticflickr.com/65535/52703385696_6455dcef49_k.jpg

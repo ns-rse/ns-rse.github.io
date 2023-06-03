@@ -2,8 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/sphinx-docs/index.html",
       "/posts/pre-commit-hooks/index.html",
+      "/posts/sphinx-docs/index.html",
       "/posts/python-packaging/index.html",
       "/posts/browser-extensions/index.html",
       "/posts/pre-commit-ci/index.html",

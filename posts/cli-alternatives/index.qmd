@@ -1,6 +1,5 @@
 ---
 title: "Linux Command Line Alternatives"
-author: "Neil Shephard"
 date: "2022-09-18"
 categories: [code, linux, bash]
 image: "https://live.staticflickr.com/3793/12059147393_1b75269246_k.jpg"
