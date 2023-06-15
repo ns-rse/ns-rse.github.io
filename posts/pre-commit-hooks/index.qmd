@@ -141,7 +141,7 @@ repos:
 
 ## Conclusion
 
-There are a *lot* of hooks out there to be used with [pre-commit](https://pre-commit.com) and incorporated into your
+There are a _lot_ of hooks out there to be used with [pre-commit](https://pre-commit.com) and incorporated into your
 Continuous Integration pipeline with [pre-commit.ci](https://pre-commit.ci). Which you find useful will depend to a
 large extent on the languages that you are using for any given project. Here I've focused mainly on common tools for
 Python Packages, Markdown and Lisp but you can find hooks for Docker, Ansible, Rust, Go, JavaScript, C++ and many
