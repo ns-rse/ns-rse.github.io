@@ -11,7 +11,7 @@ repos:
       args: ['--maxkb=2048']
 
 - repo: https://github.com/DavidAnson/markdownlint-cli2
-  rev: v0.6.0
+  rev: v0.8.1
   hooks:
     - id: markdownlint-cli2
-      args: [.markdownlint-cli2.yaml]
+      args: []

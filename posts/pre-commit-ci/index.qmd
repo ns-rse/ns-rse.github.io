@@ -79,7 +79,6 @@ repositories.
 > * Faster than your own GitHub Action.
 > * Free for open source repositories (paid for version for private/organisation repositories).
 
-
 ### Configuration (`.pre-commit-config.yaml`)
 
 Whilst not required it is possible to configure the behaviour of `pre-commit.ci` by adding a `ci:` section to your
@@ -87,7 +86,6 @@ Whilst not required it is possible to configure the behaviour of `pre-commit.ci`
 whether to `autofix_prs` and to set the `autofix_commit_msg`. The `autoupdate_schedule` can be set to `weekly`,
 `monthly` or `quarterly` along with a custom `autoupdate_commit_msg`. Finally you can optionally disable some hooks from
 being run only in `pre-commit.ci`.
-
 
 ``` {.yaml}
 ci:
@@ -103,42 +101,41 @@ ci:
 Setup is relatively straight-forward, head to [https://pre-commit.ci](https://pre-commit.ci) and sign-in with your
 GitHub account and grant `pre-commit.ci` access to your account.
 
-![](img/pre-commit-ci.png)
+![Pre-commit CI](img/pre-commit-ci.png)
 
 Once you have granted access you can choose which repositories `pre-commit.ci` has access to. It is possible to grant
 access to all repositories but I would recommend doing so on a per-repository basis so you know and are in control of
 what is happening across your repositories. If you have administration rights to organisation repositories these should
 be listed in the "_Select repositories_" pull-down menu.
 
-![](img/github-pre-commit-access.png)
+![Granting pre-commit.ci access to GitHub](img/github-pre-commit-access.png)
 
 ### `pre-commit.ci` jobs
 
 When logged into `pre-commit.ci` using your GitHub account you are presented with a page similar to the following which
 lists the accounts and any organisations that you have authorised `pre-commit.ci` to access.
 
-![](img/account-pre-commit-ci.png)
+![Pre-commit.ci account access](img/account-pre-commit-ci.png)
 
-You can follow the links through to view the history of jobs run be `pre-commit.ci` and whether they pass or fail. The
+You can follow the links through to view the history of jobs run by `pre-commit.ci` and whether they pass or fail. The
 page shows the current status and provides both Markdown and reStructured Text code for adding badges to your source
 documents (e.g. the Markdown badge can be added to your repositories top-level `README.md` and the badge will be
 displayed on GitHub)
 
-![](img/pre-commit-ci-pass2.png)
+![Pre-commit.ci jobs pass](img/pre-commit-ci-pass2.png)
 
 You can click through and see the results of a given run and when they
 [pass](https://results.pre-commit.ci/run/github/168173540/1674062271.Tj4xDOxqRFu3CDIPhXkMJA) they look similar to the
 output you would have seen when making commits locally.
 
-![](img/pre-commit-ci-pass3.png)
+![Pre-commit.ci jobs pass](img/pre-commit-ci-pass3.png)
 
 But sometimes things will [fail](https://results.pre-commit.ci/run/github/168173540/1674061180.-2Eo_dbfRAGrukip387Nhg)
 as shown below where the `trailing-whitespace` hook failed and the file was modified. But since `pre-commit.ci` corrects
 and pushes such changes automatically you can see at the bottom that these changes were pushed to the Pull Request from
 which the originated.
 
-![](img/pre-commit-ci-fail.png)
-
+![Pre-commit.ci jobs fail](img/pre-commit-ci-fail.png)
 
 ## GitLab
 
@@ -146,7 +143,6 @@ As [`pre-commit.ci`](https://pre-commit.ci) doesn't (yet) support GitLab integra
 Pipeline is a little more involved. What follows is based on the excellent post on
 [StackOverflow](https://stackoverflow.com/collectives/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g)
 describing how to achieve this integration.
-
 
 You should already have a valid `.pre-commit-config.yaml` in place (if not work through [Pre-commit : Protecting your
 future self  (blog-post)](https://ns-rse.github.io/posts/pre-commit/)). To enable `pre-commit` on your [GitLab
@@ -166,7 +162,6 @@ include:
 
 ```
 
-
 This uses the `pre-commit-autofix.yaml` from [yesolutions](https://gitlab.com/yesolutions/) to run `pre-commit` and as
 the configuration shows automatically apply fixes `pre-commit` makes to your code. There are more options available for
 configuring this pipeline and they are documented [here](https://gitlab.com/yesolutions/gitlab-ci-templates).
@@ -179,16 +174,14 @@ Access Tokens_ you can create a new token with an expiry date. You must then cre
 
 Once you have done this your CI/CD pipeline should show at the very start the `.pre` stage...
 
-![](img/gitlab-pre-commit-pipeline.png)
+![GitLab pre-commit pipeline.](img/gitlab-pre-commit-pipeline.png)
 
 ...and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to
 download and intialise all of the environments for each configured hook unlike [`pre-commit.ci`](https://pre-commit.ci)
 (this is akin to writing your own [GitHub Action](https://docs.github.com/en/actions) to run `pre-commit` which would
 also have to download and initialise the environments).
 
-
-![](img/gitlab-pre-commit-pipeline-pass.png)
-
+![Success! GitLab pre-commit hooks pass!](img/gitlab-pre-commit-pipeline-pass.png)
 
 ## Summary
 
@@ -199,7 +192,6 @@ Integration/Delivery pipeline.
 * What the [`pre-commit.ci`](https://pre-commit.ci) service is and the benefits it provides.
 * How to integrate [`pre-commit.ci`](https://pre-commit.ci) with [GitHub](https://github.com) repositories.
 * How to integrate [`pre-commit`](https://pre-commit.com) with [GitLab](https://gitlab.com) repositories.
-
 
 By automating linting and testing in this manner you improve and shorten the feedback loop for developers and
 contributors which frees up more time and focus on the code itself.

@@ -12,11 +12,11 @@ If you've been dabbling in programming for a while you may have heard of "lintin
 static code analysis to remove the "fluff" from your code. Just as physically linting your clothes removes unwanted
 fluff, linting your code removes "fluff" and can help...
 
--   Reduce bugs.
--   Improve performance.
--   Mitigate against some security flaws.
--   Improve coding skills.
--   Consistent coding style.
+- Reduce bugs.
+- Improve performance.
+- Mitigate against some security flaws.
+- Improve coding skills.
+- Consistent coding style.
 
 This helps reduce the [technical debt](https://en.wikipedia.org/wiki/Technical_debt) which impacts the amount of
 time required for maintenance and further development of a code base. The main focus of this article is the use of
@@ -41,7 +41,6 @@ encourages coders to be explicit when naming variables, functions, classes and s
 and intention is clear, although the same is true of most modern languages. However, going a step further and using
 consistent styles to format and layout code helps enhance this.
 
-
 ## Linting in Python
 
 The most widely used Python style is defined in the long established [PEP 8: The Style Guide for Python
@@ -50,19 +49,19 @@ most integrate with your IDE, whether that is [Visual Studio Code](https://code.
 [PyCharm](https://www.jetbrains.com/pycharm/) or [Emacs](https://www.gnu.org/software/emacs/). Some of the formatting
 and linting tools available for Python are...
 
--   [Pylint](https://pylint.pycqa.org/en/latest/index.html) - checks for errors in Python code, tries to enforce a
+- [Pylint](https://pylint.pycqa.org/en/latest/index.html) - checks for errors in Python code, tries to enforce a
     coding standard and looks for code smells.
 
--   [YAPF](https://pypi.org/project/yapf/) - takes the code and reformats it to the best formatting that conforms to the style
+- [YAPF](https://pypi.org/project/yapf/) - takes the code and reformats it to the best formatting that conforms to the style
     guide.
 
--   [Black](https://github.com/psf/black) - The Uncompromising Code Formatter
+- [Black](https://github.com/psf/black) - The Uncompromising Code Formatter
 
--   [Flake8](https://flake8.pycqa.org/en/latest/) - Your Tool For Style Guide Enforcement
+- [Flake8](https://flake8.pycqa.org/en/latest/) - Your Tool For Style Guide Enforcement
 
--   [Prospector](https://prospector.landscape.io/en/master/index.html) - Python Static Analysis
+- [Prospector](https://prospector.landscape.io/en/master/index.html) - Python Static Analysis
 
--   [mypy](http://mypy-lang.org/) - Optional Static Typing for Python
+- [mypy](http://mypy-lang.org/) - Optional Static Typing for Python
 
 Here we will work through linting and formatting the simple file below (available as a download
 [here](/www/python/save_random_numbers.py)) using PyLint and Black.
@@ -107,8 +106,8 @@ environment](https://realpython.com/python-virtual-environments-a-primer/).
 pip install pylint
 ```
 
-Pylint can be configured using a `~/.pylintrc` file in your home directory and over time this will grow as you customise your
-configuration but for now we will make one simple change from the default which is to increase the accepted line
+Pylint can be configured using a `~/.pylintrc` file in your home directory and over time this will grow as you customise
+your configuration but for now we will make one simple change from the default which is to increase the accepted line
 length. Create the file and save it with the following content.
 
 ```bash
@@ -142,14 +141,15 @@ Your code has been rated at 0.00/10
 
 The output tells us which module has been inspected on the first line. Each subsequent line indicates
 
-* The file.
-* The line the problem has been encountered on.
-* The column.
-* A somewhat cryptic error code and then a message about the problem
-* A  more descriptive generic message associated with the error code.
+- The file.
+- The line the problem has been encountered on.
+- The column.
+- A somewhat cryptic error code and then a message about the problem
+- A  more descriptive generic message associated with the error code.
 
 At the moment we are only looking at one file, but when using PyLint against larger code bases this information is vital
-in helping direct you to the location of code that needs changing. At the end PyLint rates your code, ideally you should aim to get a score of `10.0/10`.
+in helping direct you to the location of code that needs changing. At the end PyLint rates your code, ideally you should
+aim to get a score of `10.0/10`.
 
 The messages are quite informative, taking each in turn we can work through resolving them.
 
@@ -301,13 +301,12 @@ For more on configuriong PyLint refer to the [documentation](https://pylint.pycq
 and also details of how to [integrate with your editor and
 IDE](https://pylint.pycqa.org/en/latest/user_guide/ide-integration.html)
 
-
 ### Automated Formatting with Black
 
-[Black](https://github.com/psf/black) is *The Uncompromising Code Formatter* and is very strict about the way in which
+[Black](https://github.com/psf/black) is _The Uncompromising Code Formatter_ and is very strict about the way in which
 it formats code. This could be a good or bad thing depending on your point of view, but it does result in highly
 consistent code when applied to all files. It formats files in place, so be mindful of this if you run it against one of
-your files it *will* change it.
+your files it _will_ change it.
 
 Install `black` in your virtual environment and make a backup of your `save_random_number.py` file that you have just
 tidied up with linting.
@@ -365,7 +364,6 @@ is beyond the scope of this article but some links are provided to useful resour
 VSCode supports linting in most languages, and both [Python](https://code.visualstudio.com/docs/python/linting) and
 [R](https://docs.microsoft.com/en-us/visualstudio/rtvs/linting-r-code?view=vs-2017) are supported along with other
 languages.
-
 
 ### PyCharm
 

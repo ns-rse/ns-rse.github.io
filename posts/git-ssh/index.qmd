@@ -16,7 +16,6 @@ access the repository.
 
 ## SSH Keys
 
-
 ### Concept
 
 SSH keys are, in conjunction with "keychains", used to save you having to enter a password each time you connect from
@@ -37,7 +36,7 @@ keys!](https://blog.g3rt.nl/upgrade-your-ssh-keys.html).
 
 To generate a key use the following command entering a secure (i.e. [long](xkcd.com/936/)) password.
 
-```bash
+``` bash
 ssh-keygen -o -a 100 -t ed25519
 ```
 
@@ -45,11 +44,10 @@ You will be prompted for a filename to save your keys to, so you should know whe
 `~/.ssh/id_ed25519[.pub]`). You have a private key `~/.ssh/id_ed25519` and a public `~/.ssh/id_ed25519.pub` and we will
 use this to set up authentication on your Git Forge.
 
-
 ### Forge Configuration
 
-Under your account settings on your chosen Git Forge navigate to _Settings > SSH and GPG Keys_ and select _Add New Key_
-on ([GitHub](https://github.com/settings/keys)). On GitLab navigate to _Preferences > SSH Keys_
+Under your account settings on your chosen Git Forge navigate to *Settings > SSH and GPG Keys* and select *Add New Key*
+on ([GitHub](https://github.com/settings/keys)). On GitLab navigate to *Preferences > SSH Keys*
 [GitLab](https://gitlab.com/-/profile/keys)), this page allows you to add a new key.
 
 You need to copy and paste your public key into the `Key` box on these pages and give it a name (typically the hostname
@@ -57,17 +55,15 @@ of your computer is a good choice). To view your public key simply use `cat` and
 choose to set an expiration date for your key which is good practice but means you have to generate new keys in the
 future.
 
-```bash
+``` bash
 cat ~/.ssh/id_ed25519.pub
 ```
-
 
 ## Git Global SSH Configuration
 
 Typically your global configuration for which key to use is set in `~/.ssh/config` with an entry similar to the below.
 
-
-```
+``` bash
 Host github.com
      User git
      Port 22
@@ -96,13 +92,11 @@ There are many different implementations of keychain such as the [Funtoo Keychai
 Project](https://www.funtoo.org/Funtoo:Keychain), [Seahorse](https://wiki.gnome.org/Apps/Seahorse) the GNOME GUI
 management tool,
 
-
 ## Git Per Repository Configuration
 
 We now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be
 desirable if you have two accounts on the same forge e.g. both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you
 can configure each repository to use a specific key ([source](https://superuser.com/a/912281)). At the command line...
-
 
 ```bash
 cd a/git/repository
@@ -114,7 +108,7 @@ git config --local user.email "repos@username.com"
 This adds the following to the repositories configuration which is stored under `.git/config` and you can of course
 enter this directly to the configuration file yourself.
 
-```
+``` bash
 [core]
     sshCommand = ssh -i ~/.ssh/work_ed25519 -F /dev/null
 [user]
@@ -152,7 +146,7 @@ For example, we place all of our work related Git repositories under the `~/work
 
 Out `~/.gitconfig` should look like
 
-```
+``` bash
 [user]
     name = Your Name
     email = your.personal@email.com
@@ -167,7 +161,7 @@ Out `~/.gitconfig` should look like
 Then our `~/work/.gitconfig_work` can contain the alternative values we wish to use for all repositories under the `~/work/`
 directory.
 
-```
+``` bash
 [user]
     name = Your Name
     email = your.work@email.com
@@ -176,13 +170,11 @@ directory.
     sshCommand = ssh -i ~/.ssh/work_ed25519 -F /dev/null
 ```
 
-
 ## Commit verification with SSH
 
-Verification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys is a
-recently supported feature on GitHub (see blog [SSH commit verification now
-supported](https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/)) I felt it worth
-mentioning.
+Verification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys
+is a recently supported feature on GitHub (see blog [SSH commit verification now
+supported](https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/)) I felt it worth  mentioning.
 
 ## Links
 

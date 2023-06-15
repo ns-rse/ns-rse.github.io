@@ -12,7 +12,8 @@ config:
 # Globs
 globs:
   - "**/*.md"
-  - "**/*.qmd"
+  - "posts/**/*.qmd"
+  - "*.qmd"
 
 # Fix any fixable errors
 fix: false
