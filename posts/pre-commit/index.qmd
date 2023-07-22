@@ -222,7 +222,7 @@ Imagine you are working on branch `a` but are asked to fix a bug on branch `b`. 
 `a` does not pass `pre-commit` but you wish to work on `b` anyway. Starting on branch `a` you stash your changes, switch
 branches, make and commit your changes to branch `b` then switch back to `a` and unstash your work there.
 
-``` bash
+```bash
 git stash
 git checkout b
 ... # Work on branch b

@@ -1,6 +1,9 @@
 # Configuration
+
 config:
-  # MD013 - line-length
+
+# MD013 - line-length
+
   line_length:
     line_length: 120
     code_blocks: false
@@ -10,10 +13,18 @@ config:
       - div
 
 # Globs
+
 globs:
-  - "**/*.md"
-  - "posts/**/*.qmd"
-  - "*.qmd"
+
+- "posts/**/*.qmd"
+- "*.qmd"
+
+# Ignores
+
+ignores:
+
+- ".markdownlint-cli2.yaml"
 
 # Fix any fixable errors
-fix: false
+
+fix: true
