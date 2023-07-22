@@ -23,7 +23,7 @@ globs:
 
 ignores:
 
-- ".markdownlint-cli2.yaml"
+- "_site/**/*.qmd"
 
 # Fix any fixable errors
 
