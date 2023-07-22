@@ -11,7 +11,14 @@ repos:
       args: ['--maxkb=2048']
 
 - repo: https://github.com/DavidAnson/markdownlint-cli2
-  rev: v0.6.0
+  rev: v0.8.1
   hooks:
     - id: markdownlint-cli2
       args: [.markdownlint-cli2.yaml]
+
+ci:
+  autofix_prs: true
+  autofix_commit_msg: '[pre-commit.ci] Fixing issues with pre-commit'
+  autoupdate_schedule: weekly
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit-autoupdate'
+  skip: [pylint] # Optionally list ids of hooks to skip on CI
