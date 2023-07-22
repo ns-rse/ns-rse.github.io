@@ -895,13 +895,13 @@ this automatically and on the fly as I log runs in 2023 and beyond.
 
 ## Links
 
-* [Training Summary](https://kimura.no-ip.info/~arch/training/training.html)
-* [Emacs](https://www.gnu.org/software/emacs/)
-* [OrgMode](https://orgmode.org/)
-* [Org-babel](https://orgmode.org/worg/org-contrib/babel/)
-* [R](https://www.r-project.org/)
-* [Emacs Speaks Statistics](https://ess.r-project.org)
-* [Quarto](https://quarto.org)
-* [quarto-emacs mode](https://github.com/quarto-dev/quarto-emacs)
++ [Training Summary](https://kimura.no-ip.info/~arch/training/training.html)
++ [Emacs](https://www.gnu.org/software/emacs/)
++ [OrgMode](https://orgmode.org/)
++ [Org-babel](https://orgmode.org/worg/org-contrib/babel/)
++ [R](https://www.r-project.org/)
++ [Emacs Speaks Statistics](https://ess.r-project.org)
++ [Quarto](https://quarto.org)
++ [quarto-emacs mode](https://github.com/quarto-dev/quarto-emacs)
 
 {{< elevator >}}

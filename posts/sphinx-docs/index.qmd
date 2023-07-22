@@ -257,7 +257,7 @@ and usage of software. Not everyone always uses the latest version of your softw
 documentation for each version that is available. Fortunately the Sphinx extension
 [sphinx-multiversion](https://holzhaus.github.io/sphinx-multiversion/master/) makes this relatively painless.
 
-You need to include it as in the list of `extensions` of `docs/conf.py`
+You need to include it in the list of `extensions` of `docs/conf.py`
 
 ```{python}
 #| eval: false
