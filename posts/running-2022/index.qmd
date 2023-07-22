@@ -1,6 +1,5 @@
 ---
 title: "Running in 2022"
-author: "nshephard"
 date: "2022-12-31"
 categories: [quarto, running, emacs, literate programming]
 image: https://live.staticflickr.com/65535/51712855672_842703b364_k.jpg
@@ -24,7 +23,7 @@ it less and less as it seems an increasing number of motorists seen to have litt
 pedestrians and cyclists. As a consequence I prefer running over cycling these days and get most of my aerobic exercise
 on two feet rather than two wheels.
 
-# Background
+## Background
 
 Having worked as a statistician (of different sorts) over a number of years I also like data and analysing it. I
 therefore record my runs (and occasional cycles). A long time ago I used to use Endomondo but didn't like the idea of
@@ -49,8 +48,7 @@ code chunks are hidden by default but can be easily expanded if you wish to look
 features I've learnt about Quarto and I've explained how I use [Emacs Org-mode to capture my
 runs](#capturing-data-in-emacs-org-mode).
 
-
-# Data
+## Data
 
 My data is captured using [org-capture](https://orgmode.org/manual/Capture.html) in an ASCII text file (for more on
 this setup see [below](#capturing-data-in-emacs-org-mode)), but its wrapped in an [org-mode
@@ -61,11 +59,11 @@ loaded and parsed before saving to `.RData`. In GitHub pages, the Action (CI/CD)
 original instead it load the `.RData` file and its good to go with generating graphs and renders correctly.
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| label: load-data
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| label: load-data
 library(dplyr)
 library(ggdark)
 library(ggplot2)
@@ -133,14 +131,14 @@ summary_data <- data  |>
                                   mean=mean,
                                   sd=sd,
                                   median=median,
-#                                  quantile=quantile,
+##                                  quantile=quantile,
                                   min=min,
                                   max=max),
                              .names = "{.col}_{.fn}"))
 
 ```
 
-# Summary
+## Summary
 
 In total in 2022 I went out running `r nrow(data)` times and covered a total distance of
 `r summary_data[["distance_sum"]]`km. Individual runs ranged from `r summary_data[["distance_min"]]`km to
@@ -161,15 +159,14 @@ from some plots. For some reason this value isn't correctly shown in the table b
 
 **TODO** - Calculate the inter-quartile range, tricky with `across()` used above? :thinking:
 
-
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| label: summary-data
-#| tbl-cap-location: top
-#| tbl-cap: Summary statistics for run distances, pace and time.
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| label: summary-data
+##| tbl-cap-location: top
+##| tbl-cap: Summary statistics for run distances, pace and time.
 
 summary_data |>
     reshape2::melt()  |>
@@ -181,26 +178,26 @@ summary_data |>
     knitr::kable(digits=3)
 
 ```
+
 For some reason
 
-## Number of Runs
+### Number of Runs
 
 How often I go running varies depending on the distance I've done recently and more importantly whether I'm carrying an
 injury of some sort.
 
-
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| label: number-of-runs
-#| fig-cap-location: top
-#| fig-cap: "Runs per by Month and Week"
-#| fig-subcap:
-#|    - "Runs by month"
-#|    - "Runs by week"
-#| fig-alt: "A plot of runs per month/week in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| label: number-of-runs
+##| fig-cap-location: top
+##| fig-cap: "Runs per by Month and Week"
+##| fig-subcap:
+##|    - "Runs by month"
+##|    - "Runs by week"
+##| fig-alt: "A plot of runs per month/week in 2022."
 month <- data |> ggplot(aes(year_month)) +
     geom_bar() +
     dark_theme_bw() +
@@ -219,24 +216,23 @@ week <- data |> ggplot(aes(year_week)) +
 ggplotly(week)
 ```
 
-
 --
 
-## Distance
+### Distance
 
 I prefer longer runs, I often feel I'm only getting going and into a rhythm after 3-5km and therefore struggle to find
 motivation to go out for short runs. That said, whilst I can run > 21km (half-marathon) distances I don't do so often
 and past experience tells me that if I run too much I end up injuring myself.
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: distance-time-series
-#| fig-cap: "Distance of Runs."
-#| fig-alt: "A plot of distance of runs in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: distance-time-series
+##| fig-cap: "Distance of Runs."
+##| fig-alt: "A plot of distance of runs in 2022."
 distance_time <- data |>
     ggplot(aes(date, distance)) +
     geom_line() +
@@ -249,25 +245,26 @@ distance_time <- data |>
     scale_x_datetime(breaks = date_breaks("1 month"), labels=date_format("%b"))
 ggplotly(distance_time)
 ```
-### Distance By Month
+
+#### Distance By Month
 
 March was a fallow month for running as I had a sore knee and a month of work and so I did a lot of cycling (A57 Snake
 Pass when it was closed, a morning jaunt to Bakewell and back) and DIY around the home and garden (finishing off a
 patio). I also had to ease off from mid-November and most of December due to a sore thigh.
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: true
-#| fig-cap-location: top
-#| label: distance-per-month
-#| fig-cap: "Distance per month."
-#| fig-subcap:
-#|    - "Bar Chart"
-#|    - "Box Plot"
-#|    - "Ridge Density"
-#| fig-alt: "A plot of distance per month/week in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: true
+##| fig-cap-location: top
+##| label: distance-per-month
+##| fig-cap: "Distance per month."
+##| fig-subcap:
+##|    - "Bar Chart"
+##|    - "Box Plot"
+##|    - "Ridge Density"
+##| fig-alt: "A plot of distance per month/week in 2022."
 bar_distance_month <- data |> ggplot(aes(year_month)) +
     geom_bar(aes(weight = distance)) +
     dark_theme_bw() +
@@ -293,25 +290,25 @@ ridge_distance_month <- data |> ggplot(aes(x=distance, y=factor(year_month), gro
     ylab("Year") +
     xlab("Distance (km)") ## +
     ## scale_y_datetime(breaks = date_breaks("1 month"), labels=date_format("%B"))
-## ggplotly(ridge_distance_month)
+### ggplotly(ridge_distance_month)
 ridge_distance_month
 dev.off()
 ```
 
-### Distance By Week
+#### Distance By Week
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: distance-per-week
-#| fig-cap: "Distance per week."
-#| fig-subcap:
-#|    - "Bar Chart"
-#|    - "Box Plot"
-#| fig-alt: "Plots of distance per month in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: distance-per-week
+##| fig-cap: "Distance per week."
+##| fig-subcap:
+##|    - "Bar Chart"
+##|    - "Box Plot"
+##| fig-alt: "Plots of distance per month in 2022."
 bar_distance_week <- data |> ggplot(aes(year_week)) +
     geom_bar(aes(weight = distance)) +
     dark_theme_bw() +
@@ -332,8 +329,7 @@ ggplotly(box_distance_week)
 
 ```
 
-
-### Runs v Distance
+#### Runs v Distance
 
 Lets look at how the number of runs per week affects the overall distance covered. Do I keep to a consistent
 distance if I'm doing less runs by doing longer runs? We can look at that by plotting the number of runs per week
@@ -341,19 +337,18 @@ against either the total distance or the mean distance for that week. If I do fe
 downwards trend, with weeks where I only run once having very high values, and weeks where I do multiple runs having
 very low means.
 
-
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: runs-distance
-#| fig-cap: "Runs per week v Distance"
-#| fig-subcap:
-#|    - Total Distance
-#|    - Mean Distance
-#| fig-alt: "A plot of number of runs per week and the distanace covered in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: runs-distance
+##| fig-cap: "Runs per week v Distance"
+##| fig-subcap:
+##|    - Total Distance
+##|    - Mean Distance
+##| fig-alt: "A plot of number of runs per week and the distanace covered in 2022."
 tmp_data <- data |>
     group_by(year_week) |>
     summarise(runs = n(),
@@ -381,7 +376,7 @@ runs_distance_mean <- tmp_data |>
 ggplotly(runs_distance_mean, tooltip = c("year_week", "distance_total", "distance_mean"))
 ```
 
-## Pace
+### Pace
 
 I like pushing myself and going fast, I perhaps stupidly and against much perceived wisdom, think that if I'm able to
 hold a conversation then I'm not trying hard enough (in reality I rarely try talking as I always run on my own).
@@ -390,17 +385,17 @@ Before looking at pace over time its interesting to look at the relationship bet
 runs are going to take longer, but is the relationship linear or do I get slower the further I go?
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: distance-v-time
-#| fig-cap: "Distance v Pace."
-#| fig-subcap:
-#|    - All
-#|    - Excluding Outliers
-#| fig-alt: "Distance v Pace for runs in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: distance-v-time
+##| fig-cap: "Distance v Pace."
+##| fig-subcap:
+##|    - All
+##|    - Excluding Outliers
+##| fig-alt: "Distance v Pace for runs in 2022."
 distance_time_all <- data |>
     ggplot(aes(distance, pace)) +
     geom_point(aes(color=distance, size=distance)) +
@@ -424,7 +419,6 @@ distance_time_excl_outliers <- data |>
 ggplotly(distance_time_excl_outliers)
 ```
 
-
 The relationship between distance and pace is interesting, one might expect that the pace decreases with the overall
 distance, but it depends on the terrain. Most of my shorter runs involved a fair proportion of uphill as I live in the
 bottom of a valley and my typical circuit takes me up the valley to some extent before turning around and heading
@@ -438,14 +432,14 @@ my pace although running with an injury late November/December did (I should pro
 reach my goal so dialled down the frequency and distance).
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: pace-overtime
-#| fig-cap: "Pace over time by distance."
-#| fig-alt: "A plot of distance per month/week in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: pace-overtime
+##| fig-cap: "Pace over time by distance."
+##| fig-alt: "A plot of distance per month/week in 2022."
 no_outliers <- data |>
     dplyr::filter(pace < 7)
 pace_timeseries<- data |>
@@ -461,28 +455,26 @@ pace_timeseries<- data |>
 ggplotly(pace_timeseries)
 ```
 
-
-
-### Pace By Month
+#### Pace By Month
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: pace-per-month
-#| fig-cap: "Pace per month."
-#| fig-subcap:
-#|    - "Box Plot"
-#|    - "Ridge Density"
-#| fig-alt: "A plot of pace per month/week in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: pace-per-month
+##| fig-cap: "Pace per month."
+##| fig-subcap:
+##|    - "Box Plot"
+##|    - "Ridge Density"
+##| fig-alt: "A plot of pace per month/week in 2022."
 box_pace_month <- data |> ggplot(aes(factor(year_month), pace)) +
     geom_boxplot() +
     dark_theme_bw() +
     ylab("Pace (min/km)") +
     xlab("Month/Year") ## +
-## scale_x_datetime(breaks = date_breaks("2 weeks"), labels=date_format("%B"))
+### scale_x_datetime(breaks = date_breaks("2 weeks"), labels=date_format("%B"))
 ggplotly(box_pace_month)
 ridge_pace_month <- data |> ggplot(aes(x=pace, y=factor(year_month), group=year_month, fill=after_stat(x))) +
     # geom_density_ridges_gradient(scale=1, gradient_lwd=1.) +
@@ -493,23 +485,22 @@ ridge_pace_month <- data |> ggplot(aes(x=pace, y=factor(year_month), group=year_
     dark_theme_bw() +
     ylab("Year") +
     xlab("Pace (min/km)") ## +
-##     scale_x_datetime(breaks = date_breaks("1 month"), labels=date_format("%B"))
-## ggplotly(ridge_pace_month)
+###     scale_x_datetime(breaks = date_breaks("1 month"), labels=date_format("%B"))
+### ggplotly(ridge_pace_month)
 ridge_pace_month
 ```
 
-
-### Pace By Week
+#### Pace By Week
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: pace-per-week
-#| fig-cap: "Pace per week."
-#| fig-alt: "Plots of pace per month in 2022."
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: pace-per-week
+##| fig-cap: "Pace per week."
+##| fig-alt: "Plots of pace per month in 2022."
 box_pace_week <- data |> ggplot(aes(factor(year_week), pace)) +
     geom_boxplot() +
     dark_theme_bw() +
@@ -521,7 +512,7 @@ ggplotly(box_pace_week)
 
 ```
 
-## When Do I Run?
+### When Do I Run?
 
 I'm much more a morning person and typically go out running on an empty stomach as I find it quite unpleasant to have a
 bellyful of food jiggling around inside me. But what days of the week and times do I actually go running? I can answer
@@ -532,19 +523,19 @@ In the summer when it gets light early I'll sometimes go out running at 06:00 bu
 logged times.
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: when-I-run
-#| fig-cap: "When I go running."
-#| fig-subcap:
-#|    - "Day"
-#|    - "Time"
-#|    - "Month v Time"
-#|    - "Day v Time"
-#| fig-alt: "When I go running"
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: when-I-run
+##| fig-cap: "When I go running."
+##| fig-subcap:
+##|    - "Day"
+##|    - "Time"
+##|    - "Month v Time"
+##|    - "Day v Time"
+##| fig-alt: "When I go running"
 what_day_I_run <- data  |> ggplot(aes(year_day)) +
     geom_bar() +
     dark_theme_bw() +
@@ -572,23 +563,22 @@ what_time_I_run_each_day <- data |> ggplot(aes(year_day, logged_at)) +
     ylab("Time of Day")
 ggplotly(what_time_I_run_each_day)
 
-
 ```
 
-### Does distance differ with time of day?
+#### Does distance differ with time of day?
 
 If I go out running in the morning I usually go further because I work five days a week and lunch-time runs have to fit
 within an hour. As you can see I don't generally run in the evening as I don't like exercising with food in my stomach.
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: when-I-run-distance
-#| fig-cap: "Time of Day v Distance."
-#| fig-alt: "Time of day I go running v distance"
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: when-I-run-distance
+##| fig-cap: "Time of Day v Distance."
+##| fig-alt: "Time of day I go running v distance"
 when_I_run_distance <- data |> ggplot(aes(logged_at, distance)) +
     geom_point(aes(color=distance, size=distance)) +
     geom_smooth() +
@@ -602,21 +592,21 @@ ggplotly(when_I_run_distance)
 
 ```
 
-### Does pace differ with time of day?
+#### Does pace differ with time of day?
 
 As I've mentioned I somewhat counter-intuitively get a faster mean pace when going further distances. Does this feature
 come through with the time of day and do I run faster in the morning or at other times. The graph below plots the time
 of day against the pace with the distance denoted by the size and colour of points.
 
 ```{r}
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
-#| fig-cap-location: top
-#| label: when-I-run-pace
-#| fig-cap: "When I go running v pace."
-#| fig-alt: "Time of day I go running v pace"
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
+##| fig-cap-location: top
+##| label: when-I-run-pace
+##| fig-cap: "When I go running v pace."
+##| fig-alt: "Time of day I go running v pace"
 when_I_run_pace <- data |> ggplot(aes(logged_at, pace)) +
     geom_point(aes(color=distance, size=distance)) +
     geom_smooth() +
@@ -632,8 +622,7 @@ ggplotly(when_I_run_pace)
 
 I could go on and on making different types of plots but I think that is sufficient for now.
 
-
-# Capturing Data in Emacs Org-mode
+## Capturing Data in Emacs Org-mode
 
 I thought it would be worthwhile including a section on how I capture data. Its not perfect (yet!) because as mentioned
 I use [OpenTracks](https://opentracksapp.com/) to log my runs. This saves data to a
@@ -646,16 +635,16 @@ using [Org-mode](https://orgmode.org) and [Org Capture templates](https://orgmod
 
 I have a file `~/path/to/running.org` which contains an [Org table](https://orgmode.org/manual/Tables.html) as shown below.
 
-```
-#+CAPTION: Running Log
-#+NAME: running-log
+``` bash
+##+CAPTION: Running Log
+##+NAME: running-log
 | Date                   | Route                     | Distance | Time         | Pace                           | Notes     |
 |------------------------+---------------------------+----------+--------------+--------------------------------+-----------|
 | [2022-12-25 Sun 10:17] | From here to there.       | 9.17km   | 48min + 06s  | 5 min / km + 14.721919 s / km  | Felt ok   |
 | [2022-12-21 Wed 13:20] | A to B via C              | 9.81km   | 49min + 14s  | 5 min / km + 1.1213048 s / km  | No falls! |
 | [2022-12-17 Sat 09:08] | There and back            | 15.05km  | 79min + 03s  | 5 min / km + 15.149502 s / km  | Not bad   |
 |------------------------+---------------------------+----------+--------------+--------------------------------+-----------|
-#+TBLFM: $5=uconvert($4/$3, (min+s)/km);L
+##+TBLFM: $5=uconvert($4/$3, (min+s)/km);L
 ```
 
 The layout is I think self-explanatory and each time I want to log a run I could open the file `C-x C-f
@@ -666,25 +655,24 @@ can quickly add new entries to capture items where I want them to be, saving me 
 
 ``` lisp
 (use-package org-capture
-	     :ensure nil
-	     :after org-gtd
-	     :config
-	     (setq org-default-notes-file (concat org-directory "/notes.org"))
-	     (setq org-capture-templates
+         :ensure nil
+         :after org-gtd
+         :config
+         (setq org-default-notes-file (concat org-directory "/notes.org"))
+         (setq org-capture-templates
            '(("e" "Exercise")
-		     ("er" "Logging a run" table-line (file+olp "~/path/to/running.org")
-		      "| %U | %? | km | min + s | | |" :prepend t)
-		     ("ec" "Logging a cycle" table-line (file+olp "~/path/to/cycling.org")
-		      "| %U | %? | km | min + s | | |" :prepend t)
-		     ("eh" "Logging a hike" table-line (file+olp "~/path/to/hiking.org")
-		      "| %U | %? | km | m | min + s| |" :prepend t)
-		     ("em" "Weight & Waist/Hip" table-line (file+olp "~/path/to/metrics_weight.org")
-		      "| %U | %? | | | |" :prepend t)
-		     ("es" "Steps" table-line (file+olp "~/path/to/metrics_steps.org")
-		      "| %t | %? |" :prepend t)
-		     ("eb" "Blood" table-line (file+olp "~/path/to/metrics_blood.org")
-		      "| %U | %? | | | | | |" :prepend t))))
-
+             ("er" "Logging a run" table-line (file+olp "~/path/to/running.org")
+              "| %U | %? | km | min + s | | |" :prepend t)
+             ("ec" "Logging a cycle" table-line (file+olp "~/path/to/cycling.org")
+              "| %U | %? | km | min + s | | |" :prepend t)
+             ("eh" "Logging a hike" table-line (file+olp "~/path/to/hiking.org")
+              "| %U | %? | km | m | min + s| |" :prepend t)
+             ("em" "Weight & Waist/Hip" table-line (file+olp "~/path/to/metrics_weight.org")
+              "| %U | %? | | | |" :prepend t)
+             ("es" "Steps" table-line (file+olp "~/path/to/metrics_steps.org")
+              "| %t | %? |" :prepend t)
+             ("eb" "Blood" table-line (file+olp "~/path/to/metrics_blood.org")
+              "| %U | %? | | | | | |" :prepend t))))
 ```
 
 To enter Org-capture its `C-c c` this brings up a menu for all of the capture templates I've defined...
@@ -733,7 +721,7 @@ source code chunk can be defined with a `:var` option which refers to the table 
 block does some processing of the table to tidy up the dates into something R understands and is shown below.
 
 ``` r
-#+begin_src R :session *training-R* :eval yes :exports none :var running_table=running-log  :colnames nil :results output silent
+##+begin_src R :session *training-R* :eval yes :exports none :var running_table=running-log  :colnames nil :results output silent
   running_table %<>% mutate(distance = as.double(str_replace(Distance, "km", "")),
              time = str_replace(Time, "min \\+ ", " "),
              time = str_replace(time, "s", ""),
@@ -752,7 +740,7 @@ block does some processing of the table to tidy up the dates into something R un
              pace = as.numeric(time) / (60 * distance)) %>%
              # pace = Pace) %>%
       select(-c(Date, Distance, Time, Pace, hour, min, sec))
-#+end_src
+##+end_src
 ```
 
 The key to getting the Org-mode table (which has the `#+NAME: running-log`) into the R session (which is set to
@@ -761,12 +749,11 @@ table available in the R session as the dataframe `running_table`. As you'll see
 top of this post because this document is written in [Quarto](https://www.quarto.org) I instead use the
 `orgutils::readOrg()` package/function to read the table into R directly.
 
-
-# Quarto - Things I've learnt
+## Quarto - Things I've learnt
 
 Some things I've learnt about Quarto whilst preparing this document.
 
-## Code Folding
+### Code Folding
 
 It should be possible to set options at the global level by setting the following in the site `index.qmd`.
 
@@ -783,13 +770,13 @@ site `index.qmd` didn't work when previewed locally. I tried adding it to the YA
 per-chunk basis though so each code chunk carries the options.
 
 ``` yaml
-#| code-fold: true
-#| code-link: true
-#| code-tools: true
-#| warning: false
+##| code-fold: true
+##| code-link: true
+##| code-tools: true
+##| warning: false
 ```
 
-## Table and Figure caption locations ~~are~~ should be configurable
+### Table and Figure caption locations ~~are~~ should be configurable
 
 Captions were by default underneath each picture which is perhaps ok when reading as a PDF but this is rendered as HTML
 and I would prefer these to be at the top so that readers see the heading as they scroll down (I'm often torn about
@@ -801,31 +788,31 @@ Fortunately you can specify the location of [table](https://quarto.org/docs/auth
 to render correctly when using the blogging feature and all captions are still at the bottom.
 
 ```yaml
-#| fig-cap-location: [top|bottom|margin]
-#| tbl-cap-location: [top|bottom|margin]
+##| fig-cap-location: [top|bottom|margin]
+##| tbl-cap-location: [top|bottom|margin]
 ```
 
-## Two for the price of one
+### Two for the price of one
 
 Its possible to include two or more sub-figures in a code chunk and have them both displayed.
 
 ``` yaml
-#| label: pace-per-month
-#| fig-cap: "Pace per month."
-#| fig-subcap:
-#|    - "Bar Chart"
-#|    - "Box Plot"
-#| fig-alt: "A plot of pace per month/week in 2022."
+##| label: pace-per-month
+##| fig-cap: "Pace per month."
+##| fig-subcap:
+##|    - "Bar Chart"
+##|    - "Box Plot"
+##| fig-alt: "A plot of pace per month/week in 2022."
 ```
 
 In the output format of the blog these do _not_ appear side by side, but rather underneath each other.
 
-## Plotly plays with Quarto
+### Plotly plays with Quarto
 
 Using the [plotly R package](https://plotly-r.com/) with Quarto "_Just Works_", the plots render nicely in the page
 and are zoom-able with tool-tips appearing over key points.
 
-## Some graphs appear where I don't expect them to
+### Some graphs appear where I don't expect them to
 
 Astute readers will notice that some of the ridge plot graphs appear more than once. I couldn't work out why this was,
 the code does not specify that they should be shown again. For example the Ridge Density plot for total [Distance by
@@ -834,9 +821,7 @@ this I attempted to explicitly use `dev.off()` after the initial generation of t
 had the undesired effect of including output from the call and an additional code-chunk. Not one I've sorted
 yet. :thinking:
 
-
-
-## Emoji's
+### Emoji's
 
 To include emoji's in the Markdown it's necessary to add the following to the header of the specific page
 (i.e. `posts/running_2022/index.qmd`)
@@ -848,20 +833,21 @@ from: markdown+emoji
 Text based emoji names (e.g. `:thinking:` :thinking: ; `:snake` :snake: ; `:tada:` :tada:) are then automatically
 included when rendering.
 
-# R - Things I've ~~forgotten~~ remembered
+## R - Things I've ~~forgotten~~ remembered
 
 Its been a few years since I used R on a daily basis. As a consequence I thought I'd forgotten a bunch of things I used
 to know how to do, but this exercise has reminded me that I perhaps have some vestigial remnants of my old knowledge
 lingering. Some things I had to look up and, unsurprisingly, the available tools, functions/methods have evolved in that
-time (viz. [tidyr](https://tidyr.tidyverse.org/) is now more generic and simpler than [reshape2]()).
+time (viz. [tidyr](https://tidyr.tidyverse.org/) is now more generic and simpler than
+[reshape2](https://cran.r-project.org/web/packages/reshape2/index.html)).
 
-## Formatting Dates/Times in Axes
+### Formatting Dates/Times in Axes
 
 I've a few more niggles to round out such as the formatting of the months/weeks which I should probably do up-front
 in the dataframe rather leaving them as POSIXct objects as then the and then the `ggplot2` functions
 `scale_x_datetime()` can be used directly (in some places I convert to factors which doesn't help).
 
-## Previewing Graphs
+### Previewing Graphs
 
 One very nice feature I discovered recently courtesy of a short [video by Bruno
 Rodrigues](https://www.youtube.com/watch?v=uxyhmhRVOfw) (thanks Bruno :+1:) is the ability to preview graphs in the
@@ -879,7 +865,7 @@ httpgd server running at:
 
 Then just create your plots and hey-presto the graphs appear at the URL. :mage:
 
-## renv
+### renv
 
 In order to have this page publish correctly I had to initialise a [renv](https://rstudio.github.io/renv/) within the
 repository and include the `renv.lockfile` so that the GitHub action/workflow installed all of the packages I use and
@@ -898,8 +884,7 @@ lockfile.
 git add renv.lockfile
 ```
 
-
-# Conclusion
+## Conclusion
 
 Its been a fun exercise digging back into [R](https://www.r-project.org) and learning more about
 [Quarto](https://quarto.org). If you've some data and an urge to summarise it I'd recommend having a play, although
@@ -908,14 +893,14 @@ since Quarto supports more than just R you could alternatively use Python packag
 running :running: and maybe finding the time to write the [Shiny](https://shiny.rstudio.com/) dashboard to do a lot of
 this automatically and on the fly as I log runs in 2023 and beyond.
 
-# Links
+## Links
 
-+ [Training Summary](https://kimura.no-ip.info/~arch/training/training.html)
-+ [Emacs](https://www.gnu.org/software/emacs/)
+* [Training Summary](https://kimura.no-ip.info/~arch/training/training.html)
+* [Emacs](https://www.gnu.org/software/emacs/)
 * [OrgMode](https://orgmode.org/)
-+ [Org-babel](https://orgmode.org/worg/org-contrib/babel/)
-+ [R](https://www.r-project.org/)
-+ [Emacs Speaks Statistics](https://ess.r-project.org)
+* [Org-babel](https://orgmode.org/worg/org-contrib/babel/)
+* [R](https://www.r-project.org/)
+* [Emacs Speaks Statistics](https://ess.r-project.org)
 * [Quarto](https://quarto.org)
 * [quarto-emacs mode](https://github.com/quarto-dev/quarto-emacs)
 

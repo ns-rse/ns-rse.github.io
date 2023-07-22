@@ -1,6 +1,5 @@
 ---
 title: "Linux Command Line Alternatives"
-author: "Neil Shephard"
 date: "2022-09-18"
 categories: [code, linux, bash]
 image: "https://live.staticflickr.com/3793/12059147393_1b75269246_k.jpg"
@@ -15,7 +14,6 @@ build and modernise on these tools without breaking the core functionality. Here
 might want to use them. Each tool has a brief introduction with some example output shown and then some `aliases` listed
 that you can drop into `~/.bash_aliases` or `~/.oh-my-zsh/custom/aliases` to use on your system.
 
-
 ## Alternatives
 
 ### `bat`
@@ -24,8 +22,7 @@ that you can drop into `~/.bash_aliases` or `~/.oh-my-zsh/custom/aliases` to use
 and integrates with git if a file is version controlled to show changes and lots more. You can pipe input to it,
 including from e.g. `curl -s https://server.com/some_file`
 
-
-#### Examples
+#### Example - `bat`
 
 ``` bash
 ❱ bat pyproject.toml
@@ -46,7 +43,6 @@ including from e.g. `curl -s https://server.com/some_file`
 ───────┴──────────────────────────────────────────────
 ```
 
-
 #### Configuration
 
 You can generate a default configuration file with
@@ -57,14 +53,13 @@ bat --generate-config-file
 
 This will be saved at `~/.config/bat/config` and you can edit it as desired.
 
-
 ### `cheat`
 
 [`cheat`](https://opensource.com/article/22/6/linux-cheat-command) is actually a web-service that returns short "cheats"
 for command line programmes which will often cover many use cases and save you having to read the rather dry `man` pages
 for functions.
 
-#### Examples
+#### Example - `cheat`
 
 ``` bash
 ❱ cheat cheat
@@ -105,10 +100,11 @@ cheat -s command
 cheat -v
 ```
 
-#### Aliases
+#### Aliases - `cheat`
 
-You don't need to install anything to use this, instead define an [alias]() for your shell (e.g. in
-`~/.bashrc`/`~/.zshrc`/`~/.oh-my-zsh/custom/aliases.zsh`)
+You don't need to install anything to use this, instead define an
+[alias](https://www.gnu.org/software/bash/manual/html_node/Aliases.html) for your shell (e.g. in
+`~/.bashrc`/`~/.zshrc`/`~/.oh-my-zsh/custom/aliases.zsh`).
 
 ``` bash
 ## Linux commands https://github.com/chubin/cheat.sheets
@@ -177,7 +173,6 @@ usage and file/directory usage respectively.
 │ /tmp           │   3.9G │   4.0K │   3.9G │ [....................]   0.0% │ tmpfs    │ tmpfs      │
 ╰────────────────┴────────┴────────┴────────┴───────────────────────────────┴──────────┴────────────╯
 
-
 ```
 
 ### `fd`
@@ -186,7 +181,7 @@ usage and file/directory usage respectively.
 (i.e. decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use
 cases. It works directly with regular expressions.
 
-#### Examples
+#### Example - `fd`
 
 ``` bash
 ❱ tldr fd
@@ -218,11 +213,11 @@ cases. It works directly with regular expressions.
 
 ### `jq`
 
-[`jq`](https://stedolan.github.io/jq/) is to [JSON]() (JavaScript Object Notation) what `awk`/`grep`/`sed` is to text
-files. It allows parsing, searching and selecting of JSON files, which if you've not encountered them before take a bit
-of getting used to.
+[`jq`](https://stedolan.github.io/jq/) is to [JSON](https://www.json.org/json-en.html) (JavaScript Object Notation) what
+`awk`/`grep`/`sed` is to text files. It allows parsing, searching and selecting of JSON files, which if you've not
+encountered them before take a bit of getting used to.
 
-#### Examples
+#### Example - `jq`
 
 Details of using `jq` are really beyond the scope of this short article, like `awk` its almost a language in itself.
 
@@ -259,10 +254,10 @@ Details of using `jq` are really beyond the scope of this short article, like `a
 
 ### `lsd`
 
-[`lsd`](https://github.com/Peltoche/lsd) is `ls`Deluxe and is very similar to [`exa`](#exa) but with a few additions
+[`lsd`](https://github.com/Peltoche/lsd) is `ls`Deluxe and is very similar to [`exa`](index.qmd#exa) but with a few additions
 such as icons.
 
-#### Examples
+#### Example - `lsd`
 
 ``` bash
 ❱ l
@@ -292,7 +287,7 @@ drwxr-xr-x neil neil  4.0 KB Wed Sep 14 20:24:25 2022  posts
 drwxr-xr-x neil neil  4.0 KB Thu Aug 25 23:20:16 2022  www
 ```
 
-#### Aliases
+#### Aliases - `lsd`
 
 ``` bash
 alias ls='lsd'
@@ -308,7 +303,7 @@ command. There are a number of different clients written in [C](https://github.c
 [Node](https://github.com/tldr-pages/tldr-node-client) and [Python](https://github.com/tldr-pages/tldr-python-client) as
 well as a few others. It depends on `jq` so you will have to install that if you want to use `yq`.
 
-#### Examples
+#### Example - `tldr`
 
 ``` bash
 ❱ tldr tldr
@@ -332,13 +327,12 @@ well as a few others. It depends on `jq` so you will have to install that if you
 
 ```
 
-
 ### `yq`
 
 [`yq`](https://kislyuk.github.io/yq/) is to [YAML](https://yaml.org/) (YAML Ain't Markup Language) what [`jq`](#jq) is
 to JSON. Written in Python it allows fast and efficient parsing, searching and selecting of YAML files.
 
-#### Examples
+#### Example - `yq`
 
 ``` bash
 ❱ tldr yq
