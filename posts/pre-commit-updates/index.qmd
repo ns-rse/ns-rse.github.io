@@ -3,6 +3,17 @@ title: "Pre-Commit : Customising and Updating"
 date: "2022-11-15"
 categories: [code, analysis, linting, git, github, gitlab, pre-commit]
 image: https://live.staticflickr.com/65535/52358442614_416d014454_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
 ---
 
 [Pre-commit](https://pre-commit.com/) is a tool for running hooks prior to making commits to your Git history. If you're

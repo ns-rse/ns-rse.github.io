@@ -152,6 +152,7 @@ No matching items
   <category>git</category>
   <category>github</category>
   <category>gitlab</category>
+  <category>pre-commit</category>
   <guid>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</guid>
   <pubDate>Sun, 07 May 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" medium="image" type="image/jpeg"/>
@@ -319,6 +320,7 @@ No matching items
   <category>git</category>
   <category>github</category>
   <category>gitlab</category>
+  <category>pre-commit</category>
   <guid>https://ns-rse.github.io/posts/pre-commit-ci/index.html</guid>
   <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52596382383_eefbf62543_k.jpg" medium="image" type="image/jpeg"/>
@@ -695,6 +697,7 @@ No matching items
   <category>git</category>
   <category>github</category>
   <category>gitlab</category>
+  <category>pre-commit</category>
   <guid>https://ns-rse.github.io/posts/pre-commit/index.html</guid>
   <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg" medium="image" type="image/jpeg"/>

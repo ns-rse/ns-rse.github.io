@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/pre-commit-r/index.html",
       "/posts/pre-commit-hooks/index.html",
       "/posts/sphinx-docs/index.html",
       "/posts/python-packaging/index.html",
@@ -19,6 +20,7 @@
   {
     "listing": "/links.html",
     "items": [
+      "/posts/pre-commit-r/index.html",
       "/posts/pre-commit-hooks/index.html",
       "/posts/sphinx-docs/index.html",
       "/posts/python-packaging/index.html",
@@ -82,8 +84,13 @@
     "items": []
   },
   {
+    "listing": "/posts/pre-commit-r/index.html",
+    "items": []
+  },
+  {
     "listing": "/about.html",
     "items": [
+      "/posts/pre-commit-r/index.html",
       "/posts/pre-commit-hooks/index.html",
       "/posts/sphinx-docs/index.html",
       "/posts/python-packaging/index.html",

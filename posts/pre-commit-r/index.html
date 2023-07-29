@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.14">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Neil Shephard">
+<meta name="dcterms.date" content="2023-07-29">
+
+<title>ns-rse - Pre-commit and R Packaging</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-listing/list.min.js"></script>
+<script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: [{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: [],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<link rel="alternate" type="application/rss+xml" title="ns-rse" href="index.xml"></head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ns-rse</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../links.html" rel="">
+ <span class="menu-text">Links</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ns-rse" rel="me"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/nshephardRSE" rel=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="me"><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@nshephard" rel="me"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Pre-commit and R Packaging</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">quarto</div>
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">git</div>
+                <div class="quarto-category">pre-commit</div>
+                <div class="quarto-category">github actions</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Neil Shephard <a href="https://orcid.org/0000-0001-8301-6857" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">July 29, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#devtools-and-usethis" id="toc-devtools-and-usethis" class="nav-link active" data-scroll-target="#devtools-and-usethis">devtools and usethis</a></li>
+  <li><a href="#readme.rmd" id="toc-readme.rmd" class="nav-link" data-scroll-target="#readme.rmd"><code>README.Rmd</code></a></li>
+  <li><a href="#description-file" id="toc-description-file" class="nav-link" data-scroll-target="#description-file"><code>DESCRIPTION</code> file</a></li>
+  <li><a href="#namespace-file" id="toc-namespace-file" class="nav-link" data-scroll-target="#namespace-file"><code>NAMESPACE</code> file</a></li>
+  <li><a href="#man-directory" id="toc-man-directory" class="nav-link" data-scroll-target="#man-directory"><code>man/</code> directory</a></li>
+  <li><a href="#vignettes-directory" id="toc-vignettes-directory" class="nav-link" data-scroll-target="#vignettes-directory"><code>vignettes/</code> directory</a></li>
+  <li><a href="#github-actions" id="toc-github-actions" class="nav-link" data-scroll-target="#github-actions">GitHub Actions</a>
+  <ul>
+  <li><a href="#use_github_action" id="toc-use_github_action" class="nav-link" data-scroll-target="#use_github_action"><code>use_github_action()</code></a></li>
+  </ul></li>
+  <li><a href="#websites-with-pkgdown" id="toc-websites-with-pkgdown" class="nav-link" data-scroll-target="#websites-with-pkgdown">Websites with <code>pkgdown</code></a></li>
+  <li><a href="#badges" id="toc-badges" class="nav-link" data-scroll-target="#badges">Badges</a></li>
+  <li><a href="#pre-commit" id="toc-pre-commit" class="nav-link" data-scroll-target="#pre-commit">pre-commit</a>
+  <ul>
+  <li><a href="#codemetar" id="toc-codemetar" class="nav-link" data-scroll-target="#codemetar">codemetar</a></li>
+  <li><a href="#roxygenize" id="toc-roxygenize" class="nav-link" data-scroll-target="#roxygenize">roxygenize</a></li>
+  <li><a href="#styler" id="toc-styler" class="nav-link" data-scroll-target="#styler">styler</a></li>
+  <li><a href="#lintr" id="toc-lintr" class="nav-link" data-scroll-target="#lintr">lintr</a></li>
+  </ul></li>
+  <li><a href="#gotchas" id="toc-gotchas" class="nav-link" data-scroll-target="#gotchas">Gotchas</a>
+  <ul>
+  <li><a href="#spell-check" id="toc-spell-check" class="nav-link" data-scroll-target="#spell-check"><code>spell-check</code></a></li>
+  <li><a href="#codemeta-description-updated" id="toc-codemeta-description-updated" class="nav-link" data-scroll-target="#codemeta-description-updated"><code>codemeta-description-updated</code></a></li>
+  <li><a href="#warning-undocumented-code-objects" id="toc-warning-undocumented-code-objects" class="nav-link" data-scroll-target="#warning-undocumented-code-objects"><code>Warning: Undocumented code objects:</code></a></li>
+  </ul></li>
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a>
+  <ul>
+  <li><a href="#install-r" id="toc-install-r" class="nav-link" data-scroll-target="#install-r">Install R</a></li>
+  <li><a href="#install-rstudio" id="toc-install-rstudio" class="nav-link" data-scroll-target="#install-rstudio">Install Rstudio</a></li>
+  <li><a href="#install-gitbash" id="toc-install-gitbash" class="nav-link" data-scroll-target="#install-gitbash">Install GitBash</a>
+  <ul class="collapse">
+  <li><a href="#configure-git" id="toc-configure-git" class="nav-link" data-scroll-target="#configure-git">Configure Git</a></li>
+  </ul></li>
+  <li><a href="#configure-rstudiogithub-with-ssh-keys" id="toc-configure-rstudiogithub-with-ssh-keys" class="nav-link" data-scroll-target="#configure-rstudiogithub-with-ssh-keys">Configure RStudio/GitHub with SSH keys</a></li>
+  <li><a href="#clone-repository" id="toc-clone-repository" class="nav-link" data-scroll-target="#clone-repository">Clone Repository</a></li>
+  <li><a href="#install-pre-commit" id="toc-install-pre-commit" class="nav-link" data-scroll-target="#install-pre-commit">Install <code>pre-commit</code></a>
+  <ul class="collapse">
+  <li><a href="#install-precommit-and-reticulate" id="toc-install-precommit-and-reticulate" class="nav-link" data-scroll-target="#install-precommit-and-reticulate">Install <code>precommit</code> and <code>reticulate</code></a></li>
+  <li><a href="#install-miniconda-environment" id="toc-install-miniconda-environment" class="nav-link" data-scroll-target="#install-miniconda-environment">Install Miniconda environment</a></li>
+  <li><a href="#install-pre-commit-framework" id="toc-install-pre-commit-framework" class="nav-link" data-scroll-target="#install-pre-commit-framework">Install <code>pre-commit</code> framework</a></li>
+  <li><a href="#use-precommit-with-the-existing-project" id="toc-use-precommit-with-the-existing-project" class="nav-link" data-scroll-target="#use-precommit-with-the-existing-project">Use <code>precommit</code> with the existing project</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a>
+  <ul>
+  <li><a href="#r-packages" id="toc-r-packages" class="nav-link" data-scroll-target="#r-packages">R Packages</a></li>
+  <li><a href="#python" id="toc-python" class="nav-link" data-scroll-target="#python">Python</a></li>
+  <li><a href="#pre-commit-1" id="toc-pre-commit-1" class="nav-link" data-scroll-target="#pre-commit-1">Pre-commit</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>This post is aimed at getting you up and running with making an R Package. Its not meant to be comprehensive as its really just the notes I’ve taken whilst going through the process for the first time myself. If you want to learn more about package development in R then you should read <a href="https://r-pkgs.org/">R Packages (2e) by Hadley Wickham and Jenny Bryan</a> and because this article is focused on using Git to version control your package you’ll probably find the excellent <a href="https://happygitwithr.com">Happy Git and GitHub for the userR by Jenny Bryan</a> worth bookmarking too.</p>
+<section id="devtools-and-usethis" class="level2">
+<h2 class="anchored" data-anchor-id="devtools-and-usethis">devtools and usethis</h2>
+<p>The <a href="https://devtools.r-lib.org/">devtools</a> package in conjunction with <a href="https://usethis.r-lib.org">usethis</a> should be your starting point for package development and has a bunch of useful functions for initialising and working with packages.</p>
+<p>To create a package use <code>create_package()</code>, you can then activate <a href="https://git-scm.com">Git</a> for the repository using <code>use_git()</code>, connect to <a href="https://github.com">GitHub</a> using <code>use_github()</code> and set up automated package checks with <code>use_github_action()</code> or if you are using <a href="https://gitlab.com">GitLab</a> you can <code>use_gitlab_ci()</code>. Creation of a package sets up the basic structure, not all of the files/directories below are created automatically though, but are included as they should be used/developed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">DESCRIPTION</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">NAMESPACE</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">NEWS.md</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">README.Rmd</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">R/</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">tests/</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">man/</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">vignettes/</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">data/</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">tests/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="readme.rmd" class="level2">
+<h2 class="anchored" data-anchor-id="readme.rmd"><code>README.Rmd</code></h2>
+<p>This is your front page, its what people read when they come across your package and if you are hosting the package on GitHub/GitLab it will be the front page of the repository. You should give an overview of what the package is, a brief examples of how to install and use it and sign post people to further documentation.</p>
+<p>If just setting things up then I can highly recommend using the <a href="https://usethis.r-lib.org/reference/use_readme_rmd.html">usethis::use_readme_rmd()</a> command. This creates a skeleton <code>README.Rmd</code> and also configures a pre-commit hook that helps keep <code>README.Rmd</code> and <code>README.md</code> synchronised.</p>
+</section>
+<section id="description-file" class="level2">
+<h2 class="anchored" data-anchor-id="description-file"><code>DESCRIPTION</code> file</h2>
+<p>This is a file containing important meta-data about your package, it includes various fields such as package name, title, version, URL, BugReports URL, authors (and allows inclusion of authors <a href="https://orcid.org/">ORCiD</a>), a description, the license, and importantly the imports that are required for the package to work.</p>
+</section>
+<section id="namespace-file" class="level2">
+<h2 class="anchored" data-anchor-id="namespace-file"><code>NAMESPACE</code> file</h2>
+<p>This file <em>isn’t</em> created automatically on package creation but will be generated by <a href="https://roxygen2.r-lib.org/">roxygen2</a> for you.</p>
+</section>
+<section id="man-directory" class="level2">
+<h2 class="anchored" data-anchor-id="man-directory"><code>man/</code> directory</h2>
+<p>This directory holds documentation files. Some of it will be generated automatically from the documentation strings written for functions and there are <code>pre-commit</code> hooks that ensure these are always kept up-to-date.</p>
+</section>
+<section id="vignettes-directory" class="level2">
+<h2 class="anchored" data-anchor-id="vignettes-directory"><code>vignettes/</code> directory</h2>
+<p>Vignettes are short form (or longer) articles describing how to use the package.</p>
+</section>
+<section id="github-actions" class="level2">
+<h2 class="anchored" data-anchor-id="github-actions">GitHub Actions</h2>
+<p>There are helper functions to add GitHub Actions to your repository.</p>
+<section id="use_github_action" class="level3">
+<h3 class="anchored" data-anchor-id="use_github_action"><code>use_github_action()</code></h3>
+<p>Invoking <code>use_github_action()</code> within your package repository will prompt you for the type of action you wish to add to it. There are, as of writing, three options.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="sc">&gt;</span> <span class="fu">use_github_action</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    Which action do you want to add? (<span class="dv">0</span> to exit)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    (See <span class="sc">&lt;</span>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>tree<span class="sc">/</span>v2<span class="sc">/</span>examples<span class="sc">&gt;</span> <span class="cf">for</span> other options)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span><span class="sc">:</span> check<span class="sc">-</span>standard<span class="sc">:</span> Run <span class="st">`</span><span class="at">R CMD check</span><span class="st">`</span> on Linux, macOS, and Windows</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span><span class="sc">:</span> test<span class="sc">-</span>coverage<span class="sc">:</span> Compute test coverage and report to https<span class="sc">:</span><span class="er">//</span>about.codecov.io</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span><span class="sc">:</span> pr<span class="sc">-</span>commands<span class="sc">:</span> Add <span class="sc">/</span>document and <span class="sc">/</span>style commands <span class="cf">for</span> pull requests</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Selecting one will write a file to <code>/.github/workflows/&lt;FILENAME&gt;.yaml</code> and then print out code to add a badge to your repository.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Selection<span class="sc">:</span> <span class="dv">1</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    ✔ Adding <span class="st">'*.html'</span> to <span class="st">'.github/.gitignore'</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    ✔ Creating <span class="st">'.github/workflows/'</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    ✔ Saving <span class="st">'r-lib/actions/examples/check-standard.yaml@v2'</span> to <span class="st">'.github/workflows/R-CMD-check.yaml'</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    • Learn more at <span class="sc">&lt;</span>https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>r<span class="sc">-</span>lib<span class="sc">/</span>actions<span class="sc">/</span>blob<span class="sc">/</span>v2<span class="sc">/</span>examples<span class="sc">/</span>README.md<span class="sc">&gt;</span>.</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    • Copy and paste the following lines into <span class="st">'README.Rmd'</span><span class="sc">:</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="er">&lt;</span><span class="sc">!--</span> badges<span class="sc">:</span> start <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      [<span class="sc">!</span>[R<span class="sc">-</span>CMD<span class="sc">-</span>check](https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>CUREd<span class="sc">-</span>Plus<span class="sc">/</span>cuRed<span class="sc">/</span>actions<span class="sc">/</span>workflows<span class="sc">/</span>R<span class="sc">-</span>CMD<span class="sc">-</span>check.yaml<span class="sc">/</span>badge.svg)](https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>CUREd<span class="sc">-</span>Plus<span class="sc">/</span>cuRed<span class="sc">/</span>actions<span class="sc">/</span>workflows<span class="sc">/</span>R<span class="sc">-</span>CMD<span class="sc">-</span>check.yaml)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="sc">&lt;!--</span> badges<span class="sc">:</span> end <span class="sc">-</span><span class="ot">-&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>      [Copied to clipboard]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="websites-with-pkgdown" class="level2">
+<h2 class="anchored" data-anchor-id="websites-with-pkgdown">Websites with <code>pkgdown</code></h2>
+<p>There is the <code>use_pkgdown_github_pages()</code> function which will setup <code>pkgdown</code> and configure GitHub Actions and pages. If you’re using <a href="gitlab.md">GitLab</a> <code>pkgdown</code> can be configured with <code>use_pkgdown()</code> instead (build locally with <code>pkgdown::build_site()</code>).</p>
+</section>
+<section id="badges" class="level2">
+<h2 class="anchored" data-anchor-id="badges">Badges</h2>
+<p>Most of the GitHub Action functions described above include output that can be copy and pasted into <code>README.Rmd</code> to include badges in your GitHub front page.</p>
+</section>
+<section id="pre-commit" class="level2">
+<h2 class="anchored" data-anchor-id="pre-commit">pre-commit</h2>
+<p>I love using <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> in my development pipelines, it saves so much hassle (once you are used to it). For R there is the excellent <a href="https://github.com/lorenzwalthert/precommit">precommit package</a> which comes with a set of hooks you can enable. These took a little figuring out to get them working.</p>
+<section id="codemetar" class="level3">
+<h3 class="anchored" data-anchor-id="codemetar">codemetar</h3>
+<p>There is a hook for checking the <a href="https://codemeta.github.io/">Codemeta</a>, which is in JSON-LD format is created correctly. The R package <a href="https://cran.r-project.org/web//packages//codemetar/vignettes/codemetar.html">codemetar</a> facilitates creating this and pulls metadata from the <code>DESCRIPTION</code>, <code>README.Rmd</code> and other aspects of your package to format them in JSON Codemeta. It comes with a handy function to write the file for you, so after installing you can just run <code>codemetar::write_codemeta()</code>.</p>
+</section>
+<section id="roxygenize" class="level3">
+<h3 class="anchored" data-anchor-id="roxygenize">roxygenize</h3>
+<p>Roxygen2 is a package for making the documentation to go with your package. This hook requires additional configuration in <code>.pre-commit-config.yaml</code> as you have to install your package dependencies. Fortunately there is a helper function in the <code>precommit</code> package so you can just run <code>precommit::snippet_generate("additional-deps-roxygenize")</code> and it will output the YAML that you need to add.</p>
+</section>
+<section id="styler" class="level3">
+<h3 class="anchored" data-anchor-id="styler">styler</h3>
+<p>The <a href="https://styler.r-lib.org/">styler</a> package ensures your code follows the <a href="https://style.tidyverse.org/">tidyverse style guide</a> by default, although it can be configured to use a custom style guide of your own creation.</p>
+</section>
+<section id="lintr" class="level3">
+<h3 class="anchored" data-anchor-id="lintr">lintr</h3>
+<p>The <a href="https://lintr.r-lib.org/">lintr</a> package lints your code automatically. It can be configured by adding a <code>.lintr</code> configuration file to your repository, a simple example is shown below. Note the indented closing parenthesis is important you get a complaint about that and any other formatting issues.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>linters<span class="sc">:</span> <span class="fu">linters_with_defaults</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">line_length_linter</span>(<span class="dv">120</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">object_name_linter =</span> <span class="cn">NULL</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">object_usage_linter =</span> <span class="cn">NULL</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="gotchas" class="level2">
+<h2 class="anchored" data-anchor-id="gotchas">Gotchas</h2>
+<p>When starting out I found that I regularly didn’t pass the <code>pre-commit</code> hooks first time. This can be jarring and confusing to start with but its not something to worry about, they are there to ensure your code and package meet the standards required for R packages, if you ever come to submit to <a href="https://cran.r-project.org">CRAN</a> you will be grateful to have adhered to these standards.</p>
+<p>Below I detail common “gotchas” I encountered when developing the package, what they mean and how to resolve them.</p>
+<section id="spell-check" class="level3">
+<h3 class="anchored" data-anchor-id="spell-check"><code>spell-check</code></h3>
+<p>The <code>spell-check</code> hook will fail if you’ve introduced new words with messages similar to the following. Sometimes these will be new words, sometimes they might be catching tpyos you have made. In the example below <code>famiy</code> should be <code>family</code> so you need to correct the source of the tpyo (and you’re told where this is, in this case it was line 27 of <code>CITATION.cff</code>), or if the new word should be added to the dictionary you will have to stage the <code>inst/WORDLIST</code> file for inclusion in your commit.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">spell-check..............................................................Failed</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> hook id: spell-check</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> exit code: 1</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> files were modified by this hook</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ℹ</span> Using R 4.3.1 <span class="er">(</span><span class="fu">lockfile</span> was generated with R 4.2.1<span class="kw">)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">ℹ</span> Using R 4.3.1 <span class="er">(</span><span class="fu">lockfile</span> was generated with R 4.2.1<span class="kw">)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> following spelling errors were found:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">WORD</span>    FOUND IN</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">famiy</span>   CITATION.cff:27</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">All</span> spelling errors found were copied to inst/WORDLIST assuming they were not spelling errors and will be ignored in the future. Please  review the above list and for each word that is an actual typo:</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">-</span> fix it in the source code.</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a> <span class="ex">-</span> remove it again manually from inst/WORDLIST to make sure it<span class="st">'s not</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">   ignored in the future.</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="st"> Then, try committing again.</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="st">Error: Spell check failed</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="st">Execution halted</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="codemeta-description-updated" class="level3">
+<h3 class="anchored" data-anchor-id="codemeta-description-updated"><code>codemeta-description-updated</code></h3>
+<p>If you modify the <code>DESCRIPTION</code> or <code>CITATION.cff</code> then the <code>codemeta-description-updated</code> hook will fail with error messages similar to the following.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">codemeta-description-updated.............................................Failed</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> hook id: codemeta-description-updated</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span> exit code: 1</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ℹ</span> Using R 4.3.1 <span class="er">(</span><span class="fu">lockfile</span> was generated with R 4.2.1<span class="kw">)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ℹ</span> Using R 4.3.1 <span class="er">(</span><span class="fu">lockfile</span> was generated with R 4.2.1<span class="kw">)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Error:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ot">! </span><span class="ex">codemeta.json</span> is out of date<span class="kw">;</span> <span class="ex">please</span> re-run codemetar::write_codemeta<span class="er">(</span><span class="kw">)</span><span class="bu">.</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Backtrace:</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">▆</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a> <span class="ex">1.</span> └─rlang::abort<span class="er">(</span><span class="st">"codemeta.json is out of date; please re-run codemetar::write_codemeta()."</span><span class="kw">)</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Execution</span> halted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This means yo need to update the <code>codemeta.json</code> with</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>codemetar<span class="sc">::</span><span class="fu">write_codemeta</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="warning-undocumented-code-objects" class="level3">
+<h3 class="anchored" data-anchor-id="warning-undocumented-code-objects"><code>Warning: Undocumented code objects:</code></h3>
+<p>If this error arises its because there is a <code>.Rd</code> file missing. You can generate these by ensuring you have the appropriate docstring definition prior to your function and then use the <code>roxygen2:reoxygenise()</code> function to generate the documentation automatically. Don’t forget to <code>git stage</code> and <code>git commit</code> the files to your repository, pushing if needed (e.g.&nbsp;a Continuous Integration pipeline is failing).</p>
+</section>
+</section>
+<section id="windows" class="level2">
+<h2 class="anchored" data-anchor-id="windows">Windows</h2>
+<p>Windows doesn’t come with Python by default, but <a href="https://pre-commit.com">pre-commit</a> is written in Python and so an environment is required in order to run the above pre-commit hooks. There are many options for this, including using <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a>. The solution is provided in the <a href="https://cran.r-project.org/web/packages/precommit/vignettes/precommit.html">precommit vignette</a> and uses the <a href="https://rstudio.github.io/reticulate/">reticulate</a> package (which interfaces <a href="https://r-project.org">R</a> with <a href="https://python.org">Python</a>) to handle installing a <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> environment.</p>
+<section id="install-r" class="level3">
+<h3 class="anchored" data-anchor-id="install-r">Install <a href="https://www.r-project.org">R</a></h3>
+<p>When installing the defaults are fine, request admin permissions if required.</p>
+</section>
+<section id="install-rstudio" class="level3">
+<h3 class="anchored" data-anchor-id="install-rstudio">Install <a href="https://posit.co/downloads/">Rstudio</a></h3>
+<p>Defaults are fine, request admin permissions if required.</p>
+</section>
+<section id="install-gitbash" class="level3">
+<h3 class="anchored" data-anchor-id="install-gitbash">Install <a href="https://git-scm.com/download/win">GitBash</a></h3>
+<p>During installation you’ll be asked a number of questions, if you’re unsure how to respond to any of them the following provides guidance.</p>
+<ol type="1">
+<li><strong>Text Editor</strong> - Configure with your choice of editor, obviously you’ll want to have <a href="https://www.gnu.org/software/emacs/">Emacs</a> available and select that! <span class="emoji" data-emoji="wink">😉</span></li>
+<li><strong>Adjust your PATH environment</strong> - At the bare minimum go with the <code>Recommended</code> option and allow <em>Git from the command line and also from 3rd-party software</em>. Optionally I would recommend the third option of <em>Use Git and optional UNIX tools from the Command Prompt</em>, particularly if you are either a) familiar with UNIX commands or b) not at all familiar with them (as you won’t have to re-learn the Windows commands, just learn the Bash commands they are more widely applicable).</li>
+<li><strong>Use Bundled SSH library</strong> - Use the bundled SSH library.</li>
+<li><strong>Use Bundled OpenSSL library</strong> - Use the bundled OpenSSL library.</li>
+<li><strong>Checkout Windows-style, commit Unix-style line endings</strong> - This is fine, it just changes the internal representation of the carriage return to be more universal.</li>
+<li><strong>Use MinTTY</strong> - The default terminal of MSYS2 is fine and more functional than the Windows’ default console window.</li>
+<li><strong>Default Merge behaviour</strong> - The default (fast-forward or merge) this is fine.</li>
+<li><strong>Choose a credential helper</strong> - Select <em>None</em> here, we will let RStudio manage these.</li>
+<li><strong>Configure Extra Options</strong> - Defaults are fine.</li>
+<li><strong>Configuring experimental options</strong> - No need to enable any of these.</li>
+</ol>
+<section id="configure-git" class="level4">
+<h4 class="anchored" data-anchor-id="configure-git">Configure Git</h4>
+<p>Start a GitBash shell and configure your email address and name.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"you@example.com"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"Your Name"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="configure-rstudiogithub-with-ssh-keys" class="level3">
+<h3 class="anchored" data-anchor-id="configure-rstudiogithub-with-ssh-keys">Configure RStudio/GitHub with SSH keys</h3>
+<ol type="1">
+<li>Start RStudio</li>
+<li>Create SSH key - Navigate to <em>Tools &gt; General Options &gt; Git/SVN &gt; Create SSH Key</em> and under <em>SSH key type</em> select the default (<em>ED25519</em>) this is a <a href="https://blog.g3rt.nl/upgrade-your-ssh-keys.html">very secure elliptic curve algorithm</a> and is supported by GitHub. Use a secure password (i.e.&nbsp;long), do <strong>not</strong> change the location it is created at.</li>
+<li>Once created select <em>View public key</em> and use <em>Ctrl + c</em> to copy this to your clipboard.</li>
+<li>Navigate to <a href="https://github.com/">GitHub</a> and login then click on your avatar in the top right and select <em>Settings &gt; SSH and GPG keys &gt; New SSH Key</em>.</li>
+<li>Give the key a name and paste into the box below where indicated/instructed then click on <em>Add SSH key</em>.</li>
+</ol>
+</section>
+<section id="clone-repository" class="level3">
+<h3 class="anchored" data-anchor-id="clone-repository">Clone Repository</h3>
+<ol type="1">
+<li>Navigate to the repository you wish to clone (e.g.&nbsp;<a href="https://github.com/CUREd-Plus/cuRed/">https://github.com/CUREd-Plus/cuRed/</a>) and click on the <em>Code</em> button then select <em>SSH</em> under the <em>Local</em> tab in the box that appears.</li>
+<li>Click on the box that has two small squares to the right of some text to copy the URL to clipboard.</li>
+<li>Return to RStudio and start a new project with <em>File &gt; New Project &gt; Version Control &gt; Git</em> and paste the URL into the <em>Repository URL</em>. Select a location to clone to under <em>Create project as subdirectory of:</em>, e.g.&nbsp;<code>c:/Users/&lt;username&gt;/work/cuRed</code> (replacing <code>&lt;username&gt;</code> with <em>your</em> username).</li>
+<li>If prompted for password enter it. If asked to answer <em>Yes\/No</em> answer <em>Yes</em> and then if prompted to <em>Store password for this session</em> answer <em>Yes</em>.</li>
+<li>You should now have cloned the repository and have a project to work on.</li>
+</ol>
+</section>
+<section id="install-pre-commit" class="level3">
+<h3 class="anchored" data-anchor-id="install-pre-commit">Install <code>pre-commit</code></h3>
+<p><code>pre-commit</code> refers to two things, primarily it is the Python package <a href="https://pre-commit.com"><code>pre-commit</code></a> that does all the work of running Linting, Tests etc. before making commits. It also refers to an R package <a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html">precommit</a> that works with the Python package to enable use of various R packages that carry out such checks. Because it is a Python package it needs a Python Virtual Environment to run. This may sound unfamiliar but don’t worry the R <code>precommit</code> package and documentation guides you through doing so, what follows is a rehash of the <a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html">official documentation</a>.</p>
+<section id="install-precommit-and-reticulate" class="level4">
+<h4 class="anchored" data-anchor-id="install-precommit-and-reticulate">Install <code>precommit</code> and <code>reticulate</code></h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"remotes"</span>, <span class="st">"reticulate"</span>))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"lorenzwalthert/precommit"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="install-miniconda-environment" class="level4">
+<h4 class="anchored" data-anchor-id="install-miniconda-environment">Install Miniconda environment</h4>
+<p><strong>NB</strong> This installs a <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> virtual environment framework for R to run Python packages (i.e.&nbsp;<code>pre-commit</code>).</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">timeout=</span><span class="dv">600</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">install_miniconda</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="install-pre-commit-framework" class="level4">
+<h4 class="anchored" data-anchor-id="install-pre-commit-framework">Install <code>pre-commit</code> framework</h4>
+<p><strong>NB</strong> This installs the Python package <a href="https://pre-commit.com"><code>pre-commit</code></a> within a new Miniconda virtual environment (<code>r-precommit</code>), there will be a fair bit of output here as all the dependencies in Python for <code>pre-commit</code> are downloaded.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>precommit<span class="sc">::</span><span class="fu">install_precommit</span>()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>precommit<span class="sc">::</span><span class="fu">autoupdate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="use-precommit-with-the-existing-project" class="level4">
+<h4 class="anchored" data-anchor-id="use-precommit-with-the-existing-project">Use <code>precommit</code> with the existing project</h4>
+<p>You should have cloned the repository you wish to enable <code>precommit</code> to use (see above). You now need to enable <code>precommit</code> for this local copy of the repository. This will place a script in <code>.git/hooks/pre-commit</code> that says which Miniconda environment to use (<code>r-precommit</code>) and will activate this whenever a commit is made, the <code>install_hooks = TRUE</code> ensures that the R specific hooks and their required environments are installed (under <code>\~/.config/pre-commit/</code>).</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>precommit<span class="sc">::</span><span class="fu">use_precommit</span>(<span class="at">install_hooks =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://r-pkgs.org/">R Packages book by Hadley Wickham and Jenny Bryan</a></li>
+<li><a href="https://happygitwithr.com">Happy Git and GitHub for the userR by Jenny Bryan</a></li>
+</ul>
+<section id="r-packages" class="level3">
+<h3 class="anchored" data-anchor-id="r-packages">R Packages</h3>
+<ul>
+<li><a href="https://devtools.r-lib.org/">devtools</a></li>
+<li><a href="https://usethis.r-lib.org">usethis</a></li>
+<li><a href="https://roxygen2.r-lib.org/">roxygen2</a></li>
+<li><a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html">R precommit</a> (<a href="https://github.com/lorenzwalthert/precommit">GitHub | lorenzwalthert/precommit</a> check the <a href="https://github.com/lorenzwalthert/precommit/issues">Issues</a>, can be useful for troubleshooting)</li>
+</ul>
+</section>
+<section id="python" class="level3">
+<h3 class="anchored" data-anchor-id="python">Python</h3>
+<ul>
+<li><a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a></li>
+</ul>
+</section>
+<section id="pre-commit-1" class="level3">
+<h3 class="anchored" data-anchor-id="pre-commit-1">Pre-commit</h3>
+<ul>
+<li><a href="https://pre-commit.com">pre-commit</a></li>
+<li><a href="https://pre-commit.ci">pre-commit.ci</a></li>
+<li><a href="https://ns-rse.github.io/#category=pre-commit">ns-rse | pre-commit</a> blog posts I’ve made about <code>pre-commit</code>.</li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

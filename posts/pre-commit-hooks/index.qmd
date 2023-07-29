@@ -1,7 +1,7 @@
 ---
 title: "Pre-Commit : Useful Hooks"
 date: "2023-05-07"
-categories: [code, analysis, linting, git, github, gitlab]
+categories: [code, analysis, linting, git, github, gitlab, pre-commit]
 image: https://live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg
 from: markdown+emoji
 toc: true
