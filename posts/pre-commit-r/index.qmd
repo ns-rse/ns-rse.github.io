@@ -23,6 +23,7 @@ Bryan](https://r-pkgs.org/) and because this article is focused on using Git to 
 probably find the excellent [Happy Git and GitHub for the userR by Jenny Bryan](https://happygitwithr.com) worth
 bookmarking too.
 
+![[Erwin Wurm sculpture at Yorkshire Sculpture Park](https://flickr.com/photos/slackline/52985095726/) by me](https://live.staticflickr.com/65535/52985095726_49c5b394f1_k.jpg)
 ## devtools and usethis
 
 The [devtools](https://devtools.r-lib.org/) package in conjunction with [usethis](https://usethis.r-lib.org) should be
