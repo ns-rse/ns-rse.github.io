@@ -1,0 +1,1368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>ns-rse</title>
+<link>https://ns-rse.github.io/index.html#category=code</link>
+<atom:link href="https://ns-rse.github.io/index-code.xml" rel="self" type="application/rss+xml"/>
+<description>Software development in a Research Environment</description>
+<generator>quarto-1.3.14</generator>
+<lastBuildDate>Sun, 07 May 2023 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pre-Commit : Useful Hooks</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’m a big fan of <a href="https://pre-commit.com">pre-commit</a> and have written about it before (see posts on <a href="https://ns-rse.github.io/posts/pre-commit/">pre-commit</a>, <a href="https://ns-rse.github.io/posts/pre-commit-ci/">pre-commit CI</a> and <a href="https://ns-rse.github.io/posts/pre-commit-updating/">pre-commit updating</a>). This post discusses some of the <a href="https://pre-commit.com/hooks">hooks</a> that I use and how to configure them.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-hooks/https:/live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52842122133/in/datetaken/"><em>Irridescent</em> Picture by me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="python-linting" class="level2">
+<h2 class="anchored" data-anchor-id="python-linting">Python Linting</h2>
+<section id="ruff" class="level3">
+<h3 class="anchored" data-anchor-id="ruff">Ruff</h3>
+<p><a href="https://github.com/charliermarsh/ruff">ruff</a> is a Python linter written in Rust which means its considerably faster than many native linters. It aims for parity with Flake8 and covers a lot of the linting that PyLint undertakes too. Its configured via <code>pyproject.toml</code> which makes incorporating it into your Python Package simple.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/charliermarsh/ruff-pre-commit</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v0.0.191</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> ruff</span></span></code></pre></div>
+<p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/python-packaging/">Python Packaging</a> worth reading to understand more on this.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">tool</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">ruff</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb2-2"><span class="dt" style="color: #AD0000;">exclude</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[]</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;"># per-file-ignores = []</span></span>
+<span id="cb2-4"><span class="dt" style="color: #AD0000;">line-length</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">120</span></span>
+<span id="cb2-5"><span class="dt" style="color: #AD0000;">target-version</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"py310"</span></span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;"># Allow autofix for all enabled rules (when `--fix`) is provided.</span></span>
+<span id="cb2-8"><span class="dt" style="color: #AD0000;">fixable</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[</span><span class="st" style="color: #20794D;">"A"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"B"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"C"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"D"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"E"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"F"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"R"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"S"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"W"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"U"</span><span class="op" style="color: #5E5E5E;">]</span></span>
+<span id="cb2-9"><span class="dt" style="color: #AD0000;">unfixable</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[]</span></span></code></pre></div>
+</section>
+<section id="black" class="level3">
+<h3 class="anchored" data-anchor-id="black">Black</h3>
+<p><a href="https://black.readthedocs.io/en/stable/index.html">Black</a> is an opinionated formatter for Python that is <a href="https://pep8.org/">PEP8</a> compliant. By using <code>black</code> to format your code you end up with a consistent style across the code base and commit changes end up being minimal. This helps speed up code-review of pull-requests.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/psf/black</span></span>
+<span id="cb3-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">22.10.0</span></span>
+<span id="cb3-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-5"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> black</span></span>
+<span id="cb3-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/pre-commit-updating/">Python Packaging</a> worth reading to understand more on this.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">tool</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">black</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb4-2"><span class="dt" style="color: #AD0000;">line-length</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">120</span></span>
+<span id="cb4-3"><span class="dt" style="color: #AD0000;">target-version</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[</span><span class="st" style="color: #20794D;">"py38"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"py39"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"py310"</span><span class="op" style="color: #5E5E5E;">]</span></span>
+<span id="cb4-4"><span class="dt" style="color: #AD0000;">include</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">\\</span><span class="st" style="color: #20794D;">.pyi?$"</span></span></code></pre></div>
+</section>
+</section>
+<section id="markdown-linting" class="level2">
+<h2 class="anchored" data-anchor-id="markdown-linting">Markdown Linting</h2>
+<p><a href="https://github.com/DavidAnson/markdownlint-cli2">markdownlint-cli2</a> is a useful and highly configurable hook for linting <a href="https://www.markdownguide.org">Markdown</a> and <a href="https://commonmark.org/">CommonMark</a>. I wanted to use it on this blog though which is written using <a href="https://quarto.org/docs/authoring/markdown-basics.html">Quarto</a> and therefore uses <a href="https://pandoc.org/MANUAL.html#pandocs-markdown">PandocMarkdown</a> with files that have extension <code>.qmd</code>. I therefore enable the hook in <code>.pre-commit-config.yaml</code> with a configuration file specified</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-2"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/DavidAnson/markdownlint-cli2</span></span>
+<span id="cb5-3"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v0.6.0</span></span>
+<span id="cb5-4"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> markdownlint-cli2</span></span>
+<span id="cb5-6"><span class="at" style="color: #657422;">      </span><span class="fu" style="color: #4758AB;">args</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">.markdownlin-cli2.yaml</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>..and add a sample configuration file is shown below and <code>markdownlint-cli2</code> picks this up automatically.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="co" style="color: #5E5E5E;"># Configuration</span></span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;">config</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-3"><span class="co" style="color: #5E5E5E;">  # MD013 - line-length</span></span>
+<span id="cb6-4"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">line_length</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-5"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">line_length</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="dv" style="color: #AD0000;">120</span></span>
+<span id="cb6-6"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">code_blocks</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">false</span></span>
+<span id="cb6-7"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">tables</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">false</span></span>
+<span id="cb6-8"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">html</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-9"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">allowed_elements</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-10"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> div</span></span>
+<span id="cb6-11"></span>
+<span id="cb6-12"><span class="co" style="color: #5E5E5E;"># Globs</span></span>
+<span id="cb6-13"><span class="fu" style="color: #4758AB;">globs</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-14"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"**/*.qmd"</span></span>
+<span id="cb6-15"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"*.qmd"</span></span>
+<span id="cb6-16"></span>
+<span id="cb6-17"><span class="co" style="color: #5E5E5E;"># Fix any fixable errors</span></span>
+<span id="cb6-18"><span class="fu" style="color: #4758AB;">fix</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">false</span></span></code></pre></div>
+</section>
+<section id="emacs-lisp" class="level2">
+<h2 class="anchored" data-anchor-id="emacs-lisp">Emacs Lisp</h2>
+<p>As I use <a href="https://www.gnu.org/software/emacs/">Emacs</a> I have recourse to write some <a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/">Emacs Lisp</a> and so its useful to applying formatting to my <code>.el</code> files before committing them. <a href="https://github.com/eschulte/lisp-format">lisp-format</a> does the job nicely.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb7-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/eschulte/lisp-format</span></span>
+<span id="cb7-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> 088c8f78ca41204b44f2636275517ac09a2de6a9</span></span>
+<span id="cb7-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb7-5"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> lisp-format</span></span>
+<span id="cb7-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">name</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> formatter of lisp code</span></span>
+<span id="cb7-7"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">description</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> Run lisp-format against lisp files</span></span>
+<span id="cb7-8"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">language</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> script</span></span>
+<span id="cb7-9"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">files</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> \.(lisp|cl|asd|scm|el)$</span></span>
+<span id="cb7-10"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">entry</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> lisp-format -i</span></span></code></pre></div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>There are a <em>lot</em> of hooks out there to be used with <a href="https://pre-commit.com">pre-commit</a> and incorporated into your Continuous Integration pipeline with <a href="https://pre-commit.ci">pre-commit.ci</a>. Which you find useful will depend to a large extent on the languages that you are using for any given project. Here I’ve focused mainly on common tools for Python Packages, Markdown and Lisp but you can find hooks for Docker, Ansible, Rust, Go, JavaScript, C++ and many more, there is even <a href="https://github.com/jorisroovers/gitlint">gitlint</a> which lints your commit messages! Checkout the long list of available <a href="https://pre-commit.com/hooks">hooks</a> and try some out.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="related-pre-commit-posts" class="level3">
+<h3 class="anchored" data-anchor-id="related-pre-commit-posts">Related pre-commit posts</h3>
+<ul>
+<li><a href="https://ns-rse.github.io/posts/pre-commit/">pre-commit</a></li>
+<li><a href="https://ns-rse.github.io/posts/pre-commit-ci/">pre-commit CI</a></li>
+<li><a href="https://ns-rse.github.io/posts/pre-commit-updating/">pre-commit updating</a></li>
+</ul>
+</section>
+<section id="pre-commit-hooks" class="level3">
+<h3 class="anchored" data-anchor-id="pre-commit-hooks">Pre-commit hooks</h3>
+<ul>
+<li><a href="https://pre-commit.com">pre-commit</a> (<a href="https://pre-commit.com/hooks">pre-commit hooks</a>)</li>
+<li><a href="https://pre-commit.ci">pre-commit.ci</a></li>
+<li><a href="https://github.com/charliermarsh/ruff">ruff</a></li>
+<li><a href="https://github.com/DavidAnson/markdownlint-cli2">markdownlint-cli2</a></li>
+<li><a href="https://black.readthedocs.io/en/stable/index.html">Black</a></li>
+<li><a href="https://github.com/eschulte/lisp-format">lisp-format</a></li>
+<li><a href="https://github.com/jorisroovers/gitlint">gitlint</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>linting</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <guid>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</guid>
+  <pubDate>Sun, 07 May 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Pre-Commit.ci : Integrating Pre-Commit into CI/CD</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pre-commit-ci/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><strong>NB</strong> If you’ve not read it already I would recommend reading my previous post on using <a href="https://ns-rse.github.io/posts/pre-commit/">pre-commit</a> as the contents described herein assume that you are already using <a href="https://pre-commit.com">pre-commit</a> in your development.</p>
+<p>Having <a href="https://pre-commit.com">pre-commit</a> setup locally to run before making commits is great. Typically code lives in a “forge” such as <a href="https://github.com">GitHub</a> or <a href="https://gitlab.com">GitLab</a> and as <code>pre-commit</code> is run on each commit you shouldn’t have any problems when you come to <code>git push</code> your code to the remote <code>origin</code> repository (i.e.&nbsp;the repository hosted on GitHub/GitLab) as all <code>pre-commit</code> checks will have to have passed before this will take place.</p>
+<p>But what if for some reason you disabled <code>pre-commit</code> just to make some changes rather than addressing the failed linting or test? Or if you work on an open-source project and someone else contributes how can you ensure that their contributed code meets the code-style chosen by the project and that all tests pass in light of the changes that are being introduced?</p>
+<section id="continuous-integration-continuous-delivery-cicd" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-integration-continuous-delivery-cicd">Continuous Integration / Continuous Delivery (CI/CD)</h2>
+<p>The solution to this is Continuous Integration/Continuous Delivery (CI/CD) which runs various hooks on GitHub/GitLab etc. in response to specific tasks/actions that occur on the repository. The exact name or system used depends on the forge, on GitHub these are <a href="https://docs.github.com/en/actions">GitHub Actions</a> (see also <a href="https://github.com/marketplace?type=actions">Actions Marketplace</a>) whilst on GitLab uses <a href="https://docs.gitlab.com/ee/ci/pipelines/">Pipelines</a>. There are even standalone systems which integrate with both such as the popular <a href="https://www.jenkins.io">Jenkins</a>.</p>
+<p><strong>By employing <code>pre-commit</code> as part of your CI/CD pipeline you ensure code meets the standards (linting, tests etc.) you wish contributions to meet before it is merged into your <code>main</code>/<code>master</code> branch`</strong></p>
+<p>These work by running processes under certain conditions, for example on a <code>push</code> to the <code>main</code> branch or a <code>tag</code> that begins with <code>v</code>, and they might run processes such as running the test suite for your project to ensure all tests pass, build web-pages or build the package for deployment to a repository (e.g.&nbsp;<a href="https://pypi.org">PyPI</a>). They are really useful and flexible systems and can be leveraged to run <code>pre-commit</code> on your code when Pull Requests (PR) are made to ensure the PR passes the various hooks. Ultimately a PR results in a <code>commit</code> to <code>master</code>/<code>main</code> and so its logically consistent that Pull Requests should pass <code>pre-commit</code> prior to being merged.</p>
+<p>Under any system you could write your own hook to run <code>pre-commit</code> but there is an even easier and more efficient solution if you use GitHub in the form of <a href="https://pre-commit.ci">pre-commit.ci</a>.</p>
+</section>
+<section id="github-and-pre-commit.ci" class="level2">
+<h2 class="anchored" data-anchor-id="github-and-pre-commit.ci">GitHub and pre-commit.ci</h2>
+<p>Currently <a href="https://pre-commit.ci">pre-commit.ci</a> only supports GitHub although support of other systems is in the pipeline. <code>pre-commit.ci</code> doesn’t need any configuration beyond your already existing <code>.pre-commit-config.yaml</code> (see <a href="https://ns-rse.github.io/posts/pre-commit/">Pre-commit : Protecting Your Future Self</a>). Where a <code>pre-commit</code> hook corrects formatting issues as is the case with some of the defaults such as <code>trailing-whitespace</code> or <code>check-yaml</code>, or if you are using Python linters such as <a href="https://black.readthedocs.io/en/stable/"><code>black</code></a> or <a href="https://github.com/charliermarsh/ruff"><code>ruff</code></a> which fix errors, <code>pre-commit.ci</code> can commit these changes and push them back to the Pull Request automatically. In a similar vein it will also routinely update the <code>rev</code> used in your <code>.pre-commit-config.yaml</code>, commit the change and push it back to your repository.</p>
+<p>It is also really fast because <code>pre-commit.ci</code> keeps the virtual environments that are used in tests cached whereas if you wrote your own action to run this the GitHub runner that is spun up to run GitHub Actions would have to download all of these each time the action is run is they are not persistent.</p>
+<p>Use of <code>pre-commit.ci</code> is free for open-source repositories and there are paid options for private or organisation repositories.</p>
+<blockquote class="blockquote">
+<p><strong>Benefits of pre-commit.ci</strong></p>
+<ul>
+<li>Supports GitHub but more to come in the future.</li>
+<li>Zero configuration, just need <code>.pre-commit-config.yaml</code>.</li>
+<li>Corrects &amp; commits formatting issues automatically without need for developer to reformat.</li>
+<li>Automatically updates <code>.pre-commit-config.yaml</code> for you (e.g.&nbsp;new <code>rev</code>).</li>
+<li>Faster than your own GitHub Action.</li>
+<li>Free for open source repositories (paid for version for private/organisation repositories).</li>
+</ul>
+</blockquote>
+<section id="configuration-.pre-commit-config.yaml" class="level3">
+<h3 class="anchored" data-anchor-id="configuration-.pre-commit-config.yaml">Configuration (<code>.pre-commit-config.yaml</code>)</h3>
+<p>Whilst not required it is possible to configure the behaviour of <code>pre-commit.ci</code> by adding a <code>ci:</code> section to your <code>.pre-commit-config.yaml</code>. The fields are fairly self-explanatory as the example below shows. Its possible to toggle whether to <code>autofix_prs</code> and to set the <code>autofix_commit_msg</code>. The <code>autoupdate_schedule</code> can be set to <code>weekly</code>, <code>monthly</code> or <code>quarterly</code> along with a custom <code>autoupdate_commit_msg</code>. Finally you can optionally disable some hooks from being run only in <code>pre-commit.ci</code>.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">ci</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-2"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">autofix_prs</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">true</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">autofix_commit_msg</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">'[pre-commit.ci] Fixing issues with pre-commit'</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">autoupdate_schedule</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> weekly</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">autoupdate_commit_msg</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">'[pre-commit.ci] pre-commit automatically updated revs.'</span></span>
+<span id="cb1-6"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">skip</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">pylint</span><span class="kw" style="color: #003B4F;">]</span><span class="co" style="color: #5E5E5E;"> # Optionally list ids of hooks to skip on CI</span></span></code></pre></div>
+</section>
+<section id="setup" class="level3">
+<h3 class="anchored" data-anchor-id="setup">Setup</h3>
+<p>Setup is relatively straight-forward, head to <a href="https://pre-commit.ci">https://pre-commit.ci</a> and sign-in with your GitHub account and grant <code>pre-commit.ci</code> access to your account.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit CI</figcaption><p></p>
+</figure>
+</div>
+<p>Once you have granted access you can choose which repositories <code>pre-commit.ci</code> has access to. It is possible to grant access to all repositories but I would recommend doing so on a per-repository basis so you know and are in control of what is happening across your repositories. If you have administration rights to organisation repositories these should be listed in the “<em>Select repositories</em>” pull-down menu.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/github-pre-commit-access.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Granting pre-commit.ci access to GitHub</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="pre-commit.ci-jobs" class="level3">
+<h3 class="anchored" data-anchor-id="pre-commit.ci-jobs"><code>pre-commit.ci</code> jobs</h3>
+<p>When logged into <code>pre-commit.ci</code> using your GitHub account you are presented with a page similar to the following which lists the accounts and any organisations that you have authorised <code>pre-commit.ci</code> to access.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/account-pre-commit-ci.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci account access</figcaption><p></p>
+</figure>
+</div>
+<p>You can follow the links through to view the history of jobs run by <code>pre-commit.ci</code> and whether they pass or fail. The page shows the current status and provides both Markdown and reStructured Text code for adding badges to your source documents (e.g.&nbsp;the Markdown badge can be added to your repositories top-level <code>README.md</code> and the badge will be displayed on GitHub)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-pass2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs pass</figcaption><p></p>
+</figure>
+</div>
+<p>You can click through and see the results of a given run and when they <a href="https://results.pre-commit.ci/run/github/168173540/1674062271.Tj4xDOxqRFu3CDIPhXkMJA">pass</a> they look similar to the output you would have seen when making commits locally.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-pass3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs pass</figcaption><p></p>
+</figure>
+</div>
+<p>But sometimes things will <a href="https://results.pre-commit.ci/run/github/168173540/1674061180.-2Eo_dbfRAGrukip387Nhg">fail</a> as shown below where the <code>trailing-whitespace</code> hook failed and the file was modified. But since <code>pre-commit.ci</code> corrects and pushes such changes automatically you can see at the bottom that these changes were pushed to the Pull Request from which the originated.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-fail.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs fail</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="gitlab" class="level2">
+<h2 class="anchored" data-anchor-id="gitlab">GitLab</h2>
+<p>As <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> doesn’t (yet) support GitLab integrating <code>pre-commit</code> into your GitLab Pipeline is a little more involved. What follows is based on the excellent post on <a href="https://stackoverflow.com/collectives/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g">StackOverflow</a> describing how to achieve this integration.</p>
+<p>You should already have a valid <code>.pre-commit-config.yaml</code> in place (if not work through <a href="https://ns-rse.github.io/posts/pre-commit/">Pre-commit : Protecting your future self (blog-post)</a>). To enable <code>pre-commit</code> on your <a href="https://docs.gitlab.com/ee/ci/pipelines/">GitLab Pipeline</a> you need to to have a pipeline in place. This is a file in the root of your repository called <code>.gitlab-ci.yml</code>. You need to add the following to this file…</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">variables</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;">  # since we're not using merge request pipelines in this example,</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;">  # we will configure the pre-commit job to run on branch pipelines only.</span></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;">  # If you ARE using merge request pipelines, you can omit this section</span></span>
+<span id="cb2-5"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">PRE_COMMIT_DEDUPLICATE_MR_AND_BRANCH</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">false</span></span>
+<span id="cb2-6"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">PRE_COMMIT_AUTO_FIX_BRANCH_ONLY</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">true</span></span>
+<span id="cb2-7"></span>
+<span id="cb2-8"><span class="fu" style="color: #4758AB;">include</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-9"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">remote</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">'https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml'</span></span></code></pre></div>
+<p>This uses the <code>pre-commit-autofix.yaml</code> from <a href="https://gitlab.com/yesolutions/">yesolutions</a> to run <code>pre-commit</code> and as the configuration shows automatically apply fixes <code>pre-commit</code> makes to your code. There are more options available for configuring this pipeline and they are documented <a href="https://gitlab.com/yesolutions/gitlab-ci-templates">here</a>.</p>
+<p>Because you are allowing a third-party pipeline to access your repository when pushing the changes <code>pre-commit</code> makes back to your repository for this to work you <em>must</em> create a <a href="https://docs.gitlab.com/ee/user/project/settings/project_access_tokens.html">project access token</a>. Under the repositories <em>Settings &gt; Access Tokens</em> you can create a new token with an expiry date. You must then create a CI/CD variable called <code>PRE_COMMIT_ACCESS_TOKEN</code> with this token as a value.</p>
+<p>Once you have done this your CI/CD pipeline should show at the very start the <code>.pre</code> stage…</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">GitLab pre-commit pipeline.</figcaption><p></p>
+</figure>
+</div>
+<p>…and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to download and intialise all of the environments for each configured hook unlike <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> (this is akin to writing your own <a href="https://docs.github.com/en/actions">GitHub Action</a> to run <code>pre-commit</code> which would also have to download and initialise the environments).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline-pass.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Success! GitLab pre-commit hooks pass!</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>This article has covered</p>
+<ul>
+<li>Why to integrate <a href="https://pre-commit.com"><code>pre-commit</code></a> into your Continuous Integration/Delivery pipeline.</li>
+<li>What the <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> service is and the benefits it provides.</li>
+<li>How to integrate <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> with <a href="https://github.com">GitHub</a> repositories.</li>
+<li>How to integrate <a href="https://pre-commit.com"><code>pre-commit</code></a> with <a href="https://gitlab.com">GitLab</a> repositories.</li>
+</ul>
+<p>By automating linting and testing in this manner you improve and shorten the feedback loop for developers and contributors which frees up more time and focus on the code itself.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://ns-rse.github.io/posts/pre-commit/">Pre-commit : Protecting your future self (blog-post)</a>- pre-requisite reading if you are not already using <a href="https://pre-commit.com"><code>pre-commit</code></a></li>
+<li><a href="https://ns-rse.github.io/pre-commit/">Pre-commit : Protecting your future self (slides)</a> - slides from a talk given at Research Computing at the University of Leeds that extended the above blog post to cover the material in this post (hit <code>s</code> to see the “speaker notes” <span class="emoji" data-emoji="wink">😉</span>).</li>
+<li><a href="https://pre-commit.com"><code>pre-commit</code></a></li>
+<li><a href="https://pre-commit.ci"><code>pre-commit.ci</code></a></li>
+<li><a href="https://stackoverflow.com/collectives/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g">How to use pre-commit to automatically correct commits and merge requests with GitLab CI - Stack Overflow</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>linting</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <guid>https://ns-rse.github.io/posts/pre-commit-ci/index.html</guid>
+  <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52596382383_eefbf62543_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Who’s to Blame</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/whos_to_blame/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.git-scm.com/docs/git-blame">Git blame</a> shows who made changes to which line of code for a given point in its history.</p>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<p>Git blame works on individual files and so requires a filename, there are a host of options, for example <code>-e</code> prints the authors email address <code>-w</code> ignores changes to white space and <code>-L 10,20</code> restricts output to the specified line range. If you want a the blame for a specific revision then you must include the hash.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">git</span> blame <span class="at" style="color: #657422;">-e</span> <span class="at" style="color: #657422;">-w</span> <span class="at" style="color: #657422;">-L</span> 10,20 f923la git_blame.org</span></code></pre></div>
+</section>
+<section id="alias" class="level2">
+<h2 class="anchored" data-anchor-id="alias">Alias</h2>
+<p>Some people don’t like the pejorative nature of the word <code>blame</code>. That’s ok though, with a tweak to our configuration its possible to use the alias <code>praise</code> or simply <code>who</code>.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;"># blame alias</span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> alias.praise blame</span>
+<span id="cb2-3"><span class="fu" style="color: #4758AB;">git</span> praise <span class="at" style="color: #657422;">-L1,30</span> git_blame.org</span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;"># who alias</span></span>
+<span id="cb2-5"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> alias.who blame</span>
+<span id="cb2-6"><span class="fu" style="color: #4758AB;">git</span> who <span class="at" style="color: #657422;">-L1,30</span> git_blame.org</span></code></pre></div>
+<p>For more detailed information on the array of options refer to the <a href="https://www.git-scm.com/docs/git-blame">official documentation</a> or see <code>git blame --help</code>.</p>
+</section>
+<section id="ignoring-blame" class="level2">
+<h2 class="anchored" data-anchor-id="ignoring-blame">Ignoring blame</h2>
+<p>Sometimes the case arises where you want to ignore blame. Perhaps the most common example is when an existing code base has been <a href="../linting">linted</a> to conform to a particular style guide. Looking at who performed these changes is not informative and masks who made the changes and why. Its possible to ignore specific commits on the command line with <code>--ignore-revs &lt;hash&gt; &lt;file&gt;</code>, but it will quickly become tedious to remember to ignore all blame across multiple commits. Fortunately you can save the commits to ignore to the file <code>.git-blame-ignore-revs</code> (along with comments) so that they are stored. The full commit (40 characters) of hashes should be used.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># PEP8 compliance for module X</span></span>
+<span id="cb3-2"><span class="ex" style="color: null;">c00177a6121f86c001f338feff3280fd576fdbf3</span></span>
+<span id="cb3-3"></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;"># PEP8 compliance for module Y</span></span>
+<span id="cb3-5"><span class="ex" style="color: null;">db27fa5f18299ca631efc430512a3f358c2b154f</span></span></code></pre></div>
+<p>Now that you have the revisions in place to be ignored when reporting blame you can choose not to use it.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;">git</span> blame <span class="at" style="color: #657422;">--ignore-revs-file</span> .gitblame-ignore-revs git_blame.org</span></code></pre></div>
+<p>…but this is tedious to remember to have to do each time and ideally others on your team should use this file too. You can configure Git to use this file by modifying the local configuration. Make sure to add it to your repository so that others can use it.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;">git</span> config blame.ignoreRevsFile .git-blame-ignore-revs</span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;">git</span> add .git-blame-ignore-revs</span></code></pre></div>
+<p>As of <a href="https://github.com/orgs/community/discussions/5033#discussioncomment-2318478">2022-03-08</a> GitHub will also <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file#ignore-commits-in-the-blame-view">ignore commits in the blame view</a> that are listed in <code>.git-blame-ignore-revs</code> providing this file is in the root of your project folder.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="general" class="level3">
+<h3 class="anchored" data-anchor-id="general">General</h3>
+<ul>
+<li><a href="https://www.atlassian.com/git/tutorials/inspecting-a-repository/git-blame">Atlassian | git blame</a></li>
+</ul>
+</section>
+<section id="resources" class="level3">
+<h3 class="anchored" data-anchor-id="resources">Resources</h3>
+<ul>
+<li><a href="https://www.moxio.com/blog/43/ignoring-bulk-change-commits-with-git-blame">Ignoring bulk change commits with git blame</a></li>
+<li><a href="https://csswizardry.com/2017/05/little-things-i-like-to-do-with-git/#praise-people">Little things I like to do with Git</a></li>
+<li><a href="https://stackoverflow.com/a/3959409/1444043">Is there a way to customize the output of git blame</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <category>blame</category>
+  <guid>https://ns-rse.github.io/posts/whos_to_blame/index.html</guid>
+  <pubDate>Sat, 17 Dec 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52065067830_734d0ebd51_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Pre-Commit : Customising and Updating</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pre-commit-updates/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://pre-commit.com/">Pre-commit</a> is a tool for running hooks prior to making commits to your Git history. If you’re not familiar with it then you may want to read the earlier post <a href="https://ns-rse.github.io/posts/pre-commit/">Pre-Commit : Protecting your future self</a>. This article discusses updating <code>pre-commit</code> and is prompted by a change in the <code>flake8</code> repository.</p>
+<section id="pre-commit-hooks" class="level2">
+<h2 class="anchored" data-anchor-id="pre-commit-hooks">Pre-commit hooks</h2>
+<p>A lot of the power of <code>pre-commit</code> comes from the vast array of <a href="https://pre-commit.com/hooks.html">hooks</a> that are available that users make available. These are included under <code>repos:</code> section of the <code>.pre-commit-config.yaml</code> and typically require a minimum of the <code>repo:</code> and the <code>rev:</code> to use and then optionally a <code>hooks:</code> section. The <code>sample-config</code> that <code>pre-commit</code> will auto-generate looks like…</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-2"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v4.3.0</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> trailing-whitespace</span></span>
+<span id="cb1-6"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> end-of-file-fixer</span></span>
+<span id="cb1-7"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-yaml</span></span>
+<span id="cb1-8"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-added-large-files</span></span></code></pre></div>
+<p>After finding a repository and hook that you wish to use <a href="https://pre-commit.com/hooks.html">hooks</a> repository you need to add it to your <code>.pre-commit-config.yaml</code>. Here we add the <a href="https://github.com/PyCQA/pylint"><code>pylint</code></a> repository and whilst it only has one hook we explicitly add it.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-2"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb2-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v4.3.0</span></span>
+<span id="cb2-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> trailing-whitespace</span></span>
+<span id="cb2-6"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> end-of-file-fixer</span></span>
+<span id="cb2-7"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-yaml</span></span>
+<span id="cb2-8"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-added-large-files</span></span>
+<span id="cb2-9"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/PyCQA/pylint</span></span>
+<span id="cb2-10"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v2.15.5</span></span>
+<span id="cb2-11"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-12"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pylint</span></span></code></pre></div>
+<p>If a repository has more than one <code>hook</code> available then it can be enabled by listing its <code>id:</code> as is the case in the <code>hooks</code> above for the <code>pre-commit-hooks</code> repository.</p>
+</section>
+<section id="local-hooks" class="level2">
+<h2 class="anchored" data-anchor-id="local-hooks">Local Hooks</h2>
+<p>In some instances the provisioned repositories do not always meet the requirements. One example of this is the <a href="https://github.com/pycqa/pylint">pylint action</a> which parses the code-base to detect errors using <a href="https://pylint.pycqa.org/en/latest/">pylint</a>. Typically most Python packages have their own dependencies but because the Pylint action pulls down and uses its own virtual environment these packages are not installed. As a consequence <code>pylint</code> reports a lot of <code>import-error</code> as its unable to import the required dependencies.</p>
+<p>The solution to this is to write a local hook, which instead of defining a GitHub repository as the <code>repo:</code> uses the value <code>local</code>. Thus to run <code>pylint</code> in a local environment from <code>pre-commit</code> you would add the following to your <code>.pre-commit-config.yaml</code></p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-2"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb3-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v4.3.0</span></span>
+<span id="cb3-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> trailing-whitespace</span></span>
+<span id="cb3-6"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> end-of-file-fixer</span></span>
+<span id="cb3-7"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-yaml</span></span>
+<span id="cb3-8"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-added-large-files</span></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;"># -   repo: https://github.com/PyCQA/pylint</span></span>
+<span id="cb3-10"><span class="co" style="color: #5E5E5E;">#     rev: v2.15.5</span></span>
+<span id="cb3-11"><span class="co" style="color: #5E5E5E;">#     hooks:</span></span>
+<span id="cb3-12"><span class="co" style="color: #5E5E5E;">#     -   id: pylint</span></span>
+<span id="cb3-13"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> local</span></span>
+<span id="cb3-14"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-15"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pylint</span></span>
+<span id="cb3-16"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">name</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> PyLint</span></span>
+<span id="cb3-17"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">entry</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> python -m pylint.__main__</span></span>
+<span id="cb3-18"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">language</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> system</span></span>
+<span id="cb3-19"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">files</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> \.py$</span></span></code></pre></div>
+<p>For this to work you would have to ensure that you have a virtual environment activated that includes the package dependencies, including <code>pylint</code>, when you make you <code>git commit</code> so that <code>pre-commit</code> can find and import all the required packages.</p>
+</section>
+<section id="updating-pre-commit" class="level2">
+<h2 class="anchored" data-anchor-id="updating-pre-commit">Updating <code>pre-commit</code></h2>
+<p>After adding a new repo and hook it will not be immediately ready to use as the environment has not been initialised. You can wait until your next commit or force this with the <code>autoupdate</code> option. This will update <em>all</em> repositories that are defined in your configuration.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;">$</span> pre-commit autoupdate</span>
+<span id="cb4-2"><span class="ex" style="color: null;">Updating</span> https://github.com/pre-commit/pre-commit-hooks ... updating v3.2.0 <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> v4.3.0.</span>
+<span id="cb4-3"><span class="ex" style="color: null;">Updating</span> https://github.com/PyCQA/pylint ... [INFO] Initializing environment for https://github.com/PyCQA/pylint.</span>
+<span id="cb4-4"><span class="ex" style="color: null;">already</span> up to date.</span></code></pre></div>
+</section>
+<section id="repository-changes" class="level2">
+<h2 class="anchored" data-anchor-id="repository-changes">Repository Changes</h2>
+<p>Sometimes, albeit rarely, repositories change their location as was the case recently when <a href="https://gitlab.com/PyCQA/flake8">flake8</a> moved from <a href="https://gitlab.com">GitLab</a> to <a href="https://github.com/PyCQA/flake8">GitHub</a>. As a consequence any <code>pre-commit</code> that uses <code>flake8</code> repo/hook and configured to run in Continuous Integration pipelines failed as it was unable to download and run the <code>flake8</code> environment. The solution is simply to update the <code>repo:</code>.</p>
+<p>Before this change the entry for <code>flake8</code> looked like…</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://gitlab.com/pycqa/flake8.git</span></span>
+<span id="cb5-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">3.9.2</span></span>
+<span id="cb5-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-4"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> flake8</span></span>
+<span id="cb5-5"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">additional_dependencies</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">flake8-print</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">args</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="st" style="color: #20794D;">"topostats"</span><span class="kw" style="color: #003B4F;">,</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"tests"</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-7"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>To update to use the new repository it should point to <code>github.com</code> as shown below.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pycqa/flake8.git</span></span>
+<span id="cb6-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">3.9.2</span></span>
+<span id="cb6-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-4"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> flake8</span></span>
+<span id="cb6-5"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">additional_dependencies</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">flake8-print</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb6-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">args</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="st" style="color: #20794D;">"topostats"</span><span class="kw" style="color: #003B4F;">,</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"tests"</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb6-7"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>After making this change you have to <code>pre-commit autoupdate</code> to force downloading and updating from the new source, otherwise your existing older revision will be used locally.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://ns-rse.github.io/posts/pre-commit/">Pre-Commit : Protecting your future self</a></li>
+<li><a href="https://pre-commit.com/">Pre-commit</a></li>
+<li><a href="https://pre-commit.com/hooks.html">Pre-commit hooks</a></li>
+<li><a href="https://github.com/PyCQA/pylint">pylint</a></li>
+<li><a href="https://github.com/PyCQA/flake8">flake8</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>linting</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <category>pre-commit</category>
+  <guid>https://ns-rse.github.io/posts/pre-commit-updates/index.html</guid>
+  <pubDate>Tue, 15 Nov 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52358442614_416d014454_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Linux Command Line Alternatives</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/cli-alternatives/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>The command line is my second home when sat at a computer (<a href="https://www.gnu.org/software/emacs/">Emacs</a> is my first ;-) and the <a href="https://en.wikipedia.org/wiki/Unix_philosophy">UNIX Philosophy</a> is the key to the huge amount of highly productive tools that are available under UNIX, GNU/Linux, BSD, OSX, PowerShell etc.</p>
+<p>Many of these tools work and have done for many years, but there are some new alternatives that are coming through that build and modernise on these tools without breaking the core functionality. Here I detail some of the tools and why you might want to use them. Each tool has a brief introduction with some example output shown and then some <code>aliases</code> listed that you can drop into <code>~/.bash_aliases</code> or <code>~/.oh-my-zsh/custom/aliases</code> to use on your system.</p>
+<section id="alternatives" class="level2">
+<h2 class="anchored" data-anchor-id="alternatives">Alternatives</h2>
+<section id="bat" class="level3">
+<h3 class="anchored" data-anchor-id="bat"><code>bat</code></h3>
+<p><a href="https://github.com/sharkdp/bat"><code>bat</code></a> is “<em>A <code>cat(1)</code> clone with wings.</em>”. It automatically uses syntax highlighting and integrates with git if a file is version controlled to show changes and lots more. You can pipe input to it, including from e.g.&nbsp;<code>curl -s https://server.com/some_file</code></p>
+<section id="example---bat" class="level4">
+<h4 class="anchored" data-anchor-id="example---bat">Example - <code>bat</code></h4>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">❱</span> bat pyproject.toml</span>
+<span id="cb1-2"><span class="ex" style="color: null;">───────┬──────────────────────────────────────────────</span></span>
+<span id="cb1-3">       <span class="ex" style="color: null;">│</span> File: pyproject.toml</span>
+<span id="cb1-4"><span class="ex" style="color: null;">───────┼──────────────────────────────────────────────</span></span>
+<span id="cb1-5">   <span class="ex" style="color: null;">1</span>   │ [build-system]</span>
+<span id="cb1-6">   <span class="ex" style="color: null;">2</span>   │ requires = [</span>
+<span id="cb1-7">   <span class="ex" style="color: null;">3</span>   │   <span class="st" style="color: #20794D;">"setuptools"</span>,</span>
+<span id="cb1-8">   <span class="ex" style="color: null;">4</span>   │   <span class="st" style="color: #20794D;">"versioneer==0.26"</span>,</span>
+<span id="cb1-9">   <span class="ex" style="color: null;">5</span>   │   <span class="st" style="color: #20794D;">"wheel"</span>]</span>
+<span id="cb1-10">   <span class="ex" style="color: null;">6</span>   │ build-backend = <span class="st" style="color: #20794D;">"setuptools.build_meta"</span></span>
+<span id="cb1-11">   <span class="ex" style="color: null;">7</span>   │</span>
+<span id="cb1-12">   <span class="ex" style="color: null;">8</span>   │ [tool.black]</span>
+<span id="cb1-13">   <span class="ex" style="color: null;">9</span>   │ line-length = 120</span>
+<span id="cb1-14">  <span class="ex" style="color: null;">10</span>   │ target-version = [<span class="st" style="color: #20794D;">'py38'</span>, <span class="st" style="color: #20794D;">'py39'</span>, <span class="st" style="color: #20794D;">'py310'</span>]</span>
+<span id="cb1-15">  <span class="ex" style="color: null;">11</span>   │ include = <span class="st" style="color: #20794D;">'\.pyi?$'</span></span>
+<span id="cb1-16"><span class="ex" style="color: null;">───────┴──────────────────────────────────────────────</span></span></code></pre></div>
+</section>
+<section id="configuration" class="level4">
+<h4 class="anchored" data-anchor-id="configuration">Configuration</h4>
+<p>You can generate a default configuration file with</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;">bat</span> <span class="at" style="color: #657422;">--generate-config-file</span></span></code></pre></div>
+<p>This will be saved at <code>~/.config/bat/config</code> and you can edit it as desired.</p>
+</section>
+</section>
+<section id="cheat" class="level3">
+<h3 class="anchored" data-anchor-id="cheat"><code>cheat</code></h3>
+<p><a href="https://opensource.com/article/22/6/linux-cheat-command"><code>cheat</code></a> is actually a web-service that returns short “cheats” for command line programmes which will often cover many use cases and save you having to read the rather dry <code>man</code> pages for functions.</p>
+<section id="example---cheat" class="level4">
+<h4 class="anchored" data-anchor-id="example---cheat">Example - <code>cheat</code></h4>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;">❱</span> cheat cheat</span>
+<span id="cb3-2"> <span class="ex" style="color: null;">cheat:cheat</span></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;"># To see example usage of a program:</span></span>
+<span id="cb3-4"><span class="ex" style="color: null;">cheat</span> <span class="op" style="color: #5E5E5E;">&lt;</span>command<span class="op" style="color: #5E5E5E;">&gt;</span></span>
+<span id="cb3-5"></span>
+<span id="cb3-6"><span class="co" style="color: #5E5E5E;"># To edit a cheatsheet</span></span>
+<span id="cb3-7"><span class="ex" style="color: null;">cheat</span> <span class="at" style="color: #657422;">-e</span> <span class="op" style="color: #5E5E5E;">&lt;</span>command<span class="op" style="color: #5E5E5E;">&gt;</span></span>
+<span id="cb3-8"></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;"># To list available cheatsheets</span></span>
+<span id="cb3-10"><span class="ex" style="color: null;">cheat</span> <span class="at" style="color: #657422;">-l</span></span>
+<span id="cb3-11"></span>
+<span id="cb3-12"><span class="co" style="color: #5E5E5E;"># To search available cheatsheets</span></span>
+<span id="cb3-13"><span class="ex" style="color: null;">cheat</span> <span class="at" style="color: #657422;">-s</span> <span class="op" style="color: #5E5E5E;">&lt;</span>command<span class="op" style="color: #5E5E5E;">&gt;</span></span>
+<span id="cb3-14"></span>
+<span id="cb3-15"><span class="co" style="color: #5E5E5E;"># To get the current `cheat' version</span></span>
+<span id="cb3-16"><span class="ex" style="color: null;">cheat</span> <span class="at" style="color: #657422;">-v</span></span>
+<span id="cb3-17"></span>
+<span id="cb3-18"> <span class="ex" style="color: null;">tldr:cheat</span></span>
+<span id="cb3-19"><span class="co" style="color: #5E5E5E;"># cheat</span></span>
+<span id="cb3-20"><span class="co" style="color: #5E5E5E;"># Create and view interactive cheat sheets on the command-line.</span></span>
+<span id="cb3-21"><span class="co" style="color: #5E5E5E;"># More information: &lt;https://github.com/cheat/cheat&gt;.</span></span>
+<span id="cb3-22"></span>
+<span id="cb3-23"><span class="co" style="color: #5E5E5E;"># Show example usage of a command:</span></span>
+<span id="cb3-24"><span class="ex" style="color: null;">cheat</span> command</span>
+<span id="cb3-25"></span>
+<span id="cb3-26"><span class="co" style="color: #5E5E5E;"># Edit the cheat sheet for a command:</span></span>
+<span id="cb3-27"><span class="ex" style="color: null;">cheat</span> <span class="at" style="color: #657422;">-e</span> command</span>
+<span id="cb3-28"></span>
+<span id="cb3-29"><span class="co" style="color: #5E5E5E;"># List the available cheat sheets:</span></span>
+<span id="cb3-30"><span class="ex" style="color: null;">cheat</span> <span class="at" style="color: #657422;">-l</span></span>
+<span id="cb3-31"></span>
+<span id="cb3-32"><span class="co" style="color: #5E5E5E;"># Search available the cheat sheets for a specified command name:</span></span>
+<span id="cb3-33"><span class="ex" style="color: null;">cheat</span> <span class="at" style="color: #657422;">-s</span> command</span>
+<span id="cb3-34"></span>
+<span id="cb3-35"><span class="co" style="color: #5E5E5E;"># Get the current cheat version:</span></span>
+<span id="cb3-36"><span class="ex" style="color: null;">cheat</span> <span class="at" style="color: #657422;">-v</span></span></code></pre></div>
+</section>
+<section id="aliases---cheat" class="level4">
+<h4 class="anchored" data-anchor-id="aliases---cheat">Aliases - <code>cheat</code></h4>
+<p>You don’t need to install anything to use this, instead define an <a href="https://www.gnu.org/software/bash/manual/html_node/Aliases.html">alias</a> for your shell (e.g.&nbsp;in <code>~/.bashrc</code>/<code>~/.zshrc</code>/<code>~/.oh-my-zsh/custom/aliases.zsh</code>).</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="co" style="color: #5E5E5E;">## Linux commands https://github.com/chubin/cheat.sheets</span></span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;">cheat ()</span> <span class="kw" style="color: #003B4F;">{</span></span>
+<span id="cb4-3">    <span class="ex" style="color: null;">curl</span> cheat.sh/<span class="st" style="color: #20794D;">"</span><span class="va" style="color: #111111;">$@</span><span class="st" style="color: #20794D;">"</span></span>
+<span id="cb4-4"><span class="kw" style="color: #003B4F;">}</span></span></code></pre></div>
+</section>
+</section>
+<section id="difftastic" class="level3">
+<h3 class="anchored" data-anchor-id="difftastic"><code>difftastic</code></h3>
+<p><a href="https://difftastic.wilfred.me.uk/">difftastic</a> (<a href="https://github.com/wilfred/difftastic">GitHub</a>) is an alternative to the default GNU <code>diff</code> packaged with most systems. It is “aware” of some 30 or so programming languages and will show diffs side-by-side rather than the traditional linear manner. It integrates easily with Git so when you <code>git diff</code> it uses <code>difft</code> to show the differences.</p>
+<p>Highly recommended, but don’t take my word for it, give it a whirl yourself.</p>
+</section>
+<section id="duf" class="level3">
+<h3 class="anchored" data-anchor-id="duf"><code>duf</code></h3>
+<p><a href="https://github.com/muesli/duf">duf</a> is a nice alternative to the traditional <code>du</code> and <code>df</code> commands which report disk usage and file/directory usage respectively.</p>
+<section id="examples" class="level4">
+<h4 class="anchored" data-anchor-id="examples">Examples</h4>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">❱</span> tldr duf</span>
+<span id="cb5-2"></span>
+<span id="cb5-3">  <span class="ex" style="color: null;">duf</span></span>
+<span id="cb5-4"></span>
+<span id="cb5-5">  <span class="ex" style="color: null;">Disk</span> Usage/Free Utility.</span>
+<span id="cb5-6">  <span class="ex" style="color: null;">More</span> information: https://github.com/muesli/duf.</span>
+<span id="cb5-7"></span>
+<span id="cb5-8">  <span class="ex" style="color: null;">-</span> List accessible devices:</span>
+<span id="cb5-9">    <span class="ex" style="color: null;">duf</span></span>
+<span id="cb5-10"></span>
+<span id="cb5-11">  <span class="ex" style="color: null;">-</span> List everything <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">such</span> as pseudo, duplicate or inaccessible file systems<span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb5-12">    <span class="ex" style="color: null;">duf</span> <span class="at" style="color: #657422;">--all</span></span>
+<span id="cb5-13"></span>
+<span id="cb5-14">  <span class="ex" style="color: null;">-</span> Only show specified devices or mount points:</span>
+<span id="cb5-15">    <span class="ex" style="color: null;">duf</span> path/to/directory1 path/to/directory2 ...</span>
+<span id="cb5-16"></span>
+<span id="cb5-17">  <span class="ex" style="color: null;">-</span> Sort the output by a specified criteria:</span>
+<span id="cb5-18">  <span class="ex" style="color: null;">duf</span> <span class="at" style="color: #657422;">--sort</span> size<span class="kw" style="color: #003B4F;">|</span><span class="ex" style="color: null;">used</span><span class="kw" style="color: #003B4F;">|</span><span class="ex" style="color: null;">avail</span><span class="kw" style="color: #003B4F;">|</span><span class="ex" style="color: null;">usage</span></span>
+<span id="cb5-19"></span>
+<span id="cb5-20"><span class="ex" style="color: null;">❱</span> duf</span>
+<span id="cb5-21"><span class="ex" style="color: null;">╭──────────────────────────────────────────────────────────────────────────────────────────────╮</span></span>
+<span id="cb5-22"><span class="ex" style="color: null;">│</span> 4 local devices                                                                              │</span>
+<span id="cb5-23"><span class="ex" style="color: null;">├────────────┬────────┬───────┬────────┬───────────────────────────────┬──────┬────────────────┤</span></span>
+<span id="cb5-24"><span class="ex" style="color: null;">│</span> MOUNTED ON │   SIZE │  USED │  AVAIL │              USE%             │ TYPE │ FILESYSTEM     │</span>
+<span id="cb5-25"><span class="ex" style="color: null;">├────────────┼────────┼───────┼────────┼───────────────────────────────┼──────┼────────────────┤</span></span>
+<span id="cb5-26"><span class="ex" style="color: null;">│</span> /          │  19.5G │  9.5G │   9.0G │ [#########...........]  48.9% │ ext4 │ /dev/mmcblk0p2 │</span>
+<span id="cb5-27"><span class="ex" style="color: null;">│</span> /boot      │ 199.8M │ 38.8M │ 161.0M │ [###.................]  19.4% │ vfat │ /dev/mmcblk0p1 │</span>
+<span id="cb5-28"><span class="ex" style="color: null;">│</span> /home      │   9.3G │  3.7G │   5.0G │ [########............]  40.4% │ ext4 │ /dev/mmcblk0p3 │</span>
+<span id="cb5-29"><span class="ex" style="color: null;">│</span> /mnt/usb   │   4.5T │  3.2T │   1.1T │ [##############......]  71.3% │ ext4 │ /dev/sda1      │</span>
+<span id="cb5-30"><span class="ex" style="color: null;">╰────────────┴────────┴───────┴────────┴───────────────────────────────┴──────┴────────────────╯</span></span>
+<span id="cb5-31"><span class="ex" style="color: null;">╭───────────────────────────────────────────────────────────────────────────────────────────────────╮</span></span>
+<span id="cb5-32"><span class="ex" style="color: null;">│</span> 6 special devices                                                                                 │</span>
+<span id="cb5-33"><span class="ex" style="color: null;">├────────────────┬────────┬────────┬────────┬───────────────────────────────┬──────────┬────────────┤</span></span>
+<span id="cb5-34"><span class="ex" style="color: null;">│</span> MOUNTED ON     │   SIZE │   USED │  AVAIL │              USE%             │ TYPE     │ FILESYSTEM │</span>
+<span id="cb5-35"><span class="ex" style="color: null;">├────────────────┼────────┼────────┼────────┼───────────────────────────────┼──────────┼────────────┤</span></span>
+<span id="cb5-36"><span class="ex" style="color: null;">│</span> /dev           │   3.7G │     0B │   3.7G │                               │ devtmpfs │ dev        │</span>
+<span id="cb5-37"><span class="ex" style="color: null;">│</span> /dev/shm       │   3.9G │     0B │   3.9G │                               │ tmpfs    │ tmpfs      │</span>
+<span id="cb5-38"><span class="ex" style="color: null;">│</span> /run           │   3.9G │ 812.0K │   3.9G │ [....................]   0.0% │ tmpfs    │ run        │</span>
+<span id="cb5-39"><span class="ex" style="color: null;">│</span> /run/user/1001 │ 789.3M │  20.0K │ 789.3M │ [....................]   0.0% │ tmpfs    │ tmpfs      │</span>
+<span id="cb5-40"><span class="ex" style="color: null;">│</span> /run/user/966  │ 789.3M │  24.0K │ 789.2M │ [....................]   0.0% │ tmpfs    │ tmpfs      │</span>
+<span id="cb5-41"><span class="ex" style="color: null;">│</span> /tmp           │   3.9G │   4.0K │   3.9G │ [....................]   0.0% │ tmpfs    │ tmpfs      │</span>
+<span id="cb5-42"><span class="ex" style="color: null;">╰────────────────┴────────┴────────┴────────┴───────────────────────────────┴──────────┴────────────╯</span></span></code></pre></div>
+</section>
+</section>
+<section id="fd" class="level3">
+<h3 class="anchored" data-anchor-id="fd"><code>fd</code></h3>
+<p><a href="https://github.com/sharkdp/fd"><code>fd</code></a> is an alternative to <code>find</code> that is easier to use. It is “opinionated” (i.e.&nbsp;decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use cases. It works directly with regular expressions.</p>
+<section id="example---fd" class="level4">
+<h4 class="anchored" data-anchor-id="example---fd">Example - <code>fd</code></h4>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;">❱</span> tldr fd</span>
+<span id="cb6-2"></span>
+<span id="cb6-3">  <span class="ex" style="color: null;">fd</span></span>
+<span id="cb6-4"></span>
+<span id="cb6-5">  <span class="ex" style="color: null;">An</span> alternative to <span class="kw" style="color: #003B4F;">`</span><span class="fu" style="color: #4758AB;">find</span><span class="kw" style="color: #003B4F;">`</span>.</span>
+<span id="cb6-6">  <span class="ex" style="color: null;">Aims</span> to be faster and easier to use than <span class="kw" style="color: #003B4F;">`</span><span class="fu" style="color: #4758AB;">find</span><span class="kw" style="color: #003B4F;">`</span>.</span>
+<span id="cb6-7">  <span class="ex" style="color: null;">More</span> information: https://github.com/sharkdp/fd.</span>
+<span id="cb6-8"></span>
+<span id="cb6-9">  <span class="ex" style="color: null;">-</span> Recursively find files matching the given pattern in the current directory:</span>
+<span id="cb6-10">    <span class="ex" style="color: null;">fd</span> pattern</span>
+<span id="cb6-11"></span>
+<span id="cb6-12">  <span class="ex" style="color: null;">-</span> Find files that begin with <span class="st" style="color: #20794D;">"foo"</span>:</span>
+<span id="cb6-13">    <span class="ex" style="color: null;">fd</span> <span class="st" style="color: #20794D;">'^foo'</span></span>
+<span id="cb6-14"></span>
+<span id="cb6-15">  <span class="ex" style="color: null;">-</span> Find files with a specific extension:</span>
+<span id="cb6-16">    <span class="ex" style="color: null;">fd</span> <span class="at" style="color: #657422;">--extension</span> txt</span>
+<span id="cb6-17"></span>
+<span id="cb6-18">  <span class="ex" style="color: null;">-</span> Find files in a specific directory:</span>
+<span id="cb6-19">    <span class="ex" style="color: null;">fd</span> pattern path/to/directory</span>
+<span id="cb6-20"></span>
+<span id="cb6-21">  <span class="ex" style="color: null;">-</span> Include ignored and hidden files in the search:</span>
+<span id="cb6-22">    <span class="ex" style="color: null;">fd</span> <span class="at" style="color: #657422;">--hidden</span> <span class="at" style="color: #657422;">--no-ignore</span> pattern</span>
+<span id="cb6-23"></span>
+<span id="cb6-24">  <span class="ex" style="color: null;">-</span> Execute a command on each search result returned:</span>
+<span id="cb6-25">    <span class="ex" style="color: null;">fd</span> pattern <span class="at" style="color: #657422;">--exec</span> command</span></code></pre></div>
+</section>
+</section>
+<section id="jq" class="level3">
+<h3 class="anchored" data-anchor-id="jq"><code>jq</code></h3>
+<p><a href="https://stedolan.github.io/jq/"><code>jq</code></a> is to <a href="https://www.json.org/json-en.html">JSON</a> (JavaScript Object Notation) what <code>awk</code>/<code>grep</code>/<code>sed</code> is to text files. It allows parsing, searching and selecting of JSON files, which if you’ve not encountered them before take a bit of getting used to.</p>
+<section id="example---jq" class="level4">
+<h4 class="anchored" data-anchor-id="example---jq">Example - <code>jq</code></h4>
+<p>Details of using <code>jq</code> are really beyond the scope of this short article, like <code>awk</code> its almost a language in itself.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;">❱</span> tldr jq</span>
+<span id="cb7-2"></span>
+<span id="cb7-3">  <span class="ex" style="color: null;">jq</span></span>
+<span id="cb7-4"></span>
+<span id="cb7-5">  <span class="ex" style="color: null;">A</span> command-line JSON processor that uses a domain-specific language.</span>
+<span id="cb7-6">  <span class="ex" style="color: null;">More</span> information: https://stedolan.github.io/jq/manual/.</span>
+<span id="cb7-7"></span>
+<span id="cb7-8">  <span class="ex" style="color: null;">-</span> Execute a specific expression <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">print</span> a colored and formatted json<span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb7-9">    <span class="fu" style="color: #4758AB;">cat</span> path/to/file.json <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">jq</span> <span class="st" style="color: #20794D;">'.'</span></span>
+<span id="cb7-10"></span>
+<span id="cb7-11">  <span class="ex" style="color: null;">-</span> Execute a specific script:</span>
+<span id="cb7-12">    <span class="fu" style="color: #4758AB;">cat</span> path/to/file.json <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">jq</span> <span class="at" style="color: #657422;">--from-file</span> path/to/script.jq</span>
+<span id="cb7-13"></span>
+<span id="cb7-14">  <span class="ex" style="color: null;">-</span> Pass specific arguments:</span>
+<span id="cb7-15">    <span class="fu" style="color: #4758AB;">cat</span> path/to/file.json <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">jq</span> <span class="at" style="color: #657422;">--arg</span> <span class="st" style="color: #20794D;">"name1"</span> <span class="st" style="color: #20794D;">"value1"</span> <span class="at" style="color: #657422;">--arg</span> <span class="st" style="color: #20794D;">"name2"</span> <span class="st" style="color: #20794D;">"value2"</span> ... <span class="st" style="color: #20794D;">'. + $ARGS.named'</span></span>
+<span id="cb7-16"></span>
+<span id="cb7-17">  <span class="ex" style="color: null;">-</span> Print specific keys:</span>
+<span id="cb7-18">    <span class="fu" style="color: #4758AB;">cat</span> path/to/file.json <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">jq</span> <span class="st" style="color: #20794D;">'.key1, .key2, ...'</span></span>
+<span id="cb7-19"></span>
+<span id="cb7-20">  <span class="ex" style="color: null;">-</span> Print specific array items:</span>
+<span id="cb7-21">    <span class="fu" style="color: #4758AB;">cat</span> path/to/file.json <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">jq</span> <span class="st" style="color: #20794D;">'.[index1], .[index2], ...'</span></span>
+<span id="cb7-22"></span>
+<span id="cb7-23">  <span class="ex" style="color: null;">-</span> Print all array items/object keys:</span>
+<span id="cb7-24">    <span class="fu" style="color: #4758AB;">cat</span> path/to/file.json <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">jq</span> <span class="st" style="color: #20794D;">'.[]'</span></span>
+<span id="cb7-25"></span>
+<span id="cb7-26">  <span class="ex" style="color: null;">-</span> Add/remove specific keys:</span>
+<span id="cb7-27">    <span class="fu" style="color: #4758AB;">cat</span> path/to/file.json <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">jq</span> <span class="st" style="color: #20794D;">'. +|- {"key1": "value1", "key2": "value2", ...}'</span></span></code></pre></div>
+</section>
+</section>
+<section id="lsd" class="level3">
+<h3 class="anchored" data-anchor-id="lsd"><code>lsd</code></h3>
+<p><a href="https://github.com/Peltoche/lsd"><code>lsd</code></a> is <code>ls</code>Deluxe and is very similar to <a href="../../posts/cli-alternatives/index.html#exa"><code>exa</code></a> but with a few additions such as icons.</p>
+<section id="example---lsd" class="level4">
+<h4 class="anchored" data-anchor-id="example---lsd">Example - <code>lsd</code></h4>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;">❱</span> l</span>
+<span id="cb8-2"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  144 B  Sun Aug 14 19:56:53 2022  <span class="co" style="color: #5E5E5E;">#.gitlab-ci.yml#</span></span>
+<span id="cb8-3"><span class="ex" style="color: null;">drwxr-xr-x</span> neil neil  4.0 KB Thu Sep 15 22:21:25 2022  .</span>
+<span id="cb8-4"><span class="ex" style="color: null;">drwxrwxr-x</span> root users 4.0 KB Tue Aug 30 20:46:37 2022  ..</span>
+<span id="cb8-5"><span class="ex" style="color: null;">drwxr-xr-x</span> neil neil  4.0 KB Thu Sep 15 22:21:56 2022  .git</span>
+<span id="cb8-6"><span class="ex" style="color: null;">drwxr-xr-x</span> neil neil  4.0 KB Sun Aug 14 21:51:03 2022  .github</span>
+<span id="cb8-7"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  613 B  Sun Aug 14 21:44:38 2022  .gitignore</span>
+<span id="cb8-8"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  151 B  Sun Aug 14 19:56:13 2022  .gitlab-ci.yml</span>
+<span id="cb8-9"><span class="ex" style="color: null;">drwxr-xr-x</span> neil neil  4.0 KB Thu Sep 15 22:21:25 2022  .quarto</span>
+<span id="cb8-10"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  386 B  Thu Sep 15 22:05:23 2022  _quarto.yaml</span>
+<span id="cb8-11"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  263 B  Sun Aug 14 10:59:13 2022  _quarto.yml~</span>
+<span id="cb8-12"><span class="ex" style="color: null;">drwxr-xr-x</span> neil neil  4.0 KB Thu Sep 15 22:05:24 2022  _site</span>
+<span id="cb8-13"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  1.1 KB Thu Sep 15 22:05:23 2022  about.qmd</span>
+<span id="cb8-14"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  455 B  Sun Aug 14 11:02:13 2022  about.qmd~</span>
+<span id="cb8-15"><span class="ex" style="color: null;">drwxr-xr-x</span> neil neil  4.0 KB Thu Sep 15 22:05:23 2022  img</span>
+<span id="cb8-16"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  185 B  Sun Aug 14 22:22:04 2022  index.qmd</span>
+<span id="cb8-17"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  191 B  Sun Aug 14 10:59:13 2022  index.qmd~</span>
+<span id="cb8-18"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil   34 KB Sun Aug 14 21:14:38 2022  LICENSE</span>
+<span id="cb8-19"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  1.7 KB Thu Sep 15 22:05:23 2022  links.qmd</span>
+<span id="cb8-20"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  237 B  Thu Sep 15 21:46:30 2022  links.qmd~</span>
+<span id="cb8-21"><span class="ex" style="color: null;">drwxr-xr-x</span> neil neil  4.0 KB Wed Sep 14 20:24:25 2022  posts</span>
+<span id="cb8-22"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil  378 B  Thu Aug 25 23:20:16 2022  README.md</span>
+<span id="cb8-23"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil   13 B  Sun Aug 14 21:58:38 2022  requirements.txt</span>
+<span id="cb8-24"><span class="ex" style="color: null;">.rw-r--r--</span> neil neil   17 B  Sun Aug 14 21:24:35 2022  styles.css</span>
+<span id="cb8-25"><span class="ex" style="color: null;">drwxr-xr-x</span> neil neil  4.0 KB Thu Aug 25 23:20:16 2022  www</span></code></pre></div>
+</section>
+<section id="aliases---lsd" class="level4">
+<h4 class="anchored" data-anchor-id="aliases---lsd">Aliases - <code>lsd</code></h4>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="bu" style="color: null;">alias</span> ls=<span class="st" style="color: #20794D;">'lsd'</span></span>
+<span id="cb9-2"><span class="bu" style="color: null;">alias</span> l=<span class="st" style="color: #20794D;">'ls -lha'</span></span>
+<span id="cb9-3"><span class="bu" style="color: null;">alias</span> lla=<span class="st" style="color: #20794D;">'ls -la'</span></span>
+<span id="cb9-4"><span class="bu" style="color: null;">alias</span> lt=<span class="st" style="color: #20794D;">'ls --tree'</span></span></code></pre></div>
+</section>
+</section>
+<section id="tldr" class="level3">
+<h3 class="anchored" data-anchor-id="tldr"><code>tldr</code></h3>
+<p><a href="https://tldr.sh/"><code>tldr</code></a> is very similar to <code>cheat</code> in that it shows short, simple examples of using a command. There are a number of different clients written in <a href="https://github.com/tldr-pages/tldr-c-client">C</a>, <a href="https://github.com/tldr-pages/tldr-node-client">Node</a> and <a href="https://github.com/tldr-pages/tldr-python-client">Python</a> as well as a few others. It depends on <code>jq</code> so you will have to install that if you want to use <code>yq</code>.</p>
+<section id="example---tldr" class="level4">
+<h4 class="anchored" data-anchor-id="example---tldr">Example - <code>tldr</code></h4>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;">❱</span> tldr tldr</span>
+<span id="cb10-2"></span>
+<span id="cb10-3">  <span class="ex" style="color: null;">tldr</span></span>
+<span id="cb10-4"></span>
+<span id="cb10-5">  <span class="ex" style="color: null;">Display</span> simple help pages for command-line tools from the tldr-pages project.</span>
+<span id="cb10-6">  <span class="ex" style="color: null;">More</span> information: https://tldr.sh.</span>
+<span id="cb10-7"></span>
+<span id="cb10-8">  <span class="ex" style="color: null;">-</span> Print the tldr page for a specific command <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">hint:</span> this is how you got here!<span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb10-9">    <span class="ex" style="color: null;">tldr</span> command</span>
+<span id="cb10-10"></span>
+<span id="cb10-11">  <span class="ex" style="color: null;">-</span> Print the tldr page for a specific subcommand:</span>
+<span id="cb10-12">    <span class="ex" style="color: null;">tldr</span> command-subcommand</span>
+<span id="cb10-13"></span>
+<span id="cb10-14">  <span class="ex" style="color: null;">-</span> Print the tldr page for a command for a specific [p]latform:</span>
+<span id="cb10-15">    <span class="ex" style="color: null;">tldr</span> <span class="at" style="color: #657422;">-p</span> android<span class="kw" style="color: #003B4F;">|</span><span class="ex" style="color: null;">linux</span><span class="kw" style="color: #003B4F;">|</span><span class="ex" style="color: null;">osx</span><span class="kw" style="color: #003B4F;">|</span><span class="ex" style="color: null;">sunos</span><span class="kw" style="color: #003B4F;">|</span><span class="ex" style="color: null;">windows</span> command</span>
+<span id="cb10-16"></span>
+<span id="cb10-17">  <span class="ex" style="color: null;">-</span> [u]pdate the local cache of tldr pages:</span>
+<span id="cb10-18">    <span class="ex" style="color: null;">tldr</span> <span class="at" style="color: #657422;">-u</span></span></code></pre></div>
+</section>
+</section>
+<section id="yq" class="level3">
+<h3 class="anchored" data-anchor-id="yq"><code>yq</code></h3>
+<p><a href="https://kislyuk.github.io/yq/"><code>yq</code></a> is to <a href="https://yaml.org/">YAML</a> (YAML Ain’t Markup Language) what <code>jq</code> is to JSON. Written in Python it allows fast and efficient parsing, searching and selecting of YAML files.</p>
+<section id="example---yq" class="level4">
+<h4 class="anchored" data-anchor-id="example---yq">Example - <code>yq</code></h4>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;">❱</span> tldr yq</span>
+<span id="cb11-2"></span>
+<span id="cb11-3">  <span class="ex" style="color: null;">yq</span></span>
+<span id="cb11-4"></span>
+<span id="cb11-5">  <span class="ex" style="color: null;">A</span> lightweight and portable command-line YAML processor.</span>
+<span id="cb11-6">  <span class="ex" style="color: null;">More</span> information: https://mikefarah.gitbook.io/yq/.</span>
+<span id="cb11-7"></span>
+<span id="cb11-8">  <span class="ex" style="color: null;">-</span> Output a YAML file, in pretty-print format <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">v4+</span><span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb11-9">    <span class="ex" style="color: null;">yq</span> eval path/to/file.yaml</span>
+<span id="cb11-10"></span>
+<span id="cb11-11">  <span class="ex" style="color: null;">-</span> Output a YAML file, in pretty-print format <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">v3</span><span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb11-12">    <span class="ex" style="color: null;">yq</span> read path/to/file.yaml <span class="at" style="color: #657422;">--colors</span></span>
+<span id="cb11-13"></span>
+<span id="cb11-14">  <span class="ex" style="color: null;">-</span> Output the first element in a YAML file that contains only an array <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">v4+</span><span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb11-15">    <span class="ex" style="color: null;">yq</span> eval <span class="st" style="color: #20794D;">'.[0]'</span> path/to/file.yaml</span>
+<span id="cb11-16"></span>
+<span id="cb11-17">  <span class="ex" style="color: null;">-</span> Output the first element in a YAML file that contains only an array <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">v3</span><span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb11-18">    <span class="ex" style="color: null;">yq</span> read path/to/file.yaml <span class="st" style="color: #20794D;">'[0]'</span></span>
+<span id="cb11-19"></span>
+<span id="cb11-20">  <span class="ex" style="color: null;">-</span> Set <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">or</span> overwrite<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">a</span> key to a value in a file <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">v4+</span><span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb11-21">    <span class="ex" style="color: null;">yq</span> eval <span class="st" style="color: #20794D;">'.key = "value"'</span> <span class="at" style="color: #657422;">--inplace</span> path/to/file.yaml</span>
+<span id="cb11-22"></span>
+<span id="cb11-23">  <span class="ex" style="color: null;">-</span> Set <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">or</span> overwrite<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">a</span> key to a value in a file <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">v3</span><span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb11-24">    <span class="ex" style="color: null;">yq</span> write <span class="at" style="color: #657422;">--inplace</span> path/to/file.yaml <span class="st" style="color: #20794D;">'key'</span> <span class="st" style="color: #20794D;">'value'</span></span>
+<span id="cb11-25"></span>
+<span id="cb11-26">  <span class="ex" style="color: null;">-</span> Merge two files and print to stdout <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">v4+</span><span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb11-27">    <span class="ex" style="color: null;">yq</span> eval-all <span class="st" style="color: #20794D;">'select(filename == "path/to/file1.yaml") * select(filename == "path/to/file2.yaml")'</span> path/to/file1.yaml path/to/file2.yaml</span>
+<span id="cb11-28"></span>
+<span id="cb11-29">  <span class="ex" style="color: null;">-</span> Merge two files and print to stdout <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">v3</span><span class="kw" style="color: #003B4F;">)</span><span class="bu" style="color: null;">:</span></span>
+<span id="cb11-30">    <span class="ex" style="color: null;">yq</span> merge path/to/file1.yaml path/to/file2.yaml <span class="at" style="color: #657422;">--colors</span></span></code></pre></div>
+</section>
+</section>
+</section>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>Most of these programmes will be available in your systems package manager, if they are not you should consult the project page directly for install instructions.</p>
+<section id="linux" class="level3">
+<h3 class="anchored" data-anchor-id="linux">Linux</h3>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="co" style="color: #5E5E5E;"># Gentoo</span></span>
+<span id="cb12-2"><span class="ex" style="color: null;">emerge</span> <span class="at" style="color: #657422;">-av</span> bat duf fd jq lsd tldr yq</span>
+<span id="cb12-3"></span>
+<span id="cb12-4"><span class="co" style="color: #5E5E5E;"># Arch</span></span>
+<span id="cb12-5"><span class="ex" style="color: null;">pacman</span> <span class="at" style="color: #657422;">-Syu</span> bat duf fd jq lsd tldr yq</span>
+<span id="cb12-6"></span>
+<span id="cb12-7"><span class="co" style="color: #5E5E5E;"># Ubuntu</span></span>
+<span id="cb12-8"><span class="fu" style="color: #4758AB;">sudo</span> apt-install bat duf fd jq lsd tldr yq</span></code></pre></div>
+</section>
+<section id="osx" class="level3">
+<h3 class="anchored" data-anchor-id="osx">OSX</h3>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;">brew</span> install bat duf fd jq lsd tldr yq</span></code></pre></div>
+</section>
+<section id="windows" class="level3">
+<h3 class="anchored" data-anchor-id="windows">Windows</h3>
+<p><strong>WARNING</strong> None of these have been tested I do not have access to a Windows system running PowerShell. They use <a href="https://scoop.sh/">Scoop</a> a command-line installer for Windows.</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;">scoop</span> install lsd</span></code></pre></div>
+</section>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://github.com/sharkdp/bat">bat</a></li>
+<li><a href="https://opensource.com/article/22/6/linux-cheat-command">cheat</a></li>
+<li><a href="https://github.com/muesli/duf">duf</a></li>
+<li><a href="https://the.exa.website/">exa</a></li>
+<li><a href="https://github.com/sharkdp/fd">fd</a></li>
+<li><a href="https://stedolan.github.io/jq/">jq</a></li>
+<li><a href="https://github.com/Peltoche/lsd">lsd</a></li>
+<li><a href="https://tldr.sh/">tldr</a></li>
+<li><a href="https://kislyuk.github.io/yq/">yq</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>linux</category>
+  <category>bash</category>
+  <guid>https://ns-rse.github.io/posts/cli-alternatives/index.html</guid>
+  <pubDate>Sun, 18 Sep 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/3793/12059147393_1b75269246_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Pre-Commit : Protecting your future self</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pre-commit/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://pre-commit.com/">Pre-commit</a> is a powerful tool for executing a range of hooks prior to making commits to your Git history. This is useful because it means you can automatically run a range of linting tools on your code across an array of languages to ensure your code is up-to-scratch <em>before</em> you make the commit.</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>Pre-commit is written in Python but that isn’t a limitation as it will lint YAML, JSON, C, JavaScript, Go, Rust, TOML, Terraform, Jupyter Notebooks, and so on. The list of <a href="https://pre-commit.com/hooks.html">supported hooks</a> is vast.</p>
+<p>For those unfamiliar with version control and Git in particular this will likely all sound alien. If you are new to the world of version control and Git I can highly recommend the <a href="https://srse-git-github-zero2hero.netlify.app/">Git &amp; Github through GitKraken Client - From Zero to Hero!</a> course offered by the <a href="https://rse.shef.ac.uk">Research Software Engineering</a> at the University of Sheffield and developed by Alumni <a href="https://www.r-rse.eu/">Anna Krystalli</a>.</p>
+<section id="what-is-a-hook" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-a-hook">What is a “hook”?</h3>
+<p>In computing a “hook” refers to something that is run prior to or in response to a requested action. In the context of the current discussion we are talking about hooks that relate to actions undertaken in Git version control and specifically actions that are run before a “commit” is made.</p>
+<p>When you have initialised a directory to be under Git version control the settings and configuration are stored in the <code>.git/</code> sub-directory. There is the <code>.git/config</code> file for the repositories configuration but also the <code>.git/hooks/</code> directory that is populated with a host of <code>*.sample</code> files with various different names that give you an in-road into what different hooks you might want to run. Its worth spending a little time reading through these if you haven’t done so yet as they provide useful examples of how various hooks work.</p>
+</section>
+<section id="why-pre-commit-hooks" class="level3">
+<h3 class="anchored" data-anchor-id="why-pre-commit-hooks">Why pre-commit hooks?</h3>
+<p>Typically when writing code you should <a href="https://ns-rse.github.io/posts/linting/">lint</a> your code to ensure it conforms to agreed style guides and remove any “<a href="https://en.wikipedia.org/wiki/Code_smell">code smells</a>” that may be lingering (code that violates design principles). It won’t guarantee that your code is perfect but its a good starting point to improving it. People who write a lot of code have good habits of doing these checks manually prior to making commits. Experienced coders will have configured their Integrated Development Environment (IDE) to apply many such “hooks” on saving a file they have been working on.</p>
+<p>At regular points in your workflow you save your work and check it into Git by making a commit and that is where <code>pre-commit</code> comes in to play because it will run all the hooks it has been configured to run against the files you are including in your commit. If any of the hooks fail then your commit is <em>not</em> made. In some cases <code>pre-commit</code> will automatically correct the errors (e.g.&nbsp;removing trailing white-space; applying <a href="https://github.com/psf/black">black</a> formatting if configured) but in others you have to correct them yourself before a commit can be successfully made.</p>
+<p>Initially this can be jarring, but it saves you, and more importantly those who you are asking to review your code, time and effort. Your code meets the required style and is a little bit cleaner before being sent out for review. Long term linting your code is beneficial (see <a href="2022-04-19-linting">Linting - What is all the fluff about?</a>).</p>
+</section>
+</section>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>Pre-commit is written in Python and so you will need Python installed on your system in order to use it. Aside from that there is little else extra that is required to be manually installed as pre-commit installs virtual environments specific for each enabled hook.</p>
+<p>Most systems provide <code>pre-commit</code> in their package management system but typically you should install <code>pre-commit</code> within your virtual environment or under your user account.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">pip</span> install pre-commit</span>
+<span id="cb1-2"><span class="ex" style="color: null;">conda</span> install <span class="at" style="color: #657422;">-c</span> conda-forge pre-commit</span></code></pre></div>
+<p>If you are working on a Python project then you should include <code>pre-commit</code> as a requirement (either in <code>requirements-dev.txt</code>) or under the <code>dev</code> section of <code>[options.extras_require]</code> in your <code>setup.cfg</code> as shown below.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">options</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">extras_require</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb2-2"><span class="dt" style="color: #AD0000;">dev</span> <span class="op" style="color: #5E5E5E;">=</span></span>
+<span id="cb2-3">  <span class="dt" style="color: #AD0000;">pre-commit</span></span>
+<span id="cb2-4">  <span class="dt" style="color: #AD0000;">pytest</span></span>
+<span id="cb2-5">  <span class="dt" style="color: #AD0000;">pytest-cov</span></span></code></pre></div>
+</section>
+<section id="configuration" class="level2">
+<h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
+<p>Configuration of pre-commit is via a file in the root of your Git version controlled directory called <code>.pre-commit-config.yaml</code>. This file should be included in your Git repository, you can create a blank file or <code>pre-commit</code> can generate a sample configuration for you.</p>
+<pre class="{bash}"><code># Empty configuration
+touch .pre-commit-config.yaml
+# Auto-generate basic configuration
+pre-commit sample-config &gt; .pre-commit-config.yaml
+git add .pre-commit-config.yaml</code></pre>
+<section id="hooks" class="level3">
+<h3 class="anchored" data-anchor-id="hooks">Hooks</h3>
+<p>Each hook is associated with a repository (<code>repo</code>) and a version (<code>rev</code>) within it. Many are available from the <code>https://github.com/pre-commit/pre-commit-hooks</code>. The default set of <code>pre-commit</code> hooks might look like the following.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb4-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb4-3"><span class="at" style="color: #657422;">      </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v4.3.0</span><span class="co" style="color: #5E5E5E;"> # Use the ref you want to point at</span></span>
+<span id="cb4-4"><span class="at" style="color: #657422;">      </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb4-5"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> trailing-whitespace</span></span>
+<span id="cb4-6"><span class="at" style="color: #657422;">            </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">file</span><span class="kw" style="color: #003B4F;">,</span><span class="at" style="color: #657422;"> text</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb4-7"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-docstring-first</span></span>
+<span id="cb4-8"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-case-conflict</span></span>
+<span id="cb4-9"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> end-of-file-fixer</span></span>
+<span id="cb4-10"><span class="at" style="color: #657422;">            </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb4-11"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> requirements-txt-fixer</span></span>
+<span id="cb4-12"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-yaml</span></span></code></pre></div>
+</section>
+<section id="hooks-from-external-repositories" class="level3">
+<h3 class="anchored" data-anchor-id="hooks-from-external-repositories">Hooks from External Repositories</h3>
+<p>Some hooks are available from dedicated repositories, for example the following runs <a href="https://github.com/psf/black">Black</a>, <a href="https://flake8.pycqa.org/en/latest/">Flake8</a> and <a href="https://pylint.pycqa.org/en/latest/">Pylint</a> on your code and should follow under the above (with the same level of indenting to be valid YAML).</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/psf/black</span></span>
+<span id="cb5-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">22.6.0</span></span>
+<span id="cb5-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-4"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> black</span></span>
+<span id="cb5-5"><span class="at" style="color: #657422;">          </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-6"></span>
+<span id="cb5-7"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://gitlab.com/pycqa/flake8.git</span></span>
+<span id="cb5-8"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">3.9.2</span></span>
+<span id="cb5-9"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-10"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> flake8</span></span>
+<span id="cb5-11"><span class="at" style="color: #657422;">          </span><span class="fu" style="color: #4758AB;">additional_dependencies</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">flake8-print</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-12"><span class="at" style="color: #657422;">          </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-13"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pycqa/pylint</span></span>
+<span id="cb5-14"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v2.15.3</span></span>
+<span id="cb5-15"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-16"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pylint</span></span></code></pre></div>
+<p>An extensive list of <a href="https://pre-commit.com/hooks.html">supported hooks</a> is available. It lists the repository from which the hook is derived along with its name.</p>
+</section>
+<section id="local-hooks" class="level3">
+<h3 class="anchored" data-anchor-id="local-hooks">Local Hooks</h3>
+<p>You can also define <a href="https://pre-commit.com/#new-hooks">new hook</a> and configure them under the <code>- repo: local</code>.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> local</span></span>
+<span id="cb6-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-3"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> &lt;id&gt;</span></span>
+<span id="cb6-4"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">name</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> &lt;descriptive name&gt;</span></span>
+<span id="cb6-5"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">language</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> python</span></span>
+<span id="cb6-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">entry</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-7"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>For some examples of locally defined hooks see the <a href="https://github.com/pandas-dev/pandas/blob/main/.pre-commit-config.yaml">Pandas .pre-commit-config.yaml</a>.</p>
+</section>
+</section>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<p>Before <code>pre-commit</code> will run you need to install it within your repository. This puts the file <code>.git/hooks/pre-commit</code> in place that contains the hooks you have configured to run. To install this you should have your <code>.pre-commit-config.yaml</code> in place and then run the following.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;">pre-commit</span> install</span></code></pre></div>
+<p>Once installed and configured there really isn’t much to be said for using <code>pre-commit</code>, just make commits and before you can make a successful commit <code>pre-commit</code> must run with all the hooks you have configured passing. By default <code>pre-commit</code> only runs on files that are staged and ready to be committed, if you have unstaged files these will be stashed prior to running the <code>pre-commit</code> hook and restored afterwards. Should you wish to run these manually without making a commit then, after activating a virtual environment if you are using one, simply make a <code>git commit</code> or you can run.</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;">pre-commit</span> run</span></code></pre></div>
+<p>If any of the configured hooks fail then the commit will not be made. Some hooks such as <a href="https://github.com/psf/black">black</a> may reformat files in place and you can then make another commit recording those changes and the hook should pass. Its important to pay close attention to the output.</p>
+<p>If you want to run a specific hook you simply add the <code>&lt;id&gt;</code> after <code>run</code>.</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;">pre-commit</span> run <span class="op" style="color: #5E5E5E;">&lt;</span>id<span class="op" style="color: #5E5E5E;">&gt;</span></span></code></pre></div>
+<p>Or if you want to force running against all files (except unstaged ones) you can do so.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;">pre-commit</span> run <span class="at" style="color: #657422;">--all-files</span> <span class="co" style="color: #5E5E5E;"># Across all files/hooks</span></span></code></pre></div>
+<p>And these two options can be combined to run a specific hook against all files.</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;">pre-commit</span> run <span class="op" style="color: #5E5E5E;">&lt;</span>id<span class="op" style="color: #5E5E5E;">&gt;</span> --all-files</span></code></pre></div>
+<p>You may find that you wish to switch branches to work on another feature or fix a bug but that your current work doesn’t pass the <code>pre-commit</code> and you don’t wish to sort that out immediately. The solution to this is to use <code>git stash</code> to temporarily save your current uncommitted work and restore the working directory and index to its previous state. You are then free to switch branches and work on another feature or fix a bug, commit and push those changes and then switch back.</p>
+<p>Imagine you are working on branch <code>a</code> but are asked to fix a bug on branch <code>b</code>. You go to commit your work but find that <code>a</code> does not pass <code>pre-commit</code> but you wish to work on <code>b</code> anyway. Starting on branch <code>a</code> you stash your changes, switch branches, make and commit your changes to branch <code>b</code> then switch back to <code>a</code> and unstash your work there.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;">git</span> stash</span>
+<span id="cb12-2"><span class="fu" style="color: #4758AB;">git</span> checkout b</span>
+<span id="cb12-3"><span class="ex" style="color: null;">...</span> <span class="co" style="color: #5E5E5E;"># Work on branch b</span></span>
+<span id="cb12-4"><span class="fu" style="color: #4758AB;">git</span> add <span class="op" style="color: #5E5E5E;">&lt;</span>changed_files_on_branch_b<span class="op" style="color: #5E5E5E;">&gt;</span></span>
+<span id="cb12-5"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Fixing bug on branch b"</span></span>
+<span id="cb12-6"><span class="fu" style="color: #4758AB;">git</span> push</span>
+<span id="cb12-7"><span class="fu" style="color: #4758AB;">git</span> checkout a</span>
+<span id="cb12-8"><span class="fu" style="color: #4758AB;">git</span> stash apply</span></code></pre></div>
+</section>
+<section id="updating" class="level2">
+<h2 class="anchored" data-anchor-id="updating">Updating</h2>
+<p>You can update hooks locally by running <code>pre-commit autoupdate</code>. This will update your <code>.pre-commit-config.yaml</code> with the latest version of repositories you have configured and these will run both locally and if you use CI/CD as described below. However this will <em>not</em> update any packages that are part of the <code>- repo: local</code> that you may have implemented and it is your responsibility to handle these.</p>
+</section>
+<section id="pre-commit-cicd" class="level2">
+<h2 class="anchored" data-anchor-id="pre-commit-cicd">Pre-commit CI/CD</h2>
+<p>Ideally contributors will have setup their system to work with pre-commit and be running such checks prior to making pushes. It is however useful to enable running pre-commit as part of your Continuous Integration/Development pipeline (CI/CD). This can be done with both <a href="https://gitlab.com">GitLab</a> and <a href="https://github.com">GitHub</a> although similar methods are available for many <a href="https://pre-commit.com/#usage-in-continuous-integration">continuous integration systems</a>.</p>
+<section id="github" class="level3">
+<h3 class="anchored" data-anchor-id="github">GitHub</h3>
+<p>GitHub actions reside in the <code>.github/workflows/</code> directory of your project. A simple pre-commit action is available on the Marketplace at <a href="https://github.com/marketplace/actions/pre-commit">pre-commit/action</a>. Copy this template to <code>.github/workflows/pre-commit.yml</code> and include it in your Git repository.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="fu" style="color: #4758AB;">git</span> add .github/workflows/pre-commit.yml</span>
+<span id="cb13-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Adding pre-commit GitHub Action"</span> <span class="kw" style="color: #003B4F;">&amp;&amp;</span> <span class="fu" style="color: #4758AB;">git</span> push</span></code></pre></div>
+</section>
+<section id="gitlab" class="level3">
+<h3 class="anchored" data-anchor-id="gitlab">GitLab</h3>
+<p>If you use GitLab the following article describes how to configure a CI job to run as part of your repository.</p>
+<ul>
+<li><a href="https://stackoverflow.com/collectives/gitlab/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g">How to use pre-commit to automatically correct commits and merge requests with GitLab CI</a></li>
+</ul>
+</section>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://pre-commit.com/">Pre-commit</a></li>
+<li><a href="https://pre-commit.com/hooks.html">Supported hooks</a></li>
+<li><a href="https://github.com/marketplace/actions/pre-commit">GitHub Action</a></li>
+<li><a href="https://stackoverflow.com/collectives/gitlab/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g">GitLab CI</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>linting</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <guid>https://ns-rse.github.io/posts/pre-commit/index.html</guid>
+  <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Linting - What is all the fluff about?</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/linting/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><strong>NB</strong> This article originally appeared on <a href="https://rse.shef.ac.uk/blog/">RSE University of Sheffield</a> but is updated here.</p>
+<p>If you’ve been dabbling in programming for a while you may have heard of “linting your code” which is a process of static code analysis to remove the “fluff” from your code. Just as physically linting your clothes removes unwanted fluff, linting your code removes “fluff” and can help…</p>
+<ul>
+<li>Reduce bugs.</li>
+<li>Improve performance.</li>
+<li>Mitigate against some security flaws.</li>
+<li>Improve coding skills.</li>
+<li>Consistent coding style.</li>
+</ul>
+<p>This helps reduce the <a href="https://en.wikipedia.org/wiki/Technical_debt">technical debt</a> which impacts the amount of time required for maintenance and further development of a code base. The main focus of this article is the use of linting to ensure consistent coding style, it focuses on Python under Linux but similar tools are available for other operating systems and languages.</p>
+<!--more-->
+<section id="style-matters" class="level2">
+<h2 class="anchored" data-anchor-id="style-matters">Style Matters</h2>
+<p>What has style got to do with writing code? Trends come and go in fashion but coding styles are meant to be relatively static and not change with the season, although they can and do evolve over time. This is because using a consistent and widely used style when writing code makes it easier for other people, often your future self, to read and understand the code you have written. If code is easier to understand then its easier to modify, update, extend, improve and in general maintain.</p>
+<p>A useful insight from <a href="https://en.wikipedia.org/wiki/Guido_van_Rossum">Gudio van Rossum</a>, the creator of <a href="https://www.python.org">Python</a> is that “<a href="https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds"><em>code is read much more often than it is written</em></a>” and so it should be easy to understand and not obfuscate its intent. Python is quite good for this as it is an expressive language which encourages coders to be explicit when naming variables, functions, classes and so forth so that their purpose and intention is clear, although the same is true of most modern languages. However, going a step further and using consistent styles to format and layout code helps enhance this.</p>
+</section>
+<section id="linting-in-python" class="level2">
+<h2 class="anchored" data-anchor-id="linting-in-python">Linting in Python</h2>
+<p>The most widely used Python style is defined in the long established <a href="https://pep8.org/">PEP 8: The Style Guide for Python Code</a>. There are a number of tools available that will lint your Python code for you and most integrate with your IDE, whether that is <a href="https://code.visualstudio.com/">Visual Studio Code</a>, <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> or <a href="https://www.gnu.org/software/emacs/">Emacs</a>. Some of the formatting and linting tools available for Python are…</p>
+<ul>
+<li><p><a href="https://pylint.pycqa.org/en/latest/index.html">Pylint</a> - checks for errors in Python code, tries to enforce a coding standard and looks for code smells.</p></li>
+<li><p><a href="https://pypi.org/project/yapf/">YAPF</a> - takes the code and reformats it to the best formatting that conforms to the style guide.</p></li>
+<li><p><a href="https://github.com/psf/black">Black</a> - The Uncompromising Code Formatter</p></li>
+<li><p><a href="https://flake8.pycqa.org/en/latest/">Flake8</a> - Your Tool For Style Guide Enforcement</p></li>
+<li><p><a href="https://prospector.landscape.io/en/master/index.html">Prospector</a> - Python Static Analysis</p></li>
+<li><p><a href="http://mypy-lang.org/">mypy</a> - Optional Static Typing for Python</p></li>
+</ul>
+<p>Here we will work through linting and formatting the simple file below (available as a download <a href="../../www/python/save_random_numbers.py">here</a>) using PyLint and Black.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;">from</span> pathlib <span class="im" style="color: #00769E;">import</span> Path</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;">from</span> typing <span class="im" style="color: #00769E;">import</span> Union</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;">import</span> csv</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="kw" style="color: #003B4F;">def</span> save_random_numbers(size: <span class="bu" style="color: null;">int</span>, seed: <span class="bu" style="color: null;">int</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">87653546</span>, save_as: Union[<span class="bu" style="color: null;">str</span>, Path] <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"./random_numbers.txt"</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb1-7">    <span class="co" style="color: #5E5E5E;">"""Save a list of random numbers (floats) to the given file.</span></span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;">    The stated number of random numbers will be saved to the given target file, if the directory structure</span></span>
+<span id="cb1-10"><span class="co" style="color: #5E5E5E;">    doesn't exist it will be created. Output will by default be over-written.</span></span>
+<span id="cb1-11"><span class="co" style="color: #5E5E5E;">    Parameters</span></span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;">    ----------</span></span>
+<span id="cb1-13"><span class="co" style="color: #5E5E5E;">    size : int</span></span>
+<span id="cb1-14"><span class="co" style="color: #5E5E5E;">        Number of random numbers to generate</span></span>
+<span id="cb1-15"><span class="co" style="color: #5E5E5E;">    seed: int</span></span>
+<span id="cb1-16"><span class="co" style="color: #5E5E5E;">        Seed for random number generation</span></span>
+<span id="cb1-17"><span class="co" style="color: #5E5E5E;">    save_as : Union[str, Path]</span></span>
+<span id="cb1-18"><span class="co" style="color: #5E5E5E;">        Directory/file to save numbers to.</span></span>
+<span id="cb1-19"><span class="co" style="color: #5E5E5E;">    """</span></span>
+<span id="cb1-20">    rng <span class="op" style="color: #5E5E5E;">=</span> np.random.default_rng()</span>
+<span id="cb1-21">    random_numbers <span class="op" style="color: #5E5E5E;">=</span> rng.random(size)</span>
+<span id="cb1-22"></span>
+<span id="cb1-23">    <span class="cf" style="color: #003B4F;">with</span> Path(save_as).<span class="bu" style="color: null;">open</span>(<span class="st" style="color: #20794D;">'w'</span>) <span class="im" style="color: #00769E;">as</span> out:</span>
+<span id="cb1-24">        writer <span class="op" style="color: #5E5E5E;">=</span> csv.write(out)</span>
+<span id="cb1-25">        writer.writerows(random_numbers)</span></code></pre></div>
+<section id="linting-with-pylint" class="level3">
+<h3 class="anchored" data-anchor-id="linting-with-pylint">Linting with PyLint</h3>
+<p>We will lint this file using <a href="https://pylint.pycqa.org/en/latest/index.html">Pylint</a> to find out what errors there are and how its style can be improved to conform with PEP8 guidelines.</p>
+<p>First you need to install <code>pylint</code>, typically in your <a href="https://realpython.com/python-virtual-environments-a-primer/">virtual environment</a>.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;">pip</span> install pylint</span></code></pre></div>
+<p>Pylint can be configured using a <code>~/.pylintrc</code> file in your home directory and over time this will grow as you customise your configuration but for now we will make one simple change from the default which is to increase the accepted line length. Create the file and save it with the following content.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;">[FORMAT]</span></span>
+<span id="cb3-2"><span class="co" style="color: #5E5E5E;">## Maximum number of characters on a single line.</span></span>
+<span id="cb3-3"><span class="ex" style="color: null;">max-line-length=120</span></span></code></pre></div>
+<p>Open a terminal and navigate to the location you saved the example file <code>save_random_numbers.py</code> activate the virtual environment you installed pylint under if its not already being used and then type the following to run Pylint against your code…</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;">pylint</span> save_random_numbers.py</span></code></pre></div>
+<p>You should see output similar to the following…</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"> <span class="ex" style="color: null;">❱</span> pylint save_random_numbers.py</span>
+<span id="cb5-2"><span class="ex" style="color: null;">*************</span> Module save_random_numbers</span>
+<span id="cb5-3"><span class="ex" style="color: null;">save_random_numbers.py:1:0:</span> C0114: Missing module docstring <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">missing-module-docstring</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb5-4"><span class="ex" style="color: null;">save_random_numbers.py:5:66:</span> E0602: Undefined variable <span class="st" style="color: #20794D;">'Union'</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">undefined-variable</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb5-5"><span class="ex" style="color: null;">save_random_numbers.py:5:35:</span> W0613: Unused argument <span class="st" style="color: #20794D;">'seed'</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">unused-argument</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb5-6"><span class="ex" style="color: null;">save_random_numbers.py:2:0:</span> C0411: standard import <span class="st" style="color: #20794D;">"from pathlib import Path"</span> should be placed before <span class="st" style="color: #20794D;">"import numpy as np"</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">wrong-import-order</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb5-7"><span class="ex" style="color: null;">save_random_numbers.py:3:0:</span> C0411: standard import <span class="st" style="color: #20794D;">"import csv"</span> should be placed before <span class="st" style="color: #20794D;">"import numpy as np"</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">wrong-import-order</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb5-8"></span>
+<span id="cb5-9"><span class="ex" style="color: null;">-------------------------------------------------------------------</span></span>
+<span id="cb5-10"><span class="ex" style="color: null;">Your</span> code has been rated at 0.00/10</span></code></pre></div>
+<p>The output tells us which module has been inspected on the first line. Each subsequent line indicates</p>
+<ul>
+<li>The file.</li>
+<li>The line the problem has been encountered on.</li>
+<li>The column.</li>
+<li>A somewhat cryptic error code and then a message about the problem</li>
+<li>A more descriptive generic message associated with the error code.</li>
+</ul>
+<p>At the moment we are only looking at one file, but when using PyLint against larger code bases this information is vital in helping direct you to the location of code that needs changing. At the end PyLint rates your code, ideally you should aim to get a score of <code>10.0/10</code>.</p>
+<p>The messages are quite informative, taking each in turn we can work through resolving them.</p>
+<section id="missing-module-docstring-missing-module-docstring" class="level4">
+<h4 class="anchored" data-anchor-id="missing-module-docstring-missing-module-docstring"><code>Missing module docstring (missing-module-docstring)</code></h4>
+<p>Each Python module should have a docstring as the very first line that describes what it does. In this example it might be considered superflous but its good practice to get in the habit of writing these as it comes in useful when documentation is automatically generated from the docstrings in the code. To fix it we can add a short docstring at the top.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;">"""Module for saving randomly generated numbers."""</span></span>
+<span id="cb6-2"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<span id="cb6-3"><span class="im" style="color: #00769E;">from</span> pathlib <span class="im" style="color: #00769E;">import</span> Path</span></code></pre></div>
+</section>
+<section id="undefined-variable-union-undefined-variable" class="level4">
+<h4 class="anchored" data-anchor-id="undefined-variable-union-undefined-variable"><code>Undefined variable 'Union' (undefined-variable)</code></h4>
+<p>This error arises because the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/">type hint</a> uses <code>Union</code> but it hasn’t been imported. It’s from the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/">typing</a> module so we can import it.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;">"""Module for saving randomly generated numbers."""</span></span>
+<span id="cb7-2"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<span id="cb7-3"><span class="im" style="color: #00769E;">from</span> pathlib <span class="im" style="color: #00769E;">import</span> Path</span>
+<span id="cb7-4"><span class="im" style="color: #00769E;">from</span> typing <span class="im" style="color: #00769E;">import</span> Union</span></code></pre></div>
+</section>
+<section id="unused-argument-seed-unused-argument" class="level4">
+<h4 class="anchored" data-anchor-id="unused-argument-seed-unused-argument"><code>Unused argument 'seed' (unused-argument)</code></h4>
+<p>This is very useful to be informed about because the <code>seed</code> argument, according to the docstring, is meant to be used in the call to the random number generator and ensures we will get the same set of random numbers generated each time we call the function with that seed, however, as Pylint has informed us we haven’t actually used it within the <code>save_random_number()</code> function. We can correct that by adding it when we instantiate the random number generator.</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">rng <span class="op" style="color: #5E5E5E;">=</span> np.random.default_rng(seed<span class="op" style="color: #5E5E5E;">=</span>seed)</span></code></pre></div>
+</section>
+<section id="standard-import-from-pathlib-import-path-should-be-placed-before-import-numpy-as-np-wrong-import-order" class="level4">
+<h4 class="anchored" data-anchor-id="standard-import-from-pathlib-import-path-should-be-placed-before-import-numpy-as-np-wrong-import-order"><code>standard import "from pathlib import Path" should be placed before "import numpy as np" (wrong-import-order)</code></h4>
+<p>This message, like the one that follows it, is telling us that the order in which we have imported modules is incorrect, because the PEP8 guide recommends that core modules, which both <code>csv</code> and <code>pathlib</code> are, should be imported before other modules. We can correct this by changing the order (and because we have added an import from the <code>typing</code> module which is also a core module we move that too).</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="co" style="color: #5E5E5E;">"""Module for saving randomly generated numbers."""</span></span>
+<span id="cb9-2"><span class="im" style="color: #00769E;">import</span> csv</span>
+<span id="cb9-3"><span class="im" style="color: #00769E;">from</span> pathlib <span class="im" style="color: #00769E;">import</span> Path</span>
+<span id="cb9-4"><span class="im" style="color: #00769E;">from</span> typing <span class="im" style="color: #00769E;">import</span> Union</span>
+<span id="cb9-5"></span>
+<span id="cb9-6"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span></code></pre></div>
+<p>Once corrected your file should look like this…</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="co" style="color: #5E5E5E;">"""Module for saving randomly generated numbers."""</span></span>
+<span id="cb10-2"><span class="im" style="color: #00769E;">import</span> csv</span>
+<span id="cb10-3"><span class="im" style="color: #00769E;">from</span> pathlib <span class="im" style="color: #00769E;">import</span> Path</span>
+<span id="cb10-4"><span class="im" style="color: #00769E;">from</span> typing <span class="im" style="color: #00769E;">import</span> Union</span>
+<span id="cb10-5"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<span id="cb10-6"></span>
+<span id="cb10-7"><span class="kw" style="color: #003B4F;">def</span> save_random_numbers(size: <span class="bu" style="color: null;">int</span>, seed: <span class="bu" style="color: null;">int</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">87653546</span>, save_as: Union[<span class="bu" style="color: null;">str</span>, Path] <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"./random_numbers.txt"</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb10-8">    <span class="co" style="color: #5E5E5E;">"""Save a list of random numbers (floats) to the given file.</span></span>
+<span id="cb10-9"></span>
+<span id="cb10-10"><span class="co" style="color: #5E5E5E;">    The stated number of random numbers will be saved to the given target file, if the directory structure</span></span>
+<span id="cb10-11"><span class="co" style="color: #5E5E5E;">    doesn't exist it will be created. Output will by default be over-written.</span></span>
+<span id="cb10-12"></span>
+<span id="cb10-13"><span class="co" style="color: #5E5E5E;">    Parameters</span></span>
+<span id="cb10-14"><span class="co" style="color: #5E5E5E;">    ----------</span></span>
+<span id="cb10-15"><span class="co" style="color: #5E5E5E;">    size : int</span></span>
+<span id="cb10-16"><span class="co" style="color: #5E5E5E;">        Number of random numbers to generate</span></span>
+<span id="cb10-17"><span class="co" style="color: #5E5E5E;">    seed: int</span></span>
+<span id="cb10-18"><span class="co" style="color: #5E5E5E;">        Seed for random number generation</span></span>
+<span id="cb10-19"><span class="co" style="color: #5E5E5E;">    save_as : Union[str, Path]</span></span>
+<span id="cb10-20"><span class="co" style="color: #5E5E5E;">        Directory/file to save numbers to.</span></span>
+<span id="cb10-21"><span class="co" style="color: #5E5E5E;">    """</span></span>
+<span id="cb10-22">    rng <span class="op" style="color: #5E5E5E;">=</span> np.random.default_rng(seed)</span>
+<span id="cb10-23">    random_numbers <span class="op" style="color: #5E5E5E;">=</span> rng.random(size)</span>
+<span id="cb10-24"></span>
+<span id="cb10-25">    <span class="cf" style="color: #003B4F;">with</span> Path(save_as).<span class="bu" style="color: null;">open</span>(<span class="st" style="color: #20794D;">'w'</span>) <span class="im" style="color: #00769E;">as</span> out:</span>
+<span id="cb10-26">        writer <span class="op" style="color: #5E5E5E;">=</span> csv.write(out)</span>
+<span id="cb10-27">        writer.writerows(random_numbers)</span></code></pre></div>
+<p>…and you can now run PyLint against it to see if you’ve improved your score.</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"> <span class="ex" style="color: null;">❱</span> pylint save_random_numbers.py</span>
+<span id="cb11-2"><span class="ex" style="color: null;">*************</span> Module save_random_numbers</span>
+<span id="cb11-3"><span class="ex" style="color: null;">save_random_numbers.py:7:66:</span> E1136: Value <span class="st" style="color: #20794D;">'Union'</span> is unsubscriptable <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">unsubscriptable-object</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb11-4"></span>
+<span id="cb11-5"><span class="ex" style="color: null;">------------------------------------------------------------------</span></span>
+<span id="cb11-6"><span class="ex" style="color: null;">Your</span> code has been rated at 5.00/10 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">previous</span> run: 4.00/10, +1.00<span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+<p>That is an improvement in score (of <code>+1.00</code>) but we now have another error telling us that <code>E1136: Value 'Union' is unsubscriptable (unsubscriptable-object)</code>. You are unlikely to know what all the error codes mean, but there are a few handy on-line lists <a href="http://pylint-messages.wikidot.com/all-codes">all PyLint codes</a> or <a href="http://pylint-messages.wikidot.com/all-messages">all PyLint messages</a> and what they are telling you are worth consulting (<a href="https://docs.quantifiedcode.com/python-anti-patterns/index.html">The Little Book of Python Anti-Patterns</a> is also useful). In this instance PyLint has returned a false-positive because <code>Union</code> can and should be subscripted here because it means the argument can be either a string (<code>str</code>) or a <a href="https://docs.python.org/3/library/pathlib.html">pathlib</a> Path (<code>Path</code>). So how do we get around this complaint?</p>
+<p>You can disable PyLint from complaining about specific error codes/messages on a per-file basis by adding a line that disables them. You can use either codes or messages (the bit in the brackets at the end of the line, in this case <code>unsubscriptable-object</code>) and it is advisable to use the message form as it is more informative to those who read your code subequently.</p>
+<p>If we add the following line it prevents PyLint from reporting the specific error…</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<span id="cb12-2"></span>
+<span id="cb12-3"><span class="co" style="color: #5E5E5E;"># pylint: disable=unsubscriptable-object</span></span>
+<span id="cb12-4"></span>
+<span id="cb12-5"><span class="kw" style="color: #003B4F;">def</span> save_random_numbers(size: <span class="bu" style="color: null;">int</span>, seed: <span class="bu" style="color: null;">int</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">87653546</span>, save_as: Union[<span class="bu" style="color: null;">str</span>, Path] <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"./random_numbers.txt"</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span></code></pre></div>
+<p>…running PyLint against our code again we get a much better score.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"> <span class="ex" style="color: null;">❱</span> pylint save_random_numbers_tidy.py</span>
+<span id="cb13-2"></span>
+<span id="cb13-3"><span class="ex" style="color: null;">-------------------------------------------------------------------</span></span>
+<span id="cb13-4"><span class="ex" style="color: null;">Your</span> code has been rated at 10.00/10 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">previous</span> run: 5.00/10, +5.00<span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+</section>
+</section>
+<section id="configuring-pylint" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-pylint">Configuring PyLint</h3>
+<p>The last error we encountered is something that is likely to crop up again if you use Typehints liberally throughout your Python code (and I would encourage you to do so). Rather than having to remember to disable the error in each file/module we create we can configure PyLint via its configuration file <code>~/.pylintrc</code> to always ignore this error. To do so add the following…</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;">[MESSAGES</span> CONTROL]</span>
+<span id="cb14-2"><span class="co" style="color: #5E5E5E;"># Disable the message, report, category or checker with the given id(s). You</span></span>
+<span id="cb14-3"><span class="co" style="color: #5E5E5E;"># can either give multiple identifiers separated by comma (,) or put this</span></span>
+<span id="cb14-4"><span class="co" style="color: #5E5E5E;"># option multiple times (only on the command line, not in the configuration</span></span>
+<span id="cb14-5"><span class="co" style="color: #5E5E5E;"># file where it should appear only once).</span></span>
+<span id="cb14-6"><span class="va" style="color: #111111;">disable</span><span class="op" style="color: #5E5E5E;">=</span>unsubscriptable-object</span></code></pre></div>
+<p>For more on configuriong PyLint refer to the <a href="https://pylint.pycqa.org/en/latest/user_guide/options.html">documentation</a> and also details of how to <a href="https://pylint.pycqa.org/en/latest/user_guide/ide-integration.html">integrate with your editor and IDE</a></p>
+</section>
+<section id="automated-formatting-with-black" class="level3">
+<h3 class="anchored" data-anchor-id="automated-formatting-with-black">Automated Formatting with Black</h3>
+<p><a href="https://github.com/psf/black">Black</a> is <em>The Uncompromising Code Formatter</em> and is very strict about the way in which it formats code. This could be a good or bad thing depending on your point of view, but it does result in highly consistent code when applied to all files. It formats files in place, so be mindful of this if you run it against one of your files it <em>will</em> change it.</p>
+<p>Install <code>black</code> in your virtual environment and make a backup of your <code>save_random_number.py</code> file that you have just tidied up with linting.</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;">pip</span> install black</span>
+<span id="cb15-2"><span class="fu" style="color: #4758AB;">cp</span> save_random_numbers.py tidy_save_random_numbers.py</span></code></pre></div>
+<p>To run black against your code pass it the input file, it will re-write it and you can then compare it against the backup you just made…</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="ex" style="color: null;">black</span> save_random_numbers.py</span>
+<span id="cb16-2"><span class="ex" style="color: null;">❱</span> diff save_random_numbers.py tidy_save_random_numbers.py</span>
+<span id="cb16-3"><span class="ex" style="color: null;">5,8c5</span></span>
+<span id="cb16-4"><span class="op" style="color: #5E5E5E;">&lt;</span></span>
+<span id="cb16-5"><span class="op" style="color: #5E5E5E;">&lt;</span> def <span class="ex" style="color: null;">save_random_numbers</span><span class="er" style="color: #AD0000;">(</span></span>
+<span id="cb16-6">  <span class="op" style="color: #5E5E5E;">&lt;</span>     size: <span class="ex" style="color: null;">int,</span> seed: int = 87653546, save_as: Union[str, Path] = <span class="st" style="color: #20794D;">"./random_numbers.txt"</span></span>
+<span id="cb16-7">  <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> None:</span>
+<span id="cb16-8"><span class="ex" style="color: null;">---</span></span>
+<span id="cb16-9"><span class="op" style="color: #5E5E5E;">&gt;</span> def <span class="ex" style="color: null;">save_random_numbers</span><span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">size:</span> int, seed: int = 87653546, save_as: Union[str, Path] = <span class="st" style="color: #20794D;">"./random_numbers.txt"</span><span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> None:</span>
+<span id="cb16-10"><span class="ex" style="color: null;">27c24</span></span>
+<span id="cb16-11"><span class="op" style="color: #5E5E5E;">&lt;</span>     with <span class="ex" style="color: null;">Path</span><span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">save_as</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">.open</span><span class="er" style="color: #AD0000;">(</span><span class="st" style="color: #20794D;">"w"</span><span class="kw" style="color: #003B4F;">)</span> <span class="fu" style="color: #4758AB;">as</span> out:</span>
+<span id="cb16-12"><span class="ex" style="color: null;">---</span></span>
+<span id="cb16-13"><span class="op" style="color: #5E5E5E;">&gt;</span>     with <span class="ex" style="color: null;">Path</span><span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">save_as</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">.open</span><span class="er" style="color: #AD0000;">(</span><span class="st" style="color: #20794D;">'w'</span><span class="kw" style="color: #003B4F;">)</span> <span class="fu" style="color: #4758AB;">as</span> out:</span></code></pre></div>
+<p>In this instance Black hasn’t changed much but it has reformatted the <code>def save~randomnumbers~(...)</code> line and moved the <code>with Path()</code> line as a consequence.</p>
+</section>
+</section>
+<section id="when-to-lint" class="level2">
+<h2 class="anchored" data-anchor-id="when-to-lint">When to Lint</h2>
+<p>It is worth linting your code from the outset of a project as not only does it result in a consistent style across your code base it also avoids the problem that can arise when applying linting retrospectively. If an existing code base has linting applied then the <a href="https://www.git-scm.com/docs/git-blame"><code>git blame</code></a>, which indicates who the last person to edit a section was, then resides with the person who applied the linting, rather than the original author of the code. Its possible though that the person who applied the linting knows very little about the underlying functionality of the code but they may receive questions about it if they are indicated as the last person to have modified particular lines.</p>
+<p>Fortunately there are a number of ways to automate and integrate linting into your workflow.</p>
+</section>
+<section id="automating-linting" class="level2">
+<h2 class="anchored" data-anchor-id="automating-linting">Automating Linting</h2>
+<section id="ide-integration" class="level3">
+<h3 class="anchored" data-anchor-id="ide-integration">IDE Integration</h3>
+<p>When programming it is really useful to use an <a href="https://en.wikipedia.org/wiki/Integrated_development_environment">Integrated Development Environment (IDE)</a> as most allow the integration of linting tools and apply them to your code automatically, whether its using PyLint, YAPF, Black or otherwise. Setup and configuration is beyond the scope of this article but some links are provided to useful resources to get you started.</p>
+</section>
+<section id="vscode" class="level3">
+<h3 class="anchored" data-anchor-id="vscode">VSCode</h3>
+<p>VSCode supports linting in most languages, and both <a href="https://code.visualstudio.com/docs/python/linting">Python</a> and <a href="https://docs.microsoft.com/en-us/visualstudio/rtvs/linting-r-code?view=vs-2017">R</a> are supported along with other languages.</p>
+</section>
+<section id="pycharm" class="level3">
+<h3 class="anchored" data-anchor-id="pycharm">PyCharm</h3>
+<p>PyCharm supports automated formatting of code, for more information please refer to <a href="https://www.jetbrains.com/help/pycharm/reformat-and-rearrange-code.html">Reformat and rearrange code | PyCharm</a>.</p>
+</section>
+<section id="emacs" class="level3">
+<h3 class="anchored" data-anchor-id="emacs">Emacs</h3>
+<p>There are various options available for linting within Emacs, which you use depends on your preferences but <a href="https://emacs-lsp.github.io/lsp-mode/">LSP mode</a> integrates with YAPF (via <a href="https://github.com/JorisE/yapfify">yapfify</a>), Flake8 (via <a href="https://www.flycheck.org/en/latest/">flycheck</a>) and Black (via <a href="https://github.com/pythonic-emacs/blacken">blacken</a>).</p>
+</section>
+</section>
+<section id="git-integration" class="level2">
+<h2 class="anchored" data-anchor-id="git-integration">Git Integration</h2>
+<p>If you are using an IDE then if configured correctly your code should be linted automatically for you, but an additional step that can capture anything that hasn’t been correctly formatted is to use a <a href="https://githooks.com/">git hook</a> to run linting on your code prior to making commits. There is <a href="https://github.com/sebdah/git-pylint-commit-hook">git-pylint-commit-hook</a> available on PyPi which runs automatically when you make commits to <code>.py</code> files.</p>
+</section>
+<section id="continuous-integration" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-integration">Continuous Integration</h2>
+<p>Including a linting stage in your Continuous Integration (CI) pipeline pays dividends as we all make mistakes and sometimes forget to lint our code before making pushes.</p>
+</section>
+<section id="megalinter" class="level2">
+<h2 class="anchored" data-anchor-id="megalinter">Megalinter</h2>
+<p>Perhaps not necessary for everyone but worth mentioning the beast that is <a href="https://megalinter.github.io/latest/">MegaLinter</a> which will lint code across multiple languages and integrates easily into your pipeline (GitHub Action, CI on GitLab, Jenkins etc.). A useful article on doing so is <a href="https://nicolas.vuillamy.fr/improve-uniformize-and-secure-your-code-base-with-megalinter-62ebab422c1">Limit your technical debt and secure your code base using MegaLinter</a>.</p>
+</section>
+<section id="pre-commit" class="level2">
+<h2 class="anchored" data-anchor-id="pre-commit">Pre-commit</h2>
+<p><a href="https://pre-commit.com/">Pre-commit</a> is a Python package that adds a set of configurable hooks for linting your code, and not just Python, using a Git pre-commit <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">hook</a>. Hooks are run conditional on certain changes in states, in this case code that is run before commits are made. It creates a virtual Python Environment and installs the required packages there to lint your code. More will be written on this in a subsequent post.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="python" class="level3">
+<h3 class="anchored" data-anchor-id="python">Python</h3>
+<ul>
+<li><a href="https://flake8.pycqa.org/en/latest/">Flake8</a> - Your Tool For Style Guide Enforcement</li>
+<li><a href="https://github.com/psf/black">Black</a> - The Uncompromising Code Formatter</li>
+<li><a href="https://code.visualstudio.com/docs/python/linting">Linting Python in Visual Studio Code</a></li>
+<li><a href="https://pylint.pycqa.org/en/latest/messages/messages_list.html">Pylint - Overview of all Pylint messages</a></li>
+</ul>
+</section>
+<section id="r" class="level3">
+<h3 class="anchored" data-anchor-id="r">R</h3>
+<ul>
+<li><a href="https://github.com/r-lib/lintr">GitHub - r-lib/lintr: Static Code Analysis for R</a></li>
+<li><a href="https://rowannicholls.github.io/R/intro/linting.html">Introduction to R: Linting R (and R Markdown)</a></li>
+</ul>
+</section>
+<section id="c" class="level3">
+<h3 class="anchored" data-anchor-id="c">C++</h3>
+<ul>
+<li><a href="https://github.com/cpplint/cpplint">cpplint</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>linting</category>
+  <category>python</category>
+  <category>R</category>
+  <guid>https://ns-rse.github.io/posts/linting/index.html</guid>
+  <pubDate>Thu, 18 Aug 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/153/410254296_e518f48141_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>

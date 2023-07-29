@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>ns-rse</title>
+<link>https://ns-rse.github.io/links.html#category=git</link>
+<atom:link href="https://ns-rse.github.io/links-git.xml" rel="self" type="application/rss+xml"/>
+<description>Software development in a Research Environment</description>
+<image>
+<url>https://ns-rse.github.io/img/links.jpg</url>
+<title>ns-rse</title>
+<link>https://ns-rse.github.io/links.html#category=git</link>
+</image>
+<generator>quarto-1.3.14</generator>
+<lastBuildDate>Sun, 07 May 2023 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pre-Commit : Useful Hooks</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’m a big fan of <a href="https://pre-commit.com">pre-commit</a> and have written about it before (see posts on <a href="https://ns-rse.github.io/posts/pre-commit/">pre-commit</a>, <a href="https://ns-rse.github.io/posts/pre-commit-ci/">pre-commit CI</a> and <a href="https://ns-rse.github.io/posts/pre-commit-updating/">pre-commit updating</a>). This post discusses some of the <a href="https://pre-commit.com/hooks">hooks</a> that I use and how to configure them.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-hooks/https:/live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52842122133/in/datetaken/"><em>Irridescent</em> Picture by me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="python-linting" class="level2">
+<h2 class="anchored" data-anchor-id="python-linting">Python Linting</h2>
+<section id="ruff" class="level3">
+<h3 class="anchored" data-anchor-id="ruff">Ruff</h3>
+<p><a href="https://github.com/charliermarsh/ruff">ruff</a> is a Python linter written in Rust which means its considerably faster than many native linters. It aims for parity with Flake8 and covers a lot of the linting that PyLint undertakes too. Its configured via <code>pyproject.toml</code> which makes incorporating it into your Python Package simple.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/charliermarsh/ruff-pre-commit</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v0.0.191</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> ruff</span></span></code></pre></div>
+<p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/python-packaging/">Python Packaging</a> worth reading to understand more on this.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">tool</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">ruff</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb2-2"><span class="dt" style="color: #AD0000;">exclude</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[]</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;"># per-file-ignores = []</span></span>
+<span id="cb2-4"><span class="dt" style="color: #AD0000;">line-length</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">120</span></span>
+<span id="cb2-5"><span class="dt" style="color: #AD0000;">target-version</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"py310"</span></span>
+<span id="cb2-6"></span>
+<span id="cb2-7"><span class="co" style="color: #5E5E5E;"># Allow autofix for all enabled rules (when `--fix`) is provided.</span></span>
+<span id="cb2-8"><span class="dt" style="color: #AD0000;">fixable</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[</span><span class="st" style="color: #20794D;">"A"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"B"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"C"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"D"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"E"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"F"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"R"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"S"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"W"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"U"</span><span class="op" style="color: #5E5E5E;">]</span></span>
+<span id="cb2-9"><span class="dt" style="color: #AD0000;">unfixable</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[]</span></span></code></pre></div>
+</section>
+<section id="black" class="level3">
+<h3 class="anchored" data-anchor-id="black">Black</h3>
+<p><a href="https://black.readthedocs.io/en/stable/index.html">Black</a> is an opinionated formatter for Python that is <a href="https://pep8.org/">PEP8</a> compliant. By using <code>black</code> to format your code you end up with a consistent style across the code base and commit changes end up being minimal. This helps speed up code-review of pull-requests.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/psf/black</span></span>
+<span id="cb3-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">22.10.0</span></span>
+<span id="cb3-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-5"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> black</span></span>
+<span id="cb3-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/pre-commit-updating/">Python Packaging</a> worth reading to understand more on this.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">tool</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">black</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb4-2"><span class="dt" style="color: #AD0000;">line-length</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">120</span></span>
+<span id="cb4-3"><span class="dt" style="color: #AD0000;">target-version</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[</span><span class="st" style="color: #20794D;">"py38"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"py39"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"py310"</span><span class="op" style="color: #5E5E5E;">]</span></span>
+<span id="cb4-4"><span class="dt" style="color: #AD0000;">include</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">\\</span><span class="st" style="color: #20794D;">.pyi?$"</span></span></code></pre></div>
+</section>
+</section>
+<section id="markdown-linting" class="level2">
+<h2 class="anchored" data-anchor-id="markdown-linting">Markdown Linting</h2>
+<p><a href="https://github.com/DavidAnson/markdownlint-cli2">markdownlint-cli2</a> is a useful and highly configurable hook for linting <a href="https://www.markdownguide.org">Markdown</a> and <a href="https://commonmark.org/">CommonMark</a>. I wanted to use it on this blog though which is written using <a href="https://quarto.org/docs/authoring/markdown-basics.html">Quarto</a> and therefore uses <a href="https://pandoc.org/MANUAL.html#pandocs-markdown">PandocMarkdown</a> with files that have extension <code>.qmd</code>. I therefore enable the hook in <code>.pre-commit-config.yaml</code> with a configuration file specified</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-2"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/DavidAnson/markdownlint-cli2</span></span>
+<span id="cb5-3"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v0.6.0</span></span>
+<span id="cb5-4"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> markdownlint-cli2</span></span>
+<span id="cb5-6"><span class="at" style="color: #657422;">      </span><span class="fu" style="color: #4758AB;">args</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">.markdownlin-cli2.yaml</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>..and add a sample configuration file is shown below and <code>markdownlint-cli2</code> picks this up automatically.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="co" style="color: #5E5E5E;"># Configuration</span></span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;">config</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-3"><span class="co" style="color: #5E5E5E;">  # MD013 - line-length</span></span>
+<span id="cb6-4"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">line_length</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-5"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">line_length</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="dv" style="color: #AD0000;">120</span></span>
+<span id="cb6-6"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">code_blocks</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">false</span></span>
+<span id="cb6-7"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">tables</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">false</span></span>
+<span id="cb6-8"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">html</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-9"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">allowed_elements</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-10"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> div</span></span>
+<span id="cb6-11"></span>
+<span id="cb6-12"><span class="co" style="color: #5E5E5E;"># Globs</span></span>
+<span id="cb6-13"><span class="fu" style="color: #4758AB;">globs</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-14"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"**/*.qmd"</span></span>
+<span id="cb6-15"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"*.qmd"</span></span>
+<span id="cb6-16"></span>
+<span id="cb6-17"><span class="co" style="color: #5E5E5E;"># Fix any fixable errors</span></span>
+<span id="cb6-18"><span class="fu" style="color: #4758AB;">fix</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">false</span></span></code></pre></div>
+</section>
+<section id="emacs-lisp" class="level2">
+<h2 class="anchored" data-anchor-id="emacs-lisp">Emacs Lisp</h2>
+<p>As I use <a href="https://www.gnu.org/software/emacs/">Emacs</a> I have recourse to write some <a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/">Emacs Lisp</a> and so its useful to applying formatting to my <code>.el</code> files before committing them. <a href="https://github.com/eschulte/lisp-format">lisp-format</a> does the job nicely.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb7-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/eschulte/lisp-format</span></span>
+<span id="cb7-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> 088c8f78ca41204b44f2636275517ac09a2de6a9</span></span>
+<span id="cb7-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb7-5"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> lisp-format</span></span>
+<span id="cb7-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">name</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> formatter of lisp code</span></span>
+<span id="cb7-7"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">description</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> Run lisp-format against lisp files</span></span>
+<span id="cb7-8"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">language</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> script</span></span>
+<span id="cb7-9"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">files</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> \.(lisp|cl|asd|scm|el)$</span></span>
+<span id="cb7-10"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">entry</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> lisp-format -i</span></span></code></pre></div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>There are a <em>lot</em> of hooks out there to be used with <a href="https://pre-commit.com">pre-commit</a> and incorporated into your Continuous Integration pipeline with <a href="https://pre-commit.ci">pre-commit.ci</a>. Which you find useful will depend to a large extent on the languages that you are using for any given project. Here I’ve focused mainly on common tools for Python Packages, Markdown and Lisp but you can find hooks for Docker, Ansible, Rust, Go, JavaScript, C++ and many more, there is even <a href="https://github.com/jorisroovers/gitlint">gitlint</a> which lints your commit messages! Checkout the long list of available <a href="https://pre-commit.com/hooks">hooks</a> and try some out.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="related-pre-commit-posts" class="level3">
+<h3 class="anchored" data-anchor-id="related-pre-commit-posts">Related pre-commit posts</h3>
+<ul>
+<li><a href="https://ns-rse.github.io/posts/pre-commit/">pre-commit</a></li>
+<li><a href="https://ns-rse.github.io/posts/pre-commit-ci/">pre-commit CI</a></li>
+<li><a href="https://ns-rse.github.io/posts/pre-commit-updating/">pre-commit updating</a></li>
+</ul>
+</section>
+<section id="pre-commit-hooks" class="level3">
+<h3 class="anchored" data-anchor-id="pre-commit-hooks">Pre-commit hooks</h3>
+<ul>
+<li><a href="https://pre-commit.com">pre-commit</a> (<a href="https://pre-commit.com/hooks">pre-commit hooks</a>)</li>
+<li><a href="https://pre-commit.ci">pre-commit.ci</a></li>
+<li><a href="https://github.com/charliermarsh/ruff">ruff</a></li>
+<li><a href="https://github.com/DavidAnson/markdownlint-cli2">markdownlint-cli2</a></li>
+<li><a href="https://black.readthedocs.io/en/stable/index.html">Black</a></li>
+<li><a href="https://github.com/eschulte/lisp-format">lisp-format</a></li>
+<li><a href="https://github.com/jorisroovers/gitlint">gitlint</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>linting</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <guid>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</guid>
+  <pubDate>Sun, 07 May 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Pre-Commit.ci : Integrating Pre-Commit into CI/CD</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pre-commit-ci/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><strong>NB</strong> If you’ve not read it already I would recommend reading my previous post on using <a href="https://ns-rse.github.io/posts/pre-commit/">pre-commit</a> as the contents described herein assume that you are already using <a href="https://pre-commit.com">pre-commit</a> in your development.</p>
+<p>Having <a href="https://pre-commit.com">pre-commit</a> setup locally to run before making commits is great. Typically code lives in a “forge” such as <a href="https://github.com">GitHub</a> or <a href="https://gitlab.com">GitLab</a> and as <code>pre-commit</code> is run on each commit you shouldn’t have any problems when you come to <code>git push</code> your code to the remote <code>origin</code> repository (i.e.&nbsp;the repository hosted on GitHub/GitLab) as all <code>pre-commit</code> checks will have to have passed before this will take place.</p>
+<p>But what if for some reason you disabled <code>pre-commit</code> just to make some changes rather than addressing the failed linting or test? Or if you work on an open-source project and someone else contributes how can you ensure that their contributed code meets the code-style chosen by the project and that all tests pass in light of the changes that are being introduced?</p>
+<section id="continuous-integration-continuous-delivery-cicd" class="level2">
+<h2 class="anchored" data-anchor-id="continuous-integration-continuous-delivery-cicd">Continuous Integration / Continuous Delivery (CI/CD)</h2>
+<p>The solution to this is Continuous Integration/Continuous Delivery (CI/CD) which runs various hooks on GitHub/GitLab etc. in response to specific tasks/actions that occur on the repository. The exact name or system used depends on the forge, on GitHub these are <a href="https://docs.github.com/en/actions">GitHub Actions</a> (see also <a href="https://github.com/marketplace?type=actions">Actions Marketplace</a>) whilst on GitLab uses <a href="https://docs.gitlab.com/ee/ci/pipelines/">Pipelines</a>. There are even standalone systems which integrate with both such as the popular <a href="https://www.jenkins.io">Jenkins</a>.</p>
+<p><strong>By employing <code>pre-commit</code> as part of your CI/CD pipeline you ensure code meets the standards (linting, tests etc.) you wish contributions to meet before it is merged into your <code>main</code>/<code>master</code> branch`</strong></p>
+<p>These work by running processes under certain conditions, for example on a <code>push</code> to the <code>main</code> branch or a <code>tag</code> that begins with <code>v</code>, and they might run processes such as running the test suite for your project to ensure all tests pass, build web-pages or build the package for deployment to a repository (e.g.&nbsp;<a href="https://pypi.org">PyPI</a>). They are really useful and flexible systems and can be leveraged to run <code>pre-commit</code> on your code when Pull Requests (PR) are made to ensure the PR passes the various hooks. Ultimately a PR results in a <code>commit</code> to <code>master</code>/<code>main</code> and so its logically consistent that Pull Requests should pass <code>pre-commit</code> prior to being merged.</p>
+<p>Under any system you could write your own hook to run <code>pre-commit</code> but there is an even easier and more efficient solution if you use GitHub in the form of <a href="https://pre-commit.ci">pre-commit.ci</a>.</p>
+</section>
+<section id="github-and-pre-commit.ci" class="level2">
+<h2 class="anchored" data-anchor-id="github-and-pre-commit.ci">GitHub and pre-commit.ci</h2>
+<p>Currently <a href="https://pre-commit.ci">pre-commit.ci</a> only supports GitHub although support of other systems is in the pipeline. <code>pre-commit.ci</code> doesn’t need any configuration beyond your already existing <code>.pre-commit-config.yaml</code> (see <a href="https://ns-rse.github.io/posts/pre-commit/">Pre-commit : Protecting Your Future Self</a>). Where a <code>pre-commit</code> hook corrects formatting issues as is the case with some of the defaults such as <code>trailing-whitespace</code> or <code>check-yaml</code>, or if you are using Python linters such as <a href="https://black.readthedocs.io/en/stable/"><code>black</code></a> or <a href="https://github.com/charliermarsh/ruff"><code>ruff</code></a> which fix errors, <code>pre-commit.ci</code> can commit these changes and push them back to the Pull Request automatically. In a similar vein it will also routinely update the <code>rev</code> used in your <code>.pre-commit-config.yaml</code>, commit the change and push it back to your repository.</p>
+<p>It is also really fast because <code>pre-commit.ci</code> keeps the virtual environments that are used in tests cached whereas if you wrote your own action to run this the GitHub runner that is spun up to run GitHub Actions would have to download all of these each time the action is run is they are not persistent.</p>
+<p>Use of <code>pre-commit.ci</code> is free for open-source repositories and there are paid options for private or organisation repositories.</p>
+<blockquote class="blockquote">
+<p><strong>Benefits of pre-commit.ci</strong></p>
+<ul>
+<li>Supports GitHub but more to come in the future.</li>
+<li>Zero configuration, just need <code>.pre-commit-config.yaml</code>.</li>
+<li>Corrects &amp; commits formatting issues automatically without need for developer to reformat.</li>
+<li>Automatically updates <code>.pre-commit-config.yaml</code> for you (e.g.&nbsp;new <code>rev</code>).</li>
+<li>Faster than your own GitHub Action.</li>
+<li>Free for open source repositories (paid for version for private/organisation repositories).</li>
+</ul>
+</blockquote>
+<section id="configuration-.pre-commit-config.yaml" class="level3">
+<h3 class="anchored" data-anchor-id="configuration-.pre-commit-config.yaml">Configuration (<code>.pre-commit-config.yaml</code>)</h3>
+<p>Whilst not required it is possible to configure the behaviour of <code>pre-commit.ci</code> by adding a <code>ci:</code> section to your <code>.pre-commit-config.yaml</code>. The fields are fairly self-explanatory as the example below shows. Its possible to toggle whether to <code>autofix_prs</code> and to set the <code>autofix_commit_msg</code>. The <code>autoupdate_schedule</code> can be set to <code>weekly</code>, <code>monthly</code> or <code>quarterly</code> along with a custom <code>autoupdate_commit_msg</code>. Finally you can optionally disable some hooks from being run only in <code>pre-commit.ci</code>.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">ci</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-2"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">autofix_prs</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">true</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">autofix_commit_msg</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">'[pre-commit.ci] Fixing issues with pre-commit'</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">autoupdate_schedule</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> weekly</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">autoupdate_commit_msg</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">'[pre-commit.ci] pre-commit automatically updated revs.'</span></span>
+<span id="cb1-6"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">skip</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">pylint</span><span class="kw" style="color: #003B4F;">]</span><span class="co" style="color: #5E5E5E;"> # Optionally list ids of hooks to skip on CI</span></span></code></pre></div>
+</section>
+<section id="setup" class="level3">
+<h3 class="anchored" data-anchor-id="setup">Setup</h3>
+<p>Setup is relatively straight-forward, head to <a href="https://pre-commit.ci">https://pre-commit.ci</a> and sign-in with your GitHub account and grant <code>pre-commit.ci</code> access to your account.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit CI</figcaption><p></p>
+</figure>
+</div>
+<p>Once you have granted access you can choose which repositories <code>pre-commit.ci</code> has access to. It is possible to grant access to all repositories but I would recommend doing so on a per-repository basis so you know and are in control of what is happening across your repositories. If you have administration rights to organisation repositories these should be listed in the “<em>Select repositories</em>” pull-down menu.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/github-pre-commit-access.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Granting pre-commit.ci access to GitHub</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="pre-commit.ci-jobs" class="level3">
+<h3 class="anchored" data-anchor-id="pre-commit.ci-jobs"><code>pre-commit.ci</code> jobs</h3>
+<p>When logged into <code>pre-commit.ci</code> using your GitHub account you are presented with a page similar to the following which lists the accounts and any organisations that you have authorised <code>pre-commit.ci</code> to access.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/account-pre-commit-ci.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci account access</figcaption><p></p>
+</figure>
+</div>
+<p>You can follow the links through to view the history of jobs run by <code>pre-commit.ci</code> and whether they pass or fail. The page shows the current status and provides both Markdown and reStructured Text code for adding badges to your source documents (e.g.&nbsp;the Markdown badge can be added to your repositories top-level <code>README.md</code> and the badge will be displayed on GitHub)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-pass2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs pass</figcaption><p></p>
+</figure>
+</div>
+<p>You can click through and see the results of a given run and when they <a href="https://results.pre-commit.ci/run/github/168173540/1674062271.Tj4xDOxqRFu3CDIPhXkMJA">pass</a> they look similar to the output you would have seen when making commits locally.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-pass3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs pass</figcaption><p></p>
+</figure>
+</div>
+<p>But sometimes things will <a href="https://results.pre-commit.ci/run/github/168173540/1674061180.-2Eo_dbfRAGrukip387Nhg">fail</a> as shown below where the <code>trailing-whitespace</code> hook failed and the file was modified. But since <code>pre-commit.ci</code> corrects and pushes such changes automatically you can see at the bottom that these changes were pushed to the Pull Request from which the originated.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-fail.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Pre-commit.ci jobs fail</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="gitlab" class="level2">
+<h2 class="anchored" data-anchor-id="gitlab">GitLab</h2>
+<p>As <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> doesn’t (yet) support GitLab integrating <code>pre-commit</code> into your GitLab Pipeline is a little more involved. What follows is based on the excellent post on <a href="https://stackoverflow.com/collectives/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g">StackOverflow</a> describing how to achieve this integration.</p>
+<p>You should already have a valid <code>.pre-commit-config.yaml</code> in place (if not work through <a href="https://ns-rse.github.io/posts/pre-commit/">Pre-commit : Protecting your future self (blog-post)</a>). To enable <code>pre-commit</code> on your <a href="https://docs.gitlab.com/ee/ci/pipelines/">GitLab Pipeline</a> you need to to have a pipeline in place. This is a file in the root of your repository called <code>.gitlab-ci.yml</code>. You need to add the following to this file…</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">variables</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;">  # since we're not using merge request pipelines in this example,</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;">  # we will configure the pre-commit job to run on branch pipelines only.</span></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;">  # If you ARE using merge request pipelines, you can omit this section</span></span>
+<span id="cb2-5"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">PRE_COMMIT_DEDUPLICATE_MR_AND_BRANCH</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">false</span></span>
+<span id="cb2-6"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">PRE_COMMIT_AUTO_FIX_BRANCH_ONLY</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="ch" style="color: #20794D;">true</span></span>
+<span id="cb2-7"></span>
+<span id="cb2-8"><span class="fu" style="color: #4758AB;">include</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-9"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">remote</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">'https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml'</span></span></code></pre></div>
+<p>This uses the <code>pre-commit-autofix.yaml</code> from <a href="https://gitlab.com/yesolutions/">yesolutions</a> to run <code>pre-commit</code> and as the configuration shows automatically apply fixes <code>pre-commit</code> makes to your code. There are more options available for configuring this pipeline and they are documented <a href="https://gitlab.com/yesolutions/gitlab-ci-templates">here</a>.</p>
+<p>Because you are allowing a third-party pipeline to access your repository when pushing the changes <code>pre-commit</code> makes back to your repository for this to work you <em>must</em> create a <a href="https://docs.gitlab.com/ee/user/project/settings/project_access_tokens.html">project access token</a>. Under the repositories <em>Settings &gt; Access Tokens</em> you can create a new token with an expiry date. You must then create a CI/CD variable called <code>PRE_COMMIT_ACCESS_TOKEN</code> with this token as a value.</p>
+<p>Once you have done this your CI/CD pipeline should show at the very start the <code>.pre</code> stage…</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">GitLab pre-commit pipeline.</figcaption><p></p>
+</figure>
+</div>
+<p>…and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to download and intialise all of the environments for each configured hook unlike <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> (this is akin to writing your own <a href="https://docs.github.com/en/actions">GitHub Action</a> to run <code>pre-commit</code> which would also have to download and initialise the environments).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline-pass.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Success! GitLab pre-commit hooks pass!</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>This article has covered</p>
+<ul>
+<li>Why to integrate <a href="https://pre-commit.com"><code>pre-commit</code></a> into your Continuous Integration/Delivery pipeline.</li>
+<li>What the <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> service is and the benefits it provides.</li>
+<li>How to integrate <a href="https://pre-commit.ci"><code>pre-commit.ci</code></a> with <a href="https://github.com">GitHub</a> repositories.</li>
+<li>How to integrate <a href="https://pre-commit.com"><code>pre-commit</code></a> with <a href="https://gitlab.com">GitLab</a> repositories.</li>
+</ul>
+<p>By automating linting and testing in this manner you improve and shorten the feedback loop for developers and contributors which frees up more time and focus on the code itself.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://ns-rse.github.io/posts/pre-commit/">Pre-commit : Protecting your future self (blog-post)</a>- pre-requisite reading if you are not already using <a href="https://pre-commit.com"><code>pre-commit</code></a></li>
+<li><a href="https://ns-rse.github.io/pre-commit/">Pre-commit : Protecting your future self (slides)</a> - slides from a talk given at Research Computing at the University of Leeds that extended the above blog post to cover the material in this post (hit <code>s</code> to see the “speaker notes” <span class="emoji" data-emoji="wink">😉</span>).</li>
+<li><a href="https://pre-commit.com"><code>pre-commit</code></a></li>
+<li><a href="https://pre-commit.ci"><code>pre-commit.ci</code></a></li>
+<li><a href="https://stackoverflow.com/collectives/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g">How to use pre-commit to automatically correct commits and merge requests with GitLab CI - Stack Overflow</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>linting</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <guid>https://ns-rse.github.io/posts/pre-commit-ci/index.html</guid>
+  <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52596382383_eefbf62543_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Who’s to Blame</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/whos_to_blame/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.git-scm.com/docs/git-blame">Git blame</a> shows who made changes to which line of code for a given point in its history.</p>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<p>Git blame works on individual files and so requires a filename, there are a host of options, for example <code>-e</code> prints the authors email address <code>-w</code> ignores changes to white space and <code>-L 10,20</code> restricts output to the specified line range. If you want a the blame for a specific revision then you must include the hash.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">git</span> blame <span class="at" style="color: #657422;">-e</span> <span class="at" style="color: #657422;">-w</span> <span class="at" style="color: #657422;">-L</span> 10,20 f923la git_blame.org</span></code></pre></div>
+</section>
+<section id="alias" class="level2">
+<h2 class="anchored" data-anchor-id="alias">Alias</h2>
+<p>Some people don’t like the pejorative nature of the word <code>blame</code>. That’s ok though, with a tweak to our configuration its possible to use the alias <code>praise</code> or simply <code>who</code>.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;"># blame alias</span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> alias.praise blame</span>
+<span id="cb2-3"><span class="fu" style="color: #4758AB;">git</span> praise <span class="at" style="color: #657422;">-L1,30</span> git_blame.org</span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;"># who alias</span></span>
+<span id="cb2-5"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--global</span> alias.who blame</span>
+<span id="cb2-6"><span class="fu" style="color: #4758AB;">git</span> who <span class="at" style="color: #657422;">-L1,30</span> git_blame.org</span></code></pre></div>
+<p>For more detailed information on the array of options refer to the <a href="https://www.git-scm.com/docs/git-blame">official documentation</a> or see <code>git blame --help</code>.</p>
+</section>
+<section id="ignoring-blame" class="level2">
+<h2 class="anchored" data-anchor-id="ignoring-blame">Ignoring blame</h2>
+<p>Sometimes the case arises where you want to ignore blame. Perhaps the most common example is when an existing code base has been <a href="../linting">linted</a> to conform to a particular style guide. Looking at who performed these changes is not informative and masks who made the changes and why. Its possible to ignore specific commits on the command line with <code>--ignore-revs &lt;hash&gt; &lt;file&gt;</code>, but it will quickly become tedious to remember to ignore all blame across multiple commits. Fortunately you can save the commits to ignore to the file <code>.git-blame-ignore-revs</code> (along with comments) so that they are stored. The full commit (40 characters) of hashes should be used.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># PEP8 compliance for module X</span></span>
+<span id="cb3-2"><span class="ex" style="color: null;">c00177a6121f86c001f338feff3280fd576fdbf3</span></span>
+<span id="cb3-3"></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;"># PEP8 compliance for module Y</span></span>
+<span id="cb3-5"><span class="ex" style="color: null;">db27fa5f18299ca631efc430512a3f358c2b154f</span></span></code></pre></div>
+<p>Now that you have the revisions in place to be ignored when reporting blame you can choose not to use it.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;">git</span> blame <span class="at" style="color: #657422;">--ignore-revs-file</span> .gitblame-ignore-revs git_blame.org</span></code></pre></div>
+<p>…but this is tedious to remember to have to do each time and ideally others on your team should use this file too. You can configure Git to use this file by modifying the local configuration. Make sure to add it to your repository so that others can use it.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;">git</span> config blame.ignoreRevsFile .git-blame-ignore-revs</span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;">git</span> add .git-blame-ignore-revs</span></code></pre></div>
+<p>As of <a href="https://github.com/orgs/community/discussions/5033#discussioncomment-2318478">2022-03-08</a> GitHub will also <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file#ignore-commits-in-the-blame-view">ignore commits in the blame view</a> that are listed in <code>.git-blame-ignore-revs</code> providing this file is in the root of your project folder.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="general" class="level3">
+<h3 class="anchored" data-anchor-id="general">General</h3>
+<ul>
+<li><a href="https://www.atlassian.com/git/tutorials/inspecting-a-repository/git-blame">Atlassian | git blame</a></li>
+</ul>
+</section>
+<section id="resources" class="level3">
+<h3 class="anchored" data-anchor-id="resources">Resources</h3>
+<ul>
+<li><a href="https://www.moxio.com/blog/43/ignoring-bulk-change-commits-with-git-blame">Ignoring bulk change commits with git blame</a></li>
+<li><a href="https://csswizardry.com/2017/05/little-things-i-like-to-do-with-git/#praise-people">Little things I like to do with Git</a></li>
+<li><a href="https://stackoverflow.com/a/3959409/1444043">Is there a way to customize the output of git blame</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <category>blame</category>
+  <guid>https://ns-rse.github.io/posts/whos_to_blame/index.html</guid>
+  <pubDate>Sat, 17 Dec 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52065067830_734d0ebd51_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Pre-Commit : Customising and Updating</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pre-commit-updates/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://pre-commit.com/">Pre-commit</a> is a tool for running hooks prior to making commits to your Git history. If you’re not familiar with it then you may want to read the earlier post <a href="https://ns-rse.github.io/posts/pre-commit/">Pre-Commit : Protecting your future self</a>. This article discusses updating <code>pre-commit</code> and is prompted by a change in the <code>flake8</code> repository.</p>
+<section id="pre-commit-hooks" class="level2">
+<h2 class="anchored" data-anchor-id="pre-commit-hooks">Pre-commit hooks</h2>
+<p>A lot of the power of <code>pre-commit</code> comes from the vast array of <a href="https://pre-commit.com/hooks.html">hooks</a> that are available that users make available. These are included under <code>repos:</code> section of the <code>.pre-commit-config.yaml</code> and typically require a minimum of the <code>repo:</code> and the <code>rev:</code> to use and then optionally a <code>hooks:</code> section. The <code>sample-config</code> that <code>pre-commit</code> will auto-generate looks like…</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-2"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v4.3.0</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> trailing-whitespace</span></span>
+<span id="cb1-6"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> end-of-file-fixer</span></span>
+<span id="cb1-7"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-yaml</span></span>
+<span id="cb1-8"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-added-large-files</span></span></code></pre></div>
+<p>After finding a repository and hook that you wish to use <a href="https://pre-commit.com/hooks.html">hooks</a> repository you need to add it to your <code>.pre-commit-config.yaml</code>. Here we add the <a href="https://github.com/PyCQA/pylint"><code>pylint</code></a> repository and whilst it only has one hook we explicitly add it.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-2"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb2-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v4.3.0</span></span>
+<span id="cb2-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> trailing-whitespace</span></span>
+<span id="cb2-6"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> end-of-file-fixer</span></span>
+<span id="cb2-7"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-yaml</span></span>
+<span id="cb2-8"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-added-large-files</span></span>
+<span id="cb2-9"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/PyCQA/pylint</span></span>
+<span id="cb2-10"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v2.15.5</span></span>
+<span id="cb2-11"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-12"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pylint</span></span></code></pre></div>
+<p>If a repository has more than one <code>hook</code> available then it can be enabled by listing its <code>id:</code> as is the case in the <code>hooks</code> above for the <code>pre-commit-hooks</code> repository.</p>
+</section>
+<section id="local-hooks" class="level2">
+<h2 class="anchored" data-anchor-id="local-hooks">Local Hooks</h2>
+<p>In some instances the provisioned repositories do not always meet the requirements. One example of this is the <a href="https://github.com/pycqa/pylint">pylint action</a> which parses the code-base to detect errors using <a href="https://pylint.pycqa.org/en/latest/">pylint</a>. Typically most Python packages have their own dependencies but because the Pylint action pulls down and uses its own virtual environment these packages are not installed. As a consequence <code>pylint</code> reports a lot of <code>import-error</code> as its unable to import the required dependencies.</p>
+<p>The solution to this is to write a local hook, which instead of defining a GitHub repository as the <code>repo:</code> uses the value <code>local</code>. Thus to run <code>pylint</code> in a local environment from <code>pre-commit</code> you would add the following to your <code>.pre-commit-config.yaml</code></p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-2"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb3-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v4.3.0</span></span>
+<span id="cb3-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> trailing-whitespace</span></span>
+<span id="cb3-6"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> end-of-file-fixer</span></span>
+<span id="cb3-7"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-yaml</span></span>
+<span id="cb3-8"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-added-large-files</span></span>
+<span id="cb3-9"><span class="co" style="color: #5E5E5E;"># -   repo: https://github.com/PyCQA/pylint</span></span>
+<span id="cb3-10"><span class="co" style="color: #5E5E5E;">#     rev: v2.15.5</span></span>
+<span id="cb3-11"><span class="co" style="color: #5E5E5E;">#     hooks:</span></span>
+<span id="cb3-12"><span class="co" style="color: #5E5E5E;">#     -   id: pylint</span></span>
+<span id="cb3-13"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> local</span></span>
+<span id="cb3-14"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-15"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pylint</span></span>
+<span id="cb3-16"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">name</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> PyLint</span></span>
+<span id="cb3-17"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">entry</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> python -m pylint.__main__</span></span>
+<span id="cb3-18"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">language</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> system</span></span>
+<span id="cb3-19"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">files</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> \.py$</span></span></code></pre></div>
+<p>For this to work you would have to ensure that you have a virtual environment activated that includes the package dependencies, including <code>pylint</code>, when you make you <code>git commit</code> so that <code>pre-commit</code> can find and import all the required packages.</p>
+</section>
+<section id="updating-pre-commit" class="level2">
+<h2 class="anchored" data-anchor-id="updating-pre-commit">Updating <code>pre-commit</code></h2>
+<p>After adding a new repo and hook it will not be immediately ready to use as the environment has not been initialised. You can wait until your next commit or force this with the <code>autoupdate</code> option. This will update <em>all</em> repositories that are defined in your configuration.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;">$</span> pre-commit autoupdate</span>
+<span id="cb4-2"><span class="ex" style="color: null;">Updating</span> https://github.com/pre-commit/pre-commit-hooks ... updating v3.2.0 <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> v4.3.0.</span>
+<span id="cb4-3"><span class="ex" style="color: null;">Updating</span> https://github.com/PyCQA/pylint ... [INFO] Initializing environment for https://github.com/PyCQA/pylint.</span>
+<span id="cb4-4"><span class="ex" style="color: null;">already</span> up to date.</span></code></pre></div>
+</section>
+<section id="repository-changes" class="level2">
+<h2 class="anchored" data-anchor-id="repository-changes">Repository Changes</h2>
+<p>Sometimes, albeit rarely, repositories change their location as was the case recently when <a href="https://gitlab.com/PyCQA/flake8">flake8</a> moved from <a href="https://gitlab.com">GitLab</a> to <a href="https://github.com/PyCQA/flake8">GitHub</a>. As a consequence any <code>pre-commit</code> that uses <code>flake8</code> repo/hook and configured to run in Continuous Integration pipelines failed as it was unable to download and run the <code>flake8</code> environment. The solution is simply to update the <code>repo:</code>.</p>
+<p>Before this change the entry for <code>flake8</code> looked like…</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://gitlab.com/pycqa/flake8.git</span></span>
+<span id="cb5-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">3.9.2</span></span>
+<span id="cb5-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-4"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> flake8</span></span>
+<span id="cb5-5"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">additional_dependencies</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">flake8-print</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">args</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="st" style="color: #20794D;">"topostats"</span><span class="kw" style="color: #003B4F;">,</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"tests"</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-7"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>To update to use the new repository it should point to <code>github.com</code> as shown below.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pycqa/flake8.git</span></span>
+<span id="cb6-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">3.9.2</span></span>
+<span id="cb6-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-4"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;">   </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> flake8</span></span>
+<span id="cb6-5"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">additional_dependencies</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">flake8-print</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb6-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">args</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="st" style="color: #20794D;">"topostats"</span><span class="kw" style="color: #003B4F;">,</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"tests"</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb6-7"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>After making this change you have to <code>pre-commit autoupdate</code> to force downloading and updating from the new source, otherwise your existing older revision will be used locally.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://ns-rse.github.io/posts/pre-commit/">Pre-Commit : Protecting your future self</a></li>
+<li><a href="https://pre-commit.com/">Pre-commit</a></li>
+<li><a href="https://pre-commit.com/hooks.html">Pre-commit hooks</a></li>
+<li><a href="https://github.com/PyCQA/pylint">pylint</a></li>
+<li><a href="https://github.com/PyCQA/flake8">flake8</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>linting</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <category>pre-commit</category>
+  <guid>https://ns-rse.github.io/posts/pre-commit-updates/index.html</guid>
+  <pubDate>Tue, 15 Nov 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52358442614_416d014454_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Pre-Commit : Protecting your future self</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pre-commit/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://pre-commit.com/">Pre-commit</a> is a powerful tool for executing a range of hooks prior to making commits to your Git history. This is useful because it means you can automatically run a range of linting tools on your code across an array of languages to ensure your code is up-to-scratch <em>before</em> you make the commit.</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>Pre-commit is written in Python but that isn’t a limitation as it will lint YAML, JSON, C, JavaScript, Go, Rust, TOML, Terraform, Jupyter Notebooks, and so on. The list of <a href="https://pre-commit.com/hooks.html">supported hooks</a> is vast.</p>
+<p>For those unfamiliar with version control and Git in particular this will likely all sound alien. If you are new to the world of version control and Git I can highly recommend the <a href="https://srse-git-github-zero2hero.netlify.app/">Git &amp; Github through GitKraken Client - From Zero to Hero!</a> course offered by the <a href="https://rse.shef.ac.uk">Research Software Engineering</a> at the University of Sheffield and developed by Alumni <a href="https://www.r-rse.eu/">Anna Krystalli</a>.</p>
+<section id="what-is-a-hook" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-a-hook">What is a “hook”?</h3>
+<p>In computing a “hook” refers to something that is run prior to or in response to a requested action. In the context of the current discussion we are talking about hooks that relate to actions undertaken in Git version control and specifically actions that are run before a “commit” is made.</p>
+<p>When you have initialised a directory to be under Git version control the settings and configuration are stored in the <code>.git/</code> sub-directory. There is the <code>.git/config</code> file for the repositories configuration but also the <code>.git/hooks/</code> directory that is populated with a host of <code>*.sample</code> files with various different names that give you an in-road into what different hooks you might want to run. Its worth spending a little time reading through these if you haven’t done so yet as they provide useful examples of how various hooks work.</p>
+</section>
+<section id="why-pre-commit-hooks" class="level3">
+<h3 class="anchored" data-anchor-id="why-pre-commit-hooks">Why pre-commit hooks?</h3>
+<p>Typically when writing code you should <a href="https://ns-rse.github.io/posts/linting/">lint</a> your code to ensure it conforms to agreed style guides and remove any “<a href="https://en.wikipedia.org/wiki/Code_smell">code smells</a>” that may be lingering (code that violates design principles). It won’t guarantee that your code is perfect but its a good starting point to improving it. People who write a lot of code have good habits of doing these checks manually prior to making commits. Experienced coders will have configured their Integrated Development Environment (IDE) to apply many such “hooks” on saving a file they have been working on.</p>
+<p>At regular points in your workflow you save your work and check it into Git by making a commit and that is where <code>pre-commit</code> comes in to play because it will run all the hooks it has been configured to run against the files you are including in your commit. If any of the hooks fail then your commit is <em>not</em> made. In some cases <code>pre-commit</code> will automatically correct the errors (e.g.&nbsp;removing trailing white-space; applying <a href="https://github.com/psf/black">black</a> formatting if configured) but in others you have to correct them yourself before a commit can be successfully made.</p>
+<p>Initially this can be jarring, but it saves you, and more importantly those who you are asking to review your code, time and effort. Your code meets the required style and is a little bit cleaner before being sent out for review. Long term linting your code is beneficial (see <a href="2022-04-19-linting">Linting - What is all the fluff about?</a>).</p>
+</section>
+</section>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>Pre-commit is written in Python and so you will need Python installed on your system in order to use it. Aside from that there is little else extra that is required to be manually installed as pre-commit installs virtual environments specific for each enabled hook.</p>
+<p>Most systems provide <code>pre-commit</code> in their package management system but typically you should install <code>pre-commit</code> within your virtual environment or under your user account.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">pip</span> install pre-commit</span>
+<span id="cb1-2"><span class="ex" style="color: null;">conda</span> install <span class="at" style="color: #657422;">-c</span> conda-forge pre-commit</span></code></pre></div>
+<p>If you are working on a Python project then you should include <code>pre-commit</code> as a requirement (either in <code>requirements-dev.txt</code>) or under the <code>dev</code> section of <code>[options.extras_require]</code> in your <code>setup.cfg</code> as shown below.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">options</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">extras_require</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb2-2"><span class="dt" style="color: #AD0000;">dev</span> <span class="op" style="color: #5E5E5E;">=</span></span>
+<span id="cb2-3">  <span class="dt" style="color: #AD0000;">pre-commit</span></span>
+<span id="cb2-4">  <span class="dt" style="color: #AD0000;">pytest</span></span>
+<span id="cb2-5">  <span class="dt" style="color: #AD0000;">pytest-cov</span></span></code></pre></div>
+</section>
+<section id="configuration" class="level2">
+<h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
+<p>Configuration of pre-commit is via a file in the root of your Git version controlled directory called <code>.pre-commit-config.yaml</code>. This file should be included in your Git repository, you can create a blank file or <code>pre-commit</code> can generate a sample configuration for you.</p>
+<pre class="{bash}"><code># Empty configuration
+touch .pre-commit-config.yaml
+# Auto-generate basic configuration
+pre-commit sample-config &gt; .pre-commit-config.yaml
+git add .pre-commit-config.yaml</code></pre>
+<section id="hooks" class="level3">
+<h3 class="anchored" data-anchor-id="hooks">Hooks</h3>
+<p>Each hook is associated with a repository (<code>repo</code>) and a version (<code>rev</code>) within it. Many are available from the <code>https://github.com/pre-commit/pre-commit-hooks</code>. The default set of <code>pre-commit</code> hooks might look like the following.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="fu" style="color: #4758AB;">repos</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb4-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pre-commit/pre-commit-hooks</span></span>
+<span id="cb4-3"><span class="at" style="color: #657422;">      </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v4.3.0</span><span class="co" style="color: #5E5E5E;"> # Use the ref you want to point at</span></span>
+<span id="cb4-4"><span class="at" style="color: #657422;">      </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb4-5"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> trailing-whitespace</span></span>
+<span id="cb4-6"><span class="at" style="color: #657422;">            </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">file</span><span class="kw" style="color: #003B4F;">,</span><span class="at" style="color: #657422;"> text</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb4-7"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-docstring-first</span></span>
+<span id="cb4-8"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-case-conflict</span></span>
+<span id="cb4-9"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> end-of-file-fixer</span></span>
+<span id="cb4-10"><span class="at" style="color: #657422;">            </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb4-11"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> requirements-txt-fixer</span></span>
+<span id="cb4-12"><span class="at" style="color: #657422;">          </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> check-yaml</span></span></code></pre></div>
+</section>
+<section id="hooks-from-external-repositories" class="level3">
+<h3 class="anchored" data-anchor-id="hooks-from-external-repositories">Hooks from External Repositories</h3>
+<p>Some hooks are available from dedicated repositories, for example the following runs <a href="https://github.com/psf/black">Black</a>, <a href="https://flake8.pycqa.org/en/latest/">Flake8</a> and <a href="https://pylint.pycqa.org/en/latest/">Pylint</a> on your code and should follow under the above (with the same level of indenting to be valid YAML).</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/psf/black</span></span>
+<span id="cb5-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">22.6.0</span></span>
+<span id="cb5-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-4"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> black</span></span>
+<span id="cb5-5"><span class="at" style="color: #657422;">          </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-6"></span>
+<span id="cb5-7"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://gitlab.com/pycqa/flake8.git</span></span>
+<span id="cb5-8"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="fl" style="color: #AD0000;">3.9.2</span></span>
+<span id="cb5-9"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-10"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> flake8</span></span>
+<span id="cb5-11"><span class="at" style="color: #657422;">          </span><span class="fu" style="color: #4758AB;">additional_dependencies</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">flake8-print</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-12"><span class="at" style="color: #657422;">          </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span>
+<span id="cb5-13"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> https://github.com/pycqa/pylint</span></span>
+<span id="cb5-14"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rev</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> v2.15.3</span></span>
+<span id="cb5-15"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb5-16"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pylint</span></span></code></pre></div>
+<p>An extensive list of <a href="https://pre-commit.com/hooks.html">supported hooks</a> is available. It lists the repository from which the hook is derived along with its name.</p>
+</section>
+<section id="local-hooks" class="level3">
+<h3 class="anchored" data-anchor-id="local-hooks">Local Hooks</h3>
+<p>You can also define <a href="https://pre-commit.com/#new-hooks">new hook</a> and configure them under the <code>- repo: local</code>.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">repo</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> local</span></span>
+<span id="cb6-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">hooks</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-3"><span class="at" style="color: #657422;">      </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">id</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> &lt;id&gt;</span></span>
+<span id="cb6-4"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">name</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> &lt;descriptive name&gt;</span></span>
+<span id="cb6-5"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">language</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> python</span></span>
+<span id="cb6-6"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">entry</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb6-7"><span class="at" style="color: #657422;">        </span><span class="fu" style="color: #4758AB;">types</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="kw" style="color: #003B4F;">[</span><span class="at" style="color: #657422;">python</span><span class="kw" style="color: #003B4F;">]</span></span></code></pre></div>
+<p>For some examples of locally defined hooks see the <a href="https://github.com/pandas-dev/pandas/blob/main/.pre-commit-config.yaml">Pandas .pre-commit-config.yaml</a>.</p>
+</section>
+</section>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<p>Before <code>pre-commit</code> will run you need to install it within your repository. This puts the file <code>.git/hooks/pre-commit</code> in place that contains the hooks you have configured to run. To install this you should have your <code>.pre-commit-config.yaml</code> in place and then run the following.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;">pre-commit</span> install</span></code></pre></div>
+<p>Once installed and configured there really isn’t much to be said for using <code>pre-commit</code>, just make commits and before you can make a successful commit <code>pre-commit</code> must run with all the hooks you have configured passing. By default <code>pre-commit</code> only runs on files that are staged and ready to be committed, if you have unstaged files these will be stashed prior to running the <code>pre-commit</code> hook and restored afterwards. Should you wish to run these manually without making a commit then, after activating a virtual environment if you are using one, simply make a <code>git commit</code> or you can run.</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;">pre-commit</span> run</span></code></pre></div>
+<p>If any of the configured hooks fail then the commit will not be made. Some hooks such as <a href="https://github.com/psf/black">black</a> may reformat files in place and you can then make another commit recording those changes and the hook should pass. Its important to pay close attention to the output.</p>
+<p>If you want to run a specific hook you simply add the <code>&lt;id&gt;</code> after <code>run</code>.</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;">pre-commit</span> run <span class="op" style="color: #5E5E5E;">&lt;</span>id<span class="op" style="color: #5E5E5E;">&gt;</span></span></code></pre></div>
+<p>Or if you want to force running against all files (except unstaged ones) you can do so.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;">pre-commit</span> run <span class="at" style="color: #657422;">--all-files</span> <span class="co" style="color: #5E5E5E;"># Across all files/hooks</span></span></code></pre></div>
+<p>And these two options can be combined to run a specific hook against all files.</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;">pre-commit</span> run <span class="op" style="color: #5E5E5E;">&lt;</span>id<span class="op" style="color: #5E5E5E;">&gt;</span> --all-files</span></code></pre></div>
+<p>You may find that you wish to switch branches to work on another feature or fix a bug but that your current work doesn’t pass the <code>pre-commit</code> and you don’t wish to sort that out immediately. The solution to this is to use <code>git stash</code> to temporarily save your current uncommitted work and restore the working directory and index to its previous state. You are then free to switch branches and work on another feature or fix a bug, commit and push those changes and then switch back.</p>
+<p>Imagine you are working on branch <code>a</code> but are asked to fix a bug on branch <code>b</code>. You go to commit your work but find that <code>a</code> does not pass <code>pre-commit</code> but you wish to work on <code>b</code> anyway. Starting on branch <code>a</code> you stash your changes, switch branches, make and commit your changes to branch <code>b</code> then switch back to <code>a</code> and unstash your work there.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;">git</span> stash</span>
+<span id="cb12-2"><span class="fu" style="color: #4758AB;">git</span> checkout b</span>
+<span id="cb12-3"><span class="ex" style="color: null;">...</span> <span class="co" style="color: #5E5E5E;"># Work on branch b</span></span>
+<span id="cb12-4"><span class="fu" style="color: #4758AB;">git</span> add <span class="op" style="color: #5E5E5E;">&lt;</span>changed_files_on_branch_b<span class="op" style="color: #5E5E5E;">&gt;</span></span>
+<span id="cb12-5"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Fixing bug on branch b"</span></span>
+<span id="cb12-6"><span class="fu" style="color: #4758AB;">git</span> push</span>
+<span id="cb12-7"><span class="fu" style="color: #4758AB;">git</span> checkout a</span>
+<span id="cb12-8"><span class="fu" style="color: #4758AB;">git</span> stash apply</span></code></pre></div>
+</section>
+<section id="updating" class="level2">
+<h2 class="anchored" data-anchor-id="updating">Updating</h2>
+<p>You can update hooks locally by running <code>pre-commit autoupdate</code>. This will update your <code>.pre-commit-config.yaml</code> with the latest version of repositories you have configured and these will run both locally and if you use CI/CD as described below. However this will <em>not</em> update any packages that are part of the <code>- repo: local</code> that you may have implemented and it is your responsibility to handle these.</p>
+</section>
+<section id="pre-commit-cicd" class="level2">
+<h2 class="anchored" data-anchor-id="pre-commit-cicd">Pre-commit CI/CD</h2>
+<p>Ideally contributors will have setup their system to work with pre-commit and be running such checks prior to making pushes. It is however useful to enable running pre-commit as part of your Continuous Integration/Development pipeline (CI/CD). This can be done with both <a href="https://gitlab.com">GitLab</a> and <a href="https://github.com">GitHub</a> although similar methods are available for many <a href="https://pre-commit.com/#usage-in-continuous-integration">continuous integration systems</a>.</p>
+<section id="github" class="level3">
+<h3 class="anchored" data-anchor-id="github">GitHub</h3>
+<p>GitHub actions reside in the <code>.github/workflows/</code> directory of your project. A simple pre-commit action is available on the Marketplace at <a href="https://github.com/marketplace/actions/pre-commit">pre-commit/action</a>. Copy this template to <code>.github/workflows/pre-commit.yml</code> and include it in your Git repository.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="fu" style="color: #4758AB;">git</span> add .github/workflows/pre-commit.yml</span>
+<span id="cb13-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Adding pre-commit GitHub Action"</span> <span class="kw" style="color: #003B4F;">&amp;&amp;</span> <span class="fu" style="color: #4758AB;">git</span> push</span></code></pre></div>
+</section>
+<section id="gitlab" class="level3">
+<h3 class="anchored" data-anchor-id="gitlab">GitLab</h3>
+<p>If you use GitLab the following article describes how to configure a CI job to run as part of your repository.</p>
+<ul>
+<li><a href="https://stackoverflow.com/collectives/gitlab/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g">How to use pre-commit to automatically correct commits and merge requests with GitLab CI</a></li>
+</ul>
+</section>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://pre-commit.com/">Pre-commit</a></li>
+<li><a href="https://pre-commit.com/hooks.html">Supported hooks</a></li>
+<li><a href="https://github.com/marketplace/actions/pre-commit">GitHub Action</a></li>
+<li><a href="https://stackoverflow.com/collectives/gitlab/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g">GitLab CI</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>code</category>
+  <category>analysis</category>
+  <category>linting</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <guid>https://ns-rse.github.io/posts/pre-commit/index.html</guid>
+  <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Git : Custom SSH credentials for git repositories</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/git-ssh/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>How to configure individual Git repositories to use specific SSH keys. This is useful if you have more than one account on a forge, for example a personal and work account.</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>Typically when pushing and pulling changes to a forge such as <a href="https://github.com">GitHub</a>, <a href="https://gitlab.com">GitLab</a> or <a href="https://codeberg.org">Codeberg</a> you use an SSH (<em>S</em>ecure <em>SH</em>ell) key to authenticate that you have permission to access the repository.</p>
+</section>
+<section id="ssh-keys" class="level2">
+<h2 class="anchored" data-anchor-id="ssh-keys">SSH Keys</h2>
+<section id="concept" class="level3">
+<h3 class="anchored" data-anchor-id="concept">Concept</h3>
+<p>SSH keys are, in conjunction with “keychains”, used to save you having to enter a password each time you connect from one computer to another. They are generated on your computer and consist of two parts, a private key which remains on your computer and a public key which you place on remote computers you wish to connect to. There is a password associated with your key which is required to “unlock” your private key on your computer. Only an unlocked private key will match with a public key. Think of the public key as the lock on your front door, and the private key the key you carry on your traditional, physical, keychain/keyring. Only when the two match will things be unlocked, although you have to unlock your private key when you want to use it just as you have to get your keys out of your pocket (although “keychains” help with this).</p>
+</section>
+<section id="generation" class="level3">
+<h3 class="anchored" data-anchor-id="generation">Generation</h3>
+<p>There are different algorithms for generating SSH key pairs. DSA is no longer considered secure and RSA keys should have at least 2048-bits if not 4096-bits. A good choice these days is to use an elliptic curve based key such as ed25519 as they are shorter and faster. For more on why you should use this key see the article <a href="https://blog.g3rt.nl/upgrade-your-ssh-keys.html">Upgrade your SSH keys!</a>.</p>
+<p>To generate a key use the following command entering a secure (i.e.&nbsp;<a href="xkcd.com/936/">long</a>) password.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">ssh-keygen</span> <span class="at" style="color: #657422;">-o</span> <span class="at" style="color: #657422;">-a</span> 100 <span class="at" style="color: #657422;">-t</span> ed25519</span></code></pre></div>
+<p>You will be prompted for a filename to save your keys to, so you should know where to find them (the default is <code>~/.ssh/id_ed25519[.pub]</code>). You have a private key <code>~/.ssh/id_ed25519</code> and a public <code>~/.ssh/id_ed25519.pub</code> and we will use this to set up authentication on your Git Forge.</p>
+</section>
+<section id="forge-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="forge-configuration">Forge Configuration</h3>
+<p>Under your account settings on your chosen Git Forge navigate to <em>Settings &gt; SSH and GPG Keys</em> and select <em>Add New Key</em> on (<a href="https://github.com/settings/keys">GitHub</a>). On GitLab navigate to <em>Preferences &gt; SSH Keys</em> <a href="https://gitlab.com/-/profile/keys">GitLab</a>), this page allows you to add a new key.</p>
+<p>You need to copy and paste your public key into the <code>Key</code> box on these pages and give it a name (typically the hostname of your computer is a good choice). To view your public key simply use <code>cat</code> and copy and paste it. You can optionally choose to set an expiration date for your key which is good practice but means you have to generate new keys in the future.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">cat</span> ~/.ssh/id_ed25519.pub</span></code></pre></div>
+</section>
+</section>
+<section id="git-global-ssh-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="git-global-ssh-configuration">Git Global SSH Configuration</h2>
+<p>Typically your global configuration for which key to use is set in <code>~/.ssh/config</code> with an entry similar to the below.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;">Host</span> github.com</span>
+<span id="cb3-2">     <span class="ex" style="color: null;">User</span> git</span>
+<span id="cb3-3">     <span class="ex" style="color: null;">Port</span> 22</span>
+<span id="cb3-4">     <span class="ex" style="color: null;">PreferredAuthentications</span> publickey</span>
+<span id="cb3-5">     <span class="ex" style="color: null;">IdentityFile</span> ~/.ssh/id_ed25519</span></code></pre></div>
+<p>Here it uses the User name <code>git</code> on port <code>22</code>. The preferred authentication method is using a <code>publickey</code> and the private key used is stored locally at <code>~/.ssh/id_ed25519</code>.</p>
+<p>When asked to connect to a forge using SSH (e.g.&nbsp;<code>git pull</code> or <code>git push</code>) will look through the <code>~/.ssh/config</code> file to see if there is a configuration section that matches the target and if so use the configuration defined there-in. You will then be prompted for your SSH private key password.</p>
+<section id="what-are-keychains" class="level3">
+<h3 class="anchored" data-anchor-id="what-are-keychains">What are Keychains?</h3>
+<p>You may be wondering how an SSH key makes your life easier, you are still prompted to enter a password when trying to interact with a Git Forge, or use it in a more traditional manner to connect over SSH to another server. This is where the magic of a “keychain” steps in to make your life easier, you still have to enter a password but only once to add your SSH key to the “keychain”. Typically keychains are front-ends for interacting with and managing <a href="https://www.ssh.com/academy/ssh/agent">SSH agent</a>. The name is apt since you add your SSH key to the keychain once, typically on log-in, and are asked for your password to unlock it and then stores it in the SSH agent. Then each time SSH requires an SSH key it retrieves it from the keychain rather than prompting you for a password.</p>
+<p>There are many different implementations of keychain such as the <a href="https://www.funtoo.org/Funtoo:Keychain">Funtoo Keychain Project</a>, <a href="https://wiki.gnome.org/Apps/Seahorse">Seahorse</a> the GNOME GUI management tool,</p>
+</section>
+</section>
+<section id="git-per-repository-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="git-per-repository-configuration">Git Per Repository Configuration</h2>
+<p>We now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be desirable if you have two accounts on the same forge e.g.&nbsp;both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you can configure each repository to use a specific key (<a href="https://superuser.com/a/912281">source</a>). At the command line…</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;">cd</span> a/git/repository</span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;">git</span> config core.sshCommand <span class="st" style="color: #20794D;">"ssh -i ~/.ssh/work_ed25519 -F /dev/null"</span></span>
+<span id="cb4-3"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--local</span> user.name <span class="st" style="color: #20794D;">"Username"</span></span>
+<span id="cb4-4"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--local</span> user.email <span class="st" style="color: #20794D;">"repos@username.com"</span></span></code></pre></div>
+<p>This adds the following to the repositories configuration which is stored under <code>.git/config</code> and you can of course enter this directly to the configuration file yourself.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">[core]</span></span>
+<span id="cb5-2">    <span class="ex" style="color: null;">sshCommand</span> = ssh <span class="at" style="color: #657422;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;">-F</span> /dev/null</span>
+<span id="cb5-3"><span class="ex" style="color: null;">[user]</span></span>
+<span id="cb5-4">    <span class="ex" style="color: null;">name</span> = Username</span>
+<span id="cb5-5">    <span class="ex" style="color: null;">email</span> = repos@username.com</span></code></pre></div>
+<p>What is this doing? Well it’s instructing Git to run ssh using the private key file (with the <code>-i</code> flag to specify the <code>identity_file</code>) that is located at <code>~/.ssh/work_ed25519</code>. Providing you have…</p>
+<ol type="a">
+<li>Already uploaded the public key (<code>work_ed25519.pub</code>) to your GitHub account.</li>
+<li>Stored this key in a Keychain as described above.</li>
+</ol>
+<p>…you shouldn’t be prompted for a password.</p>
+<p>You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote <code>origin</code> (typically a forge such as GitHub, GitLab, Codeberg or so forth). If however you have multiple projects you wish to setup with an alternative SSH key configuration it can be tedious to configure each repository. Thankfully Git &gt;= 2.13 introduced <a href="https://git-scm.com/docs/git-config#_conditional_includes">Conditional includes</a> to the configuration.</p>
+</section>
+<section id="conditional-includes" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-includes">Conditional Includes</h2>
+<p>You global configuration is stored in <code>~/.gitconfig</code> and defines key variables such <code>user</code> and <code>name</code>, the default <code>editor</code> and many other options, including a customised <code>sshCommand</code> as was added above to a local <code>.git/config</code> file.</p>
+<p>Git 2.13 introduced the aforementioned <a href="https://git-scm.com/docs/git-config#_conditional_includes">Conditional includes</a> which works “_by setting a <code>includeIf.&lt;condition&gt;.path</code> variable to the name of the file to be included.”. For our current case-use the <code>&lt;condition&gt;</code> we are interested in is whether the <code>path</code>, which is interpreted as a pattern, is a <code>gitdir</code> then we include what follows.</p>
+<p>For example, we place all of our work related Git repositories under the <code>~/work/</code> directory and wish to use <code>~/.ssh/work_ed25519</code> for these and keep all of our personal repositories elsewhere and wish to use our main <code>~/.ssh/id_ed25519</code> key for those.</p>
+<p>Out <code>~/.gitconfig</code> should look like</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;">[user]</span></span>
+<span id="cb6-2">    <span class="ex" style="color: null;">name</span> = Your Name</span>
+<span id="cb6-3">    <span class="ex" style="color: null;">email</span> = your.personal@email.com</span>
+<span id="cb6-4"></span>
+<span id="cb6-5"><span class="ex" style="color: null;">[includeIf</span> <span class="st" style="color: #20794D;">"gitdir:~/work/"</span>]    <span class="co" style="color: #5E5E5E;"># Directory paths ending in '/** has the globbing wildcard '**' added by default.</span></span>
+<span id="cb6-6">    <span class="ex" style="color: null;">path</span> = ~/work/.gitconfig_work</span>
+<span id="cb6-7"></span>
+<span id="cb6-8"><span class="ex" style="color: null;">[core]</span></span>
+<span id="cb6-9">    <span class="ex" style="color: null;">sshCommand</span> = ssh <span class="at" style="color: #657422;">-i</span> ~/.ssh/id_ed25519 <span class="at" style="color: #657422;">-F</span> /dev/null</span></code></pre></div>
+<p>Then our <code>~/work/.gitconfig_work</code> can contain the alternative values we wish to use for all repositories under the <code>~/work/</code> directory.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;">[user]</span></span>
+<span id="cb7-2">    <span class="ex" style="color: null;">name</span> = Your Name</span>
+<span id="cb7-3">    <span class="ex" style="color: null;">email</span> = your.work@email.com</span>
+<span id="cb7-4"></span>
+<span id="cb7-5"><span class="ex" style="color: null;">[core]</span></span>
+<span id="cb7-6">    <span class="ex" style="color: null;">sshCommand</span> = ssh <span class="at" style="color: #657422;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;">-F</span> /dev/null</span></code></pre></div>
+</section>
+<section id="commit-verification-with-ssh" class="level2">
+<h2 class="anchored" data-anchor-id="commit-verification-with-ssh">Commit verification with SSH</h2>
+<p>Verification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys is a recently supported feature on GitHub (see blog <a href="https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/">SSH commit verification now supported</a>) I felt it worth mentioning.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="ssh" class="level3">
+<h3 class="anchored" data-anchor-id="ssh">SSH</h3>
+<ul>
+<li><a href="https://www.ssh.com/academy/ssh">SSH Academy</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_1">OpenSSH Key Management, Part 1</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_2">OpenSSH Key Management, Part 2</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_3">OpenSSH Key Management, Part 3</a></li>
+</ul>
+</section>
+<section id="forges" class="level3">
+<h3 class="anchored" data-anchor-id="forges">Forges</h3>
+<ul>
+<li><a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub | Connect with SSH</a></li>
+<li><a href="https://docs.gitlab.com/ee/user/ssh.html">GitLab | Use SSH keys to communicate with GitLab</a></li>
+<li><a href="https://docs.codeberg.org/security/ssh-key/">Codeberg | Adding an SSH key to your account</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>ssh</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <category>keychain</category>
+  <guid>https://ns-rse.github.io/posts/git-ssh/index.html</guid>
+  <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/48816178863_85ee1fe7f1_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>
