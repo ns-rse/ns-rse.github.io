@@ -33,3 +33,15 @@ format:
 author:
   - name: Neil Shephard
     orcid: 0000-0001-8301-6857
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  feed:
+    categories:
+      - python
+      - git
+      - github
+      - code
+  sort-ui: false
+  filter-ui: false
