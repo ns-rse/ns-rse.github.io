@@ -112,7 +112,7 @@ to have adhered to these standards.
 
 Below I detail common "gotchas" I encountered when developing the package, what they mean and how to resolve them.
 
-### `spell-check`
+### `The following spelling errors were found:`
 
 The `spell-check` hook _will_ fail if you've introduced new words that aren't in standard dictionaries with messages
 similar to the those shown below. Sometimes these will be new words, sometimes they might be catching tpyos you have
@@ -140,7 +140,7 @@ Error: Spell check failed
 Execution halted
 ```
 
-### `codemeta-description-updated`
+### `! codemeta.json is out of date`
 
 If you modify the `DESCRIPTION` or `CITATION.cff` then the `codemeta-description-updated` hook _will_ fail with error
 messages similar to the following.
@@ -312,7 +312,8 @@ precommit::use_precommit(install_hooks = TRUE)
 
 ## usethis package
 
-The [usethis](https://usethis.r-lib.org) package is a compliment to the [devtools](https://devtools.r-lib.org) package that has a lot of very useful helper functions.
+The [usethis](https://usethis.r-lib.org) package is a compliment to the [devtools](https://devtools.r-lib.org) package
+that has a lot of very useful helper functions.
 
 ### `use_github_action()`
 
