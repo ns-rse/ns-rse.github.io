@@ -33,7 +33,6 @@ supporting.
 
 ![[Erwin Wurm sculpture at Yorkshire Sculpture Park](https://flickr.com/photos/slackline/52985095726/) by me](https://live.staticflickr.com/65535/52985095726_49c5b394f1_k.jpg)
 
-
 ## pre-commit
 
 I love using [pre-commit](https://ns-rse.github.io/#category=pre-commit) in my development pipelines, it saves so much
@@ -203,9 +202,9 @@ provides guidance.
 
 1. **Text Editor** - Configure with your choice of editor, obviously you'll want to have
    [Emacs](https://www.gnu.org/software/emacs/) available and select that! :wink:
-2. **Adjust your PATH environment** - At the bare minimum go with the `Recommended` option and allow *Git from the command
-   line and also from 3rd-party software*. Optionally I would recommend the third option of *Use Git and optional UNIX
-   tools from the Command Prompt*, particularly if you are either a) familiar with UNIX commands or b) not at all familiar
+2. **Adjust your PATH environment** - At the bare minimum go with the `Recommended` option and allow _Git from the command
+   line and also from 3rd-party software_. Optionally I would recommend the third option of _Use Git and optional UNIX
+   tools from the Command Prompt_, particularly if you are either a) familiar with UNIX commands or b) not at all familiar
    with them (as you won't have to re-learn the Windows commands, just learn the Bash commands they are more widely
    applicable).
 3. **Use Bundled SSH library** - Use the bundled SSH library.
@@ -214,7 +213,7 @@ provides guidance.
    of the carriage return to be more universal.
 6. **Use MinTTY** - The default terminal of MSYS2 is fine and more functional than the Windows' default console window.
 7. **Default Merge behaviour** - The default (fast-forward or merge) this is fine.
-8. **Choose a credential helper** - Select *None* here, we will let RStudio manage these.
+8. **Choose a credential helper** - Select _None_ here, we will let RStudio manage these.
 9. **Configure Extra Options** - Defaults are fine.
 10. **Configuring experimental options** - No need to enable any of these.
 
@@ -314,7 +313,6 @@ precommit::use_precommit(install_hooks = TRUE)
 ## usethis package
 
 The [usethis](https://usethis.r-lib.org) package is a compliment to the [devtools](https://devtools.r-lib.org) package that has a lot of very useful helper functions.
-
 
 ### `use_github_action()`
 
