@@ -16,10 +16,20 @@ execute:
   warning: false
 ---
 
-This post is aimed at getting you up and running with making an the
+This post is aimed at getting you up and running with the
 [precommit](https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html) Package. This shouldn't be
-confused with [pre-commit](https://ns-rse.github.io/pre-commit) which is a Python Package. The R package consists of a
-number of R specific hooks that
+confused with [pre-commit](https://ns-rse.github.io/pre-commit) which is a Python Package. The R package (`precommit`)
+consists of a number of R specific hooks that are run by `pre-commit` before commits are made and check various aspects
+of your code for compliance with certain style and coding standards (mostly aspects of R packages and I'll be posting
+more on R packaging in due course).
+
+A major part of this post is about getting things setup on Windows, I've only given a light overview of some of the hooks
+and common problems encountered as I've gone about using and learning R packaging. As not everyone uses Windows that is
+addressed in the second half of the article.
+
+Most of the work on this package is by [Lorenz Walthert](https://github.com/lorenzwalthert/), if you find it useful
+consider sponsoring his work, these things take a lot of time and effort and whilst they can be used for free are worth
+supporting.
 
 ![[Erwin Wurm sculpture at Yorkshire Sculpture Park](https://flickr.com/photos/slackline/52985095726/) by me](https://live.staticflickr.com/65535/52985095726_49c5b394f1_k.jpg)
 
