@@ -122,7 +122,6 @@ The [`user_readme_rmd()`](https://usethis.r-lib.org/reference/use_readme_rmd.htm
 update it. This is useful because the later, plain-markdown, file is automatically rendered by GitHub/GitLab/Codeberg as
 your repositories front-page.
 
-
 ### `use_github_action()`
 
 Invoking `use_github_action()` within your package repository will prompt you for the type of action you wish to add to
@@ -153,7 +152,6 @@ Selection: 1
       <!-- badges: end -->
       [Copied to clipboard]
 ```
-
 
 ### Badges
 
@@ -370,7 +368,6 @@ to install `precommit` to (alternatively used `setwd()`).
 ```R
 precommit::use_precommit(install_hooks = TRUE)
 ```
-
 
 ## Links
 
