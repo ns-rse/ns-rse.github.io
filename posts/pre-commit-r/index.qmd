@@ -17,17 +17,18 @@ execute:
 ---
 
 This post is aimed at getting you up and running with the
-[precommit](https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html) Package. This shouldn't be
-confused with [pre-commit](https://ns-rse.github.io/pre-commit) which is a Python Package. The R package (`precommit`)
-consists of a number of R specific hooks that are run by `pre-commit` before commits are made and check various aspects
-of your code for compliance with certain style and coding standards (mostly aspects of R packages and I'll be posting
-more on R packaging in due course).
+R [precommit](https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html) Package. This shouldn't be
+confused with the Python [pre-commit](https://ns-rse.github.io/pre-commit) Package although as you might suspect they
+are closely related.
+
+The R package (`precommit`) consists of a number of R specific hooks that are run by `pre-commit` before commits are
+made and check various aspects of your code for compliance with certain style and coding standards (mostly aspects of R
+packages and I'll be posting more on R packaging in due course).
 
 A major part of this post is about getting things setup on Windows, I've only given a light overview of some of the hooks
-and common problems encountered as I've gone about using and learning R packaging. As not everyone uses Windows that is
-addressed in the second half of the article.
+and common problems encountered as I've gone about using and learning R packaging because not everyone uses Windows.
 
-Most of the work on this package is by [Lorenz Walthert](https://github.com/lorenzwalthert/), if you find it useful
+Most of the work on the R package is by [Lorenz Walthert](https://github.com/lorenzwalthert/), if you find it useful
 consider sponsoring his work, these things take a lot of time and effort and whilst they can be used for free are worth
 supporting.
 
@@ -35,13 +36,16 @@ supporting.
 
 ## pre-commit
 
-I love using [pre-commit](https://ns-rse.github.io/#category=pre-commit) in my development pipelines, it saves so much
-hassle (once you are used to it). The [R precommit
+I love using [pre-commit](https://pre-commit.com) in my development pipelines and have [blogged about
+it](https://ns-rse.github.io/#category=pre-commit) a few times already. It saves so much hassle (once you are used to
+it) not just for yourself but also your collaborators who are reviewing your Pull Requests. The [R precommit
 package](https://github.com/lorenzwalthert/precommit) comes with a set of hooks that can be enabled and configured
-individually, but as I've not used R much for a few years and this was my first time attempting to develop a package,
-it took me a little figuring out to get them working.
+individually. I've recently and reason to start making and R package and as I've not used R much for a few years and
+this was my first time attempting to develop a package, I decided to use the hooks to impose the various style standards
+and checks that are expected.
 
-I opted to enable _all_ of the hooks. I've not covered them all here (yet) but describe some of them below.
+I opted to enable _all_ of the hooks. I've not covered them all here in detail (yet) but describe some of them below and
+show how to use some additional hooks from the [usethis](https://usethis.r-lib.org) package too.
 
 ### codemetar
 
@@ -55,10 +59,12 @@ time you update and of the files from which the metadata is created (although ke
 
 ### roxygenize
 
-Roxygen2 is a package for making the documentation to go with your package. This hook requires additional configuration
-in `.pre-commit-config.yaml` as you have to install your package dependencies. Fortunately there is a helper function in
-the `precommit` package so you can just run `precommit::snippet_generate("additional-deps-roxygenize")` and it will
-output the YAML that you need to add to your `.pre-commit-config.yaml`. It might look something like the following.
+[Roxygen2](https://roxygen2.r-lib.org/) is a package for making the documentation to go with your package, it does this
+by parsing the documentation strings ("docstrings" for short) that you adorn your functions with that describe the
+arguments and show example usages. This hook requires additional configuration in `.pre-commit-config.yaml` as you have
+to install your package dependencies. Fortunately there is a helper function in the `precommit` package so you can just
+run `precommit::snippet_generate("additional-deps-roxygenize")` and it will output the YAML that you need to add to your
+`.pre-commit-config.yaml`. It might look something like the following.
 
 ```yaml
     hooks:
@@ -106,7 +112,16 @@ when the package is installed the necessary dependencies are also pulled in, fai
 ## usethis package
 
 The [usethis](https://usethis.r-lib.org) package is a compliment to the [devtools](https://devtools.r-lib.org) package
-that has a lot of very useful helper functions.
+that has a lot of very useful helper functions. Some of these enable additional `pre-commit` hooks whilst others enable
+GitHub actions, which are part of Continuous Integration piplelines and I would highly recommend enabling them.
+
+### `README.Rmd`
+
+The [`user_readme_rmd()`](https://usethis.r-lib.org/reference/use_readme_rmd.html) function automatically generates a
+`README.Rmd` template and will also create a `pre-commit` hook that keeps it synchronised with `README.md` whenever you
+update it. This is useful because the later, plain-markdown, file is automatically rendered by GitHub/GitLab/Codeberg as
+your repositories front-page.
+
 
 ### `use_github_action()`
 
@@ -139,12 +154,6 @@ Selection: 1
       [Copied to clipboard]
 ```
 
-### `README.Rmd`
-
-The [`user_readme_rmd()`](https://usethis.r-lib.org/reference/use_readme_rmd.html) function automatically generates a
-`README.Rmd` template and will also create a `pre-commit` hook that keeps it synchronised with `README.md` whenever you
-update it. This is useful because the later, plain-markdown, file is automatically rendered by GitHub/GitLab/Codeberg as
-your repositories front-page.
 
 ### Badges
 
@@ -225,16 +234,19 @@ needed (e.g. a Continuous Integration pipeline is failing).
 ## Windows
 
 I haven't used Windows for about 23 years but I often have colleagues who do and that was the case with the R package
-that I started developing so I needed to get all members of the team up and running with the `precommit` R
+that I have started developing so I needed to get all members of the team up and running with the `precommit` R
 package/pipeline.
 
 Windows doesn't come with Python by default, but [pre-commit](https://pre-commit.com) is written in Python and so an
 environment is required in order to run the above pre-commit hooks. There are many options for this, including using
 [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install). I opted to try the solution
-provided in the [precommit vignette](https://cran.r-project.org/web/packages/precommit/vignettes/precommit.html) and
-uses the [reticulate](https://rstudio.github.io/reticulate/) package (which interfaces [R](https://r-project.org) with
-[Python](https://python.org)) to handle installing a [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
-environment.
+provided in the [precommit vignette](https://cran.r-project.org/web/packages/precommit/vignettes/precommit.html). This
+shows how to use the [reticulate](https://rstudio.github.io/reticulate/) package which acts as a glue between
+[R](https://r-project.org)  and [Python](https://python.org), to handle installing a
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html) environment and setting up `precommit`/`pre-commit`.
+
+The following runs you through the things you need to install (R, RStudio, GitBash), setting up GitHub with
+[SSH](https://ns-rse.github.io/#category=ssh) keys and enabling `precommit` for your R package locally.
 
 ### Install [R](https://www.r-project.org)
 
