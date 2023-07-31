@@ -103,6 +103,55 @@ This is a useful hook that checks your spelling and adds unusual words to a cust
 This hook ensures that all dependencies that are loaded by your package are listed in the `DESCRIPTION` file so that
 when the package is installed the necessary dependencies are also pulled in, fairly essential..
 
+## usethis package
+
+The [usethis](https://usethis.r-lib.org) package is a compliment to the [devtools](https://devtools.r-lib.org) package
+that has a lot of very useful helper functions.
+
+### `use_github_action()`
+
+Invoking `use_github_action()` within your package repository will prompt you for the type of action you wish to add to
+it. There are, as of writing, three options.
+
+```R
+    > use_github_action()
+    Which action do you want to add? (0 to exit)
+    (See <https://github.com/r-lib/actions/tree/v2/examples> for other options)
+
+    1: check-standard: Run `R CMD check` on Linux, macOS, and Windows
+    2: test-coverage: Compute test coverage and report to https://about.codecov.io
+    3: pr-commands: Add /document and /style commands for pull requests
+```
+
+Selecting one will write a file to `/.github/workflows/<FILENAME>.yaml` and then print out code to add a badge to your
+repository.
+
+```R
+Selection: 1
+    ✔ Adding '*.html' to '.github/.gitignore'
+    ✔ Creating '.github/workflows/'
+    ✔ Saving 'r-lib/actions/examples/check-standard.yaml@v2' to '.github/workflows/R-CMD-check.yaml'
+    • Learn more at <https://github.com/r-lib/actions/blob/v2/examples/README.md>.
+    • Copy and paste the following lines into 'README.Rmd':
+      <!-- badges: start -->
+      [![R-CMD-check](https://github.com/CUREd-Plus/cuRed/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CUREd-Plus/cuRed/actions/workflows/R-CMD-check.yaml)
+      <!-- badges: end -->
+      [Copied to clipboard]
+```
+
+### `README.Rmd`
+
+The [`user_readme_rmd()`](https://usethis.r-lib.org/reference/use_readme_rmd.html) function automatically generates a
+`README.Rmd` template and will also create a `pre-commit` hook that keeps it synchronised with `README.md` whenever you
+update it. This is useful because the later, plain-markdown, file is automatically rendered by GitHub/GitLab/Codeberg as
+your repositories front-page.
+
+### Badges
+
+Most of the GitHub Action functions described above include output that can be copy and pasted into `README.Rmd` to
+include badges in your GitHub front page. Again the [usethis](https://usethis.r-lib.org/reference/badges.html) has you
+covered and can generate the necessary code for the different badges it supports.
+
 ## Gotchas
 
 When starting out I found that I regularly didn't pass the `pre-commit` hooks first time. This can be jarring and
@@ -310,54 +359,6 @@ to install `precommit` to (alternatively used `setwd()`).
 precommit::use_precommit(install_hooks = TRUE)
 ```
 
-## usethis package
-
-The [usethis](https://usethis.r-lib.org) package is a compliment to the [devtools](https://devtools.r-lib.org) package
-that has a lot of very useful helper functions.
-
-### `use_github_action()`
-
-Invoking `use_github_action()` within your package repository will prompt you for the type of action you wish to add to
-it. There are, as of writing, three options.
-
-```R
-    > use_github_action()
-    Which action do you want to add? (0 to exit)
-    (See <https://github.com/r-lib/actions/tree/v2/examples> for other options)
-
-    1: check-standard: Run `R CMD check` on Linux, macOS, and Windows
-    2: test-coverage: Compute test coverage and report to https://about.codecov.io
-    3: pr-commands: Add /document and /style commands for pull requests
-```
-
-Selecting one will write a file to `/.github/workflows/<FILENAME>.yaml` and then print out code to add a badge to your
-repository.
-
-```R
-Selection: 1
-    ✔ Adding '*.html' to '.github/.gitignore'
-    ✔ Creating '.github/workflows/'
-    ✔ Saving 'r-lib/actions/examples/check-standard.yaml@v2' to '.github/workflows/R-CMD-check.yaml'
-    • Learn more at <https://github.com/r-lib/actions/blob/v2/examples/README.md>.
-    • Copy and paste the following lines into 'README.Rmd':
-      <!-- badges: start -->
-      [![R-CMD-check](https://github.com/CUREd-Plus/cuRed/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CUREd-Plus/cuRed/actions/workflows/R-CMD-check.yaml)
-      <!-- badges: end -->
-      [Copied to clipboard]
-```
-
-### `README.Rmd`
-
-The [`user_readme_rmd()`](https://usethis.r-lib.org/reference/use_readme_rmd.html) function automatically generates a
-`README.Rmd` template and will also create a `pre-commit` hook that keeps it synchronised with `README.md` whenever you
-update it. This is useful because the later, plain-markdown, file is automatically rendered by GitHub/GitLab/Codeberg as
-your repositories front-page.
-
-### Badges
-
-Most of the GitHub Action functions described above include output that can be copy and pasted into `README.Rmd` to
-include badges in your GitHub front page. Again the [usethis](https://usethis.r-lib.org/reference/badges.html) has you
-covered and can generate the necessary code for the different badges it supports.
 
 ## Links
 
