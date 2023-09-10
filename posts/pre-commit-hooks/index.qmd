@@ -127,7 +127,8 @@ repos:
       args: [.markdownlin-cli2.yaml]
 ```
 
-..and add a sample configuration file is shown below and `markdownlint-cli2` picks this up automatically.
+..and add a sample configuration file (e.g. `.mardownlint-cli2.yaml` although other formats such as JSON can be used) is
+shown below and `markdownlint-cli2` picks this up automatically.
 
 ```yaml
 # Configuration
