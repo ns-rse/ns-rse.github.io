@@ -80,6 +80,36 @@ target-version = ["py38", "py39", "py310"]
 include = "\\.pyi?$"
 ```
 
+### pydocstyle
+
+You can check your docstrings are correctly written using the
+[pydocstyle](https://www.pydocstyle.org/en/stable/usage.html#usage-with-the-pre-commit-git-hooks-framework) hook.
+
+Its pretty straight-forward to use and accepts arguments so you can pass all the command line options you might want to
+use into the hook when it runs. It supports three different doc string styles, `pep257`, `numpy` and `google`.
+
+```yaml
+    - repo  https://github.com/pycqa/pydocstyle
+        rev: 6.3.0  # pick a git hash / tag to point to
+        hooks:
+        - id: pydocstyle
+        args:
+        - --convention=numpy
+        # Optionally ignore rules
+        - --ignore=D101,D2
+```
+
+Alternatively you can add configuration options to your projects `pyproject.toml` under a `[tool.pydocstyle]` section.
+
+```toml
+[tool.pydocstyle]
+convention = "numpy"
+ignore = [
+  "D101",
+  "D2"
+]
+```
+
 ## Markdown Linting
 
 [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) is a useful and highly configurable hook for
