@@ -144,70 +144,6 @@ gitGraph
     checkout main
     merge bug2 tag: "v0.1.2"
     commit
-<!-- %%{init: {'theme': 'base', 'gitGraph': {'rotateCommitLabel': true}} }%% -->
-<!-- gitGraph -->
-<!--    commit id: "Last feature" -->
-<!--    commit id: "v0.1.0" -->
-<!--    branch "v0.1 fixes" -->
-<!--    commit "This branch is for fixes to v0.1" -->
-<!--    branch "Missing JSON files for v0.1" -->
-<!--    commit id: "Add missing JSON to v0.1.0 branch" -->
-   <!-- checkout "v0.1 fixes" -->
-   <!-- merge "Missing JSON files for v0.1" -->
-   <!-- commit id: "v0.1.1" -->
-   <!-- checkout main -->
-   <!-- commit id: "Feature1 for v0.2.0" -->
-   <!-- commit id: "Feature2 for v0.2.0" -->
-   <!-- commit id: "v0.2.0" -->
-   <!-- branch "v0.2 fixes" -->
-   <!-- commit id: "This branch is for fixes to v0.2" -->
-   <!-- branch "Missing JSON files for v0.2" -->
-   <!-- commit id: "Add missing JSON to v0.2.0 branch" -->
-   <!-- checkout "v0.2 fixes" -->
-   <!-- merge "Missing JSON files for v0.2" -->
-   <!-- branch "More changes for v0.2" -->
-   <!-- commit id: "Update Cadenza logo" -->
-   <!-- commit id: "Update README" -->
-   <!-- checkout "v0.2 fixes" -->
-   <!-- merge "More changes for v0.2" -->
-   <!-- commit id: "v0.2.1" -->
-   <!-- checkout main -->
-   <!-- commit id: "Cadenza Baseline" -->
-   <!-- commit id: "Unit Tests for evaluators" -->
-   <!-- commit id: "Unit Tests for enhancers" -->
-   <!-- commit id: "v0.3.0" -->
-   <!-- branch "v0.3 fixes" -->
-   <!-- commit id: "This branch is for fixes to v0.3" -->
-   <!-- branch "Fixing something in the future on v0.3" -->
-   <!-- commit id: "Fix something in the future" -->
-   <!-- checkout "v0.3 fixes" -->
-   <!-- merge "Fixing something in the future on v0.3" -->
-   <!-- checkout "v0.2 fixes" -->
-   <!-- branch "Fixing something in the future on v0.2" -->
-   <!-- commit id: "Fix the same problem on v0.2 branch" -->
-   <!-- checkout "v0.2 fixes" -->
-   <!-- merge "Fixing something in the future on v0.2" -->
-   <!-- commit id: "v0.2.2" -->
-   <!-- checkout "v0.3 fixes" -->
-   <!-- commit id: "v0.3.1" -->
-   <!-- checkout main -->
-   <!-- commit id: "Refactor HAAQI" -->
-   <!-- commit id: "Refactor HASQI" -->
-   <!-- commit id: "Refactor HASPI" -->
-   <!-- commit id: "v0.4.0" -->
-   <!-- branch "v0.4 fixes" -->
-   <!-- commit id: "This branch is for fixes to v0.4" -->
-   <!-- checkout "main" -->
-   <!-- commit id: "First of many new features" -->
-   <!-- checkout "v0.4 fixes" -->
-   <!-- branch "Fix something in v0.4" -->
-   <!-- commit id: "Fix problem 1 on v0.4" -->
-   <!-- commit id: "Fix problem 2 on v0.4" -->
-   <!-- checkout "v0.4 fixes" -->
-   <!-- merge "Fix something in v0.4" -->
-   <!-- commit id: "v0.4.1" -->
-   <!-- checkout main -->
-   <!-- commit id: "Lots more enhancements" -->
 ```
 
 ## Including API Documentation
@@ -224,9 +160,16 @@ function definitions based on the function definition, it automatically detects 
 types to generate the docstring (yet another reason to use Emacs!).
 
 Whilst it is useful to have this API available in an IDE as you work it is also useful to include the reference on a
-packages website and this is relatively straight-forward with Sphinx which provides the
-[`sphinx-apidoc`](https://numpydoc.readthedocs.io/en/latest/format.html) command to generate documentation from the
-embedded docstrings. However, rather than learning the intricacies of using this command the package Sphinx extensions
+packages website and this is relatively straight-forward with Sphinx which provides several tools and extensions.
+
+### `sphinx-apidoc`
+The first is the the [`sphinx-apidoc`](https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html) command to generate
+documentation from the embedded docstrings. This is a command line tool that could be added to the `Makefile`.
+
+
+### `sphinx-autoapi`
+
+However, rather than learning the intricacies of using this command the package Sphinx extensions
 [sphinx-autoapi](https://sphinx-autoapi.readthedocs.io/en/latest/) can be leveraged to automatically build the API
 documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it
 means you do not have to include the `.rst` files that `sphinx-apidoc` generates in your repository they are generated
@@ -235,13 +178,15 @@ on the fly when Sphinx builds each version of the documentation.
 Configuration is via `docs/conf.py` and the package needs referencing in the `extensions` section then
 [configuring](https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html) at a bare minimum which
 directories to generate documentation from.
-
+i
 ```{python}
 #| eval: false
 extensions = [
     "autoapi.extension",
 ]
 
+# -- autoapi configuration ---------------------------------------------------
+autotype_api = "python"
 autoapi_dirs = ["../mypackage"]
 ```
 
@@ -250,6 +195,45 @@ There are a lot of subtle configuration options and I would recommend reading th
 [Tutorials](https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html) and [How To
 Guides](https://sphinx-autoapi.readthedocs.io/en/latest/how_to.html).
 
+This has the added advantage that it works with [ReadTheDocs](https://readthedocs.org).
+
+### Sphinx Autosummary
+
+In addition the [sphinx_ext_autosummary](https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html)
+automates summarising the API docstrings.
+
+Add the package as a dependency to the `extensions`...
+
+``` {python}
+extensions = [
+    ...
+    "sphinx.ext."
+]
+```
+
+Under the `index.rst` you should include a section header for the `api` that references an `api.rst` page for inclusion.
+
+``` {rst}
+.. toctree::
+   :maxdepth: 2
+   :caption: API
+
+   api
+```
+
+And then create the `api.rst` page which need only have the following. By including `:recursive:` the sub-modules will
+be included automatically.
+
+``` {rst}
+API
+===
+
+.. autosummary::
+   :recursive:
+   :toctree: generated
+
+   mypackage
+```
 ## Multiple Versions
 
 Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation
@@ -451,6 +435,7 @@ Save, add and commit to your Git repository and push the changes to GitHub.
 + [`sphinx-markdown-tables`](https://github.com/ryanfox/sphinx-markdown-tables)
 + [`sphinx-multiversion`](https://holzhaus.github.io/sphinx-multiversion/master/)
 + [`sphinxcontrib-mermaid`](https://github.com/mgaitan/sphinxcontrib-mermaid)
++ [`sphinx-ext-autosummary`](https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html)
 
 ### GitHub
 
