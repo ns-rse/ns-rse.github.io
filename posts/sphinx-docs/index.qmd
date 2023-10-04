@@ -163,9 +163,9 @@ Whilst it is useful to have this API available in an IDE as you work it is also 
 packages website and this is relatively straight-forward with Sphinx which provides several tools and extensions.
 
 ### `sphinx-apidoc`
+
 The first is the the [`sphinx-apidoc`](https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html) command to generate
 documentation from the embedded docstrings. This is a command line tool that could be added to the `Makefile`.
-
 
 ### `sphinx-autoapi`
 
@@ -179,6 +179,7 @@ Configuration is via `docs/conf.py` and the package needs referencing in the `ex
 [configuring](https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html) at a bare minimum which
 directories to generate documentation from.
 i
+
 ```{python}
 #| eval: false
 extensions = [
@@ -234,6 +235,7 @@ API
 
    mypackage
 ```
+
 ## Multiple Versions
 
 Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation
