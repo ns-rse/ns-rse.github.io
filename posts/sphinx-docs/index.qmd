@@ -32,9 +32,9 @@ well structured, under version control and backed up on [GitHub](https://github.
 
 Sphinx comes with the [`sphinx-quickstart`](https://www.sphinx-doc.org/en/master/man/sphinx-quickstart.html) interactive
 tool which will help setup your repository with a basic `conf.py` and `Makefile`. There are a number of command line
-options but is also interactive. I like to keep the source and build directories separate and so use the `--sep` flag as
-well as the `--makefile` flag to generate a `Makefile` for building documentation on GNU/Linux or OSX (if you use M$-Win
-the use the `--batchfile` flag instead).
+options but it is also interactive so you can answer questions to configure your setup. I like to keep the source and
+build directories separate and so use the `--sep` flag as well as the `--makefile` flag to generate a `Makefile` for
+building documentation on GNU/Linux or OSX (if you use M$-Win the use the `--batchfile` flag instead).
 
 I keep documentation under `docs/` directory within the root of the package directory.
 
@@ -47,9 +47,9 @@ sphinx-quickstart --makefile
 
 ## `conf.py`
 
-Configuration is via a `conf.py` file as you read through this document you will see reference to adding/modifying
-various sections of the this file.  The automatically generated `conf.py` produced by `sphinx-quickstart` is well
-commented and instructive on how to use it to configure Sphinx.
+Configuration is via a `conf.py` the automatically generated `conf.py` produced by `sphinx-quickstart`. It is well
+commented and instructive on how to use it to configure Sphinx and contains details on adding/modifying
+various sections of the this file.
 
 Key sections are the list of `extensions` that your documentation uses.
 
