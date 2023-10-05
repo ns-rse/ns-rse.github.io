@@ -16,29 +16,37 @@ execute:
   warning: false
 ---
 
-I've written previously on [Python Packaging](https://ns-rse.github.io/posts/python-packaging) and in that article included details of how to [automate publishing to PyPI
-from GitHub](https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi). This article details how to automatically publish your package to [PyPI](https://pypi.org) from [GitLab](https://gitlab.com).
+I've written previously on [Python Packaging](https://ns-rse.github.io/posts/python-packaging) and in that article
+included details of how to [automate publishing to PyPI from
+GitHub](https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi). This article details how to automatically
+publish your package to [PyPI](https://pypi.org) from [GitLab](https://gitlab.com).
 
-![[Packages with Legs, by Me](https://flickr.com/photos/slackline/52985552723/in/dateposted/)](https://live.staticflickr.com/65535/52985552723_a975753e12_k.jpg)
+![[Packages with Legs, by
+Me](https://flickr.com/photos/slackline/52985552723/in/dateposted/)](https://live.staticflickr.com/65535/52985552723_a975753e12_k.jpg)
 
 ## Repository Configuration
 
 ### CI Variables
 
 The environment variables `$TWINE_USERNAME` (`__token__`) and `$TWINE_PASSWORD` which will be the token you generate for
-publishing on PyPI or Test PyPI. These are saved under the repository `_Settings > CI/CD > Varialbes_` section and how to
-create and save these is described below in the [PyPI Tokens](#pypi-tokens)
+publishing on PyPI or Test PyPI. These are saved under the repository `_Settings > CI/CD > Varialbes_` section and how
+to create and save these is described below.
 
 ### Protecting Tags
 
 This really stumped me I could build and push automatically from the `master` branch but could not use the `- if
-$CI_COMMIT_TAG` condition to publish commits that were tagged. I wrote a [post on the GitLab Forums](https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309) asking how to do this
-and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from [@manu_faktur@mastodon.social](https://mastodon.social/@manu_faktur/111159226739296263) and
-one from [@diazona@techhub.social](https://mastodon.social/@diazona@techhub.social/111159429646899283)) both asking if I'd protected the tags on my repository.
+$CI_COMMIT_TAG` condition to publish commits that were tagged. I wrote a [post on the GitLab
+Forums](https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309) asking how to
+do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from
+[@manu_faktur@mastodon.social](https://mastodon.social/@manu_faktur/111159226739296263) and one from
+[@diazona@techhub.social](https://mastodon.social/@diazona@techhub.social/111159429646899283)) both asking if I'd
+protected the tags on my repository.
 
 I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on
-[Protected tags](https://docs.gitlab.com/ee/user/project/protected_tags.html) and sure enough this was possible. After setting a [wildcard to protect my tags](https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags) the `pypi` CI job
-defined [below](#ci-configuration) worked as expected and built on tagged commits.
+[Protected tags](https://docs.gitlab.com/ee/user/project/protected_tags.html) and sure enough this was possible. After
+setting a [wildcard to protect my
+tags](https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags) the `pypi` CI job defined
+[below](#ci-configuration) worked as expected and built on tagged commits.
 
 ## CI Configuration
 
@@ -48,13 +56,16 @@ GitLabs CI/CD is configured via a [YAML](https://yaml.org/) file
 [`.gitlab-ci.yaml`](https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html) in the root of your project folder, a useful
 reference for writing these files is the [.gitlab-ci.yml reference](https://docs.gitlab.com/ee/ci/yaml/index.html).
 
-An example file from the [tcx2gpx](https://gitlab.com/nshephard/tcx2gpx/) package is shown below (see [here](-/blob/master/.gitlab-ci.yml?ref_type=heads)).
+An example file from the [tcx2gpx](https://gitlab.com/nshephard/tcx2gpx/) package is shown below (see
+[here](-/blob/master/.gitlab-ci.yml?ref_type=heads)).
 
 This defines the following...
 
 + `image` - the use of a Docker Python 3.11 image for running the pipeline.
-+ `variables` - Configures [pre-commit](https://ns-rse.github.io/#category=pre-commit) to run and automatically fix issues found on pull requests.
-+ `stages` - the subsequent stages to run (**NB** the `debug` stage which prints the environment variables is commented out).
++ `variables` - Configures [pre-commit](https://ns-rse.github.io/#category=pre-commit) to run and automatically fix
+  issues found on pull requests.
++ `stages` - the subsequent stages to run (**NB** the `debug` stage which prints the environment variables is commented
+  out).
 + `pylint` - runs linting on Python 3.10 and 3.11.
 + `pytest` - Runs tests on Python 3.10 and 3.11.
 + `pages` - Builds the documentation pages.
@@ -63,13 +74,9 @@ This defines the following...
 ````yaml
 image: python:3.11
 
-variables:
-  # since we're not using merge request pipelines in this example,
-  # we will configure the pre-commit job to run on branch pipelines only.
-  # If you ARE using merge request pipelines, you can omit this section
-    PRE_COMMIT_AUTO_FIX: '1'
-    PRE_COMMIT_DEDUPLICATE_MR_AND_BRANCH: 'false'
-    PRE_COMMIT_AUTO_FIX_BRANCH_ONLY: 'false'
+variables: # since we're not using merge request pipelines in this example, # we will configure the pre-commit job to
+  run on branch pipelines only.  # If you ARE using merge request pipelines, you can omit this section
+  PRE_COMMIT_AUTO_FIX: '1' PRE_COMMIT_DEDUPLICATE_MR_AND_BRANCH: 'false' PRE_COMMIT_AUTO_FIX_BRANCH_ONLY: 'false'
 
 
 before_script:
@@ -78,11 +85,9 @@ before_script:
 
 # pre-commit autofix (https://gitlab.com/yesolutions/gitlab-ci-templates /
 #                     https://stackoverflow.com/collectives/gitlab/articles/71270196/)
-include:
-    remote: https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml
+include: remote: https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml
 
-stages:
-    # - debug
+stages: # - debug
     - pylint
     - pytest
     - pages
@@ -94,69 +99,43 @@ stages:
 #         - echo "GitLab CI/CD | Print all environment variables"
 #         - env
 
-.pylint:
-    script:
+.pylint: script:
         - pip install pylint pytest
         - pylint --rcfile .pylintrc tcx2gpx/
         - pylint --rcfile .pylintrc tests/
 
-pylint-3-10:
-    extends: .pylint
-    stage: pylint
-    image: python:3.10
-    allow_failure: true
+pylint-3-10: extends: .pylint stage: pylint image: python:3.10 allow_failure: true
 
-pylint-3-11:
-    extends: .pylint
-    stage: pylint
-    image: python:3.11
-    allow_failure: true
+pylint-3-11: extends: .pylint stage: pylint image: python:3.11 allow_failure: true
 
-.pytest:
-    script:
+.pytest: script:
         - pip install pytest pytest-cov
         - python -m "pytest"
 
-pytest-3-10:
-    extends: .pytest
-    stage: pytest
-    image: python:3.10
-    allow_failure: true
+pytest-3-10: extends: .pytest stage: pytest image: python:3.10 allow_failure: true
 
-pytest-3-11:
-    extends: .pytest
-    stage: pytest
-    image: python:3.11
-    coverage: /(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/
+pytest-3-11: extends: .pytest stage: pytest image: python:3.11 coverage: /(?i)total.*?
+    (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/
 
-pages:
-    stage: pages
-    rules:
-        - if: $CI_COMMIT_BRANCH == "master"
-    script:
+pages: stage: pages rules:
+        - if: $CI_COMMIT_BRANCH == "master" script:
         - pip install .[docs]
         - cd docs
         - git fetch --tags
         - git tag -l
         - make html
         - mkdir ../public
-        - mv _build/html/* ../public/
-    artifacts:
-        paths:
+        - mv _build/html/* ../public/ artifacts: paths:
             - public
 
 
-pypi:
-    stage: pypi
-    rules:
-        - if: $CI_COMMIT_TAG
-    script:
+pypi: stage: pypi rules:
+        - if: $CI_COMMIT_TAG script:
         - pip install .[pypi]
         - pip install build
         - python -m build
         - twine upload --non-interactive --repository pypi dist/*
 ```
-
 
 The `pypi` stage is named and a `rule` is defined that says to only run this stage if the value of the environment variable
 `$CI_COMMIT_TAG` is `True`. This only happens when a commit has a (protected :wink:) tag.
@@ -186,10 +165,10 @@ username = __token__
 password = pypi-<token_value>
 ```
 
-It GitLab got to your repositories _Settings > CI/CD > Variables_ and add two new variables `TWINE_USERNAME` with the value
-`__token__` and `TWINE_PASSWORD` with the token for your account on Test PyPI (remember to prefix it with `pypi-` as shown in
-the above example `.pypirc`). You have options on how these variables are used and should ensure that all three check
-boxes are selected, this enables...
+It GitLab got to your repositories _Settings > CI/CD > Variables_ and add two new variables `TWINE_USERNAME` with the
+value `__token__` and `TWINE_PASSWORD` with the token for your account on Test PyPI (remember to prefix it with `pypi-`
+as shown in the above example `.pypirc`). You have options on how these variables are used and should ensure that all
+three check boxes are selected, this enables...
 
 + **Protect variable** Export variable to pipelines running on protected branches and tags only.
 + **Mask variable** Mask this variable in job logs if it meets regular expression requirements.
@@ -226,7 +205,8 @@ uploading packages with a version that already exists.
 
 ## Publishing to PyPI
 
-Once you have successfully published to the Test PyPI you are ready to publish to PyPI. There three things you need to do.
+Once you have successfully published to the Test PyPI you are ready to publish to PyPI. There three things you need to
+do.
 
 1. Delete the existing tag, if you want to apply the same tag to publish to PyPI you can do so.
 2. Modify the repository option to point to PyPI `--repository pypi` (or remove it, the default is PyPI).
@@ -248,7 +228,8 @@ files and you can add Release Notes detailing what has changed.
 - [PyPA : Building and Distributing Packages with Setuptools](https://setuptools.pypa.io/en/latest/userguide/index.html)
 - [PyPA : Specifications](https://packaging.python.org/en/latest/specifications/)
 - [Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
-- [Python package structure information — pyOpenSci Python Packaging Guide](https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html)
+- [Python package structure information — pyOpenSci Python Packaging
+  Guide](https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html)
 
 ### GitLab Documentation
 
