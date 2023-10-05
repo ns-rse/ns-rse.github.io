@@ -207,8 +207,7 @@ Add the package as a dependency to the `extensions`...
 
 ``` {python}
 extensions = [
-    ...
-    "sphinx.ext."
+    "sphinx.ext.autosummary"
 ]
 ```
 
