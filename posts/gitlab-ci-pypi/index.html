@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.14">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Neil Shephard">
+<meta name="dcterms.date" content="2023-10-03">
+
+<title>ns-rse - GitLab CI - Automatic Publishing to PyPI</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-listing/list.min.js"></script>
+<script src="../../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: [{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: [],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+<link rel="alternate" type="application/rss+xml" title="ns-rse" href="index.xml"></head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ns-rse</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../links.html" rel="">
+ <span class="menu-text">Links</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ns-rse" rel="me"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/nshephardRSE" rel=""><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="me"><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://fosstodon.org/@nshephard" rel="me"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">GitLab CI - Automatic Publishing to PyPI</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">documentation</div>
+                <div class="quarto-category">packaging</div>
+                <div class="quarto-category">gitlab</div>
+                <div class="quarto-category">ci</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Neil Shephard <a href="https://orcid.org/0000-0001-8301-6857" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 3, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#repository-configuration" id="toc-repository-configuration" class="nav-link active" data-scroll-target="#repository-configuration">Repository Configuration</a>
+  <ul>
+  <li><a href="#ci-variables" id="toc-ci-variables" class="nav-link" data-scroll-target="#ci-variables">CI Variables</a></li>
+  <li><a href="#protecting-tags" id="toc-protecting-tags" class="nav-link" data-scroll-target="#protecting-tags">Protecting Tags</a></li>
+  </ul></li>
+  <li><a href="#ci-configuration" id="toc-ci-configuration" class="nav-link" data-scroll-target="#ci-configuration">CI Configuration</a>
+  <ul>
+  <li><a href="#ci" id="toc-ci" class="nav-link" data-scroll-target="#ci">CI</a></li>
+  </ul></li>
+  <li><a href="#pre-commit-autofix-httpsgitlab.comyesolutionsgitlab-ci-templates" id="toc-pre-commit-autofix-httpsgitlab.comyesolutionsgitlab-ci-templates" class="nav-link" data-scroll-target="#pre-commit-autofix-httpsgitlab.comyesolutionsgitlab-ci-templates">pre-commit autofix (https://gitlab.com/yesolutions/gitlab-ci-templates /</a></li>
+  <li><a href="#httpsstackoverflow.comcollectivesgitlabarticles71270196" id="toc-httpsstackoverflow.comcollectivesgitlabarticles71270196" class="nav-link" data-scroll-target="#httpsstackoverflow.comcollectivesgitlabarticles71270196">https://stackoverflow.com/collectives/gitlab/articles/71270196/)</a></li>
+  <li><a href="#print-all-env-vars-job" id="toc-print-all-env-vars-job" class="nav-link" data-scroll-target="#print-all-env-vars-job">print-all-env-vars-job:</a></li>
+  <li><a href="#stage-debug" id="toc-stage-debug" class="nav-link" data-scroll-target="#stage-debug">stage: debug</a></li>
+  <li><a href="#script" id="toc-script" class="nav-link" data-scroll-target="#script">script:</a></li>
+  <li><a href="#echo-gitlab-cicd-print-all-environment-variables" id="toc-echo-gitlab-cicd-print-all-environment-variables" class="nav-link" data-scroll-target="#echo-gitlab-cicd-print-all-environment-variables">- echo “GitLab CI/CD | Print all environment variables”</a></li>
+  <li><a href="#env" id="toc-env" class="nav-link" data-scroll-target="#env">- env</a>
+  <ul>
+  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">Testing</a></li>
+  <li><a href="#publishing-to-pypi" id="toc-publishing-to-pypi" class="nav-link" data-scroll-target="#publishing-to-pypi">Publishing to PyPI</a>
+  <ul class="collapse">
+  <li><a href="#releases" id="toc-releases" class="nav-link" data-scroll-target="#releases">Releases</a></li>
+  </ul></li>
+  <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a>
+  <ul class="collapse">
+  <li><a href="#python-packaging" id="toc-python-packaging" class="nav-link" data-scroll-target="#python-packaging">Python Packaging</a></li>
+  <li><a href="#gitlab-documentation" id="toc-gitlab-documentation" class="nav-link" data-scroll-target="#gitlab-documentation">GitLab Documentation</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I’ve written previously on <a href="https://ns-rse.github.io/posts/python-packaging">Python Packaging</a> and in that article included details of how to <a href="https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi">automate publishing to PyPI from GitHub</a>. This article details how to automatically publish your package to <a href="https://pypi.org">PyPI</a> from <a href="https://gitlab.com">GitLab</a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985552723/in/dateposted/">Packages with Legs, by Me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="repository-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="repository-configuration">Repository Configuration</h2>
+<section id="ci-variables" class="level3">
+<h3 class="anchored" data-anchor-id="ci-variables">CI Variables</h3>
+<p>The environment variables <code>$TWINE_USERNAME</code> (<code>__token__</code>) and <code>$TWINE_PASSWORD</code> which will be the token you generate for publishing on PyPI or Test PyPI. These are saved under the repository <code>_Settings &gt; CI/CD &gt; Varialbes_</code> section and how to create and save these is described below.</p>
+</section>
+<section id="protecting-tags" class="level3">
+<h3 class="anchored" data-anchor-id="protecting-tags">Protecting Tags</h3>
+<p>This really stumped me I could build and push automatically from the <code>master</code> branch but could not use the <code>- if $CI_COMMIT_TAG</code> condition to publish commits that were tagged. I wrote a <a href="https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309">post on the GitLab Forums</a> asking how to do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from <a href="https://mastodon.social/@manu_faktur/111159226739296263"><span class="citation" data-cites="manu_faktur">@manu_faktur</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span></a> and one from <a href="https://mastodon.social/@diazona@techhub.social/111159429646899283"><span class="citation" data-cites="diazona">@diazona</span><span class="citation" data-cites="techhub.social">@techhub.social</span></a>) both asking if I’d protected the tags on my repository.</p>
+<p>I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a> and sure enough this was possible. After setting a <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags">wildcard to protect my tags</a> the <code>pypi</code> CI job defined <a href="#ci-configuration">below</a> worked as expected and built on tagged commits.</p>
+</section>
+</section>
+<section id="ci-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="ci-configuration">CI Configuration</h2>
+<section id="ci" class="level3">
+<h3 class="anchored" data-anchor-id="ci">CI</h3>
+<p>GitLabs CI/CD is configured via a <a href="https://yaml.org/">YAML</a> file <a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html"><code>.gitlab-ci.yaml</code></a> in the root of your project folder, a useful reference for writing these files is the <a href="https://docs.gitlab.com/ee/ci/yaml/index.html">.gitlab-ci.yml reference</a>.</p>
+<p>An example file from the <a href="https://gitlab.com/nshephard/tcx2gpx/">tcx2gpx</a> package is shown below (see <a href="-/blob/master/.gitlab-ci.yml?ref_type=heads">here</a>).</p>
+<p>This defines the following…</p>
+<ul>
+<li><code>image</code> - the use of a Docker Python 3.11 image for running the pipeline.</li>
+<li><code>variables</code> - Configures <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> to run and automatically fix issues found on pull requests.</li>
+<li><code>stages</code> - the subsequent stages to run (<strong>NB</strong> the <code>debug</code> stage which prints the environment variables is commented out).</li>
+<li><code>pylint</code> - runs linting on Python 3.10 and 3.11.</li>
+<li><code>pytest</code> - Runs tests on Python 3.10 and 3.11.</li>
+<li><code>pages</code> - Builds the documentation pages.</li>
+<li><code>pypi</code> - <strong>Builds and uploads the package to PyPI <em>if the commit has a tag associated</em></strong>.</li>
+</ul>
+<p>````yaml image: python:3.11</p>
+<p>variables: # since we’re not using merge request pipelines in this example, # we will configure the pre-commit job to run on branch pipelines only. # If you ARE using merge request pipelines, you can omit this section PRE_COMMIT_AUTO_FIX: ‘1’ PRE_COMMIT_DEDUPLICATE_MR_AND_BRANCH: ‘false’ PRE_COMMIT_AUTO_FIX_BRANCH_ONLY: ‘false’</p>
+<p>before_script: - python –version - pip install .</p>
+</section>
+</section>
+<section id="pre-commit-autofix-httpsgitlab.comyesolutionsgitlab-ci-templates" class="level1">
+<h1>pre-commit autofix (https://gitlab.com/yesolutions/gitlab-ci-templates /</h1>
+</section>
+<section id="httpsstackoverflow.comcollectivesgitlabarticles71270196" class="level1">
+<h1>https://stackoverflow.com/collectives/gitlab/articles/71270196/)</h1>
+<p>include: remote: https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml</p>
+<p>stages: # - debug - pylint - pytest - pages - pypi</p>
+</section>
+<section id="print-all-env-vars-job" class="level1">
+<h1>print-all-env-vars-job:</h1>
+</section>
+<section id="stage-debug" class="level1">
+<h1>stage: debug</h1>
+</section>
+<section id="script" class="level1">
+<h1>script:</h1>
+</section>
+<section id="echo-gitlab-cicd-print-all-environment-variables" class="level1">
+<h1>- echo “GitLab CI/CD | Print all environment variables”</h1>
+</section>
+<section id="env" class="level1">
+<h1>- env</h1>
+<p>.pylint: script: - pip install pylint pytest - pylint –rcfile .pylintrc tcx2gpx/ - pylint –rcfile .pylintrc tests/</p>
+<p>pylint-3-10: extends: .pylint stage: pylint image: python:3.10 allow_failure: true</p>
+<p>pylint-3-11: extends: .pylint stage: pylint image: python:3.11 allow_failure: true</p>
+<p>.pytest: script: - pip install pytest pytest-cov - python -m “pytest”</p>
+<p>pytest-3-10: extends: .pytest stage: pytest image: python:3.10 allow_failure: true</p>
+<p>pytest-3-11: extends: .pytest stage: pytest image: python:3.11 coverage: /(?i)total.*? (100(?:.0+)?%|[1-9]??:.)?%)$/</p>
+<p>pages: stage: pages rules: - if: $CI_COMMIT_BRANCH == “master” script: - pip install .[docs] - cd docs - git fetch –tags - git tag -l - make html - mkdir ../public - mv _build/html/* ../public/ artifacts: paths: - public</p>
+<p>pypi: stage: pypi rules: - if: $CI_COMMIT_TAG script: - pip install .[pypi] - pip install build - python -m build - twine upload –non-interactive –repository pypi dist/*</p>
+<pre><code>
+The `pypi` stage is named and a `rule` is defined that says to only run this stage if the value of the environment variable
+`$CI_COMMIT_TAG` is `True`. This only happens when a commit has a (protected :wink:) tag.
+
+The `script` section then installs the package along with the `project.optional-dependencies` defined in the `pypi` section of
+the [`pyproject.toml`](https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies).
+
+The package is then build using [build](https://github.com/pypa/build) and [twine](https://twine.readthedocs.io/en/stable/index.html) is then used to push the to push the built package to PyPI.
+
+### PyPI Tokens
+
+You should first test building and deploying to the [Test PyPI](https://test.pypi.org/) and when this is working simply switch to using the main
+[PyPI](https://pypi.org). To do so you will need to create an account on both^[PyPI now enforces Two Factor Authentication (2FA) for new
+accounts, see [2FA Enforcement for New User Registrations](https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/)]. Once you have set yourself up with an account you can
+[generate an API token to authenticate with PyPI](https://pypi.org/help/#apitoken). After verifying your email got to _Account Settings_ and select _Add API
+token_. These are generated once so copy and paste it into the [`.pypirc`](https://packaging.python.org/en/latest/specifications/pypirc/#pypirc) of your project (add this file to your `.gitignore`
+so it doesn't accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI
+for reference.
+
+```{conf}
+[testpypi]
+username = __token__
+password = pypi-&lt;token_value&gt;
+
+[pypi]
+username = __token__
+password = pypi-&lt;token_value&gt;</code></pre>
+<p>It GitLab got to your repositories <em>Settings &gt; CI/CD &gt; Variables</em> and add two new variables <code>TWINE_USERNAME</code> with the value <code>__token__</code> and <code>TWINE_PASSWORD</code> with the token for your account on Test PyPI (remember to prefix it with <code>pypi-</code> as shown in the above example <code>.pypirc</code>). You have options on how these variables are used and should ensure that all three check boxes are selected, this enables…</p>
+<ul>
+<li><strong>Protect variable</strong> Export variable to pipelines running on protected branches and tags only.</li>
+<li><strong>Mask variable</strong> Mask this variable in job logs if it meets regular expression requirements.</li>
+<li><strong>Expand variable reference</strong> <code>$</code> will be treated as the start of a reference to another variable.</li>
+</ul>
+<section id="testing" class="level2">
+<h2 class="anchored" data-anchor-id="testing">Testing</h2>
+<p>Now that you are setup you can test your configuration. To do so you need to first use the API key from the Test PyPI server that you created as the value for <code>$TWINE_PASSWORD</code> (see above) and set the repository <code>twine --repository</code> option to <code>testpypi</code>. Your <code>pypi</code> stage should look like the following…</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pypi</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">stage</span><span class="kw">:</span><span class="at"> pypi</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rules</span><span class="kw">:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">if</span><span class="kw">:</span><span class="at"> $CI_COMMIT_TAG</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">script</span><span class="kw">:</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> pip install .[pypi]</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> pip install build</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> python -m build</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> twine upload --non-interactive --repository testpypi dist/*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once this is set create a tag for the current commit using the <em>Code &gt; Tags</em> settings from the left menu of your repository and then the <em>New tag</em> button on the top right. The tag you create should match the wild card pattern you have set for <a href="#protecting-tags">protecting tags</a> and it should comply to the Public version identifiers specified in <a href="https://peps.python.org/pep-0440/#public-version-identifiers">PEP440</a>. Once created you will have triggered your Pipeline and you can check this by navigating to <em>CI/CD &gt; Pipelines</em> and then viewing it. The <sub>pypi</sub> job should complete and you should be able to navigate to your package on Test PyPI. You can find it under your account settings.</p>
+<p>If you find there is a problem you will have to correct it and either delete the tag you created and try again or increment the version. PyPI, and in turn Test PyPI which is a mirror with the same functionality, does not permit uploading packages with a version that already exists.</p>
+</section>
+<section id="publishing-to-pypi" class="level2">
+<h2 class="anchored" data-anchor-id="publishing-to-pypi">Publishing to PyPI</h2>
+<p>Once you have successfully published to the Test PyPI you are ready to publish to PyPI. There three things you need to do.</p>
+<ol type="1">
+<li>Delete the existing tag, if you want to apply the same tag to publish to PyPI you can do so.</li>
+<li>Modify the repository option to point to PyPI <code>--repository pypi</code> (or remove it, the default is PyPI).</li>
+<li>Change the key stored in the <code>$TWINE_PASSWORD</code> to that which you generated for PyPI instead of the one used for testing with Test PyPI.</li>
+</ol>
+<p>Once you have done so you can create a new tag and the upload will be made to PyPI.</p>
+<section id="releases" class="level3">
+<h3 class="anchored" data-anchor-id="releases">Releases</h3>
+<p>An alternative way to apply tags to commits is to make a <a href="https://docs.gitlab.com/ee/user/project/releases/">Releases</a>. In creating a release you apply a tag to the current commit. In addition GitLab will build and compress snapshot of the files and you can add Release Notes detailing what has changed.</p>
+</section>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="python-packaging" class="level3">
+<h3 class="anchored" data-anchor-id="python-packaging">Python Packaging</h3>
+<ul>
+<li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html">PyPA : Building and Distributing Packages with Setuptools</a></li>
+<li><a href="https://packaging.python.org/en/latest/specifications/">PyPA : Specifications</a></li>
+<li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">Packaging Python Projects</a></li>
+<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
+</ul>
+</section>
+<section id="gitlab-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="gitlab-documentation">GitLab Documentation</h3>
+<ul>
+<li><a href="https://docs.gitlab.com/ee/topics/build_your_application.html">Use CI/CD to build your application | GitLab</a></li>
+<li><a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html">The <code>.gitlab-ci.yml</code> file | GitLab</a> +</li>
+<li><a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a></li>
+</ul>
+
+
+
+</section>
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -15,7 +15,190 @@
 <link>https://ns-rse.github.io/links.html#category=python</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Sun, 07 May 2023 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 03 Oct 2023 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>GitLab CI - Automatic Publishing to PyPI</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/gitlab-ci-pypi/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’ve written previously on <a href="https://ns-rse.github.io/posts/python-packaging">Python Packaging</a> and in that article included details of how to <a href="https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi">automate publishing to PyPI from GitHub</a>. This article details how to automatically publish your package to <a href="https://pypi.org">PyPI</a> from <a href="https://gitlab.com">GitLab</a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/gitlab-ci-pypi/https:/live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985552723/in/dateposted/">Packages with Legs, by Me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="repository-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="repository-configuration">Repository Configuration</h2>
+<section id="ci-variables" class="level3">
+<h3 class="anchored" data-anchor-id="ci-variables">CI Variables</h3>
+<p>The environment variables <code>$TWINE_USERNAME</code> (<code>__token__</code>) and <code>$TWINE_PASSWORD</code> which will be the token you generate for publishing on PyPI or Test PyPI. These are saved under the repository <code>_Settings &gt; CI/CD &gt; Varialbes_</code> section and how to create and save these is described below.</p>
+</section>
+<section id="protecting-tags" class="level3">
+<h3 class="anchored" data-anchor-id="protecting-tags">Protecting Tags</h3>
+<p>This really stumped me I could build and push automatically from the <code>master</code> branch but could not use the <code>- if $CI_COMMIT_TAG</code> condition to publish commits that were tagged. I wrote a <a href="https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309">post on the GitLab Forums</a> asking how to do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from <a href="https://mastodon.social/@manu_faktur/111159226739296263"><span class="citation" data-cites="manu_faktur">@manu_faktur</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span></a> and one from <a href="https://mastodon.social/@diazona@techhub.social/111159429646899283"><span class="citation" data-cites="diazona">@diazona</span><span class="citation" data-cites="techhub.social">@techhub.social</span></a>) both asking if I’d protected the tags on my repository.</p>
+<p>I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a> and sure enough this was possible. After setting a <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags">wildcard to protect my tags</a> the <code>pypi</code> CI job defined below worked as expected and built on tagged commits.</p>
+</section>
+</section>
+<section id="ci-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="ci-configuration">CI Configuration</h2>
+<section id="ci" class="level3">
+<h3 class="anchored" data-anchor-id="ci">CI</h3>
+<p>GitLabs CI/CD is configured via a <a href="https://yaml.org/">YAML</a> file <a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html"><code>.gitlab-ci.yaml</code></a> in the root of your project folder, a useful reference for writing these files is the <a href="https://docs.gitlab.com/ee/ci/yaml/index.html">.gitlab-ci.yml reference</a>.</p>
+<p>An example file from the <a href="https://gitlab.com/nshephard/tcx2gpx/">tcx2gpx</a> package is shown below (see <a href="-/blob/master/.gitlab-ci.yml?ref_type=heads">here</a>).</p>
+<p>This defines the following…</p>
+<ul>
+<li><code>image</code> - the use of a Docker Python 3.11 image for running the pipeline.</li>
+<li><code>variables</code> - Configures <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> to run and automatically fix issues found on pull requests.</li>
+<li><code>stages</code> - the subsequent stages to run (<strong>NB</strong> the <code>debug</code> stage which prints the environment variables is commented out).</li>
+<li><code>pylint</code> - runs linting on Python 3.10 and 3.11.</li>
+<li><code>pytest</code> - Runs tests on Python 3.10 and 3.11.</li>
+<li><code>pages</code> - Builds the documentation pages.</li>
+<li><code>pypi</code> - <strong>Builds and uploads the package to PyPI <em>if the commit has a tag associated</em></strong>.</li>
+</ul>
+<p>````yaml image: python:3.11</p>
+<p>variables: # since we’re not using merge request pipelines in this example, # we will configure the pre-commit job to run on branch pipelines only. # If you ARE using merge request pipelines, you can omit this section PRE_COMMIT_AUTO_FIX: ‘1’ PRE_COMMIT_DEDUPLICATE_MR_AND_BRANCH: ‘false’ PRE_COMMIT_AUTO_FIX_BRANCH_ONLY: ‘false’</p>
+<p>before_script: - python –version - pip install .</p>
+</section>
+</section>
+<section id="pre-commit-autofix-httpsgitlab.comyesolutionsgitlab-ci-templates" class="level1">
+<h1>pre-commit autofix (https://gitlab.com/yesolutions/gitlab-ci-templates /</h1>
+</section>
+<section id="httpsstackoverflow.comcollectivesgitlabarticles71270196" class="level1">
+<h1>https://stackoverflow.com/collectives/gitlab/articles/71270196/)</h1>
+<p>include: remote: https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml</p>
+<p>stages: # - debug - pylint - pytest - pages - pypi</p>
+</section>
+<section id="print-all-env-vars-job" class="level1">
+<h1>print-all-env-vars-job:</h1>
+</section>
+<section id="stage-debug" class="level1">
+<h1>stage: debug</h1>
+</section>
+<section id="script" class="level1">
+<h1>script:</h1>
+</section>
+<section id="echo-gitlab-cicd-print-all-environment-variables" class="level1">
+<h1>- echo “GitLab CI/CD | Print all environment variables”</h1>
+</section>
+<section id="env" class="level1">
+<h1>- env</h1>
+<p>.pylint: script: - pip install pylint pytest - pylint –rcfile .pylintrc tcx2gpx/ - pylint –rcfile .pylintrc tests/</p>
+<p>pylint-3-10: extends: .pylint stage: pylint image: python:3.10 allow_failure: true</p>
+<p>pylint-3-11: extends: .pylint stage: pylint image: python:3.11 allow_failure: true</p>
+<p>.pytest: script: - pip install pytest pytest-cov - python -m “pytest”</p>
+<p>pytest-3-10: extends: .pytest stage: pytest image: python:3.10 allow_failure: true</p>
+<p>pytest-3-11: extends: .pytest stage: pytest image: python:3.11 coverage: /(?i)total.*? (100(?:.0+)?%|[1-9]??:.)?%)$/</p>
+<p>pages: stage: pages rules: - if: $CI_COMMIT_BRANCH == “master” script: - pip install .[docs] - cd docs - git fetch –tags - git tag -l - make html - mkdir ../public - mv _build/html/* ../public/ artifacts: paths: - public</p>
+<p>pypi: stage: pypi rules: - if: $CI_COMMIT_TAG script: - pip install .[pypi] - pip install build - python -m build - twine upload –non-interactive –repository pypi dist/*</p>
+<pre><code>
+The `pypi` stage is named and a `rule` is defined that says to only run this stage if the value of the environment variable
+`$CI_COMMIT_TAG` is `True`. This only happens when a commit has a (protected :wink:) tag.
+
+The `script` section then installs the package along with the `project.optional-dependencies` defined in the `pypi` section of
+the [`pyproject.toml`](https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies).
+
+The package is then build using [build](https://github.com/pypa/build) and [twine](https://twine.readthedocs.io/en/stable/index.html) is then used to push the to push the built package to PyPI.
+
+### PyPI Tokens
+
+You should first test building and deploying to the [Test PyPI](https://test.pypi.org/) and when this is working simply switch to using the main
+[PyPI](https://pypi.org). To do so you will need to create an account on both^[PyPI now enforces Two Factor Authentication (2FA) for new
+accounts, see [2FA Enforcement for New User Registrations](https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/)]. Once you have set yourself up with an account you can
+[generate an API token to authenticate with PyPI](https://pypi.org/help/#apitoken). After verifying your email got to _Account Settings_ and select _Add API
+token_. These are generated once so copy and paste it into the [`.pypirc`](https://packaging.python.org/en/latest/specifications/pypirc/#pypirc) of your project (add this file to your `.gitignore`
+so it doesn't accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI
+for reference.
+
+```{conf}
+[testpypi]
+username = __token__
+password = pypi-&lt;token_value&gt;
+
+[pypi]
+username = __token__
+password = pypi-&lt;token_value&gt;</code></pre>
+<p>It GitLab got to your repositories <em>Settings &gt; CI/CD &gt; Variables</em> and add two new variables <code>TWINE_USERNAME</code> with the value <code>__token__</code> and <code>TWINE_PASSWORD</code> with the token for your account on Test PyPI (remember to prefix it with <code>pypi-</code> as shown in the above example <code>.pypirc</code>). You have options on how these variables are used and should ensure that all three check boxes are selected, this enables…</p>
+<ul>
+<li><strong>Protect variable</strong> Export variable to pipelines running on protected branches and tags only.</li>
+<li><strong>Mask variable</strong> Mask this variable in job logs if it meets regular expression requirements.</li>
+<li><strong>Expand variable reference</strong> <code>$</code> will be treated as the start of a reference to another variable.</li>
+</ul>
+<section id="testing" class="level2">
+<h2 class="anchored" data-anchor-id="testing">Testing</h2>
+<p>Now that you are setup you can test your configuration. To do so you need to first use the API key from the Test PyPI server that you created as the value for <code>$TWINE_PASSWORD</code> (see above) and set the repository <code>twine --repository</code> option to <code>testpypi</code>. Your <code>pypi</code> stage should look like the following…</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">pypi</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">stage</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pypi</span></span>
+<span id="cb2-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rules</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-4"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">if</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> $CI_COMMIT_TAG</span></span>
+<span id="cb2-5"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">script</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-6"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install .[pypi]</span></span>
+<span id="cb2-7"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install build</span></span>
+<span id="cb2-8"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> python -m build</span></span>
+<span id="cb2-9"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> twine upload --non-interactive --repository testpypi dist/*</span></span></code></pre></div>
+<p>Once this is set create a tag for the current commit using the <em>Code &gt; Tags</em> settings from the left menu of your repository and then the <em>New tag</em> button on the top right. The tag you create should match the wild card pattern you have set for protecting tags and it should comply to the Public version identifiers specified in <a href="https://peps.python.org/pep-0440/#public-version-identifiers">PEP440</a>. Once created you will have triggered your Pipeline and you can check this by navigating to <em>CI/CD &gt; Pipelines</em> and then viewing it. The <sub>pypi</sub> job should complete and you should be able to navigate to your package on Test PyPI. You can find it under your account settings.</p>
+<p>If you find there is a problem you will have to correct it and either delete the tag you created and try again or increment the version. PyPI, and in turn Test PyPI which is a mirror with the same functionality, does not permit uploading packages with a version that already exists.</p>
+</section>
+<section id="publishing-to-pypi" class="level2">
+<h2 class="anchored" data-anchor-id="publishing-to-pypi">Publishing to PyPI</h2>
+<p>Once you have successfully published to the Test PyPI you are ready to publish to PyPI. There three things you need to do.</p>
+<ol type="1">
+<li>Delete the existing tag, if you want to apply the same tag to publish to PyPI you can do so.</li>
+<li>Modify the repository option to point to PyPI <code>--repository pypi</code> (or remove it, the default is PyPI).</li>
+<li>Change the key stored in the <code>$TWINE_PASSWORD</code> to that which you generated for PyPI instead of the one used for testing with Test PyPI.</li>
+</ol>
+<p>Once you have done so you can create a new tag and the upload will be made to PyPI.</p>
+<section id="releases" class="level3">
+<h3 class="anchored" data-anchor-id="releases">Releases</h3>
+<p>An alternative way to apply tags to commits is to make a <a href="https://docs.gitlab.com/ee/user/project/releases/">Releases</a>. In creating a release you apply a tag to the current commit. In addition GitLab will build and compress snapshot of the files and you can add Release Notes detailing what has changed.</p>
+</section>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="python-packaging" class="level3">
+<h3 class="anchored" data-anchor-id="python-packaging">Python Packaging</h3>
+<ul>
+<li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html">PyPA : Building and Distributing Packages with Setuptools</a></li>
+<li><a href="https://packaging.python.org/en/latest/specifications/">PyPA : Specifications</a></li>
+<li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">Packaging Python Projects</a></li>
+<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
+</ul>
+</section>
+<section id="gitlab-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="gitlab-documentation">GitLab Documentation</h3>
+<ul>
+<li><a href="https://docs.gitlab.com/ee/topics/build_your_application.html">Use CI/CD to build your application | GitLab</a></li>
+<li><a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html">The <code>.gitlab-ci.yml</code> file | GitLab</a> +</li>
+<li><a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a></li>
+</ul>
+
+
+
+</section>
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>python</category>
+  <category>documentation</category>
+  <category>packaging</category>
+  <category>gitlab</category>
+  <category>ci</category>
+  <guid>https://ns-rse.github.io/posts/gitlab-ci-pypi/index.html</guid>
+  <pubDate>Tue, 03 Oct 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Sphinx Documentation</title>
   <dc:creator>Neil Shephard</dc:creator>
@@ -38,7 +221,7 @@
 </section>
 <section id="initial-setup" class="level2">
 <h2 class="anchored" data-anchor-id="initial-setup">Initial Setup</h2>
-<p>Sphinx comes with the <a href="https://www.sphinx-doc.org/en/master/man/sphinx-quickstart.html"><code>sphinx-quickstart</code></a> interactive tool which will help setup your repository with a basic <code>conf.py</code> and <code>Makefile</code>. There are a number of command line options but is also interactive. I like to keep the source and build directories separate and so use the <code>--sep</code> flag as well as the <code>--makefile</code> flag to generate a <code>Makefile</code> for building documentation on GNU/Linux or OSX (if you use M$-Win the use the <code>--batchfile</code> flag instead).</p>
+<p>Sphinx comes with the <a href="https://www.sphinx-doc.org/en/master/man/sphinx-quickstart.html"><code>sphinx-quickstart</code></a> interactive tool which will help setup your repository with a basic <code>conf.py</code> and <code>Makefile</code>. There are a number of command line options but it is also interactive so you can answer questions to configure your setup. I like to keep the source and build directories separate and so use the <code>--sep</code> flag as well as the <code>--makefile</code> flag to generate a <code>Makefile</code> for building documentation on GNU/Linux or OSX (if you use M$-Win the use the <code>--batchfile</code> flag instead).</p>
 <p>I keep documentation under <code>docs/</code> directory within the root of the package directory.</p>
 <pre class="{bash}"><code>cd ~/path/to/package
 mkdir docs
@@ -47,7 +230,7 @@ sphinx-quickstart --makefile</code></pre>
 </section>
 <section id="conf.py" class="level2">
 <h2 class="anchored" data-anchor-id="conf.py"><code>conf.py</code></h2>
-<p>Configuration is via a <code>conf.py</code> file as you read through this document you will see reference to adding/modifying various sections of the this file. The automatically generated <code>conf.py</code> produced by <code>sphinx-quickstart</code> is well commented and instructive on how to use it to configure Sphinx.</p>
+<p>Configuration is via a <code>conf.py</code> the automatically generated <code>conf.py</code> produced by <code>sphinx-quickstart</code>. It is well commented and instructive on how to use it to configure Sphinx and contains details on adding/modifying various sections of the this file.</p>
 <p>Key sections are the list of <code>extensions</code> that your documentation uses.</p>
 </section>
 <section id="index.rst" class="level2">
@@ -116,70 +299,6 @@ gitGraph
     checkout main
     merge bug2 tag: "v0.1.2"
     commit
-&lt;!-- %%{init: {'theme': 'base', 'gitGraph': {'rotateCommitLabel': true}} }%% --&gt;
-&lt;!-- gitGraph --&gt;
-&lt;!--    commit id: "Last feature" --&gt;
-&lt;!--    commit id: "v0.1.0" --&gt;
-&lt;!--    branch "v0.1 fixes" --&gt;
-&lt;!--    commit "This branch is for fixes to v0.1" --&gt;
-&lt;!--    branch "Missing JSON files for v0.1" --&gt;
-&lt;!--    commit id: "Add missing JSON to v0.1.0 branch" --&gt;
-   &lt;!-- checkout "v0.1 fixes" --&gt;
-   &lt;!-- merge "Missing JSON files for v0.1" --&gt;
-   &lt;!-- commit id: "v0.1.1" --&gt;
-   &lt;!-- checkout main --&gt;
-   &lt;!-- commit id: "Feature1 for v0.2.0" --&gt;
-   &lt;!-- commit id: "Feature2 for v0.2.0" --&gt;
-   &lt;!-- commit id: "v0.2.0" --&gt;
-   &lt;!-- branch "v0.2 fixes" --&gt;
-   &lt;!-- commit id: "This branch is for fixes to v0.2" --&gt;
-   &lt;!-- branch "Missing JSON files for v0.2" --&gt;
-   &lt;!-- commit id: "Add missing JSON to v0.2.0 branch" --&gt;
-   &lt;!-- checkout "v0.2 fixes" --&gt;
-   &lt;!-- merge "Missing JSON files for v0.2" --&gt;
-   &lt;!-- branch "More changes for v0.2" --&gt;
-   &lt;!-- commit id: "Update Cadenza logo" --&gt;
-   &lt;!-- commit id: "Update README" --&gt;
-   &lt;!-- checkout "v0.2 fixes" --&gt;
-   &lt;!-- merge "More changes for v0.2" --&gt;
-   &lt;!-- commit id: "v0.2.1" --&gt;
-   &lt;!-- checkout main --&gt;
-   &lt;!-- commit id: "Cadenza Baseline" --&gt;
-   &lt;!-- commit id: "Unit Tests for evaluators" --&gt;
-   &lt;!-- commit id: "Unit Tests for enhancers" --&gt;
-   &lt;!-- commit id: "v0.3.0" --&gt;
-   &lt;!-- branch "v0.3 fixes" --&gt;
-   &lt;!-- commit id: "This branch is for fixes to v0.3" --&gt;
-   &lt;!-- branch "Fixing something in the future on v0.3" --&gt;
-   &lt;!-- commit id: "Fix something in the future" --&gt;
-   &lt;!-- checkout "v0.3 fixes" --&gt;
-   &lt;!-- merge "Fixing something in the future on v0.3" --&gt;
-   &lt;!-- checkout "v0.2 fixes" --&gt;
-   &lt;!-- branch "Fixing something in the future on v0.2" --&gt;
-   &lt;!-- commit id: "Fix the same problem on v0.2 branch" --&gt;
-   &lt;!-- checkout "v0.2 fixes" --&gt;
-   &lt;!-- merge "Fixing something in the future on v0.2" --&gt;
-   &lt;!-- commit id: "v0.2.2" --&gt;
-   &lt;!-- checkout "v0.3 fixes" --&gt;
-   &lt;!-- commit id: "v0.3.1" --&gt;
-   &lt;!-- checkout main --&gt;
-   &lt;!-- commit id: "Refactor HAAQI" --&gt;
-   &lt;!-- commit id: "Refactor HASQI" --&gt;
-   &lt;!-- commit id: "Refactor HASPI" --&gt;
-   &lt;!-- commit id: "v0.4.0" --&gt;
-   &lt;!-- branch "v0.4 fixes" --&gt;
-   &lt;!-- commit id: "This branch is for fixes to v0.4" --&gt;
-   &lt;!-- checkout "main" --&gt;
-   &lt;!-- commit id: "First of many new features" --&gt;
-   &lt;!-- checkout "v0.4 fixes" --&gt;
-   &lt;!-- branch "Fix something in v0.4" --&gt;
-   &lt;!-- commit id: "Fix problem 1 on v0.4" --&gt;
-   &lt;!-- commit id: "Fix problem 2 on v0.4" --&gt;
-   &lt;!-- checkout "v0.4 fixes" --&gt;
-   &lt;!-- merge "Fix something in v0.4" --&gt;
-   &lt;!-- commit id: "v0.4.1" --&gt;
-   &lt;!-- checkout main --&gt;
-   &lt;!-- commit id: "Lots more enhancements" --&gt;
 </pre>
 <div id="mermaid-tooltip-1" class="mermaidTooltip">
 
@@ -194,37 +313,73 @@ gitGraph
 <section id="including-api-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="including-api-documentation">Including API Documentation</h2>
 <p>As you write your package it is good practice include <a href="https://realpython.com/documenting-python-code/">docstrings</a> for each module/class/method/function that you write. For Python there are several different styles for writing these, my personal preference is for <a href="https://numpydoc.readthedocs.io/en/latest/format.html">numpydoc style</a> but regardless of your preference you should write them. They are invaluable to users (including your future self) to understand how the code works and as many modern Integrated Development Environments (IDEs) supporting functionality to show the documentation for functions as you type they are an invaluable reference. If you’re an <a href="https://www.gnu.org/software/emacs/">Emacs</a> user then you can leverage the <a href="https://github.com/douglasdavis/numpydoc.el">numpydoc</a> package to automatically insert NumPy docstrings in Python function definitions based on the function definition, it automatically detects names, type hints, exceptions and return types to generate the docstring (yet another reason to use Emacs!).</p>
-<p>Whilst it is useful to have this API available in an IDE as you work it is also useful to include the reference on a packages website and this is relatively straight-forward with Sphinx which provides the <a href="https://numpydoc.readthedocs.io/en/latest/format.html"><code>sphinx-apidoc</code></a> command to generate documentation from the embedded docstrings. However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
-<p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html">configuring</a> at a bare minimum which directories to generate documentation from.</p>
+<p>Whilst it is useful to have this API available in an IDE as you work it is also useful to include the reference on a packages website and this is relatively straight-forward with Sphinx which provides several tools and extensions.</p>
+<section id="sphinx-apidoc" class="level3">
+<h3 class="anchored" data-anchor-id="sphinx-apidoc"><code>sphinx-apidoc</code></h3>
+<p>The first is the the <a href="https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html"><code>sphinx-apidoc</code></a> command to generate documentation from the embedded docstrings. This is a command line tool that could be added to the <code>Makefile</code>.</p>
+</section>
+<section id="sphinx-autoapi" class="level3">
+<h3 class="anchored" data-anchor-id="sphinx-autoapi"><code>sphinx-autoapi</code></h3>
+<p>However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
+<p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html">configuring</a> at a bare minimum which directories to generate documentation from. i</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">extensions <span class="op" style="color: #5E5E5E;">=</span> [</span>
 <span id="cb6-2">    <span class="st" style="color: #20794D;">"autoapi.extension"</span>,</span>
 <span id="cb6-3">]</span>
 <span id="cb6-4"></span>
-<span id="cb6-5">autoapi_dirs <span class="op" style="color: #5E5E5E;">=</span> [<span class="st" style="color: #20794D;">"../mypackage"</span>]</span></code></pre></div>
+<span id="cb6-5"><span class="co" style="color: #5E5E5E;"># -- autoapi configuration ---------------------------------------------------</span></span>
+<span id="cb6-6">autotype_api <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"python"</span></span>
+<span id="cb6-7">autoapi_dirs <span class="op" style="color: #5E5E5E;">=</span> [<span class="st" style="color: #20794D;">"../mypackage"</span>]</span></code></pre></div>
 </div>
 <p>There are a lot of subtle configuration options and I would recommend reading the <a href="https://sphinx-autoapi.readthedocs.io/en/latest/">documentation</a> and working through the <a href="https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html">Tutorials</a> and <a href="https://sphinx-autoapi.readthedocs.io/en/latest/how_to.html">How To Guides</a>.</p>
+<p>This has the added advantage that it works with <a href="https://readthedocs.org">ReadTheDocs</a>.</p>
+</section>
+<section id="sphinx-autosummary" class="level3">
+<h3 class="anchored" data-anchor-id="sphinx-autosummary">Sphinx Autosummary</h3>
+<p>In addition the <a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html">sphinx_ext_autosummary</a> automates summarising the API docstrings.</p>
+<p>Add the package as a dependency to the <code>extensions</code>…</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">extensions <span class="op" style="color: #5E5E5E;">=</span> [</span>
+<span id="cb7-2">    <span class="st" style="color: #20794D;">"sphinx.ext.autosummary"</span></span>
+<span id="cb7-3">]</span></code></pre></div>
+</div>
+<p>Under the <code>index.rst</code> you should include a section header for the <code>api</code> that references an <code>api.rst</code> page for inclusion.</p>
+<pre class="{rst}"><code>.. toctree::
+   :maxdepth: 2
+   :caption: API
+
+   api</code></pre>
+<p>And then create the <code>api.rst</code> page which need only have the following. By including <code>:recursive:</code> the sub-modules will be included automatically.</p>
+<pre class="{rst}"><code>API
+===
+
+.. autosummary::
+   :recursive:
+   :toctree: generated
+
+   mypackage</code></pre>
+</section>
 </section>
 <section id="multiple-versions" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-versions">Multiple Versions</h2>
 <p>Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision documentation for each version that is available. Fortunately the Sphinx extension <a href="https://holzhaus.github.io/sphinx-multiversion/master/">sphinx-multiversion</a> makes this relatively painless.</p>
 <p>You need to include it in the list of <code>extensions</code> of <code>docs/conf.py</code></p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">extensions <span class="op" style="color: #5E5E5E;">=</span> [</span>
-<span id="cb7-2">    <span class="st" style="color: #20794D;">"sphinx_multiversion"</span>,</span>
-<span id="cb7-3">]</span></code></pre></div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">extensions <span class="op" style="color: #5E5E5E;">=</span> [</span>
+<span id="cb10-2">    <span class="st" style="color: #20794D;">"sphinx_multiversion"</span>,</span>
+<span id="cb10-3">]</span></code></pre></div>
 </div>
 <section id="configuring-versions" class="level3">
 <h3 class="anchored" data-anchor-id="configuring-versions">Configuring Versions</h3>
 <section id="sidebar" class="level4">
 <h4 class="anchored" data-anchor-id="sidebar">Sidebar</h4>
 <p>For versions to not just be built but available you need to include a section on your site that allows selecting which version of the documentation to view. Sidebars are included via HTML templates and you need to configure the path to this directory and the name of the HTML file within it. The following options in the <code>conf.py</code> configure the <code>_templates</code> directory and within it the <code>versioning.html</code> file.</p>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">templates_path <span class="op" style="color: #5E5E5E;">=</span> [</span>
-<span id="cb8-2">    <span class="st" style="color: #20794D;">"_templates"</span>,</span>
-<span id="cb8-3">]</span>
-<span id="cb8-4"></span>
-<span id="cb8-5">html_sidebars <span class="op" style="color: #5E5E5E;">=</span>  {<span class="st" style="color: #20794D;">"**"</span>:   <span class="st" style="color: #20794D;">"versioning.html"</span>,}</span></code></pre></div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">templates_path <span class="op" style="color: #5E5E5E;">=</span> [</span>
+<span id="cb11-2">    <span class="st" style="color: #20794D;">"_templates"</span>,</span>
+<span id="cb11-3">]</span>
+<span id="cb11-4"></span>
+<span id="cb11-5">html_sidebars <span class="op" style="color: #5E5E5E;">=</span>  {<span class="st" style="color: #20794D;">"**"</span>:   <span class="st" style="color: #20794D;">"versioning.html"</span>,}</span></code></pre></div>
 </div>
 <p>The <code>versioning.html</code> file can take a number of formats, refer to the <a href="https://holzhaus.github.io/sphinx-multiversion/master/templates.html">documentation</a> for all options, but the following is an example.</p>
 <pre class="{html}"><code>{% if versions %}
@@ -240,19 +395,19 @@ gitGraph
 <section id="tagsbranches" class="level4">
 <h4 class="anchored" data-anchor-id="tagsbranches">Tags/Branches</h4>
 <p>If no options are set then <code>sphinx-multiversion</code> will build documentation for <em>all</em> branhces, which is probably undesirable. Typically you want to restrict this to the released versions which are identified by <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tags</a> and perhaps your <code>main</code>/<code>master</code> branch. If you prefix your tags with <code>v</code> and you want to build the documentation for the <code>HEAD</code> of your <code>main</code> (or <code>master</code>) branch then you should set options as shown below for <code>sphinx-multiversion</code>. I like to be able to test documentation builds and so I have a section that allows me to include a given branch.</p>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">smv_tag_whitelist <span class="op" style="color: #5E5E5E;">=</span> <span class="vs" style="color: #20794D;">r"^v\d+.*$"</span>  <span class="co" style="color: #5E5E5E;"># Tags begining with v#</span></span>
-<span id="cb10-2">smv_branch_whitelist <span class="op" style="color: #5E5E5E;">=</span> <span class="vs" style="color: #20794D;">r"^main$"</span>  <span class="co" style="color: #5E5E5E;"># main branch</span></span>
-<span id="cb10-3"><span class="co" style="color: #5E5E5E;"># If testing changes locally comment out the above and the smv_branch_whitelist below instead. Replace the branch name</span></span>
-<span id="cb10-4"><span class="co" style="color: #5E5E5E;"># you are working on ("ns-rse/testing-branch" in the example below) with the branch you are working on and run...</span></span>
-<span id="cb10-5"><span class="co" style="color: #5E5E5E;">#</span></span>
-<span id="cb10-6"><span class="co" style="color: #5E5E5E;"># cd docs</span></span>
-<span id="cb10-7"><span class="co" style="color: #5E5E5E;"># sphinx-multiversion . _build/html</span></span>
-<span id="cb10-8"><span class="co" style="color: #5E5E5E;">#</span></span>
-<span id="cb10-9"><span class="co" style="color: #5E5E5E;"># smv_branch_whitelist = r"^(main|ns-rse/testing-branch)$"  # main branch</span></span>
-<span id="cb10-10">smv_released_pattern <span class="op" style="color: #5E5E5E;">=</span> <span class="vs" style="color: #20794D;">r"^tags/.*$"</span>  <span class="co" style="color: #5E5E5E;"># Tags only</span></span>
-<span id="cb10-11"><span class="co" style="color: #5E5E5E;"># smv_released_pattern = r"^(/.*)|(main).*$"  # Tags and HEAD of main</span></span>
-<span id="cb10-12">smv_outputdir_format <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">{ref.name}</span><span class="st" style="color: #20794D;">"</span></span></code></pre></div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">smv_tag_whitelist <span class="op" style="color: #5E5E5E;">=</span> <span class="vs" style="color: #20794D;">r"^v\d+.*$"</span>  <span class="co" style="color: #5E5E5E;"># Tags begining with v#</span></span>
+<span id="cb13-2">smv_branch_whitelist <span class="op" style="color: #5E5E5E;">=</span> <span class="vs" style="color: #20794D;">r"^main$"</span>  <span class="co" style="color: #5E5E5E;"># main branch</span></span>
+<span id="cb13-3"><span class="co" style="color: #5E5E5E;"># If testing changes locally comment out the above and the smv_branch_whitelist below instead. Replace the branch name</span></span>
+<span id="cb13-4"><span class="co" style="color: #5E5E5E;"># you are working on ("ns-rse/testing-branch" in the example below) with the branch you are working on and run...</span></span>
+<span id="cb13-5"><span class="co" style="color: #5E5E5E;">#</span></span>
+<span id="cb13-6"><span class="co" style="color: #5E5E5E;"># cd docs</span></span>
+<span id="cb13-7"><span class="co" style="color: #5E5E5E;"># sphinx-multiversion . _build/html</span></span>
+<span id="cb13-8"><span class="co" style="color: #5E5E5E;">#</span></span>
+<span id="cb13-9"><span class="co" style="color: #5E5E5E;"># smv_branch_whitelist = r"^(main|ns-rse/testing-branch)$"  # main branch</span></span>
+<span id="cb13-10">smv_released_pattern <span class="op" style="color: #5E5E5E;">=</span> <span class="vs" style="color: #20794D;">r"^tags/.*$"</span>  <span class="co" style="color: #5E5E5E;"># Tags only</span></span>
+<span id="cb13-11"><span class="co" style="color: #5E5E5E;"># smv_released_pattern = r"^(/.*)|(main).*$"  # Tags and HEAD of main</span></span>
+<span id="cb13-12">smv_outputdir_format <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">{ref.name}</span><span class="st" style="color: #20794D;">"</span></span></code></pre></div>
 </div>
 <p>If you are testing locally be sure to revert the commented sections so that the branch is not built on GitHub Pages.</p>
 </section>
@@ -261,28 +416,28 @@ gitGraph
 <section id="themes" class="level2">
 <h2 class="anchored" data-anchor-id="themes">Themes</h2>
 <p>There are a number of different themes available for including in your package. Which is used is defined by the <code>html_theme</code> variable in <code>docs/conf.py</code>. I like the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html"><code>pydata-sphinx-theme</code></a> that is used by <a href="https://pandas.pydata.org">Pandas</a>/<a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Matplotlib</a>.</p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">html_theme <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"pydata_sphinx_theme"</span></span></code></pre></div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">html_theme <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"pydata_sphinx_theme"</span></span></code></pre></div>
 </div>
 </section>
 <section id="package-dependencies" class="level2">
 <h2 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h2>
 <p>Since the documentation is part of your package it is important to include all of the dependencies that are required for building the documentation dependencies of your package so they can be easily installed and are available to Sphinx (since Sphinx will try loading anything listed in your <code>docs/conf.py</code>). These days you should really be using <code>pyproject.toml</code> to configure and manage your package, if you are unfamiliar with the packaging process see my post on <a href="https://ns-rse.github.io/posts/python-packaging/">Python Packaging</a>.</p>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">[project.optional<span class="op" style="color: #5E5E5E;">-</span>dependencies]</span>
-<span id="cb12-2"></span>
-<span id="cb12-3">docs <span class="op" style="color: #5E5E5E;">=</span> [</span>
-<span id="cb12-4">  <span class="st" style="color: #20794D;">"Sphinx"</span>,</span>
-<span id="cb12-5">  <span class="st" style="color: #20794D;">"myst_parser"</span>,</span>
-<span id="cb12-6">  <span class="st" style="color: #20794D;">"numpydoc"</span>,</span>
-<span id="cb12-7">  <span class="st" style="color: #20794D;">"pydata_sphinx_theme"</span>,</span>
-<span id="cb12-8">  <span class="st" style="color: #20794D;">"sphinx-autoapi"</span>,</span>
-<span id="cb12-9">  <span class="st" style="color: #20794D;">"sphinx-autodoc-typehints"</span>,</span>
-<span id="cb12-10">  <span class="st" style="color: #20794D;">"sphinx-multiversion"</span>,</span>
-<span id="cb12-11">  <span class="st" style="color: #20794D;">"sphinx_markdown_tables"</span>,</span>
-<span id="cb12-12">  <span class="st" style="color: #20794D;">"sphinx_rtd_theme"</span>,</span>
-<span id="cb12-13">  <span class="st" style="color: #20794D;">"sphinxcontrib-mermaid"</span>,</span>
-<span id="cb12-14">]</span></code></pre></div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">[project.optional<span class="op" style="color: #5E5E5E;">-</span>dependencies]</span>
+<span id="cb15-2"></span>
+<span id="cb15-3">docs <span class="op" style="color: #5E5E5E;">=</span> [</span>
+<span id="cb15-4">  <span class="st" style="color: #20794D;">"Sphinx"</span>,</span>
+<span id="cb15-5">  <span class="st" style="color: #20794D;">"myst_parser"</span>,</span>
+<span id="cb15-6">  <span class="st" style="color: #20794D;">"numpydoc"</span>,</span>
+<span id="cb15-7">  <span class="st" style="color: #20794D;">"pydata_sphinx_theme"</span>,</span>
+<span id="cb15-8">  <span class="st" style="color: #20794D;">"sphinx-autoapi"</span>,</span>
+<span id="cb15-9">  <span class="st" style="color: #20794D;">"sphinx-autodoc-typehints"</span>,</span>
+<span id="cb15-10">  <span class="st" style="color: #20794D;">"sphinx-multiversion"</span>,</span>
+<span id="cb15-11">  <span class="st" style="color: #20794D;">"sphinx_markdown_tables"</span>,</span>
+<span id="cb15-12">  <span class="st" style="color: #20794D;">"sphinx_rtd_theme"</span>,</span>
+<span id="cb15-13">  <span class="st" style="color: #20794D;">"sphinxcontrib-mermaid"</span>,</span>
+<span id="cb15-14">]</span></code></pre></div>
 </div>
 <p>Ensure all of these dependencies are installed in your Virtual Environment.</p>
 <pre class="{bash}"><code>cd ~/path/to/package
@@ -349,6 +504,7 @@ jobs:
 <li><a href="https://github.com/ryanfox/sphinx-markdown-tables"><code>sphinx-markdown-tables</code></a></li>
 <li><a href="https://holzhaus.github.io/sphinx-multiversion/master/"><code>sphinx-multiversion</code></a></li>
 <li><a href="https://github.com/mgaitan/sphinxcontrib-mermaid"><code>sphinxcontrib-mermaid</code></a></li>
+<li><a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html"><code>sphinx-ext-autosummary</code></a></li>
 </ul>
 </section>
 <section id="github" class="level3">
