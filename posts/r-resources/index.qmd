@@ -110,6 +110,22 @@ the version control system [Git](https://git.scm). Get yourself an account on [G
 [GitLab](https://gitlab.com) and settle down to read Jenny Bryans excellent [Happy Git and GitHub for the
 useR](https://happygitwithr.com).
 
+### Tidyverse
+
+You will hear a lot about the [Tidyverse](https://www.tidyverse.org/) which _is an opinionated collection of R packages
+designed for data science_. They are well worth learning as they make writing code considerably easier than with the
+base R packages. You won't need all of the packages immediately but key ones to learn are
+
++ [dplyr](https://dplyr.tidyverse.org/) (or
++ [tidyr](https://tidyr.tidyverse.org/) for tidying your data.
++ [forcats](https://forcats.tidyverse.org/) for working with categorical variables.
++ [lubridate](https://lubridate.tidyverse.org/) for working with date variables.
++ [stringr](https://stringr.tidyverse.org/) for working with string variables.
+
+If you've large datasets the [dtplyr](https://dtplyr.tidyverse.org/) which uses the
+ [data.table](http://r-datatable.com/) package in the background but with `dplyr` code. `data.table` is considerably
+ faster than `dplyr` for many operations. This is particularly noticeable when you have large datasets.
+
 ### Statistics
 
 There is a wealth of resources out there for learning and using R for different topics. The following is that which I'm
