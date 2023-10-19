@@ -244,6 +244,7 @@ The [R Bloggers](https://www.r-bloggers.com/) site aggregates blogs from people 
 resource. A few highlights are noted as well but R Bloggers is probably the best resource. If you want to subscribe to
 these most have [RSS feeds](https://en.wikipedia.org/wiki/RSS)
 
++ [Tidyverse blog](https://www.tidyverse.org/blog/)
 + [Notes from a data witch](https://blog.djnavarro.net/) a blog by Danielle Navarro
 
 ## Mastodon
