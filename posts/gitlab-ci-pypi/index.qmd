@@ -136,20 +136,22 @@ pypi: stage: pypi rules:
 The `pypi` stage is named and a `rule` is defined that says to only run this stage if the value of the environment variable
 `$CI_COMMIT_TAG` is `True`. This only happens when a commit has a (protected :wink:) tag.
 
-The `script` section then installs the package along with the `project.optional-dependencies` defined in the `pypi` section of
-the [`pyproject.toml`](https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies).
+The `script` section then installs the package along with the `project.optional-dependencies` defined in the `pypi`
+section of the [`pyproject.toml`](https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies).
 
 The package is then build using [build](https://github.com/pypa/build) and [twine](https://twine.readthedocs.io/en/stable/index.html) is then used to push the to push the built package to PyPI.
 
 ### PyPI Tokens
 
-You should first test building and deploying to the [Test PyPI](https://test.pypi.org/) and when this is working simply switch to using the main
-[PyPI](https://pypi.org). To do so you will need to create an account on both^[PyPI now enforces Two Factor Authentication (2FA) for new
-accounts, see [2FA Enforcement for New User Registrations](https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/)]. Once you have set yourself up with an account you can
-[generate an API token to authenticate with PyPI](https://pypi.org/help/#apitoken). After verifying your email got to _Account Settings_ and select _Add API
-token_. These are generated once so copy and paste it into the [`.pypirc`](https://packaging.python.org/en/latest/specifications/pypirc/#pypirc) of your project (add this file to your `.gitignore`
-so it doesn't accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI
-for reference.
+You should first test building and deploying to the [Test PyPI](https://test.pypi.org/) and when this is working simply
+switch to using the main [PyPI](https://pypi.org). To do so you will need to create an account on both^[PyPI now
+enforces Two Factor Authentication (2FA) for new accounts, see [2FA Enforcement for New User
+Registrations](https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/)]. Once you have set yourself up
+with an account you can [generate an API token to authenticate with PyPI](https://pypi.org/help/#apitoken). After
+verifying your email got to _Account Settings_ and select _Add API token_. These are generated once so copy and paste it
+into the [`.pypirc`](https://packaging.python.org/en/latest/specifications/pypirc/#pypirc) of your project (add this
+file to your `.gitignore` so it doesn't accidentally get added). Remember to do this twice, once for PyPI and once for
+Test PyPI and once for PyPI for reference.
 
 ```{conf}
 [testpypi]

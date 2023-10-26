@@ -115,7 +115,7 @@ git push --set-upstream-to private-work private-work
 
 #### Magit
 
-#### Check your `.git/config`
+#### Check `.git/config`
 
 Returning to your `.git/config` file you should now have an additional entry for a `branch` underneath the new entry for
 the `remote` and the value for `remote` under `branch` is the name of the `remote`.
