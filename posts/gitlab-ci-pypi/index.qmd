@@ -87,11 +87,7 @@ before_script:
 #                     https://stackoverflow.com/collectives/gitlab/articles/71270196/)
 include: remote: https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml
 
-stages: # - debug
-    - pylint
-    - pytest
-    - pages
-    - pypi
+stages: # - debug - pylint - pytest - pages - pypi
 
 # print-all-env-vars-job:
 #     stage: debug

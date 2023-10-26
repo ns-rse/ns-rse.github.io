@@ -44,7 +44,8 @@ The `fetch` field is what in Git parlance is called a
 [Refspec](https://git-scm.com/book/it/v2/Git-Internals-The-Refspec) (Reference Specification). This takes the form
 `<src>:<dst>` and is a method of mapping references on the remote side (`<src>`) to those locally (`<dst>`) and it is
 this that maps the local branches (`refs/heads/*`) to their counterparts on the remote (`refs/remotes/origin/*`). If
-there is a `+` prefix it tells git to up-date the reference even if there is no [fast-forward]().
+there is a `+` prefix it tells git to up-date the reference even if there is no
+[fast-forward](https://www.git-basics.com/docs/git-merge/fast-forward).
 
 ```config
 [remote "origin"]
@@ -99,7 +100,7 @@ immediately scroll down.
 Now that you have a secondary `remote` defined you can create a branch and set it to track the private remote you have
 created and configured. Create a new branch by using `git checkout -b`
 
-#### Git at the Command Line
+#### Command Line
 
 ``` {.bash}
 git checkout -b private-feature
@@ -112,7 +113,7 @@ so make an empty commit
 git push --set-upstream-to private-work private-work
 ```
 
-#### Using Magit
+#### Magit
 
 #### Check your `.git/config`
 
