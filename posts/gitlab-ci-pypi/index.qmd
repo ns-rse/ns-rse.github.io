@@ -71,7 +71,7 @@ This defines the following...
 + `pages` - Builds the documentation pages.
 + `pypi` - **Builds and uploads the package to PyPI _if the commit has a tag associated_**.
 
-````yaml
+```yaml
 image: python:3.11
 
 variables: # since we're not using merge request pipelines in this example, # we will configure the pre-commit job to
