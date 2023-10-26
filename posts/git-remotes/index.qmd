@@ -20,7 +20,6 @@ execute:
 collaborative tools for version controlling, sharing and working collaboratively. Normally a repository resides on your
 local computer and it tracks a remote (often referred to as `origin`)
 
-
 ![[Looking up by
 me](https://flickr.com/photos/slackline/49833632231/)](https://live.staticflickr.com/65535/49833632231_bd701b7621_k.jpg)
 
@@ -59,7 +58,6 @@ What follows is then a series of entries for `branch` which defines further how 
 and where it should `merge` to. Each branch has a name define in the section header and within two parameters are set
 the `remote` which by default points to the `origin` (defined in the above [`remote`](#remote)) section and a `merge`
 field which defines the local reference to the branch under `refs/head/<branch-name>`.
-
 
 ## Having a Private branch
 
@@ -116,8 +114,6 @@ git push --set-upstream-to private-work private-work
 
 #### Using Magit
 
-
-
 #### Check your `.git/config`
 
 Returning to your `.git/config` file you should now have an additional entry for a `branch` underneath the new entry for
@@ -125,11 +121,11 @@ the `remote` and the value for `remote` under `branch` is the name of the `remot
 
 ``` config
 [remote "private-work"]
-	url = git@github.com:ns-rse/private-work.git
-	fetch = +refs/heads/*:refs/remotes/private-work/*
+ url = git@github.com:ns-rse/private-work.git
+ fetch = +refs/heads/*:refs/remotes/private-work/*
 [branch "private-feature"]
-	remote = private-work
-	merge = refs/heads/private-feature
+ remote = private-work
+ merge = refs/heads/private-feature
 ```
 
 ## Keeping up to Date
@@ -155,7 +151,6 @@ Or you can merge directly from origin with
 git checkout private-feature
 git merge origin/main
 ```
-
 
 ## Checkout someone else's private branch
 
