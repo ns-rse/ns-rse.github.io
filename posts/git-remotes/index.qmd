@@ -1,0 +1,186 @@
+---
+title: "Git Remotes"
+date: "2023-10-06"
+categories: [git, github, gitlab]
+image: https://live.staticflickr.com/65535/49833632231_bd701b7621_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+[Git](https://git.scm) and various forges such as  [GitHub](https://github.com) [GitLab](https://gitlab.com) are useful
+collaborative tools for version controlling, sharing and working collaboratively. Normally a repository resides on your
+local computer and it tracks a remote (often referred to as `origin`)
+
+![[Looking up by
+me](https://flickr.com/photos/slackline/49833632231/)](https://live.staticflickr.com/65535/49833632231_bd701b7621_k.jpg)
+
+## `.git/config`
+
+When you initialise or clone a repository a hidden directory `.git` is created. Within this resides the configuration
+file for the repository `.git/config` that defines how Git is to behave when performing actions on the repository.
+
+### `core`
+
+### `remote`
+
+The `remote` field defines the location of the repository to which code is synced via pushing and pulling. Typically and
+by default this is called the `origin` and you have a section that defines the `url` and the `fetch` for this remote.
+
+The `url` field can take two forms, either one based on `https` in which case the prefix of the value will be
+`https://github.com/` or one based on `ssh` in which case the prefix will be `git@github.com:`. What follows is then the
+user account or organisation (e.g. `ns-rse` for my personal repositories) followed by `/<repo-name>` (e.g. for this
+repository that is `ns-rse.github.io`).
+
+The `fetch` field is what in Git parlance is called a
+[Refspec](https://git-scm.com/book/it/v2/Git-Internals-The-Refspec) (Reference Specification). This takes the form
+`<src>:<dst>` and is a method of mapping references on the remote side (`<src>`) to those locally (`<dst>`) and it is
+this that maps the local branches (`refs/heads/*`) to their counterparts on the remote (`refs/remotes/origin/*`). If
+there is a `+` prefix it tells git to up-date the reference even if there is no
+[fast-forward](https://www.git-basics.com/docs/git-merge/fast-forward).
+
+```config
+[remote "origin"]
+    url = git@github.com:ns-rse/ns-rse.github.io
+    fetch = +refs/heads/*:refs/remotes/origin/*
+```
+
+### `branch`
+
+What follows is then a series of entries for `branch` which defines further how each local `branch` maps to a `remote`
+and where it should `merge` to. Each branch has a name define in the section header and within two parameters are set
+the `remote` which by default points to the `origin` (defined in the above [`remote`](#remote)) section and a `merge`
+field which defines the local reference to the branch under `refs/head/<branch-name>`.
+
+## Having a Private branch
+
+Sometimes the need might arise to develop a feature in private. This is fine if you have no intention of sharing the
+work with others, you create a branch on your local computer and never push it to a forge. However, there will arise
+times where you do want to share you work with others whilst keeping things private. This too is possible and can be
+achieved by creating a private repository on your own account rather than using the original and configuring a branch to
+track that instead.
+
+### Creating a second `remote`
+
+Start by creating a new repository on GitHub/GitLab and making it private from the outset. Do _not_ include any
+additional information such as `.gitignore`, `README.md` or `LICENSE.md` it should be completely empty.
+
+You can then add it as a new `remote` to your existing repository in one of two ways.
+
+#### Git at the Command Line
+
+You should have some instructions shown on GitHub one of which is **...or push an existing repository from the command
+line**. The first line of this is telling you how to add a new remote to the repository. called `origin` and to point
+towards the repository you have just created. You will likely already have an `origin` remote defined so you need to
+choose a different name and point it to the correct location.
+
+``` {.bash}
+git remote add private-work git@github.com:ns-rse/private-work
+```
+
+#### Check your `.git/config`
+
+If you now look at your `.git/config` file there should be two entries for `[remote ""]` one for origin (i.e. `[remote
+"origin"]`) and one for the new remote that has just been added `[remote "private-work"]`. Of course, because
+`.git/config` is just a text configuration file you can edit it and enter these values manually yourself if you want to.
+
+**NB** Either of the above methods will append these options to the bottom of the file so if you can't see it
+immediately scroll down.
+
+### Track your new remote
+
+Now that you have a secondary `remote` defined you can create a branch and set it to track the private remote you have
+created and configured. Create a new branch by using `git checkout -b`
+
+#### Command Line
+
+``` {.bash}
+git checkout -b private-feature
+```
+
+You then set the upstream using `--set-upstream-to` or its shorthand `-u`, at this stage you don't have anything to include
+so make an empty commit
+
+``` {.bash}
+git push --set-upstream-to private-work private-work
+```
+
+#### Magit
+
+#### Check `.git/config`
+
+Returning to your `.git/config` file you should now have an additional entry for a `branch` underneath the new entry for
+the `remote` and the value for `remote` under `branch` is the name of the `remote`.
+
+``` config
+[remote "private-work"]
+ url = git@github.com:ns-rse/private-work.git
+ fetch = +refs/heads/*:refs/remotes/private-work/*
+[branch "private-feature"]
+ remote = private-work
+ merge = refs/heads/private-feature
+```
+
+## Keeping up to Date
+
+The private repository you setup on GitHub/GitLab should now have a copy of the `private-work` branch you created
+locally.
+
+If you are collaborating with others the `main`/`master` branch may move ahead of yours as others work is merged in. You
+therefore need to regularly update your private branch by merging or rebasing from the `origin` rather than the
+`private-work` remote your branch is configured to track. The difference between merging and rebasing is beyond the
+scope of this article, there are pros and cons to each
+
+``` {.bash}
+git checkout main
+git pull
+git checkout private-work
+git merge main
+```
+
+Or you can merge directly from origin with
+
+``` {.bash}
+git checkout private-feature
+git merge origin/main
+```
+
+## Checkout someone else's private branch
+
+Inevitably the need might arise for a collaborator to test your private branch. In which case they need to be granted
+permission to the private repository by the developer who created it. This is done via _Settings > Collaborators_ and
+inviting them to work on your repository.
+
+Once they have accepted the invitation they will also have to add a secondary `remote` and the `branch` they are working
+on. They can follow the instructions above to set up a [remote](#remote), however they should _not_ follow the
+instructions to [`branch`](#branch) because that branch already exists on your private repository.
+
+but because `.git/config` is just a text file you can copy the lines from your
+configuration and share it with your collaborator and they can add them to their `.git/config` file. Once these options
+have been added they
+
+## Bonus - Using Magit
+
+If you use [Emacs](https://www.gnu.org/software/emacs/) and the amazing [Magit](https://magit.vc) you can of course do
+this via the Magit interface. In the Magit buffer for the repository (e.g. `magit: ns-rse.github.io`) press `M` to bring
+up the `Remote` transient buffer. You then press `a` to add a remote and are prompted for a name for the remote (in this
+example we use the same as above `private-work`), this can be anything you want other than `origin` which is already
+defined, and then the URL this will be `git@github.com:<account-name>/<private-repo-name>.git`.
+
+To create a branch in Magit press `b` then `l` to select a local branch and enter `main` (or `master`), then make sure
+its upto date with the `origin` by Pulling with `P` then `u`. Now create a new branch by pressing `b` and since it will
+be a new press `c` to create it. You will be prompted for the name of a branch from which to branch from and then for
+the name of your branch.
+
+In the Magit buffer for the repository you are working on pushes are made with `P`. The Transient buffer then offers you
+a choice of places to push to, one of which is `elsewhere` which is accessed by the `e` key. You can then type in the
+name of the remote tracking branch as defined under the `remote` entry you configured above which in this case is
+`private-work`.

@@ -35,7 +35,7 @@
 </section>
 <section id="protecting-tags" class="level3">
 <h3 class="anchored" data-anchor-id="protecting-tags">Protecting Tags</h3>
-<p>This really stumped me I could build and push automatically from the <code>master</code> branch but could not use the <code>- if $CI_COMMIT_TAG</code> condition to publish commits that were tagged. I wrote a <a href="https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309">post on the GitLab Forums</a> asking how to do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from <a href="https://mastodon.social/@manu_faktur/111159226739296263"><span class="citation" data-cites="manu_faktur">@manu_faktur</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span></a> and one from <a href="https://mastodon.social/@diazona@techhub.social/111159429646899283"><span class="citation" data-cites="diazona">@diazona</span><span class="citation" data-cites="techhub.social">@techhub.social</span></a>) both asking if I’d protected the tags on my repository.</p>
+<p>This really stumped me I could build and push automatically from the <code>master</code> branch but could not use the <code>- if  $CI_COMMIT_TAG</code> condition to publish commits that were tagged. I wrote a <a href="https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309">post on the GitLab Forums</a> asking how to do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from <a href="https://mastodon.social/@manu_faktur/111159226739296263"><span class="citation" data-cites="manu_faktur">@manu_faktur</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span></a> and one from <a href="https://mastodon.social/@diazona@techhub.social/111159429646899283"><span class="citation" data-cites="diazona">@diazona</span><span class="citation" data-cites="techhub.social">@techhub.social</span></a>) both asking if I’d protected the tags on my repository.</p>
 <p>I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a> and sure enough this was possible. After setting a <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags">wildcard to protect my tags</a> the <code>pypi</code> CI job defined below worked as expected and built on tagged commits.</p>
 </section>
 </section>
@@ -55,62 +55,73 @@
 <li><code>pages</code> - Builds the documentation pages.</li>
 <li><code>pypi</code> - <strong>Builds and uploads the package to PyPI <em>if the commit has a tag associated</em></strong>.</li>
 </ul>
-<p>````yaml image: python:3.11</p>
-<p>variables: # since we’re not using merge request pipelines in this example, # we will configure the pre-commit job to run on branch pipelines only. # If you ARE using merge request pipelines, you can omit this section PRE_COMMIT_AUTO_FIX: ‘1’ PRE_COMMIT_DEDUPLICATE_MR_AND_BRANCH: ‘false’ PRE_COMMIT_AUTO_FIX_BRANCH_ONLY: ‘false’</p>
-<p>before_script: - python –version - pip install .</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">image</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> python:3.11</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;">variables</span><span class="kw" style="color: #003B4F;">:</span><span class="co" style="color: #5E5E5E;"> # since we're not using merge request pipelines in this example, # we will configure the pre-commit job to</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">  run on branch pipelines only.</span><span class="co" style="color: #5E5E5E;">  # If you ARE using merge request pipelines, you can omit this section</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">PRE_COMMIT_AUTO_FIX</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">'1'</span><span class="at" style="color: #657422;"> </span><span class="er" style="color: #AD0000;">PRE_COMMIT_DEDUPLICATE_MR_AND_BRANCH:</span><span class="at" style="color: #657422;"> </span><span class="er" style="color: #AD0000;">'false'</span><span class="at" style="color: #657422;"> </span><span class="er" style="color: #AD0000;">PRE_COMMIT_AUTO_FIX_BRANCH_ONLY:</span><span class="at" style="color: #657422;"> </span><span class="er" style="color: #AD0000;">'false'</span></span>
+<span id="cb1-6"></span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="fu" style="color: #4758AB;">before_script</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-9"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> python --version</span></span>
+<span id="cb1-10"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install .</span></span>
+<span id="cb1-11"></span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;"># pre-commit autofix (https://gitlab.com/yesolutions/gitlab-ci-templates /</span></span>
+<span id="cb1-13"><span class="co" style="color: #5E5E5E;">#                     https://stackoverflow.com/collectives/gitlab/articles/71270196/)</span></span>
+<span id="cb1-14"><span class="fu" style="color: #4758AB;">include</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> remote: https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml</span></span>
+<span id="cb1-15"></span>
+<span id="cb1-16"><span class="fu" style="color: #4758AB;">stages</span><span class="kw" style="color: #003B4F;">:</span><span class="co" style="color: #5E5E5E;"> # - debug - pylint - pytest - pages - pypi</span></span>
+<span id="cb1-17"></span>
+<span id="cb1-18"><span class="co" style="color: #5E5E5E;"># print-all-env-vars-job:</span></span>
+<span id="cb1-19"><span class="co" style="color: #5E5E5E;">#     stage: debug</span></span>
+<span id="cb1-20"><span class="co" style="color: #5E5E5E;">#     script:</span></span>
+<span id="cb1-21"><span class="co" style="color: #5E5E5E;">#         - echo "GitLab CI/CD | Print all environment variables"</span></span>
+<span id="cb1-22"><span class="co" style="color: #5E5E5E;">#         - env</span></span>
+<span id="cb1-23"></span>
+<span id="cb1-24"><span class="fu" style="color: #4758AB;">.pylint</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> script:</span></span>
+<span id="cb1-25"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install pylint pytest</span></span>
+<span id="cb1-26"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pylint --rcfile .pylintrc tcx2gpx/</span></span>
+<span id="cb1-27"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pylint --rcfile .pylintrc tests/</span></span>
+<span id="cb1-28"></span>
+<span id="cb1-29"><span class="fu" style="color: #4758AB;">pylint-3-10</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> extends: .pylint stage: pylint image: python:3.10 allow_failure: true</span></span>
+<span id="cb1-30"></span>
+<span id="cb1-31"><span class="fu" style="color: #4758AB;">pylint-3-11</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> extends: .pylint stage: pylint image: python:3.11 allow_failure: true</span></span>
+<span id="cb1-32"></span>
+<span id="cb1-33"><span class="fu" style="color: #4758AB;">.pytest</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> script:</span></span>
+<span id="cb1-34"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install pytest pytest-cov</span></span>
+<span id="cb1-35"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> python -m "pytest"</span></span>
+<span id="cb1-36"></span>
+<span id="cb1-37"><span class="fu" style="color: #4758AB;">pytest-3-10</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> extends: .pytest stage: pytest image: python:3.10 allow_failure: true</span></span>
+<span id="cb1-38"></span>
+<span id="cb1-39"><span class="fu" style="color: #4758AB;">pytest-3-11</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> extends: .pytest stage: pytest image: python:3.11 coverage: /(?i)total.*?</span></span>
+<span id="cb1-40"><span class="at" style="color: #657422;">    (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/</span></span>
+<span id="cb1-41"></span>
+<span id="cb1-42"><span class="fu" style="color: #4758AB;">pages</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> stage: pages rules:</span></span>
+<span id="cb1-43"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">if</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> $CI_COMMIT_BRANCH == "master" script:</span></span>
+<span id="cb1-44"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install .[docs]</span></span>
+<span id="cb1-45"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> cd docs</span></span>
+<span id="cb1-46"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> git fetch --tags</span></span>
+<span id="cb1-47"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> git tag -l</span></span>
+<span id="cb1-48"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> make html</span></span>
+<span id="cb1-49"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> mkdir ../public</span></span>
+<span id="cb1-50"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">mv _build/html/* ../public/ artifacts</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> paths:</span></span>
+<span id="cb1-51"><span class="at" style="color: #657422;">            </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> public</span></span>
+<span id="cb1-52"></span>
+<span id="cb1-53"></span>
+<span id="cb1-54"><span class="fu" style="color: #4758AB;">pypi</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> stage: pypi rules:</span></span>
+<span id="cb1-55"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">if</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> $CI_COMMIT_TAG script:</span></span>
+<span id="cb1-56"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install .[pypi]</span></span>
+<span id="cb1-57"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install build</span></span>
+<span id="cb1-58"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> python -m build</span></span>
+<span id="cb1-59"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> twine upload --non-interactive --repository pypi dist/*</span></span></code></pre></div>
+<p>The <code>pypi</code> stage is named and a <code>rule</code> is defined that says to only run this stage if the value of the environment variable <code>$CI_COMMIT_TAG</code> is <code>True</code>. This only happens when a commit has a (protected <span class="emoji" data-emoji="wink">😉</span>) tag.</p>
+<p>The <code>script</code> section then installs the package along with the <code>project.optional-dependencies</code> defined in the <code>pypi</code> section of the <a href="https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies"><code>pyproject.toml</code></a>.</p>
+<p>The package is then build using <a href="https://github.com/pypa/build">build</a> and <a href="https://twine.readthedocs.io/en/stable/index.html">twine</a> is then used to push the to push the built package to PyPI.</p>
 </section>
-</section>
-<section id="pre-commit-autofix-httpsgitlab.comyesolutionsgitlab-ci-templates" class="level1">
-<h1>pre-commit autofix (https://gitlab.com/yesolutions/gitlab-ci-templates /</h1>
-</section>
-<section id="httpsstackoverflow.comcollectivesgitlabarticles71270196" class="level1">
-<h1>https://stackoverflow.com/collectives/gitlab/articles/71270196/)</h1>
-<p>include: remote: https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml</p>
-<p>stages: # - debug - pylint - pytest - pages - pypi</p>
-</section>
-<section id="print-all-env-vars-job" class="level1">
-<h1>print-all-env-vars-job:</h1>
-</section>
-<section id="stage-debug" class="level1">
-<h1>stage: debug</h1>
-</section>
-<section id="script" class="level1">
-<h1>script:</h1>
-</section>
-<section id="echo-gitlab-cicd-print-all-environment-variables" class="level1">
-<h1>- echo “GitLab CI/CD | Print all environment variables”</h1>
-</section>
-<section id="env" class="level1">
-<h1>- env</h1>
-<p>.pylint: script: - pip install pylint pytest - pylint –rcfile .pylintrc tcx2gpx/ - pylint –rcfile .pylintrc tests/</p>
-<p>pylint-3-10: extends: .pylint stage: pylint image: python:3.10 allow_failure: true</p>
-<p>pylint-3-11: extends: .pylint stage: pylint image: python:3.11 allow_failure: true</p>
-<p>.pytest: script: - pip install pytest pytest-cov - python -m “pytest”</p>
-<p>pytest-3-10: extends: .pytest stage: pytest image: python:3.10 allow_failure: true</p>
-<p>pytest-3-11: extends: .pytest stage: pytest image: python:3.11 coverage: /(?i)total.*? (100(?:.0+)?%|[1-9]??:.)?%)$/</p>
-<p>pages: stage: pages rules: - if: $CI_COMMIT_BRANCH == “master” script: - pip install .[docs] - cd docs - git fetch –tags - git tag -l - make html - mkdir ../public - mv _build/html/* ../public/ artifacts: paths: - public</p>
-<p>pypi: stage: pypi rules: - if: $CI_COMMIT_TAG script: - pip install .[pypi] - pip install build - python -m build - twine upload –non-interactive –repository pypi dist/*</p>
-<pre><code>
-The `pypi` stage is named and a `rule` is defined that says to only run this stage if the value of the environment variable
-`$CI_COMMIT_TAG` is `True`. This only happens when a commit has a (protected :wink:) tag.
-
-The `script` section then installs the package along with the `project.optional-dependencies` defined in the `pypi` section of
-the [`pyproject.toml`](https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies).
-
-The package is then build using [build](https://github.com/pypa/build) and [twine](https://twine.readthedocs.io/en/stable/index.html) is then used to push the to push the built package to PyPI.
-
-### PyPI Tokens
-
-You should first test building and deploying to the [Test PyPI](https://test.pypi.org/) and when this is working simply switch to using the main
-[PyPI](https://pypi.org). To do so you will need to create an account on both^[PyPI now enforces Two Factor Authentication (2FA) for new
-accounts, see [2FA Enforcement for New User Registrations](https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/)]. Once you have set yourself up with an account you can
-[generate an API token to authenticate with PyPI](https://pypi.org/help/#apitoken). After verifying your email got to _Account Settings_ and select _Add API
-token_. These are generated once so copy and paste it into the [`.pypirc`](https://packaging.python.org/en/latest/specifications/pypirc/#pypirc) of your project (add this file to your `.gitignore`
-so it doesn't accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI
-for reference.
-
-```{conf}
-[testpypi]
+<section id="pypi-tokens" class="level3">
+<h3 class="anchored" data-anchor-id="pypi-tokens">PyPI Tokens</h3>
+<p>You should first test building and deploying to the <a href="https://test.pypi.org/">Test PyPI</a> and when this is working simply switch to using the main <a href="https://pypi.org">PyPI</a>. To do so you will need to create an account on both<sup>1</sup>. Once you have set yourself up with an account you can <a href="https://pypi.org/help/#apitoken">generate an API token to authenticate with PyPI</a>. After verifying your email got to <em>Account Settings</em> and select <em>Add API token</em>. These are generated once so copy and paste it into the <a href="https://packaging.python.org/en/latest/specifications/pypirc/#pypirc"><code>.pypirc</code></a> of your project (add this file to your <code>.gitignore</code> so it doesn’t accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI for reference.</p>
+<pre class="{conf}"><code>[testpypi]
 username = __token__
 password = pypi-&lt;token_value&gt;
 
@@ -123,18 +134,20 @@ password = pypi-&lt;token_value&gt;</code></pre>
 <li><strong>Mask variable</strong> Mask this variable in job logs if it meets regular expression requirements.</li>
 <li><strong>Expand variable reference</strong> <code>$</code> will be treated as the start of a reference to another variable.</li>
 </ul>
+</section>
+</section>
 <section id="testing" class="level2">
 <h2 class="anchored" data-anchor-id="testing">Testing</h2>
 <p>Now that you are setup you can test your configuration. To do so you need to first use the API key from the Test PyPI server that you created as the value for <code>$TWINE_PASSWORD</code> (see above) and set the repository <code>twine --repository</code> option to <code>testpypi</code>. Your <code>pypi</code> stage should look like the following…</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">pypi</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb2-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">stage</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pypi</span></span>
-<span id="cb2-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rules</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb2-4"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">if</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> $CI_COMMIT_TAG</span></span>
-<span id="cb2-5"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">script</span><span class="kw" style="color: #003B4F;">:</span></span>
-<span id="cb2-6"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install .[pypi]</span></span>
-<span id="cb2-7"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install build</span></span>
-<span id="cb2-8"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> python -m build</span></span>
-<span id="cb2-9"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> twine upload --non-interactive --repository testpypi dist/*</span></span></code></pre></div>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;">pypi</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-2"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">stage</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> pypi</span></span>
+<span id="cb3-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">rules</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-4"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">if</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> $CI_COMMIT_TAG</span></span>
+<span id="cb3-5"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">script</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb3-6"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install .[pypi]</span></span>
+<span id="cb3-7"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install build</span></span>
+<span id="cb3-8"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> python -m build</span></span>
+<span id="cb3-9"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> twine upload --non-interactive --repository testpypi dist/*</span></span></code></pre></div>
 <p>Once this is set create a tag for the current commit using the <em>Code &gt; Tags</em> settings from the left menu of your repository and then the <em>New tag</em> button on the top right. The tag you create should match the wild card pattern you have set for protecting tags and it should comply to the Public version identifiers specified in <a href="https://peps.python.org/pep-0440/#public-version-identifiers">PEP440</a>. Once created you will have triggered your Pipeline and you can check this by navigating to <em>CI/CD &gt; Pipelines</em> and then viewing it. The <sub>pypi</sub> job should complete and you should be able to navigate to your package on Test PyPI. You can find it under your account settings.</p>
 <p>If you find there is a problem you will have to correct it and either delete the tag you created and try again or increment the version. PyPI, and in turn Test PyPI which is a mirror with the same functionality, does not permit uploading packages with a version that already exists.</p>
 </section>
@@ -175,7 +188,7 @@ password = pypi-&lt;token_value&gt;</code></pre>
 
 </section>
 </section>
-</section>
+
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
@@ -184,7 +197,12 @@ password = pypi-&lt;token_value&gt;</code></pre>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>PyPI now enforces Two Factor Authentication (2FA) for new accounts, see <a href="https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/">2FA Enforcement for New User Registrations</a>↩︎</p></li>
+</ol>
+</section></div> ]]></description>
   <category>python</category>
   <category>documentation</category>
   <category>packaging</category>

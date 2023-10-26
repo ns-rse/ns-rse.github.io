@@ -15,7 +15,128 @@
 <link>https://ns-rse.github.io/links.html#category=github</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Sun, 07 May 2023 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 06 Oct 2023 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Git Remotes</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/git-remotes/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://git.scm">Git</a> and various forges such as <a href="https://github.com">GitHub</a> <a href="https://gitlab.com">GitLab</a> are useful collaborative tools for version controlling, sharing and working collaboratively. Normally a repository resides on your local computer and it tracks a remote (often referred to as <code>origin</code>)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/git-remotes/https:/live.staticflickr.com/65535/49833632231_bd701b7621_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/49833632231/">Looking up by me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="gitconfig" class="level2">
+<h2 class="anchored" data-anchor-id="gitconfig"><code>.git/config</code></h2>
+<p>When you initialise or clone a repository a hidden directory <code>.git</code> is created. Within this resides the configuration file for the repository <code>.git/config</code> that defines how Git is to behave when performing actions on the repository.</p>
+<section id="core" class="level3">
+<h3 class="anchored" data-anchor-id="core"><code>core</code></h3>
+</section>
+<section id="remote" class="level3">
+<h3 class="anchored" data-anchor-id="remote"><code>remote</code></h3>
+<p>The <code>remote</code> field defines the location of the repository to which code is synced via pushing and pulling. Typically and by default this is called the <code>origin</code> and you have a section that defines the <code>url</code> and the <code>fetch</code> for this remote.</p>
+<p>The <code>url</code> field can take two forms, either one based on <code>https</code> in which case the prefix of the value will be <code>https://github.com/</code> or one based on <code>ssh</code> in which case the prefix will be <code>git@github.com:</code>. What follows is then the user account or organisation (e.g.&nbsp;<code>ns-rse</code> for my personal repositories) followed by <code>/&lt;repo-name&gt;</code> (e.g.&nbsp;for this repository that is <code>ns-rse.github.io</code>).</p>
+<p>The <code>fetch</code> field is what in Git parlance is called a <a href="https://git-scm.com/book/it/v2/Git-Internals-The-Refspec">Refspec</a> (Reference Specification). This takes the form <code>&lt;src&gt;:&lt;dst&gt;</code> and is a method of mapping references on the remote side (<code>&lt;src&gt;</code>) to those locally (<code>&lt;dst&gt;</code>) and it is this that maps the local branches (<code>refs/heads/*</code>) to their counterparts on the remote (<code>refs/remotes/origin/*</code>). If there is a <code>+</code> prefix it tells git to up-date the reference even if there is no <a href="https://www.git-basics.com/docs/git-merge/fast-forward">fast-forward</a>.</p>
+<pre class="config"><code>[remote "origin"]
+    url = git@github.com:ns-rse/ns-rse.github.io
+    fetch = +refs/heads/*:refs/remotes/origin/*</code></pre>
+</section>
+<section id="branch" class="level3">
+<h3 class="anchored" data-anchor-id="branch"><code>branch</code></h3>
+<p>What follows is then a series of entries for <code>branch</code> which defines further how each local <code>branch</code> maps to a <code>remote</code> and where it should <code>merge</code> to. Each branch has a name define in the section header and within two parameters are set the <code>remote</code> which by default points to the <code>origin</code> (defined in the above <code>remote</code>) section and a <code>merge</code> field which defines the local reference to the branch under <code>refs/head/&lt;branch-name&gt;</code>.</p>
+</section>
+</section>
+<section id="having-a-private-branch" class="level2">
+<h2 class="anchored" data-anchor-id="having-a-private-branch">Having a Private branch</h2>
+<p>Sometimes the need might arise to develop a feature in private. This is fine if you have no intention of sharing the work with others, you create a branch on your local computer and never push it to a forge. However, there will arise times where you do want to share you work with others whilst keeping things private. This too is possible and can be achieved by creating a private repository on your own account rather than using the original and configuring a branch to track that instead.</p>
+<section id="creating-a-second-remote" class="level3">
+<h3 class="anchored" data-anchor-id="creating-a-second-remote">Creating a second <code>remote</code></h3>
+<p>Start by creating a new repository on GitHub/GitLab and making it private from the outset. Do <em>not</em> include any additional information such as <code>.gitignore</code>, <code>README.md</code> or <code>LICENSE.md</code> it should be completely empty.</p>
+<p>You can then add it as a new <code>remote</code> to your existing repository in one of two ways.</p>
+<section id="git-at-the-command-line" class="level4">
+<h4 class="anchored" data-anchor-id="git-at-the-command-line">Git at the Command Line</h4>
+<p>You should have some instructions shown on GitHub one of which is <strong>…or push an existing repository from the command line</strong>. The first line of this is telling you how to add a new remote to the repository. called <code>origin</code> and to point towards the repository you have just created. You will likely already have an <code>origin</code> remote defined so you need to choose a different name and point it to the correct location.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">git</span> remote add private-work git@github.com:ns-rse/private-work</span></code></pre></div>
+</section>
+<section id="check-your-.gitconfig" class="level4">
+<h4 class="anchored" data-anchor-id="check-your-.gitconfig">Check your <code>.git/config</code></h4>
+<p>If you now look at your <code>.git/config</code> file there should be two entries for <code>[remote ""]</code> one for origin (i.e.&nbsp;<code>[remote "origin"]</code>) and one for the new remote that has just been added <code>[remote "private-work"]</code>. Of course, because <code>.git/config</code> is just a text configuration file you can edit it and enter these values manually yourself if you want to.</p>
+<p><strong>NB</strong> Either of the above methods will append these options to the bottom of the file so if you can’t see it immediately scroll down.</p>
+</section>
+</section>
+<section id="track-your-new-remote" class="level3">
+<h3 class="anchored" data-anchor-id="track-your-new-remote">Track your new remote</h3>
+<p>Now that you have a secondary <code>remote</code> defined you can create a branch and set it to track the private remote you have created and configured. Create a new branch by using <code>git checkout -b</code></p>
+<section id="command-line" class="level4">
+<h4 class="anchored" data-anchor-id="command-line">Command Line</h4>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> checkout <span class="at" style="color: #657422;">-b</span> private-feature</span></code></pre></div>
+<p>You then set the upstream using <code>--set-upstream-to</code> or its shorthand <code>-u</code>, at this stage you don’t have anything to include so make an empty commit</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;">git</span> push <span class="at" style="color: #657422;">--set-upstream-to</span> private-work private-work</span></code></pre></div>
+</section>
+<section id="magit" class="level4">
+<h4 class="anchored" data-anchor-id="magit">Magit</h4>
+</section>
+<section id="check-.gitconfig" class="level4">
+<h4 class="anchored" data-anchor-id="check-.gitconfig">Check <code>.git/config</code></h4>
+<p>Returning to your <code>.git/config</code> file you should now have an additional entry for a <code>branch</code> underneath the new entry for the <code>remote</code> and the value for <code>remote</code> under <code>branch</code> is the name of the <code>remote</code>.</p>
+<pre class="config"><code>[remote "private-work"]
+ url = git@github.com:ns-rse/private-work.git
+ fetch = +refs/heads/*:refs/remotes/private-work/*
+[branch "private-feature"]
+ remote = private-work
+ merge = refs/heads/private-feature</code></pre>
+</section>
+</section>
+</section>
+<section id="keeping-up-to-date" class="level2">
+<h2 class="anchored" data-anchor-id="keeping-up-to-date">Keeping up to Date</h2>
+<p>The private repository you setup on GitHub/GitLab should now have a copy of the <code>private-work</code> branch you created locally.</p>
+<p>If you are collaborating with others the <code>main</code>/<code>master</code> branch may move ahead of yours as others work is merged in. You therefore need to regularly update your private branch by merging or rebasing from the <code>origin</code> rather than the <code>private-work</code> remote your branch is configured to track. The difference between merging and rebasing is beyond the scope of this article, there are pros and cons to each</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;">git</span> checkout main</span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;">git</span> pull</span>
+<span id="cb6-3"><span class="fu" style="color: #4758AB;">git</span> checkout private-work</span>
+<span id="cb6-4"><span class="fu" style="color: #4758AB;">git</span> merge main</span></code></pre></div>
+<p>Or you can merge directly from origin with</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="fu" style="color: #4758AB;">git</span> checkout private-feature</span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;">git</span> merge origin/main</span></code></pre></div>
+</section>
+<section id="checkout-someone-elses-private-branch" class="level2">
+<h2 class="anchored" data-anchor-id="checkout-someone-elses-private-branch">Checkout someone else’s private branch</h2>
+<p>Inevitably the need might arise for a collaborator to test your private branch. In which case they need to be granted permission to the private repository by the developer who created it. This is done via <em>Settings &gt; Collaborators</em> and inviting them to work on your repository.</p>
+<p>Once they have accepted the invitation they will also have to add a secondary <code>remote</code> and the <code>branch</code> they are working on. They can follow the instructions above to set up a remote, however they should <em>not</em> follow the instructions to <code>branch</code> because that branch already exists on your private repository.</p>
+<p>but because <code>.git/config</code> is just a text file you can copy the lines from your configuration and share it with your collaborator and they can add them to their <code>.git/config</code> file. Once these options have been added they</p>
+</section>
+<section id="bonus---using-magit" class="level2">
+<h2 class="anchored" data-anchor-id="bonus---using-magit">Bonus - Using Magit</h2>
+<p>If you use <a href="https://www.gnu.org/software/emacs/">Emacs</a> and the amazing <a href="https://magit.vc">Magit</a> you can of course do this via the Magit interface. In the Magit buffer for the repository (e.g.&nbsp;<code>magit: ns-rse.github.io</code>) press <code>M</code> to bring up the <code>Remote</code> transient buffer. You then press <code>a</code> to add a remote and are prompted for a name for the remote (in this example we use the same as above <code>private-work</code>), this can be anything you want other than <code>origin</code> which is already defined, and then the URL this will be <code>git@github.com:&lt;account-name&gt;/&lt;private-repo-name&gt;.git</code>.</p>
+<p>To create a branch in Magit press <code>b</code> then <code>l</code> to select a local branch and enter <code>main</code> (or <code>master</code>), then make sure its upto date with the <code>origin</code> by Pulling with <code>P</code> then <code>u</code>. Now create a new branch by pressing <code>b</code> and since it will be a new press <code>c</code> to create it. You will be prompted for the name of a branch from which to branch from and then for the name of your branch.</p>
+<p>In the Magit buffer for the repository you are working on pushes are made with <code>P</code>. The Transient buffer then offers you a choice of places to push to, one of which is <code>elsewhere</code> which is accessed by the <code>e</code> key. You can then type in the name of the remote tracking branch as defined under the <code>remote</code> entry you configured above which in this case is <code>private-work</code>.</p>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <guid>https://ns-rse.github.io/posts/git-remotes/index.html</guid>
+  <pubDate>Fri, 06 Oct 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/49833632231_bd701b7621_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Pre-Commit : Useful Hooks</title>
   <dc:creator>Neil Shephard</dc:creator>
