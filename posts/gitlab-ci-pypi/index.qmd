@@ -35,12 +35,12 @@ to create and save these is described below.
 ### Protecting Tags
 
 This really stumped me I could build and push automatically from the `master` branch but could not use the `- if
-$CI_COMMIT_TAG` condition to publish commits that were tagged. I wrote a [post on the GitLab
-Forums](https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309) asking how to
-do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from
-[@manu_faktur@mastodon.social](https://mastodon.social/@manu_faktur/111159226739296263) and one from
-[@diazona@techhub.social](https://mastodon.social/@diazona@techhub.social/111159429646899283)) both asking if I'd
-protected the tags on my repository.
+ $CI_COMMIT_TAG` condition to publish commits that were tagged. I wrote a [post on the GitLab
+ Forums](https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309) asking how to
+ do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from
+ [@manu_faktur@mastodon.social](https://mastodon.social/@manu_faktur/111159226739296263) and one from
+ [@diazona@techhub.social](https://mastodon.social/@diazona@techhub.social/111159429646899283)) both asking if I'd
+ protected the tags on my repository.
 
 I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on
 [Protected tags](https://docs.gitlab.com/ee/user/project/protected_tags.html) and sure enough this was possible. Go to
@@ -71,7 +71,7 @@ This defines the following...
 + `pages` - Builds the documentation pages.
 + `pypi` - **Builds and uploads the package to PyPI _if the commit has a tag associated_**.
 
-````yaml
+```yaml
 image: python:3.11
 
 variables: # since we're not using merge request pipelines in this example, # we will configure the pre-commit job to
@@ -87,11 +87,7 @@ before_script:
 #                     https://stackoverflow.com/collectives/gitlab/articles/71270196/)
 include: remote: https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml
 
-stages: # - debug
-    - pylint
-    - pytest
-    - pages
-    - pypi
+stages: # - debug - pylint - pytest - pages - pypi
 
 # print-all-env-vars-job:
 #     stage: debug
@@ -140,20 +136,26 @@ pypi: stage: pypi rules:
 The `pypi` stage is named and a `rule` is defined that says to only run this stage if the value of the environment variable
 `$CI_COMMIT_TAG` is `True`. This only happens when a commit has a (protected :wink:) tag.
 
-The `script` section then installs the package along with the `project.optional-dependencies` defined in the `pypi` section of
-the [`pyproject.toml`](https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies).
+The `script` section then installs the package along with the `project.optional-dependencies` defined in the `pypi`
+section of the [`pyproject.toml`](https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies).
 
-The package is then built using [build](https://github.com/pypa/build) and [twine](https://twine.readthedocs.io/en/stable/index.html) is used to push the to push the built package to [PyPI](https://pypi.org).
+
+The package is then built using [build](https://github.com/pypa/build) and 
+[twine](https://twine.readthedocs.io/en/stable/index.html) is used to push the to push the built package to 
+[PyPI](https://pypi.org).
+
 
 ### PyPI Tokens
 
-You should first test building and deploying to the [Test PyPI](https://test.pypi.org/) and when this is working simply switch to using the main
-[PyPI](https://pypi.org). To do so you will need to create an account on both^[PyPI now enforces Two Factor Authentication (2FA) for new
-accounts, see [2FA Enforcement for New User Registrations](https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/)]. Once you have set yourself up with an account you can
-[generate an API token to authenticate with PyPI](https://pypi.org/help/#apitoken). After verifying your email got to _Account Settings_ and select _Add API
-token_. These are generated once so copy and paste it into the [`.pypirc`](https://packaging.python.org/en/latest/specifications/pypirc/#pypirc) of your project (add this file to your `.gitignore`
-so it doesn't accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI
-for reference.
+You should first test building and deploying to the [Test PyPI](https://test.pypi.org/) and when this is working simply
+switch to using the main [PyPI](https://pypi.org). To do so you will need to create an account on both^[PyPI now
+enforces Two Factor Authentication (2FA) for new accounts, see [2FA Enforcement for New User
+Registrations](https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/)]. Once you have set yourself up
+with an account you can [generate an API token to authenticate with PyPI](https://pypi.org/help/#apitoken). After
+verifying your email got to _Account Settings_ and select _Add API token_. These are generated once so copy and paste it
+into the [`.pypirc`](https://packaging.python.org/en/latest/specifications/pypirc/#pypirc) of your project (add this
+file to your `.gitignore` so it doesn't accidentally get added). Remember to do this twice, once for PyPI and once for
+Test PyPI and once for PyPI for reference.
 
 ```{conf}
 [testpypi]
@@ -227,10 +229,10 @@ your repository and make them available for download directly from GitLab.
 
 ### Python Packaging
 
-- [PyPA : Building and Distributing Packages with Setuptools](https://setuptools.pypa.io/en/latest/userguide/index.html)
-- [PyPA : Specifications](https://packaging.python.org/en/latest/specifications/)
-- [Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
-- [Python package structure information — pyOpenSci Python Packaging
++ [PyPA : Building and Distributing Packages with Setuptools](https://setuptools.pypa.io/en/latest/userguide/index.html)
++ [PyPA : Specifications](https://packaging.python.org/en/latest/specifications/)
++ [Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
++ [Python package structure information — pyOpenSci Python Packaging
   Guide](https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html)
 
 ### GitLab Documentation
