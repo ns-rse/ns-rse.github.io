@@ -139,11 +139,9 @@ The `pypi` stage is named and a `rule` is defined that says to only run this sta
 The `script` section then installs the package along with the `project.optional-dependencies` defined in the `pypi`
 section of the [`pyproject.toml`](https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies).
 
-
-The package is then built using [build](https://github.com/pypa/build) and 
-[twine](https://twine.readthedocs.io/en/stable/index.html) is used to push the to push the built package to 
+The package is then built using [build](https://github.com/pypa/build) and
+[twine](https://twine.readthedocs.io/en/stable/index.html) is used to push the to push the built package to
 [PyPI](https://pypi.org).
-
 
 ### PyPI Tokens
 
