@@ -1,5 +1,26 @@
 [
   {
+    "listing": "/index.html",
+    "items": [
+      "/posts/r-resources/index.html",
+      "/posts/git-remotes/index.html",
+      "/posts/gitlab-ci-pypi/index.html",
+      "/posts/pre-commit-r/index.html",
+      "/posts/pre-commit-hooks/index.html",
+      "/posts/sphinx-docs/index.html",
+      "/posts/python-packaging/index.html",
+      "/posts/browser-extensions/index.html",
+      "/posts/pre-commit-ci/index.html",
+      "/posts/running-2022/index.html",
+      "/posts/whos_to_blame/index.html",
+      "/posts/pre-commit-updates/index.html",
+      "/posts/cli-alternatives/index.html",
+      "/posts/pre-commit/index.html",
+      "/posts/git-ssh/index.html",
+      "/posts/linting/index.html"
+    ]
+  },
+  {
     "listing": "/about.html",
     "items": [
       "/posts/r-resources/index.html",
@@ -42,60 +63,7 @@
     ]
   },
   {
-    "listing": "/index.html",
-    "items": [
-      "/posts/r-resources/index.html",
-      "/posts/git-remotes/index.html",
-      "/posts/gitlab-ci-pypi/index.html",
-      "/posts/pre-commit-r/index.html",
-      "/posts/pre-commit-hooks/index.html",
-      "/posts/sphinx-docs/index.html",
-      "/posts/python-packaging/index.html",
-      "/posts/browser-extensions/index.html",
-      "/posts/pre-commit-ci/index.html",
-      "/posts/running-2022/index.html",
-      "/posts/whos_to_blame/index.html",
-      "/posts/pre-commit-updates/index.html",
-      "/posts/cli-alternatives/index.html",
-      "/posts/pre-commit/index.html",
-      "/posts/git-ssh/index.html",
-      "/posts/linting/index.html"
-    ]
-  },
-  {
-    "listing": "/posts/browser-extensions/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-hooks/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-ci/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-r/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/sphinx-docs/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/linting/index.html",
-    "items": []
-  },
-  {
     "listing": "/posts/r-resources/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-remotes/index.html",
     "items": []
   },
   {
@@ -103,15 +71,31 @@
     "items": []
   },
   {
+    "listing": "/posts/pre-commit-r/index.html",
+    "items": []
+  },
+  {
     "listing": "/posts/cli-alternatives/index.html",
     "items": []
   },
   {
-    "listing": "/posts/whos_to_blame/index.html",
+    "listing": "/posts/python-packaging/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit-ci/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit/index.html",
     "items": []
   },
   {
     "listing": "/posts/git-ssh/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-remotes/index.html",
     "items": []
   },
   {
@@ -123,7 +107,23 @@
     "items": []
   },
   {
-    "listing": "/posts/python-packaging/index.html",
+    "listing": "/posts/pre-commit-hooks/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/whos_to_blame/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/browser-extensions/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/sphinx-docs/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/linting/index.html",
     "items": []
   }
 ]
