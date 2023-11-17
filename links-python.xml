@@ -26,6 +26,12 @@
 
 
 <p>I’ve written before about <a href="https://ns-rse.github.io/#category=packaging">Python Packaging</a> and <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> which I’m a big fan of. Today I discovered a really useful tool for checking your packaging configuration and pre-commit configuration from the <a href="https://learn.scientific-python.org/development/">Scientific Python Development Guide</a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/repository-review/https:/live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53258300629/">Elektro</a></figcaption><p></p>
+</figure>
+</div>
 <p>This development guide is really well written and has <a href="https://learn.scientific-python.org/development/tutorials/">Tutorials</a> and <a href="https://learn.scientific-python.org/development/guides/">Topical Guides</a> that cover package development, style guides, type checking and tests amongst other things.</p>
 <section id="repo-review" class="level2">
 <h2 class="anchored" data-anchor-id="repo-review">Repo Review</h2>
