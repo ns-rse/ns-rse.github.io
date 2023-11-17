@@ -6,15 +6,15 @@
       version="2.0">
 <channel>
 <title>ns-rse</title>
-<link>https://ns-rse.github.io/posts/sphinx-docs/index.html#category=github</link>
-<atom:link href="https://ns-rse.github.io/posts/sphinx-docs/index-github.xml" rel="self" type="application/rss+xml"/>
+<link>https://ns-rse.github.io/posts/repository-review/index.html#category=git</link>
+<atom:link href="https://ns-rse.github.io/posts/repository-review/index-git.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>
 <image>
-<url>https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg</url>
+<url>https://live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg</url>
 <title>ns-rse</title>
-<link>https://ns-rse.github.io/posts/sphinx-docs/index.html#category=github</link>
+<link>https://ns-rse.github.io/posts/repository-review/index.html#category=git</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Fri, 17 Nov 2023 08:26:39 GMT</lastBuildDate>
+<lastBuildDate>Fri, 17 Nov 2023 08:26:17 GMT</lastBuildDate>
 </channel>
 </rss>
