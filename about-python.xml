@@ -15,7 +15,58 @@
 <link>https://ns-rse.github.io/about.html#category=python</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Tue, 03 Oct 2023 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 17 Nov 2023 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Repository Review with Scientific Python</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/repository-review/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’ve written before about <a href="https://ns-rse.github.io/#category=packaging">Python Packaging</a> and <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> which I’m a big fan of. Today I discovered a really useful tool for checking your packaging configuration and pre-commit configuration from the <a href="https://learn.scientific-python.org/development/">Scientific Python Development Guide</a>.</p>
+<p>This development guide is really well written and has <a href="https://learn.scientific-python.org/development/tutorials/">Tutorials</a> and <a href="https://learn.scientific-python.org/development/guides/">Topical Guides</a> that cover package development, style guides, type checking and tests amongst other things.</p>
+<section id="repo-review" class="level2">
+<h2 class="anchored" data-anchor-id="repo-review">Repo Review</h2>
+<p>Of particular use is the <a href="https://learn.scientific-python.org/development/guides/repo-review/">Repo-Review - Scientific Python Development Guide</a> which will automatically check a GitHub hosted repository against the Scientific Python development guidelines and make recommendations where improvements can be made to the package configuration and pre-commit configuration.</p>
+<p>Having tested it against <a href="https://learn.scientific-python.org/development/guides/repo-review/?repo=AFM-SPM%2FTopoStats&amp;branch=main">AFM-SPM/TopoStats main branch</a> there are a lot of useful and simple recommendations made.</p>
+</section>
+<section id="more-pre-commit-hooks" class="level2">
+<h2 class="anchored" data-anchor-id="more-pre-commit-hooks">More Pre-Commit hooks</h2>
+<p>More <a href="https://pre-commit.com/hooks">pre-commit hooks</a> is only a good thing in my view, they don’t take that long to run against most reasonably sized repositories, particularly if <a href="https://astral.sh/ruff">ruff</a> is used in favour of more traditional tools such as <code>flake8</code> and <code>isort</code>.</p>
+<p>There are a few <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> hooks that I wasn’t aware of and will be adding to my projects such as..,</p>
+<ul>
+<li><a href="https://pypi.org/project/check-manifest/">Check-manifest</a> that verifies you have working SDist (source) packages.</li>
+<li><a href="https://github.com/codespell-project/codespell">Codespell</a> for checking the spelling used in code.</li>
+<li><a href="https://validate-pyproject.readthedocs.io/">validate-pyproject</a> for validating <code>pyproject.toml</code>.</li>
+</ul>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>If you are involved in Python package development of any sort give your repository a review and see what recommendations are suggested. You may not agree with all of the recommendations but the vast majority of tools are highly configurable so you can disable the checks you don’t want applied. It won’t do any harm.</p>
+<p>Now I just need to find time to apply <a href="https://mypy.readthedocs.io/en/stable/">MyPy</a>.</p>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>pre-commit</category>
+  <category>packaging</category>
+  <category>scientific python</category>
+  <category>python</category>
+  <guid>https://ns-rse.github.io/posts/repository-review/index.html</guid>
+  <pubDate>Fri, 17 Nov 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>GitLab CI - Automatic Publishing to PyPI</title>
   <dc:creator>Neil Shephard</dc:creator>
@@ -216,57 +267,6 @@ No matching items
   <guid>https://ns-rse.github.io/posts/gitlab-ci-pypi/index.html</guid>
   <pubDate>Tue, 03 Oct 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Repository Review with Scientific Python</title>
-  <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/repository-review/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>I’ve written before about <a href="https://ns-rse.github.io/#category=packaging">Python Packaging</a> and <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> which I’m a big fan of. Today I discovered a really useful tool for checking your packaging configuration and pre-commit configuration from the <a href="https://learn.scientific-python.org/development/">Scientific Python Development Guide</a>.</p>
-<p>This development guide is really well written and has <a href="https://learn.scientific-python.org/development/tutorials/">Tutorials</a> and <a href="https://learn.scientific-python.org/development/guides/">Topical Guides</a> that cover package development, style guides, type checking and tests amongst other things.</p>
-<section id="repo-review" class="level2">
-<h2 class="anchored" data-anchor-id="repo-review">Repo Review</h2>
-<p>Of particular use is the <a href="https://learn.scientific-python.org/development/guides/repo-review/">Repo-Review - Scientific Python Development Guide</a> which will automatically check a GitHub hosted repository against the Scientific Python development guidelines and make recommendations where improvements can be made to the package configuration and pre-commit configuration.</p>
-<p>Having tested it against <a href="https://learn.scientific-python.org/development/guides/repo-review/?repo=AFM-SPM%2FTopoStats&amp;branch=main">AFM-SPM/TopoStats main branch</a> there are a lot of useful and simple recommendations made.</p>
-</section>
-<section id="more-pre-commit-hooks" class="level2">
-<h2 class="anchored" data-anchor-id="more-pre-commit-hooks">More Pre-Commit hooks</h2>
-<p>More <a href="https://pre-commit.com/hooks">pre-commit hooks</a> is only a good thing in my view, they don’t take that long to run against most reasonably sized repositories, particularly if <a href="https://astral.sh/ruff">ruff</a> is used in favour of more traditional tools such as <code>flake8</code> and <code>isort</code>.</p>
-<p>There are a few <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> hooks that I wasn’t aware of and will be adding to my projects such as..,</p>
-<ul>
-<li><a href="https://pypi.org/project/check-manifest/">Check-manifest</a> that verifies you have working SDist (source) packages.</li>
-<li><a href="https://github.com/codespell-project/codespell">Codespell</a> for checking the spelling used in code.</li>
-<li><a href="https://validate-pyproject.readthedocs.io/">validate-pyproject</a> for validating <code>pyproject.toml</code>.</li>
-</ul>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>If you are involved in Python package development of any sort give your repository a review and see what recommendations are suggested. You may not agree with all of the recommendations but the vast majority of tools are highly configurable so you can disable the checks you don’t want applied. It won’t do any harm.</p>
-<p>Now I just need to find time to apply <a href="https://mypy.readthedocs.io/en/stable/">MyPy</a>.</p>
-
-
-
-</section>
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div> ]]></description>
-  <category>pre-commit</category>
-  <category>packaging</category>
-  <category>scientific python</category>
-  <category>python</category>
-  <guid>https://ns-rse.github.io/posts/repository-review/index.html</guid>
-  <pubDate>Sat, 29 Jul 2023 00:00:00 GMT</pubDate>
-  <media:content url="https://live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Sphinx Documentation</title>

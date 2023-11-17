@@ -2,10 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/repository-review/index.html",
       "/posts/r-resources/index.html",
       "/posts/git-remotes/index.html",
       "/posts/gitlab-ci-pypi/index.html",
-      "/posts/repository-review/index.html",
       "/posts/pre-commit-r/index.html",
       "/posts/pre-commit-hooks/index.html",
       "/posts/sphinx-docs/index.html",
@@ -24,10 +24,10 @@
   {
     "listing": "/about.html",
     "items": [
+      "/posts/repository-review/index.html",
       "/posts/r-resources/index.html",
       "/posts/git-remotes/index.html",
       "/posts/gitlab-ci-pypi/index.html",
-      "/posts/repository-review/index.html",
       "/posts/pre-commit-r/index.html",
       "/posts/pre-commit-hooks/index.html",
       "/posts/sphinx-docs/index.html",
@@ -46,10 +46,10 @@
   {
     "listing": "/links.html",
     "items": [
+      "/posts/repository-review/index.html",
       "/posts/r-resources/index.html",
       "/posts/git-remotes/index.html",
       "/posts/gitlab-ci-pypi/index.html",
-      "/posts/repository-review/index.html",
       "/posts/pre-commit-r/index.html",
       "/posts/pre-commit-hooks/index.html",
       "/posts/sphinx-docs/index.html",
