@@ -21,6 +21,8 @@ I've written before about [Python Packaging](https://ns-rse.github.io/#category=
 tool for checking your packaging configuration and pre-commit configuration from the [Scientific Python
 Development Guide](https://learn.scientific-python.org/development/).
 
+![[Elektro](https://www.flickr.com/photos/slackline/53258300629/)](https://live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg)
+
 This development guide is really well written and has
 [Tutorials](https://learn.scientific-python.org/development/tutorials/) and [Topical
 Guides](https://learn.scientific-python.org/development/guides/) that cover package development, style guides, type
