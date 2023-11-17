@@ -1,6 +1,6 @@
 ---
 title: "Repository Review with Scientific Python"
-date: "2023-07-29"
+date: "2023-11-17"
 categories: [pre-commit, packaging, scientific python, python]
 image: https://live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg
 from: markdown+emoji
