@@ -1,0 +1,164 @@
+---
+title: "virtualenvwrapper"
+date: "2023-12-23"
+categories: [python, virtual environments]
+image: https://live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+
+If you use Python heavily you will likely be familiar with Virtual Environments. These provide isolated installs of
+specific packages that take precedence over any packages installed at the system level. There are lots of tools and
+frameworks for working with virtual environments such as [`venv`](https://docs.python.org/3/library/venv.html),
+[`virtualenv`](https://pypi.python.org/pypi/virtualenv) and  [Conda](https://docs.conda.io/en/latest/). This post
+introduces and shows some of the features of [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/).
+
+![[Clouds Rising at Sunset by Me](https://www.flickr.com/photos/slackline/53176160657/in/album-72177720311078585/)](https://live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg)
+
+## virtualenvwrapper
+
+[virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/) is...
+
+> a set of extensions to Ian Bicking’s `virtualenv` tool. The extensions include wrappers for creating and deleting virtual
+> environments and otherwise managing your development workflow, making it easier to work on more than one project at a
+> time without introducing conflicts in their dependencies.
+
+It has the following main features...
+
+> 1. Organizes all of your virtual environments in one place.
+> 2. Wrappers for managing your virtual environments (create, delete, copy).
+> 3. Use a single command to switch between environments.
+> 4. Tab completion for commands that take a virtual environment as argument.
+> 5. User-configurable hooks for all operations (see Per-User Customization).
+> 6. Plugin system for creating more sharable extensions (see Extending Virtualenvwrapper).
+
+## Installation
+
+Many systems have `virtualenvwrapper` available in their package manager.
+
+```bash
+emerge -av virtualenvwrapper          # Gentoo
+pacman -Syu python-virtualenvwrapper  # Arch
+apt-get install virtualenvwrapper     # Debian
+```
+
+Once installed you need to set two key variables `$WORKON_HOME` and `$PROJECT_HOME` and ensure the
+`virtualenvwrapper.sh` is sourced on starting a shell. `$WORKON_HOME` is where your virtual environments will be created
+and stored, whilst `$PROJECT_HOME` is where projects will be created if you choose to use the helper functions for
+making projects. Set these to what you want, my options are below. To find out where `virtualenvwrapper.sh` is installed
+on your system use `which virtualenvwrapper.sh`. Once you've decided substitute the values in the following of your
+`.bashrc` ([Bash](https://www.gnu.org/software/bash/))or `.zshrc` ([ZSH](https://www.zsh.org/)) depending on which shell
+you use.
+
+```bash
+export WORKON_HOME=${HOME}/.virtualenvs
+export PROJECT_HOME=${HOME}/work/git/
+source /usr/bin/virtualenvwrapper.sh
+```
+
+## Creating a Virtual Environment
+
+This is straight-forward.
+
+```bash
+mkvirtualenv <env_name>
+```
+
+### `postmkvirtualenv`
+
+But what if there are some tools that you want to install each and every time you create a virtual environment,
+regardless of the project you are working on? For example I use the
+[jedi-language-server](https://github.com/pappasam/jedi-language-server) and want to have various packages such as
+[ipython](https://ipython.org), [pytest](https://docs.pytest.org/en/latest/) and various extensions, linters such as
+[ruff](https://astral.sh/ruff) and [pylint](https://pylint.org) available by default in every environment you
+create. Fortunately there is a simple hook that can be run after the creation of a new environment. The file
+`~/.virtualenvs/postmkvirtualenv` is sourced and run _after_ having run `mkvirtualenv` and so any commands in there are
+executed as it is essentially a Bash script.
+
+If you maintain a [dotfiles](https://dotfiles.github.io/) directory and have a file that lists the packages you want
+installed under `~/dotfiles/python/venv_minimal_requirements.txt` then you can have the files listed here installed when
+creating a new virtual environment by appending the command `pip install -r
+~/dotfiles/python/venv_minimal_requirements.txt` to the `~/.virtualenvs/postmkvirtualenv` file.
+
+```bash
+echo "pip install -r ~/dotfiles/python/venv_minimal_requirements.txt" >> ~/.virtualenvs/postmkvirtualenv
+```
+
+## Project Directories
+
+Typically code for a project resides in its own directory and this can be automatically bound to the virtual environment
+using the `mkproject` command instead of `mkvirtualenv`. The project directory is stored in the `$PROJECT_HOME` path
+you will have configured during [installation](installation). You can then create a project _and_  a virtual environment
+with...
+
+```bash
+mkproject new_project
+```
+
+### Switching to Project Directories
+
+You can switch to a projects directory automatically on activating a particular virtual environment using
+`setvirtualenvproject` from the project directory when a specific environment is activated. **Make sure you are in the
+project directory for the corresponding project!**. It adds an entry to the `~/.virtualenv/<env_name>/.project` file
+that reflects the directory associated with the environment. Then when you activate the directory via `workon
+<env_name>` it will automatically change to the project directory.
+
+## Deactivating and Removing Virtual Environments
+
+Its straight-forward to deactivate the current virtual environment just type `deactivate`. Similarly you can remove a
+virtual environment with `rmvirtualenv <env_name>`.
+
+One neat option if you want to keep a virtual environment but install all packages anew is the ability to remove all
+third-party packages in the current virtual environment using `wipeenv`.
+
+## Temporary Virtual Environments
+
+Sometimes you just want to try something out quickly in a clean Virtual Environment, if for example you are reviewing a
+Pull Request. `virtualenvwrapper` can help here as it has the `mktmpenv`. There are two options here `-c|--cd` or
+`-n|--no-cd` which changes directory post-activation or _doesn't_ respectively. The environment gets a unique name and
+will be deleted automatically when it is deactivated.
+
+## Drawbacks
+
+There are a couple of drawbacks I've found to using using `virtualenvwrapper`.
+
+The first is that `mkproject` doesn't allow nesting of project directories, you have to specify a single directory and
+it will be created under the `$PROJECT_HOME` directory with the associated environment name. This doesn't work for me as
+I use the structure `~/work/git` as the base but then have sub-directories based on the Git Forge
+([GitHub](https://github.com)/[GitLab](https://gitlab.com)/[Codeberg](https://codeberg.org/)) the repository is
+associated with and further nesting to reflect the user/organisation within as I have both a personal and work
+accounts. E.g. `~/work/git/hub/ns-rse/ns-rse.github.io` which is the source for this site and associated with my work
+account (`ns-rse`) or `~/work/git/lab/nshephard/tcx2gpx` which is a project of mine
+([tcx2gpx](https://gitlab.com/nshephard/tcx2gpx)) hosted on GitLab. This means that if I wanted to create a project with
+`mkproject` based on `$PROJECT_HOME` being `/work/git` following this structure I would specify `mkproject
+git/lab/new_project` and whilst the directory is created, the virtual environment is created as `git/lab/new_project`
+which is truncated to `git` and you can't `workon git` because the activation scripts are nested deeper under
+`git/lab/new_project`. Further each environment I created would then conflict. I could probably work around this by
+creating symbolic links but in practice I just use `mkvirtualenv` and `setvirtualenvproject` after I `git clone` work.
+
+This is a problem specifically of my own creation though, something other users might find causes greater friction is
+that `virtualenvwrapper` doesn't support creating and keeping the virtual environments within the project directory
+itself. This is never something that I've wanted to do myself though as I find it tidier to keep them all in one place
+and easier to find and remove obsolete environments.
+
+## Conclusion
+
+I've used [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/) for years and its a nice light-weight
+alternative to other solutions of using Pythons Virtual Environments such as
+[`venv`](https://docs.python.org/3/library/venv.html) or [Conda](https://docs.conda.io/en/latest/). It has some
+limitations but its worth giving it a whirl as there are lots of useful helper functions and hooks that smooth the
+process of creating, using and switching between virtual environments.
+
+## Links
+
++ [virtualenvwrapper documentation](https://virtualenvwrapper.readthedocs.io/en/latest/)

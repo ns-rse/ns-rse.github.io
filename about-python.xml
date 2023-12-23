@@ -15,7 +15,115 @@
 <link>https://ns-rse.github.io/about.html#category=python</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Fri, 17 Nov 2023 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 23 Dec 2023 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>virtualenvwrapper</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/virtualenvwrapper/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>If you use Python heavily you will likely be familiar with Virtual Environments. These provide isolated installs of specific packages that take precedence over any packages installed at the system level. There are lots of tools and frameworks for working with virtual environments such as <a href="https://docs.python.org/3/library/venv.html"><code>venv</code></a>, <a href="https://pypi.python.org/pypi/virtualenv"><code>virtualenv</code></a> and <a href="https://docs.conda.io/en/latest/">Conda</a>. This post introduces and shows some of the features of <a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/virtualenvwrapper/https:/live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53176160657/in/album-72177720311078585/">Clouds Rising at Sunset by Me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="virtualenvwrapper" class="level2">
+<h2 class="anchored" data-anchor-id="virtualenvwrapper">virtualenvwrapper</h2>
+<p><a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a> is…</p>
+<blockquote class="blockquote">
+<p>a set of extensions to Ian Bicking’s <code>virtualenv</code> tool. The extensions include wrappers for creating and deleting virtual environments and otherwise managing your development workflow, making it easier to work on more than one project at a time without introducing conflicts in their dependencies.</p>
+</blockquote>
+<p>It has the following main features…</p>
+<blockquote class="blockquote">
+<ol type="1">
+<li>Organizes all of your virtual environments in one place.</li>
+<li>Wrappers for managing your virtual environments (create, delete, copy).</li>
+<li>Use a single command to switch between environments.</li>
+<li>Tab completion for commands that take a virtual environment as argument.</li>
+<li>User-configurable hooks for all operations (see Per-User Customization).</li>
+<li>Plugin system for creating more sharable extensions (see Extending Virtualenvwrapper).</li>
+</ol>
+</blockquote>
+</section>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>Many systems have <code>virtualenvwrapper</code> available in their package manager.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">emerge</span> <span class="at" style="color: #657422;">-av</span> virtualenvwrapper          <span class="co" style="color: #5E5E5E;"># Gentoo</span></span>
+<span id="cb1-2"><span class="ex" style="color: null;">pacman</span> <span class="at" style="color: #657422;">-Syu</span> python-virtualenvwrapper  <span class="co" style="color: #5E5E5E;"># Arch</span></span>
+<span id="cb1-3"><span class="ex" style="color: null;">apt-get</span> install virtualenvwrapper     <span class="co" style="color: #5E5E5E;"># Debian</span></span></code></pre></div>
+<p>Once installed you need to set two key variables <code>$WORKON_HOME</code> and <code>$PROJECT_HOME</code> and ensure the <code>virtualenvwrapper.sh</code> is sourced on starting a shell. <code>$WORKON_HOME</code> is where your virtual environments will be created and stored, whilst <code>$PROJECT_HOME</code> is where projects will be created if you choose to use the helper functions for making projects. Set these to what you want, my options are below. To find out where <code>virtualenvwrapper.sh</code> is installed on your system use <code>which virtualenvwrapper.sh</code>. Once you’ve decided substitute the values in the following of your <code>.bashrc</code> (<a href="https://www.gnu.org/software/bash/">Bash</a>)or <code>.zshrc</code> (<a href="https://www.zsh.org/">ZSH</a>) depending on which shell you use.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="bu" style="color: null;">export</span> <span class="va" style="color: #111111;">WORKON_HOME</span><span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">${HOME}</span>/.virtualenvs</span>
+<span id="cb2-2"><span class="bu" style="color: null;">export</span> <span class="va" style="color: #111111;">PROJECT_HOME</span><span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">${HOME}</span>/work/git/</span>
+<span id="cb2-3"><span class="bu" style="color: null;">source</span> /usr/bin/virtualenvwrapper.sh</span></code></pre></div>
+</section>
+<section id="creating-a-virtual-environment" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-virtual-environment">Creating a Virtual Environment</h2>
+<p>This is straight-forward.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;">mkvirtualenv</span> <span class="op" style="color: #5E5E5E;">&lt;</span>env_name<span class="op" style="color: #5E5E5E;">&gt;</span></span></code></pre></div>
+<section id="postmkvirtualenv" class="level3">
+<h3 class="anchored" data-anchor-id="postmkvirtualenv"><code>postmkvirtualenv</code></h3>
+<p>But what if there are some tools that you want to install each and every time you create a virtual environment, regardless of the project you are working on? For example I use the <a href="https://github.com/pappasam/jedi-language-server">jedi-language-server</a> and want to have various packages such as <a href="https://ipython.org">ipython</a>, <a href="https://docs.pytest.org/en/latest/">pytest</a> and various extensions, linters such as <a href="https://astral.sh/ruff">ruff</a> and <a href="https://pylint.org">pylint</a> available by default in every environment you create. Fortunately there is a simple hook that can be run after the creation of a new environment. The file <code>~/.virtualenvs/postmkvirtualenv</code> is sourced and run <em>after</em> having run <code>mkvirtualenv</code> and so any commands in there are executed as it is essentially a Bash script.</p>
+<p>If you maintain a <a href="https://dotfiles.github.io/">dotfiles</a> directory and have a file that lists the packages you want installed under <code>~/dotfiles/python/venv_minimal_requirements.txt</code> then you can have the files listed here installed when creating a new virtual environment by appending the command <code>pip install -r ~/dotfiles/python/venv_minimal_requirements.txt</code> to the <code>~/.virtualenvs/postmkvirtualenv</code> file.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"pip install -r ~/dotfiles/python/venv_minimal_requirements.txt"</span> <span class="op" style="color: #5E5E5E;">&gt;&gt;</span> ~/.virtualenvs/postmkvirtualenv</span></code></pre></div>
+</section>
+</section>
+<section id="project-directories" class="level2">
+<h2 class="anchored" data-anchor-id="project-directories">Project Directories</h2>
+<p>Typically code for a project resides in its own directory and this can be automatically bound to the virtual environment using the <code>mkproject</code> command instead of <code>mkvirtualenv</code>. The project directory is stored in the <code>$PROJECT_HOME</code> path you will have configured during <a href="installation">installation</a>. You can then create a project <em>and</em> a virtual environment with…</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">mkproject</span> new_project</span></code></pre></div>
+<section id="switching-to-project-directories" class="level3">
+<h3 class="anchored" data-anchor-id="switching-to-project-directories">Switching to Project Directories</h3>
+<p>You can switch to a projects directory automatically on activating a particular virtual environment using <code>setvirtualenvproject</code> from the project directory when a specific environment is activated. <strong>Make sure you are in the project directory for the corresponding project!</strong>. It adds an entry to the <code>~/.virtualenv/&lt;env_name&gt;/.project</code> file that reflects the directory associated with the environment. Then when you activate the directory via <code>workon &lt;env_name&gt;</code> it will automatically change to the project directory.</p>
+</section>
+</section>
+<section id="deactivating-and-removing-virtual-environments" class="level2">
+<h2 class="anchored" data-anchor-id="deactivating-and-removing-virtual-environments">Deactivating and Removing Virtual Environments</h2>
+<p>Its straight-forward to deactivate the current virtual environment just type <code>deactivate</code>. Similarly you can remove a virtual environment with <code>rmvirtualenv &lt;env_name&gt;</code>.</p>
+<p>One neat option if you want to keep a virtual environment but install all packages anew is the ability to remove all third-party packages in the current virtual environment using <code>wipeenv</code>.</p>
+</section>
+<section id="temporary-virtual-environments" class="level2">
+<h2 class="anchored" data-anchor-id="temporary-virtual-environments">Temporary Virtual Environments</h2>
+<p>Sometimes you just want to try something out quickly in a clean Virtual Environment, if for example you are reviewing a Pull Request. <code>virtualenvwrapper</code> can help here as it has the <code>mktmpenv</code>. There are two options here <code>-c|--cd</code> or <code>-n|--no-cd</code> which changes directory post-activation or <em>doesn’t</em> respectively. The environment gets a unique name and will be deleted automatically when it is deactivated.</p>
+</section>
+<section id="drawbacks" class="level2">
+<h2 class="anchored" data-anchor-id="drawbacks">Drawbacks</h2>
+<p>There are a couple of drawbacks I’ve found to using using <code>virtualenvwrapper</code>.</p>
+<p>The first is that <code>mkproject</code> doesn’t allow nesting of project directories, you have to specify a single directory and it will be created under the <code>$PROJECT_HOME</code> directory with the associated environment name. This doesn’t work for me as I use the structure <code>~/work/git</code> as the base but then have sub-directories based on the Git Forge (<a href="https://github.com">GitHub</a>/<a href="https://gitlab.com">GitLab</a>/<a href="https://codeberg.org/">Codeberg</a>) the repository is associated with and further nesting to reflect the user/organisation within as I have both a personal and work accounts. E.g. <code>~/work/git/hub/ns-rse/ns-rse.github.io</code> which is the source for this site and associated with my work account (<code>ns-rse</code>) or <code>~/work/git/lab/nshephard/tcx2gpx</code> which is a project of mine (<a href="https://gitlab.com/nshephard/tcx2gpx">tcx2gpx</a>) hosted on GitLab. This means that if I wanted to create a project with <code>mkproject</code> based on <code>$PROJECT_HOME</code> being <code>/work/git</code> following this structure I would specify <code>mkproject git/lab/new_project</code> and whilst the directory is created, the virtual environment is created as <code>git/lab/new_project</code> which is truncated to <code>git</code> and you can’t <code>workon git</code> because the activation scripts are nested deeper under <code>git/lab/new_project</code>. Further each environment I created would then conflict. I could probably work around this by creating symbolic links but in practice I just use <code>mkvirtualenv</code> and <code>setvirtualenvproject</code> after I <code>git clone</code> work.</p>
+<p>This is a problem specifically of my own creation though, something other users might find causes greater friction is that <code>virtualenvwrapper</code> doesn’t support creating and keeping the virtual environments within the project directory itself. This is never something that I’ve wanted to do myself though as I find it tidier to keep them all in one place and easier to find and remove obsolete environments.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>I’ve used <a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a> for years and its a nice light-weight alternative to other solutions of using Pythons Virtual Environments such as <a href="https://docs.python.org/3/library/venv.html"><code>venv</code></a> or <a href="https://docs.conda.io/en/latest/">Conda</a>. It has some limitations but its worth giving it a whirl as there are lots of useful helper functions and hooks that smooth the process of creating, using and switching between virtual environments.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper documentation</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div> ]]></description>
+  <category>python</category>
+  <category>virtual environments</category>
+  <guid>https://ns-rse.github.io/posts/virtualenvwrapper/index.html</guid>
+  <pubDate>Sat, 23 Dec 2023 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Repository Review with Scientific Python</title>
   <dc:creator>Neil Shephard</dc:creator>
