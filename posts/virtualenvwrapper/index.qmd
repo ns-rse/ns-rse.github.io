@@ -91,7 +91,7 @@ creating a new virtual environment by appending the command `pip install -r
 ~/dotfiles/python/venv_minimal_requirements.txt` to the `~/.virtualenvs/postmkvirtualenv` file.
 
 ```bash
-$ echo "pip install -r ~/dotfiles/python/venv_minimal_requirements.txt" >> ~/.virtualenvs/postmkvirtualenv
+echo "pip install -r ~/dotfiles/python/venv_minimal_requirements.txt" >> ~/.virtualenvs/postmkvirtualenv
 ```
 
 ## Project Directories
@@ -104,7 +104,6 @@ with...
 ```bash
 mkproject new_project
 ```
-
 
 ### Switching to Project Directories
 
