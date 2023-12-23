@@ -19,8 +19,8 @@ execute:
 
 If you use Python heavily you will likely be familiar with Virtual Environments. These provide isolated installs of
 specific packages that take precedence over any packages installed at the system level. There are lots of tools and
-frameworks for working with virtual environments such as [`venv`](),
-[`virtualenv`](https://pypi.python.org/pypi/virtualenv) and  [Conda](). This post introduces and shows some of the
+frameworks for working with virtual environments such as [`venv`](https://docs.python.org/3/library/venv.html),
+[`virtualenv`](https://pypi.python.org/pypi/virtualenv) and  [Conda](https://docs.conda.io/en/latest/). This post introduces and shows some of the
 features of [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/).
 
 ![[Clouds Rising at Sunset by Me](https://www.flickr.com/photos/slackline/53176160657/in/album-72177720311078585/)](https://live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg)
@@ -113,10 +113,20 @@ project directory for the corresponding project!**. It adds an entry to the `~/.
 that reflects the directory associated with the environment. Then when you activate the directory via `workon
 <env_name>` it will automatically change to the project directory.
 
+## Deactivating and Removing Virtual Environments
+
+Its straight-forward to deactivate the current virtual environment just type `deactivate`. Similarly you can remove a
+virtual environment with `rmvirtualenv <env_name>`.
+
+One neat option if you want to keep a virtual environment but install all packages anew is the ability to remove all
+third-party packages in the current virtual environment using `wipeenv`.
+
 ## Temporary Virtual Environments
 
 Sometimes you just want to try something out quickly in a clean Virtual Environment, if for example you are reviewing a
-Pull Request. `virtualenvwrapper` can help here as it has the `mktmpenv`
+Pull Request. `virtualenvwrapper` can help here as it has the `mktmpenv`. There are two options here `-c|--cd` or
+`-n|--no-cd` which changes directory post-activation or _doesn't_ respectively. The environment gets a unique name and
+will be deleted automatically when it is deactivated.
 
 ## Drawbacks
 
@@ -140,6 +150,14 @@ This is a problem specifically of my own creation though, something other users 
 that `virtualenvwrapper` doesn't support creating and keeping the virtual environments within the project directory
 itself. This is never something that I've wanted to do myself though as I find it tidier to keep them all in one place
 and easier to find and remove obsolete environments.
+
+## Conclusion
+
+I've used [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/) for years and its a nice light-weight
+alternative to other solutions of using Pythons Virtual Environments such as
+[`venv`](https://docs.python.org/3/library/venv.html) or [Conda](https://docs.conda.io/en/latest/). It has some
+limitations but its worth giving it a whirl as there are lots of useful helper functions and hooks that smooth the
+process of creating, using and switching between virtual environments.
 
 ## Links
 
