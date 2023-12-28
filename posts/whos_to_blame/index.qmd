@@ -55,7 +55,7 @@ db27fa5f18299ca631efc430512a3f358c2b154f
 Now that you have the revisions in place to be ignored when reporting blame you can choose not to use it.
 
 ```bash
-git blame --ignore-revs-file .gitblame-ignore-revs git_blame.org
+git blame --ignore-revs-file .git-blame-ignore-revs git_blame.org
 ```
 
 ...but this is tedious to remember to have to do each time and ideally others on your team should use this file too. You
