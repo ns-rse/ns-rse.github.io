@@ -784,7 +784,7 @@ No matching items
 <span id="cb3-4"><span class="co" style="color: #5E5E5E;"># PEP8 compliance for module Y</span></span>
 <span id="cb3-5"><span class="ex" style="color: null;">db27fa5f18299ca631efc430512a3f358c2b154f</span></span></code></pre></div>
 <p>Now that you have the revisions in place to be ignored when reporting blame you can choose not to use it.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;">git</span> blame <span class="at" style="color: #657422;">--ignore-revs-file</span> .gitblame-ignore-revs git_blame.org</span></code></pre></div>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;">git</span> blame <span class="at" style="color: #657422;">--ignore-revs-file</span> .git-blame-ignore-revs git_blame.org</span></code></pre></div>
 <p>…but this is tedious to remember to have to do each time and ideally others on your team should use this file too. You can configure Git to use this file by modifying the local configuration. Make sure to add it to your repository so that others can use it.</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;">git</span> config blame.ignoreRevsFile .git-blame-ignore-revs</span>
 <span id="cb5-2"><span class="fu" style="color: #4758AB;">git</span> add .git-blame-ignore-revs</span></code></pre></div>
