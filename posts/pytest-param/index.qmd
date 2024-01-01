@@ -1,0 +1,216 @@
+---
+title: "Pytest Parameterisation"
+date: "2024-01-01"
+categories: [python, testing, pytest]
+image: https://live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+[Pytest](https://docs.pytest.org/en/latest/) is an excellent framework for writing tests in
+[Python](https://python.org). One of the neat features it includes is the ability to parameterise your tests which means
+you can write one test and pass different sets of parameters into it to test the range of actions that the
+function/method are meant to handle.
+
+![[Clouds Rising at Sunset by Me](https://www.flickr.com/photos/slackline/53176160657/in/album-72177720311078585/)](https://live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg)
+
+## Simple Example
+
+Lets have a simple example and work through how we can test it. We want to have a state where the function can fail so
+we'll write a very simple function that carries out division.
+
+```python
+def divide(a: float | int, b: float | int) -> float:
+    """Divide a by b.
+
+    Parameters
+    ----------
+    a: float | int
+        Number to be divided.
+    b: float | int
+        Number to divide by.
+
+    Returns
+    -------
+    float
+        a divided by b.
+    """
+    try:
+        return a / b
+    except ZeroDivisionError:
+        print("Can not divide by {b}, choose another number.")
+```
+
+With this function we could write the following basic test.
+
+```python
+from divide import divide
+
+def test_divide() -> None:
+    """Test the divide function."""
+    assert divide(10, 5) == 2
+```
+
+## Parameterising Tests
+
+In order to make our test robust we should test more scenarios and edge cases, in particular making sure we capture the
+exception that can be raised. This is where the [`pytest.mark.parameterize()`]() fixture comes into play. It takes as a
+first argument a list of variables that you are going to define values for and pass into your test. Following it is a
+list of tuples with the values that you want to include. Here we define `a`, `b` and the `expected` value of dividing
+`a` by `b` which is the value the `divide()` function should return.
+
+```python
+import pytest
+
+from divide import divide
+@pytest.mark.parameterize(
+    ("a", "b", "expected"),
+    [
+        (10, 5, 2),
+        (9, 3, 3),
+        (5, 2, 2.5),
+
+    ]
+)
+def test_divide(a: float | int, b: float | int, expected: float) -> None:
+    """Test the divide function."""
+    assert divide(a, b) == expected
+```
+
+## IDs
+
+For some time I simply wrote my tests and if the structure was complicated I used comments to mark the code to indicate
+what the test was doing.
+
+Recently though I was put onto the
+[pytest.param](https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest.param) method
+by a [toot from @danjac@masto.ai](https://mastodon.social/@danjac@masto.ai/111674313059704725).  This is really neat as
+it allows us to give each set of parameters a unique `id`.
+
+```python
+@pytest.mark.parameterize(
+    ("a", "b", "expected"),
+    [
+        pytest.param(10, 5, 2, id="ten divided by five"),
+        pytest.param(9, 3, 3, id="nine divided by three"),
+        pytest.param(5, 2, 2.5, id="five divided by two"),
+
+    ]
+)
+def test_divide(a: float | int, b: float | int, expected: float) -> None:
+    """Test the divide function."""
+    assert divide(a, b) == expected
+```
+
+
+Not only does it allow
+each set of parameters to be given a unique `id = ""` to aid with identifying tests that fail it also allows each set of
+parameters to be marked with the expected behaviour for example
+[`pytest.mark.xfail`](https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest-mark-xfail) or
+[`pytest.mark.skipif`](https://docs.pytest.org/en/7.1.x/reference/reference.html?#id25).
+
+Lets add another set of parameters that should fail because the exception is raised.
+
+```python
+import pytest
+
+from pytest_examples.divide import divide
+
+
+@pytest.mark.parameterize(
+    ("a", "b", "expected"),
+    [
+        pytest.param(10, 5, 2, id="ten divided by five"),
+        pytest.param(9, 3, 3, id="nine divided by three"),
+        pytest.param(5, 2, 2.5, id="five divided by two"),
+        pytest.param(
+            10, 0, ZeroDivisionError, id="zero division error", marks=pytest.mark.xfail
+        ),
+    ],
+)
+def test_divide(a: float | int, b: float | int, expected: float) -> None:
+    """Test the divide function."""
+    assert divide(a, b) == expected
+```
+
+## Testing Exceptions
+
+We can combine tests that pass and fail (in this example a `ZeroDivisionError`) via parameterisation and whilst Pytest
+works and allows this some consider this to be bad practice as whilst tests can and should be parameterised it is better
+to keep tests focused and on-topic and write a separate test for different outcomes such as raising exceptions.
+
+With this in mind we can separate out the tests that raise exceptions to their own set.
+
+
+```python
+
+```
+
+This is slightly different from the way the Pytest documentation recommends to undertake [Parameterising conditional
+raising](https://docs.pytest.org/en/7.1.x/example/parametrize.html#parametrizing-conditional-raising) but there is a
+school of thought, which I like, which states that testing states should be separate which is why I am advocating keep
+the states that are being tested to separate tests.
+
+## Using Fixtures in Parameterising
+
+[Fixtures](https://docs.pytest.org/en/stable/explanation/fixtures.html) are a common and useful feature of the Pytest
+framework that allow you to define "/defined, reliable and consistent context for the tests/". What this means is that
+if you always need a particular object, whether that is an instantiated class (a new instance of a class) or something
+else, you can mark a function with `@pytest.fixture()` and use it in subsequent tests (often fixtures are defined in
+`tests/conftest.py` to keep things tidy, at least that is what I do!).
+
+It can be useful to parameterise fixtures themselves so that they too tests a number of different states and this saves
+writing more sets of parameters under each tests `@pytest.mark.parameterize()` decorator.
+
+There are two ways to achieve this.
+
+### `request.getfixturevalue()`
+
+### `pytest-lazy-fixture`
+
+An alternative is to use the Pytest plugin [pytest-lazy-fixture](https://github.com/tvorog/pytest-lazy-fixture) and
+instead of marking the value to be obtained in the test itself you do so in the
+
+
+### Parameterise Fixtures
+
+This has the added advantage that you can parameterise fixtures themselves as neatly demonstrated in the packages
+[README](https://github.com/tvorog/pytest-lazy-fixture#usage) which I've reproduced below.
+
+```python
+import pytest
+from pytest_lazyfixture import lazy_fixture
+
+@pytest.fixture(params=[
+    lazy_fixture('one'),
+    lazy_fixture('two')
+])
+def some(request):
+    return request.param
+
+@pytest.fixture
+def one():
+    return 1
+
+@pytest.fixture
+def two():
+    return 2
+
+def test_func(some):
+    assert some in [1, 2]
+```
+
+## Links
+
++ [Pytest](https://docs.pytest.org/en/latest/)
++ [Parametrizing tests — pytest documentation](https://docs.pytest.org/en/7.1.x/example/parametrize.html)
++ [pytest using fixtures as arguments in parametrize - Stack Overflow](https://stackoverflow.com/questions/42014484/pytest-using-fixtures-as-arguments-in-parametrize)
