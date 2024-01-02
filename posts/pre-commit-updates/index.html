@@ -270,10 +270,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p><a href="https://pre-commit.com/">Pre-commit</a> is a tool for running hooks prior to making commits to your Git history. If you’re not familiar with it then you may want to read the earlier post <a href="https://ns-rse.github.io/posts/pre-commit/">Pre-Commit : Protecting your future self</a>. This article discusses updating <code>pre-commit</code> and is prompted by a change in the <code>flake8</code> repository.</p>
+<p><a href="https://pre-commit.com/" target="_blank">Pre-commit</a> is a tool for running hooks prior to making commits to your Git history. If you’re not familiar with it then you may want to read the earlier post <a href="https://ns-rse.github.io/posts/pre-commit/" target="_blank">Pre-Commit : Protecting your future self</a>. This article discusses updating <code>pre-commit</code> and is prompted by a change in the <code>flake8</code> repository.</p>
 <section id="pre-commit-hooks" class="level2">
 <h2 class="anchored" data-anchor-id="pre-commit-hooks">Pre-commit hooks</h2>
-<p>A lot of the power of <code>pre-commit</code> comes from the vast array of <a href="https://pre-commit.com/hooks.html">hooks</a> that are available that users make available. These are included under <code>repos:</code> section of the <code>.pre-commit-config.yaml</code> and typically require a minimum of the <code>repo:</code> and the <code>rev:</code> to use and then optionally a <code>hooks:</code> section. The <code>sample-config</code> that <code>pre-commit</code> will auto-generate looks like…</p>
+<p>A lot of the power of <code>pre-commit</code> comes from the vast array of <a href="https://pre-commit.com/hooks.html" target="_blank">hooks</a> that are available that users make available. These are included under <code>repos:</code> section of the <code>.pre-commit-config.yaml</code> and typically require a minimum of the <code>repo:</code> and the <code>rev:</code> to use and then optionally a <code>hooks:</code> section. The <code>sample-config</code> that <code>pre-commit</code> will auto-generate looks like…</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at">   </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/pre-commit/pre-commit-hooks</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v4.3.0</span></span>
@@ -282,7 +282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at">   </span><span class="fu">id</span><span class="kw">:</span><span class="at"> end-of-file-fixer</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at">   </span><span class="fu">id</span><span class="kw">:</span><span class="at"> check-yaml</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at">   </span><span class="fu">id</span><span class="kw">:</span><span class="at"> check-added-large-files</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>After finding a repository and hook that you wish to use <a href="https://pre-commit.com/hooks.html">hooks</a> repository you need to add it to your <code>.pre-commit-config.yaml</code>. Here we add the <a href="https://github.com/PyCQA/pylint"><code>pylint</code></a> repository and whilst it only has one hook we explicitly add it.</p>
+<p>After finding a repository and hook that you wish to use <a href="https://pre-commit.com/hooks.html" target="_blank">hooks</a> repository you need to add it to your <code>.pre-commit-config.yaml</code>. Here we add the <a href="https://github.com/PyCQA/pylint" target="_blank"><code>pylint</code></a> repository and whilst it only has one hook we explicitly add it.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at">   </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/pre-commit/pre-commit-hooks</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v4.3.0</span></span>
@@ -299,7 +299,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="local-hooks" class="level2">
 <h2 class="anchored" data-anchor-id="local-hooks">Local Hooks</h2>
-<p>In some instances the provisioned repositories do not always meet the requirements. One example of this is the <a href="https://github.com/pycqa/pylint">pylint action</a> which parses the code-base to detect errors using <a href="https://pylint.pycqa.org/en/latest/">pylint</a>. Typically most Python packages have their own dependencies but because the Pylint action pulls down and uses its own virtual environment these packages are not installed. As a consequence <code>pylint</code> reports a lot of <code>import-error</code> as its unable to import the required dependencies.</p>
+<p>In some instances the provisioned repositories do not always meet the requirements. One example of this is the <a href="https://github.com/pycqa/pylint" target="_blank">pylint action</a> which parses the code-base to detect errors using <a href="https://pylint.pycqa.org/en/latest/" target="_blank">pylint</a>. Typically most Python packages have their own dependencies but because the Pylint action pulls down and uses its own virtual environment these packages are not installed. As a consequence <code>pylint</code> reports a lot of <code>import-error</code> as its unable to import the required dependencies.</p>
 <p>The solution to this is to write a local hook, which instead of defining a GitHub repository as the <code>repo:</code> uses the value <code>local</code>. Thus to run <code>pylint</code> in a local environment from <code>pre-commit</code> you would add the following to your <code>.pre-commit-config.yaml</code></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at">   </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/pre-commit/pre-commit-hooks</span></span>
@@ -332,7 +332,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="repository-changes" class="level2">
 <h2 class="anchored" data-anchor-id="repository-changes">Repository Changes</h2>
-<p>Sometimes, albeit rarely, repositories change their location as was the case recently when <a href="https://gitlab.com/PyCQA/flake8">flake8</a> moved from <a href="https://gitlab.com">GitLab</a> to <a href="https://github.com/PyCQA/flake8">GitHub</a>. As a consequence any <code>pre-commit</code> that uses <code>flake8</code> repo/hook and configured to run in Continuous Integration pipelines failed as it was unable to download and run the <code>flake8</code> environment. The solution is simply to update the <code>repo:</code>.</p>
+<p>Sometimes, albeit rarely, repositories change their location as was the case recently when <a href="https://gitlab.com/PyCQA/flake8" target="_blank">flake8</a> moved from <a href="https://gitlab.com" target="_blank">GitLab</a> to <a href="https://github.com/PyCQA/flake8" target="_blank">GitHub</a>. As a consequence any <code>pre-commit</code> that uses <code>flake8</code> repo/hook and configured to run in Continuous Integration pipelines failed as it was unable to download and run the <code>flake8</code> environment. The solution is simply to update the <code>repo:</code>.</p>
 <p>Before this change the entry for <code>flake8</code> looked like…</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at">   </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://gitlab.com/pycqa/flake8.git</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> </span><span class="fl">3.9.2</span></span>
@@ -354,11 +354,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://ns-rse.github.io/posts/pre-commit/">Pre-Commit : Protecting your future self</a></li>
-<li><a href="https://pre-commit.com/">Pre-commit</a></li>
-<li><a href="https://pre-commit.com/hooks.html">Pre-commit hooks</a></li>
-<li><a href="https://github.com/PyCQA/pylint">pylint</a></li>
-<li><a href="https://github.com/PyCQA/flake8">flake8</a></li>
+<li><a href="https://ns-rse.github.io/posts/pre-commit/" target="_blank">Pre-Commit : Protecting your future self</a></li>
+<li><a href="https://pre-commit.com/" target="_blank">Pre-commit</a></li>
+<li><a href="https://pre-commit.com/hooks.html" target="_blank">Pre-commit hooks</a></li>
+<li><a href="https://github.com/PyCQA/pylint" target="_blank">pylint</a></li>
+<li><a href="https://github.com/PyCQA/flake8" target="_blank">flake8</a></li>
 </ul>
 
 

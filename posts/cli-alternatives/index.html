@@ -254,13 +254,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>The command line is my second home when sat at a computer (<a href="https://www.gnu.org/software/emacs/">Emacs</a> is my first ;-) and the <a href="https://en.wikipedia.org/wiki/Unix_philosophy">UNIX Philosophy</a> is the key to the huge amount of highly productive tools that are available under UNIX, GNU/Linux, BSD, OSX, PowerShell etc.</p>
+<p>The command line is my second home when sat at a computer (<a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> is my first ;-) and the <a href="https://en.wikipedia.org/wiki/Unix_philosophy" target="_blank">UNIX Philosophy</a> is the key to the huge amount of highly productive tools that are available under UNIX, GNU/Linux, BSD, OSX, PowerShell etc.</p>
 <p>Many of these tools work and have done for many years, but there are some new alternatives that are coming through that build and modernise on these tools without breaking the core functionality. Here I detail some of the tools and why you might want to use them. Each tool has a brief introduction with some example output shown and then some <code>aliases</code> listed that you can drop into <code>~/.bash_aliases</code> or <code>~/.oh-my-zsh/custom/aliases</code> to use on your system.</p>
 <section id="alternatives" class="level2">
 <h2 class="anchored" data-anchor-id="alternatives">Alternatives</h2>
 <section id="bat" class="level3">
 <h3 class="anchored" data-anchor-id="bat"><code>bat</code></h3>
-<p><a href="https://github.com/sharkdp/bat"><code>bat</code></a> is “<em>A <code>cat(1)</code> clone with wings.</em>”. It automatically uses syntax highlighting and integrates with git if a file is version controlled to show changes and lots more. You can pipe input to it, including from e.g.&nbsp;<code>curl -s https://server.com/some_file</code></p>
+<p><a href="https://github.com/sharkdp/bat" target="_blank"><code>bat</code></a> is “<em>A <code>cat(1)</code> clone with wings.</em>”. It automatically uses syntax highlighting and integrates with git if a file is version controlled to show changes and lots more. You can pipe input to it, including from e.g.&nbsp;<code>curl -s https://server.com/some_file</code></p>
 <section id="example---bat" class="level4">
 <h4 class="anchored" data-anchor-id="example---bat">Example - <code>bat</code></h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> bat pyproject.toml</span>
@@ -289,7 +289,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="cheat" class="level3">
 <h3 class="anchored" data-anchor-id="cheat"><code>cheat</code></h3>
-<p><a href="https://opensource.com/article/22/6/linux-cheat-command"><code>cheat</code></a> is actually a web-service that returns short “cheats” for command line programmes which will often cover many use cases and save you having to read the rather dry <code>man</code> pages for functions.</p>
+<p><a href="https://opensource.com/article/22/6/linux-cheat-command" target="_blank"><code>cheat</code></a> is actually a web-service that returns short “cheats” for command line programmes which will often cover many use cases and save you having to read the rather dry <code>man</code> pages for functions.</p>
 <section id="example---cheat" class="level4">
 <h4 class="anchored" data-anchor-id="example---cheat">Example - <code>cheat</code></h4>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> cheat cheat</span>
@@ -331,7 +331,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="aliases---cheat" class="level4">
 <h4 class="anchored" data-anchor-id="aliases---cheat">Aliases - <code>cheat</code></h4>
-<p>You don’t need to install anything to use this, instead define an <a href="https://www.gnu.org/software/bash/manual/html_node/Aliases.html">alias</a> for your shell (e.g.&nbsp;in <code>~/.bashrc</code>/<code>~/.zshrc</code>/<code>~/.oh-my-zsh/custom/aliases.zsh</code>).</p>
+<p>You don’t need to install anything to use this, instead define an <a href="https://www.gnu.org/software/bash/manual/html_node/Aliases.html" target="_blank">alias</a> for your shell (e.g.&nbsp;in <code>~/.bashrc</code>/<code>~/.zshrc</code>/<code>~/.oh-my-zsh/custom/aliases.zsh</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Linux commands https://github.com/chubin/cheat.sheets</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cheat ()</span> <span class="kw">{</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> cheat.sh/<span class="st">"</span><span class="va">$@</span><span class="st">"</span></span>
@@ -340,12 +340,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="difftastic" class="level3">
 <h3 class="anchored" data-anchor-id="difftastic"><code>difftastic</code></h3>
-<p><a href="https://difftastic.wilfred.me.uk/">difftastic</a> (<a href="https://github.com/wilfred/difftastic">GitHub</a>) is an alternative to the default GNU <code>diff</code> packaged with most systems. It is “aware” of some 30 or so programming languages and will show diffs side-by-side rather than the traditional linear manner. It integrates easily with Git so when you <code>git diff</code> it uses <code>difft</code> to show the differences.</p>
+<p><a href="https://difftastic.wilfred.me.uk/" target="_blank">difftastic</a> (<a href="https://github.com/wilfred/difftastic" target="_blank">GitHub</a>) is an alternative to the default GNU <code>diff</code> packaged with most systems. It is “aware” of some 30 or so programming languages and will show diffs side-by-side rather than the traditional linear manner. It integrates easily with Git so when you <code>git diff</code> it uses <code>difft</code> to show the differences.</p>
 <p>Highly recommended, but don’t take my word for it, give it a whirl yourself.</p>
 </section>
 <section id="duf" class="level3">
 <h3 class="anchored" data-anchor-id="duf"><code>duf</code></h3>
-<p><a href="https://github.com/muesli/duf">duf</a> is a nice alternative to the traditional <code>du</code> and <code>df</code> commands which report disk usage and file/directory usage respectively.</p>
+<p><a href="https://github.com/muesli/duf" target="_blank">duf</a> is a nice alternative to the traditional <code>du</code> and <code>df</code> commands which report disk usage and file/directory usage respectively.</p>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr duf</span>
@@ -394,7 +394,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="fd" class="level3">
 <h3 class="anchored" data-anchor-id="fd"><code>fd</code></h3>
-<p><a href="https://github.com/sharkdp/fd"><code>fd</code></a> is an alternative to <code>find</code> that is easier to use. It is “opinionated” (i.e.&nbsp;decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use cases. It works directly with regular expressions.</p>
+<p><a href="https://github.com/sharkdp/fd" target="_blank"><code>fd</code></a> is an alternative to <code>find</code> that is easier to use. It is “opinionated” (i.e.&nbsp;decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use cases. It works directly with regular expressions.</p>
 <section id="example---fd" class="level4">
 <h4 class="anchored" data-anchor-id="example---fd">Example - <code>fd</code></h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr fd</span>
@@ -426,7 +426,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="jq" class="level3">
 <h3 class="anchored" data-anchor-id="jq"><code>jq</code></h3>
-<p><a href="https://stedolan.github.io/jq/"><code>jq</code></a> is to <a href="https://www.json.org/json-en.html">JSON</a> (JavaScript Object Notation) what <code>awk</code>/<code>grep</code>/<code>sed</code> is to text files. It allows parsing, searching and selecting of JSON files, which if you’ve not encountered them before take a bit of getting used to.</p>
+<p><a href="https://stedolan.github.io/jq/" target="_blank"><code>jq</code></a> is to <a href="https://www.json.org/json-en.html" target="_blank">JSON</a> (JavaScript Object Notation) what <code>awk</code>/<code>grep</code>/<code>sed</code> is to text files. It allows parsing, searching and selecting of JSON files, which if you’ve not encountered them before take a bit of getting used to.</p>
 <section id="example---jq" class="level4">
 <h4 class="anchored" data-anchor-id="example---jq">Example - <code>jq</code></h4>
 <p>Details of using <code>jq</code> are really beyond the scope of this short article, like <code>awk</code> its almost a language in itself.</p>
@@ -461,7 +461,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="lsd" class="level3">
 <h3 class="anchored" data-anchor-id="lsd"><code>lsd</code></h3>
-<p><a href="https://github.com/Peltoche/lsd"><code>lsd</code></a> is <code>ls</code>Deluxe and is very similar to <a href="../../posts/cli-alternatives/index.html#exa"><code>exa</code></a> but with a few additions such as icons.</p>
+<p><a href="https://github.com/Peltoche/lsd" target="_blank"><code>lsd</code></a> is <code>ls</code>Deluxe and is very similar to <a href="../../posts/cli-alternatives/index.html#exa" target="_blank"><code>exa</code></a> but with a few additions such as icons.</p>
 <section id="example---lsd" class="level4">
 <h4 class="anchored" data-anchor-id="example---lsd">Example - <code>lsd</code></h4>
 <div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> l</span>
@@ -500,7 +500,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="tldr" class="level3">
 <h3 class="anchored" data-anchor-id="tldr"><code>tldr</code></h3>
-<p><a href="https://tldr.sh/"><code>tldr</code></a> is very similar to <a href="#cheat"><code>cheat</code></a> in that it shows short, simple examples of using a command. There are a number of different clients written in <a href="https://github.com/tldr-pages/tldr-c-client">C</a>, <a href="https://github.com/tldr-pages/tldr-node-client">Node</a> and <a href="https://github.com/tldr-pages/tldr-python-client">Python</a> as well as a few others. It depends on <code>jq</code> so you will have to install that if you want to use <code>yq</code>.</p>
+<p><a href="https://tldr.sh/" target="_blank"><code>tldr</code></a> is very similar to <a href="#cheat" target="_blank"><code>cheat</code></a> in that it shows short, simple examples of using a command. There are a number of different clients written in <a href="https://github.com/tldr-pages/tldr-c-client" target="_blank">C</a>, <a href="https://github.com/tldr-pages/tldr-node-client" target="_blank">Node</a> and <a href="https://github.com/tldr-pages/tldr-python-client" target="_blank">Python</a> as well as a few others. It depends on <code>jq</code> so you will have to install that if you want to use <code>yq</code>.</p>
 <section id="example---tldr" class="level4">
 <h4 class="anchored" data-anchor-id="example---tldr">Example - <code>tldr</code></h4>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr tldr</span>
@@ -525,7 +525,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="yq" class="level3">
 <h3 class="anchored" data-anchor-id="yq"><code>yq</code></h3>
-<p><a href="https://kislyuk.github.io/yq/"><code>yq</code></a> is to <a href="https://yaml.org/">YAML</a> (YAML Ain’t Markup Language) what <a href="#jq"><code>jq</code></a> is to JSON. Written in Python it allows fast and efficient parsing, searching and selecting of YAML files.</p>
+<p><a href="https://kislyuk.github.io/yq/" target="_blank"><code>yq</code></a> is to <a href="https://yaml.org/" target="_blank">YAML</a> (YAML Ain’t Markup Language) what <a href="#jq" target="_blank"><code>jq</code></a> is to JSON. Written in Python it allows fast and efficient parsing, searching and selecting of YAML files.</p>
 <section id="example---yq" class="level4">
 <h4 class="anchored" data-anchor-id="example---yq">Example - <code>yq</code></h4>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> tldr yq</span>
@@ -581,22 +581,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="windows" class="level3">
 <h3 class="anchored" data-anchor-id="windows">Windows</h3>
-<p><strong>WARNING</strong> None of these have been tested I do not have access to a Windows system running PowerShell. They use <a href="https://scoop.sh/">Scoop</a> a command-line installer for Windows.</p>
+<p><strong>WARNING</strong> None of these have been tested I do not have access to a Windows system running PowerShell. They use <a href="https://scoop.sh/" target="_blank">Scoop</a> a command-line installer for Windows.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scoop</span> install lsd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://github.com/sharkdp/bat">bat</a></li>
-<li><a href="https://opensource.com/article/22/6/linux-cheat-command">cheat</a></li>
-<li><a href="https://github.com/muesli/duf">duf</a></li>
-<li><a href="https://the.exa.website/">exa</a></li>
-<li><a href="https://github.com/sharkdp/fd">fd</a></li>
-<li><a href="https://stedolan.github.io/jq/">jq</a></li>
-<li><a href="https://github.com/Peltoche/lsd">lsd</a></li>
-<li><a href="https://tldr.sh/">tldr</a></li>
-<li><a href="https://kislyuk.github.io/yq/">yq</a></li>
+<li><a href="https://github.com/sharkdp/bat" target="_blank">bat</a></li>
+<li><a href="https://opensource.com/article/22/6/linux-cheat-command" target="_blank">cheat</a></li>
+<li><a href="https://github.com/muesli/duf" target="_blank">duf</a></li>
+<li><a href="https://the.exa.website/" target="_blank">exa</a></li>
+<li><a href="https://github.com/sharkdp/fd" target="_blank">fd</a></li>
+<li><a href="https://stedolan.github.io/jq/" target="_blank">jq</a></li>
+<li><a href="https://github.com/Peltoche/lsd" target="_blank">lsd</a></li>
+<li><a href="https://tldr.sh/" target="_blank">tldr</a></li>
+<li><a href="https://kislyuk.github.io/yq/" target="_blank">yq</a></li>
 </ul>
 
 

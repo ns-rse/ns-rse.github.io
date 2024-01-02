@@ -283,11 +283,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>I’ve written previously on <a href="https://ns-rse.github.io/posts/python-packaging">Python Packaging</a> and in that article included details of how to <a href="https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi">automate publishing to PyPI from GitHub</a>. This article details how to automatically publish your package to <a href="https://pypi.org">PyPI</a> from <a href="https://gitlab.com">GitLab</a>.</p>
+<p>I’ve written previously on <a href="https://ns-rse.github.io/posts/python-packaging" target="_blank">Python Packaging</a> and in that article included details of how to <a href="https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi" target="_blank">automate publishing to PyPI from GitHub</a>. This article details how to automatically publish your package to <a href="https://pypi.org" target="_blank">PyPI</a> from <a href="https://gitlab.com" target="_blank">GitLab</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985552723/in/dateposted/">Packages with Legs, by Me</a></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985552723/in/dateposted/" target="_blank">Packages with Legs, by Me</a></figcaption><p></p>
 </figure>
 </div>
 <section id="repository-configuration" class="level2">
@@ -298,20 +298,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="protecting-tags" class="level3">
 <h3 class="anchored" data-anchor-id="protecting-tags">Protecting Tags</h3>
-<p>This really stumped me I could build and push automatically from the <code>master</code> branch but could not use the <code>- if  $CI_COMMIT_TAG</code> condition to publish commits that were tagged. I wrote a <a href="https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309">post on the GitLab Forums</a> asking how to do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from <a href="https://mastodon.social/@manu_faktur/111159226739296263"><span class="citation" data-cites="manu_faktur">@manu_faktur</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span></a> and one from <a href="https://mastodon.social/@diazona@techhub.social/111159429646899283"><span class="citation" data-cites="diazona">@diazona</span><span class="citation" data-cites="techhub.social">@techhub.social</span></a>) both asking if I’d protected the tags on my repository.</p>
-<p>I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a> and sure enough this was possible. Go to <em>settings &gt; Repository &gt; Protected tags</em> and set a <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags">wildcard to protect my tags</a>, e.g.&nbsp;<code>v*</code> and the <code>pypi</code> CI job defined <a href="#ci-configuration">below</a> will work as expected, building <em>and</em> uploading to PyPI on tagged commits.</p>
+<p>This really stumped me I could build and push automatically from the <code>master</code> branch but could not use the <code>- if  $CI_COMMIT_TAG</code> condition to publish commits that were tagged. I wrote a <a href="https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309" target="_blank">post on the GitLab Forums</a> asking how to do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from <a href="https://mastodon.social/@manu_faktur/111159226739296263" target="_blank"><span class="citation" data-cites="manu_faktur">@manu_faktur</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span></a> and one from <a href="https://mastodon.social/@diazona@techhub.social/111159429646899283" target="_blank"><span class="citation" data-cites="diazona">@diazona</span><span class="citation" data-cites="techhub.social">@techhub.social</span></a>) both asking if I’d protected the tags on my repository.</p>
+<p>I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html" target="_blank">Protected tags</a> and sure enough this was possible. Go to <em>settings &gt; Repository &gt; Protected tags</em> and set a <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags" target="_blank">wildcard to protect my tags</a>, e.g.&nbsp;<code>v*</code> and the <code>pypi</code> CI job defined <a href="#ci-configuration" target="_blank">below</a> will work as expected, building <em>and</em> uploading to PyPI on tagged commits.</p>
 </section>
 </section>
 <section id="ci-configuration" class="level2">
 <h2 class="anchored" data-anchor-id="ci-configuration">CI Configuration</h2>
 <section id="ci" class="level3">
 <h3 class="anchored" data-anchor-id="ci">CI</h3>
-<p>GitLabs CI/CD is configured via a <a href="https://yaml.org/">YAML</a> file <a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html"><code>.gitlab-ci.yaml</code></a> in the root of your project folder, a useful reference for writing these files is the <a href="https://docs.gitlab.com/ee/ci/yaml/index.html">.gitlab-ci.yml reference</a>.</p>
-<p>An example file from the <a href="https://gitlab.com/nshephard/tcx2gpx/">tcx2gpx</a> package is shown below (see <a href="-/blob/master/.gitlab-ci.yml?ref_type=heads">here</a>).</p>
+<p>GitLabs CI/CD is configured via a <a href="https://yaml.org/" target="_blank">YAML</a> file <a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html" target="_blank"><code>.gitlab-ci.yaml</code></a> in the root of your project folder, a useful reference for writing these files is the <a href="https://docs.gitlab.com/ee/ci/yaml/index.html" target="_blank">.gitlab-ci.yml reference</a>.</p>
+<p>An example file from the <a href="https://gitlab.com/nshephard/tcx2gpx/" target="_blank">tcx2gpx</a> package is shown below (see <a href="-/blob/master/.gitlab-ci.yml?ref_type=heads" target="_blank">here</a>).</p>
 <p>This defines the following…</p>
 <ul>
 <li><code>image</code> - the use of a Docker Python 3.11 image for running the pipeline.</li>
-<li><code>variables</code> - Configures <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> to run and automatically fix issues found on pull requests.</li>
+<li><code>variables</code> - Configures <a href="https://ns-rse.github.io/#category=pre-commit" target="_blank">pre-commit</a> to run and automatically fix issues found on pull requests.</li>
 <li><code>stages</code> - the subsequent stages to run (<strong>NB</strong> the <code>debug</code> stage which prints the environment variables is commented out).</li>
 <li><code>pylint</code> - runs linting on Python 3.10 and 3.11.</li>
 <li><code>pytest</code> - Runs tests on Python 3.10 and 3.11.</li>
@@ -378,12 +378,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> python -m build</span></span>
 <span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> twine upload --non-interactive --repository pypi dist/*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>pypi</code> stage is named and a <code>rule</code> is defined that says to only run this stage if the value of the environment variable <code>$CI_COMMIT_TAG</code> is <code>True</code>. This only happens when a commit has a (protected <span class="emoji" data-emoji="wink">😉</span>) tag.</p>
-<p>The <code>script</code> section then installs the package along with the <code>project.optional-dependencies</code> defined in the <code>pypi</code> section of the <a href="https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies"><code>pyproject.toml</code></a>.</p>
-<p>The package is then built using <a href="https://github.com/pypa/build">build</a> and <a href="https://twine.readthedocs.io/en/stable/index.html">twine</a> is used to push the to push the built package to <a href="https://pypi.org">PyPI</a>.</p>
+<p>The <code>script</code> section then installs the package along with the <code>project.optional-dependencies</code> defined in the <code>pypi</code> section of the <a href="https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies" target="_blank"><code>pyproject.toml</code></a>.</p>
+<p>The package is then built using <a href="https://github.com/pypa/build" target="_blank">build</a> and <a href="https://twine.readthedocs.io/en/stable/index.html" target="_blank">twine</a> is used to push the to push the built package to <a href="https://pypi.org" target="_blank">PyPI</a>.</p>
 </section>
 <section id="pypi-tokens" class="level3">
 <h3 class="anchored" data-anchor-id="pypi-tokens">PyPI Tokens</h3>
-<p>You should first test building and deploying to the <a href="https://test.pypi.org/">Test PyPI</a> and when this is working simply switch to using the main <a href="https://pypi.org">PyPI</a>. To do so you will need to create an account on both<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Once you have set yourself up with an account you can <a href="https://pypi.org/help/#apitoken">generate an API token to authenticate with PyPI</a>. After verifying your email got to <em>Account Settings</em> and select <em>Add API token</em>. These are generated once so copy and paste it into the <a href="https://packaging.python.org/en/latest/specifications/pypirc/#pypirc"><code>.pypirc</code></a> of your project (add this file to your <code>.gitignore</code> so it doesn’t accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI for reference.</p>
+<p>You should first test building and deploying to the <a href="https://test.pypi.org/" target="_blank">Test PyPI</a> and when this is working simply switch to using the main <a href="https://pypi.org" target="_blank">PyPI</a>. To do so you will need to create an account on both<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Once you have set yourself up with an account you can <a href="https://pypi.org/help/#apitoken" target="_blank">generate an API token to authenticate with PyPI</a>. After verifying your email got to <em>Account Settings</em> and select <em>Add API token</em>. These are generated once so copy and paste it into the <a href="https://packaging.python.org/en/latest/specifications/pypirc/#pypirc" target="_blank"><code>.pypirc</code></a> of your project (add this file to your <code>.gitignore</code> so it doesn’t accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI for reference.</p>
 <pre class="{conf}"><code>[testpypi]
 username = __token__
 password = pypi-&lt;token_value&gt;
@@ -411,7 +411,7 @@ password = pypi-&lt;token_value&gt;</code></pre>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> pip install build</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> python -m build</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> twine upload --non-interactive --repository testpypi dist/*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Once this is set create a tag for the current commit using the <em>Code &gt; Tags</em> settings from the left menu of your repository and then the <em>New tag</em> button on the top right. The tag you create should match the wild card pattern you have set for <a href="#protecting-tags">protecting tags</a> and it should comply to the Public version identifiers specified in <a href="https://peps.python.org/pep-0440/#public-version-identifiers">PEP440</a>. On creation it triggers the Pipeline, you can check progress and status by navigating to <em>CI/CD &gt; Pipelines</em> and then viewing it. The <code>pypi</code> job should complete and you should be able to navigate to your package on <a href="https://test.pypi.org">Test PyPI</a>. You can find it under your account settings.</p>
+<p>Once this is set create a tag for the current commit using the <em>Code &gt; Tags</em> settings from the left menu of your repository and then the <em>New tag</em> button on the top right. The tag you create should match the wild card pattern you have set for <a href="#protecting-tags" target="_blank">protecting tags</a> and it should comply to the Public version identifiers specified in <a href="https://peps.python.org/pep-0440/#public-version-identifiers" target="_blank">PEP440</a>. On creation it triggers the Pipeline, you can check progress and status by navigating to <em>CI/CD &gt; Pipelines</em> and then viewing it. The <code>pypi</code> job should complete and you should be able to navigate to your package on <a href="https://test.pypi.org" target="_blank">Test PyPI</a>. You can find it under your account settings.</p>
 <p>If you find there is a problem you will have to correct it and either delete the tag you created and try again or increment the version. PyPI, and in turn Test PyPI which is a mirror with the same functionality, does not permit uploading packages with a version number that already exists.</p>
 </section>
 <section id="publishing-to-pypi" class="level2">
@@ -425,7 +425,7 @@ password = pypi-&lt;token_value&gt;</code></pre>
 <p>Once you have done so you can create a new tag and the upload will be made to PyPI.</p>
 <section id="releases" class="level3">
 <h3 class="anchored" data-anchor-id="releases">Releases</h3>
-<p>An alternative way to apply tags to commits is to make a <a href="https://docs.gitlab.com/ee/user/project/releases/">Releases</a>. In creating a release you apply a tag to the current commit. In addition GitLab will build and compress snapshot of the files and you can add Release Notes detailing what has changed. GitLab will automatically build release artifacts of your repository and make them available for download directly from GitLab.</p>
+<p>An alternative way to apply tags to commits is to make a <a href="https://docs.gitlab.com/ee/user/project/releases/" target="_blank">Releases</a>. In creating a release you apply a tag to the current commit. In addition GitLab will build and compress snapshot of the files and you can add Release Notes detailing what has changed. GitLab will automatically build release artifacts of your repository and make them available for download directly from GitLab.</p>
 </section>
 </section>
 <section id="links" class="level2">
@@ -433,18 +433,18 @@ password = pypi-&lt;token_value&gt;</code></pre>
 <section id="python-packaging" class="level3">
 <h3 class="anchored" data-anchor-id="python-packaging">Python Packaging</h3>
 <ul>
-<li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html">PyPA : Building and Distributing Packages with Setuptools</a></li>
-<li><a href="https://packaging.python.org/en/latest/specifications/">PyPA : Specifications</a></li>
-<li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">Packaging Python Projects</a></li>
-<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
+<li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html" target="_blank">PyPA : Building and Distributing Packages with Setuptools</a></li>
+<li><a href="https://packaging.python.org/en/latest/specifications/" target="_blank">PyPA : Specifications</a></li>
+<li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/" target="_blank">Packaging Python Projects</a></li>
+<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html" target="_blank">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
 </ul>
 </section>
 <section id="gitlab-documentation" class="level3">
 <h3 class="anchored" data-anchor-id="gitlab-documentation">GitLab Documentation</h3>
 <ul>
-<li><a href="https://docs.gitlab.com/ee/topics/build_your_application.html">Use CI/CD to build your application | GitLab</a></li>
-<li><a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html">The <code>.gitlab-ci.yml</code> file | GitLab</a> +</li>
-<li><a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a></li>
+<li><a href="https://docs.gitlab.com/ee/topics/build_your_application.html" target="_blank">Use CI/CD to build your application | GitLab</a></li>
+<li><a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html" target="_blank">The <code>.gitlab-ci.yml</code> file | GitLab</a> +</li>
+<li><a href="https://docs.gitlab.com/ee/user/project/protected_tags.html" target="_blank">Protected tags</a></li>
 </ul>
 
 
@@ -463,7 +463,7 @@ No matching items
 </div><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>PyPI now enforces Two Factor Authentication (2FA) for new accounts, see <a href="https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/">2FA Enforcement for New User Registrations</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>PyPI now enforces Two Factor Authentication (2FA) for new accounts, see <a href="https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/" target="_blank">2FA Enforcement for New User Registrations</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

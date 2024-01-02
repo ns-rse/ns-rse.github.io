@@ -308,27 +308,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>This post is aimed at getting you up and running with the R <a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html">precommit</a> Package. This shouldn’t be confused with the Python <a href="https://ns-rse.github.io/pre-commit">pre-commit</a> Package although as you might suspect they are closely related.</p>
+<p>This post is aimed at getting you up and running with the R <a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html" target="_blank">precommit</a> Package. This shouldn’t be confused with the Python <a href="https://ns-rse.github.io/pre-commit" target="_blank">pre-commit</a> Package although as you might suspect they are closely related.</p>
 <p>The R package (<code>precommit</code>) consists of a number of R specific hooks that are run by <code>pre-commit</code> before commits are made and check various aspects of your code for compliance with certain style and coding standards (mostly aspects of R packages and I’ll be posting more on R packaging in due course).</p>
 <p>A major part of this post is about getting things setup on Windows, I’ve only given a light overview of some of the hooks and common problems encountered as I’ve gone about using and learning R packaging because not everyone uses Windows.</p>
-<p>Most of the work on the R package is by <a href="https://github.com/lorenzwalthert/">Lorenz Walthert</a>, if you find it useful consider sponsoring his work, these things take a lot of time and effort and whilst they can be used for free are worth supporting.</p>
+<p>Most of the work on the R package is by <a href="https://github.com/lorenzwalthert/" target="_blank">Lorenz Walthert</a>, if you find it useful consider sponsoring his work, these things take a lot of time and effort and whilst they can be used for free are worth supporting.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://live.staticflickr.com/65535/52985095726_49c5b394f1_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985095726/">Erwin Wurm sculpture at Yorkshire Sculpture Park</a> by me</figcaption><p></p>
+<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985095726/" target="_blank">Erwin Wurm sculpture at Yorkshire Sculpture Park</a> by me</figcaption><p></p>
 </figure>
 </div>
 <section id="pre-commit" class="level2">
 <h2 class="anchored" data-anchor-id="pre-commit">pre-commit</h2>
-<p>I love using <a href="https://pre-commit.com">pre-commit</a> in my development pipelines and have <a href="https://ns-rse.github.io/#category=pre-commit">blogged about it</a> a few times already. It saves so much hassle (once you are used to it) not just for yourself but also your collaborators who are reviewing your Pull Requests. The <a href="https://github.com/lorenzwalthert/precommit">R precommit package</a> comes with a set of hooks that can be enabled and configured individually. I’ve recently and reason to start making and R package and as I’ve not used R much for a few years and this was my first time attempting to develop a package, I decided to use the hooks to impose the various style standards and checks that are expected.</p>
-<p>I opted to enable <em>all</em> of the hooks. I’ve not covered them all here in detail (yet) but describe some of them below and show how to use some additional hooks from the <a href="https://usethis.r-lib.org">usethis</a> package too.</p>
+<p>I love using <a href="https://pre-commit.com" target="_blank">pre-commit</a> in my development pipelines and have <a href="https://ns-rse.github.io/#category=pre-commit" target="_blank">blogged about it</a> a few times already. It saves so much hassle (once you are used to it) not just for yourself but also your collaborators who are reviewing your Pull Requests. The <a href="https://github.com/lorenzwalthert/precommit" target="_blank">R precommit package</a> comes with a set of hooks that can be enabled and configured individually. I’ve recently and reason to start making and R package and as I’ve not used R much for a few years and this was my first time attempting to develop a package, I decided to use the hooks to impose the various style standards and checks that are expected.</p>
+<p>I opted to enable <em>all</em> of the hooks. I’ve not covered them all here in detail (yet) but describe some of them below and show how to use some additional hooks from the <a href="https://usethis.r-lib.org" target="_blank">usethis</a> package too.</p>
 <section id="codemetar" class="level3">
 <h3 class="anchored" data-anchor-id="codemetar">codemetar</h3>
-<p>There is a hook for checking the <a href="https://codemeta.github.io/">Codemeta</a>, which is in JSON-LD format is created correctly. The R package <a href="https://cran.r-project.org/web//packages//codemetar/vignettes/codemetar.html">codemetar</a> facilitates creating this and pulls metadata from the <code>DESCRIPTION</code>, <code>README.Rmd</code> and other aspects of your package to format them in JSON Codemeta. It comes with a handy function to write the file for you, so after installing you can just run <code>codemetar::write_codemeta()</code> which will create the <code>codemeta.json</code> for you. Remember to run this each and every time you update and of the files from which the metadata is created (although keep an eye on <a href="https://github.com/lorenzwalthert/precommit/issues/491">#491</a> which suggests updating automatically)</p>
+<p>There is a hook for checking the <a href="https://codemeta.github.io/" target="_blank">Codemeta</a>, which is in JSON-LD format is created correctly. The R package <a href="https://cran.r-project.org/web//packages//codemetar/vignettes/codemetar.html" target="_blank">codemetar</a> facilitates creating this and pulls metadata from the <code>DESCRIPTION</code>, <code>README.Rmd</code> and other aspects of your package to format them in JSON Codemeta. It comes with a handy function to write the file for you, so after installing you can just run <code>codemetar::write_codemeta()</code> which will create the <code>codemeta.json</code> for you. Remember to run this each and every time you update and of the files from which the metadata is created (although keep an eye on <a href="https://github.com/lorenzwalthert/precommit/issues/491" target="_blank">#491</a> which suggests updating automatically)</p>
 </section>
 <section id="roxygenize" class="level3">
 <h3 class="anchored" data-anchor-id="roxygenize">roxygenize</h3>
-<p><a href="https://roxygen2.r-lib.org/">Roxygen2</a> is a package for making the documentation to go with your package, it does this by parsing the documentation strings (“docstrings” for short) that you adorn your functions with that describe the arguments and show example usages. This hook requires additional configuration in <code>.pre-commit-config.yaml</code> as you have to install your package dependencies. Fortunately there is a helper function in the <code>precommit</code> package so you can just run <code>precommit::snippet_generate("additional-deps-roxygenize")</code> and it will output the YAML that you need to add to your <code>.pre-commit-config.yaml</code>. It might look something like the following.</p>
+<p><a href="https://roxygen2.r-lib.org/" target="_blank">Roxygen2</a> is a package for making the documentation to go with your package, it does this by parsing the documentation strings (“docstrings” for short) that you adorn your functions with that describe the arguments and show example usages. This hook requires additional configuration in <code>.pre-commit-config.yaml</code> as you have to install your package dependencies. Fortunately there is a helper function in the <code>precommit</code> package so you can just run <code>precommit::snippet_generate("additional-deps-roxygenize")</code> and it will output the YAML that you need to add to your <code>.pre-commit-config.yaml</code>. It might look something like the following.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> no-debug-statement</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> roxygenize</span></span>
@@ -343,11 +343,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="style-files" class="level3">
 <h3 class="anchored" data-anchor-id="style-files">style-files</h3>
-<p>The <code>style-files</code> hook runs the <a href="https://styler.r-lib.org/">styler</a> package against your code to ensure it follows the <a href="https://style.tidyverse.org/">tidyverse style guide</a> by default, although it can be configured to use a custom style guide of your own creation.</p>
+<p>The <code>style-files</code> hook runs the <a href="https://styler.r-lib.org/" target="_blank">styler</a> package against your code to ensure it follows the <a href="https://style.tidyverse.org/" target="_blank">tidyverse style guide</a> by default, although it can be configured to use a custom style guide of your own creation.</p>
 </section>
 <section id="lintr" class="level3">
 <h3 class="anchored" data-anchor-id="lintr">lintr</h3>
-<p>The <a href="https://lintr.r-lib.org/">lintr</a> package lints your code automatically. It can be configured by adding a <code>.lintr</code> configuration file to your repository, a simple example is shown below. Note the indented closing parenthesis is important you get a complaint about that and any other formatting issues.</p>
+<p>The <a href="https://lintr.r-lib.org/" target="_blank">lintr</a> package lints your code automatically. It can be configured by adding a <code>.lintr</code> configuration file to your repository, a simple example is shown below. Note the indented closing parenthesis is important you get a complaint about that and any other formatting issues.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>linters<span class="sc">:</span> <span class="fu">linters_with_defaults</span>(</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">line_length_linter</span>(<span class="dv">120</span>),</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">object_name_linter =</span> <span class="cn">NULL</span>,</span>
@@ -365,10 +365,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="usethis-package" class="level2">
 <h2 class="anchored" data-anchor-id="usethis-package">usethis package</h2>
-<p>The <a href="https://usethis.r-lib.org">usethis</a> package is a compliment to the <a href="https://devtools.r-lib.org">devtools</a> package that has a lot of very useful helper functions. Some of these enable additional <code>pre-commit</code> hooks whilst others enable GitHub actions, which are part of Continuous Integration piplelines and I would highly recommend enabling them.</p>
+<p>The <a href="https://usethis.r-lib.org" target="_blank">usethis</a> package is a compliment to the <a href="https://devtools.r-lib.org" target="_blank">devtools</a> package that has a lot of very useful helper functions. Some of these enable additional <code>pre-commit</code> hooks whilst others enable GitHub actions, which are part of Continuous Integration piplelines and I would highly recommend enabling them.</p>
 <section id="readme.rmd" class="level3">
 <h3 class="anchored" data-anchor-id="readme.rmd"><code>README.Rmd</code></h3>
-<p>The <a href="https://usethis.r-lib.org/reference/use_readme_rmd.html"><code>user_readme_rmd()</code></a> function automatically generates a <code>README.Rmd</code> template and will also create a <code>pre-commit</code> hook that keeps it synchronised with <code>README.md</code> whenever you update it. This is useful because the later, plain-markdown, file is automatically rendered by GitHub/GitLab/Codeberg as your repositories front-page.</p>
+<p>The <a href="https://usethis.r-lib.org/reference/use_readme_rmd.html" target="_blank"><code>user_readme_rmd()</code></a> function automatically generates a <code>README.Rmd</code> template and will also create a <code>pre-commit</code> hook that keeps it synchronised with <code>README.md</code> whenever you update it. This is useful because the later, plain-markdown, file is automatically rendered by GitHub/GitLab/Codeberg as your repositories front-page.</p>
 </section>
 <section id="use_github_action" class="level3">
 <h3 class="anchored" data-anchor-id="use_github_action"><code>use_github_action()</code></h3>
@@ -394,12 +394,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="badges" class="level3">
 <h3 class="anchored" data-anchor-id="badges">Badges</h3>
-<p>Most of the GitHub Action functions described above include output that can be copy and pasted into <code>README.Rmd</code> to include badges in your GitHub front page. Again the <a href="https://usethis.r-lib.org/reference/badges.html">usethis</a> has you covered and can generate the necessary code for the different badges it supports.</p>
+<p>Most of the GitHub Action functions described above include output that can be copy and pasted into <code>README.Rmd</code> to include badges in your GitHub front page. Again the <a href="https://usethis.r-lib.org/reference/badges.html" target="_blank">usethis</a> has you covered and can generate the necessary code for the different badges it supports.</p>
 </section>
 </section>
 <section id="gotchas" class="level2">
 <h2 class="anchored" data-anchor-id="gotchas">Gotchas</h2>
-<p>When starting out I found that I regularly didn’t pass the <code>pre-commit</code> hooks first time. This can be jarring and confusing to start with but its not something to worry about, they are there to ensure your code and package meet the standards required. If you ever come to submit to <a href="https://cran.r-project.org">CRAN</a> you will be grateful to have adhered to these standards.</p>
+<p>When starting out I found that I regularly didn’t pass the <code>pre-commit</code> hooks first time. This can be jarring and confusing to start with but its not something to worry about, they are there to ensure your code and package meet the standards required. If you ever come to submit to <a href="https://cran.r-project.org" target="_blank">CRAN</a> you will be grateful to have adhered to these standards.</p>
 <p>Below I detail common “gotchas” I encountered when developing the package, what they mean and how to resolve them.</p>
 <section id="the-following-spelling-errors-were-found" class="level3">
 <h3 class="anchored" data-anchor-id="the-following-spelling-errors-were-found"><code>The following spelling errors were found:</code></h3>
@@ -448,21 +448,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="windows" class="level2">
 <h2 class="anchored" data-anchor-id="windows">Windows</h2>
 <p>I haven’t used Windows for about 23 years but I often have colleagues who do and that was the case with the R package that I have started developing so I needed to get all members of the team up and running with the <code>precommit</code> R package/pipeline.</p>
-<p>Windows doesn’t come with Python by default, but <a href="https://pre-commit.com">pre-commit</a> is written in Python and so an environment is required in order to run the above pre-commit hooks. There are many options for this, including using <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a>. I opted to try the solution provided in the <a href="https://cran.r-project.org/web/packages/precommit/vignettes/precommit.html">precommit vignette</a>. This shows how to use the <a href="https://rstudio.github.io/reticulate/">reticulate</a> package which acts as a glue between <a href="https://r-project.org">R</a> and <a href="https://python.org">Python</a>, to handle installing a <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> environment and setting up <code>precommit</code>/<code>pre-commit</code>.</p>
-<p>The following runs you through the things you need to install (R, RStudio, GitBash), setting up GitHub with <a href="https://ns-rse.github.io/#category=ssh">SSH</a> keys and enabling <code>precommit</code> for your R package locally.</p>
+<p>Windows doesn’t come with Python by default, but <a href="https://pre-commit.com" target="_blank">pre-commit</a> is written in Python and so an environment is required in order to run the above pre-commit hooks. There are many options for this, including using <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank">Windows Subsystem for Linux (WSL)</a>. I opted to try the solution provided in the <a href="https://cran.r-project.org/web/packages/precommit/vignettes/precommit.html" target="_blank">precommit vignette</a>. This shows how to use the <a href="https://rstudio.github.io/reticulate/" target="_blank">reticulate</a> package which acts as a glue between <a href="https://r-project.org" target="_blank">R</a> and <a href="https://python.org" target="_blank">Python</a>, to handle installing a <a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank">Miniconda</a> environment and setting up <code>precommit</code>/<code>pre-commit</code>.</p>
+<p>The following runs you through the things you need to install (R, RStudio, GitBash), setting up GitHub with <a href="https://ns-rse.github.io/#category=ssh" target="_blank">SSH</a> keys and enabling <code>precommit</code> for your R package locally.</p>
 <section id="install-r" class="level3">
-<h3 class="anchored" data-anchor-id="install-r">Install <a href="https://www.r-project.org">R</a></h3>
+<h3 class="anchored" data-anchor-id="install-r">Install <a href="https://www.r-project.org" target="_blank">R</a></h3>
 <p>When installing the defaults are fine, request admin permissions if required.</p>
 </section>
 <section id="install-rstudio" class="level3">
-<h3 class="anchored" data-anchor-id="install-rstudio">Install <a href="https://posit.co/downloads/">Rstudio</a></h3>
+<h3 class="anchored" data-anchor-id="install-rstudio">Install <a href="https://posit.co/downloads/" target="_blank">Rstudio</a></h3>
 <p>Defaults are fine, request admin permissions if required.</p>
 </section>
 <section id="install-gitbash" class="level3">
-<h3 class="anchored" data-anchor-id="install-gitbash">Install <a href="https://git-scm.com/download/win">GitBash</a></h3>
+<h3 class="anchored" data-anchor-id="install-gitbash">Install <a href="https://git-scm.com/download/win" target="_blank">GitBash</a></h3>
 <p>During installation you’ll be asked a number of questions, if you’re unsure how to respond to any of them the following provides guidance.</p>
 <ol type="1">
-<li><strong>Text Editor</strong> - Configure with your choice of editor, obviously you’ll want to have <a href="https://www.gnu.org/software/emacs/">Emacs</a> available and select that! <span class="emoji" data-emoji="wink">😉</span></li>
+<li><strong>Text Editor</strong> - Configure with your choice of editor, obviously you’ll want to have <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> available and select that! <span class="emoji" data-emoji="wink">😉</span></li>
 <li><strong>Adjust your PATH environment</strong> - At the bare minimum go with the <code>Recommended</code> option and allow <em>Git from the command line and also from 3rd-party software</em>. Optionally I would recommend the third option of <em>Use Git and optional UNIX tools from the Command Prompt</em>, particularly if you are either a) familiar with UNIX commands or b) not at all familiar with them (as you won’t have to re-learn the Windows commands, just learn the Bash commands they are more widely applicable).</li>
 <li><strong>Use Bundled SSH library</strong> - Use the bundled SSH library.</li>
 <li><strong>Use Bundled OpenSSL library</strong> - Use the bundled OpenSSL library.</li>
@@ -484,9 +484,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="configure-rstudiogithub-with-ssh-keys">Configure RStudio/GitHub with SSH keys</h3>
 <ol type="1">
 <li>Start RStudio</li>
-<li>Create SSH key - Navigate to <em>Tools &gt; General Options &gt; Git/SVN &gt; Create SSH Key</em> and under <em>SSH key type</em> select the default (<em>ED25519</em>) this is a <a href="https://blog.g3rt.nl/upgrade-your-ssh-keys.html">very secure elliptic curve algorithm</a> and is supported by GitHub. Use a secure password (i.e.&nbsp;long), do <strong>not</strong> change the location it is created at.</li>
+<li>Create SSH key - Navigate to <em>Tools &gt; General Options &gt; Git/SVN &gt; Create SSH Key</em> and under <em>SSH key type</em> select the default (<em>ED25519</em>) this is a <a href="https://blog.g3rt.nl/upgrade-your-ssh-keys.html" target="_blank">very secure elliptic curve algorithm</a> and is supported by GitHub. Use a secure password (i.e.&nbsp;long), do <strong>not</strong> change the location it is created at.</li>
 <li>Once created select <em>View public key</em> and use <em>Ctrl + c</em> to copy this to your clipboard.</li>
-<li>Navigate to <a href="https://github.com/">GitHub</a> and login then click on your avatar in the top right and select <em>Settings &gt; SSH and GPG keys &gt; New SSH Key</em>.</li>
+<li>Navigate to <a href="https://github.com/" target="_blank">GitHub</a> and login then click on your avatar in the top right and select <em>Settings &gt; SSH and GPG keys &gt; New SSH Key</em>.</li>
 <li>Give the key a name and paste into the box below where indicated/instructed then click on <em>Add SSH key</em>.</li>
 </ol>
 </section>
@@ -494,7 +494,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="clone-repository">Clone Repository</h3>
 <p>Its likely that you will have an existing repository that you wish to work on with this pipeline, if so you will have to clone it locally so you can work on it with the <code>precommit</code> pipeline. The following assumes you have added your SSH key to your GitHub account as described above.</p>
 <ol type="1">
-<li>Navigate to the repository you wish to clone (e.g.&nbsp;<a href="https://github.com/CUREd-Plus/cuRed/">https://github.com/CUREd-Plus/cuRed/</a>) and click on the <em>Code</em> button then select <em>SSH</em> under the <em>Local</em> tab in the box that appears.</li>
+<li>Navigate to the repository you wish to clone (e.g.&nbsp;<a href="https://github.com/CUREd-Plus/cuRed/" target="_blank">https://github.com/CUREd-Plus/cuRed/</a>) and click on the <em>Code</em> button then select <em>SSH</em> under the <em>Local</em> tab in the box that appears.</li>
 <li>Click on the box that has two small squares to the right of some text to copy the URL to clipboard.</li>
 <li>Return to RStudio and start a new project with <em>File &gt; New Project &gt; Version Control &gt; Git</em> and paste the URL into the <em>Repository URL</em>. Select a location to clone to under <em>Create project as subdirectory of:</em>, e.g.&nbsp;<code>c:/Users/&lt;username&gt;/work/cuRed</code> (replacing <code>&lt;username&gt;</code> with <em>your</em> username).</li>
 <li>If prompted for password enter it. If asked to answer <em>Yes\/No</em> answer <em>Yes</em> and then if prompted to <em>Store password for this session</em> answer <em>Yes</em>.</li>
@@ -503,7 +503,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="install-pre-commit" class="level3">
 <h3 class="anchored" data-anchor-id="install-pre-commit">Install <code>pre-commit</code></h3>
-<p>As mentioned above <code>pre-commit</code> refers to two things, primarily it is the Python package <a href="https://pre-commit.com"><code>pre-commit</code></a> that does all the work of running Linting, Tests etc. before making commits. It also refers to an R package <a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html">precommit</a> (note the omission of the hyphen <code>-</code>) that works with the Python package to enable use of various R packages that carry out such checks. Because it is a Python package it needs a Python Virtual Environment to run. This may sound unfamiliar but don’t worry the R <code>precommit</code> package and documentation guides you through doing so, what follows is a rehash of the <a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html">official documentation</a>.</p>
+<p>As mentioned above <code>pre-commit</code> refers to two things, primarily it is the Python package <a href="https://pre-commit.com" target="_blank"><code>pre-commit</code></a> that does all the work of running Linting, Tests etc. before making commits. It also refers to an R package <a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html" target="_blank">precommit</a> (note the omission of the hyphen <code>-</code>) that works with the Python package to enable use of various R packages that carry out such checks. Because it is a Python package it needs a Python Virtual Environment to run. This may sound unfamiliar but don’t worry the R <code>precommit</code> package and documentation guides you through doing so, what follows is a rehash of the <a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html" target="_blank">official documentation</a>.</p>
 <section id="install-precommit-and-reticulate" class="level4">
 <h4 class="anchored" data-anchor-id="install-precommit-and-reticulate">Install <code>precommit</code> and <code>reticulate</code></h4>
 <p>From RStudio install the <code>remotes</code> and <code>reticulate</code> package, then install the most recent version of <code>precommit</code> directly from GitHub.</p>
@@ -512,13 +512,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="install-miniconda-environment" class="level4">
 <h4 class="anchored" data-anchor-id="install-miniconda-environment">Install Miniconda environment</h4>
-<p>You can now use <code>reticulate</code> to install a <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> virtual environment framework for R to run Python packages (i.e.&nbsp;<code>pre-commit</code>).</p>
+<p>You can now use <code>reticulate</code> to install a <a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank">Miniconda</a> virtual environment framework for R to run Python packages (i.e.&nbsp;<code>pre-commit</code>).</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">timeout=</span><span class="dv">600</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">install_miniconda</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="install-pre-commit-framework" class="level4">
 <h4 class="anchored" data-anchor-id="install-pre-commit-framework">Install <code>pre-commit</code> framework</h4>
-<p>This step now installs the Python package <a href="https://pre-commit.com"><code>pre-commit</code></a> within a new Miniconda virtual environment (by default <code>r-precommit</code>). There will be a fair bit of output here as all the dependencies in Python for <code>pre-commit</code> are downloaded.</p>
+<p>This step now installs the Python package <a href="https://pre-commit.com" target="_blank"><code>pre-commit</code></a> within a new Miniconda virtual environment (by default <code>r-precommit</code>). There will be a fair bit of output here as all the dependencies in Python for <code>pre-commit</code> are downloaded.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>precommit<span class="sc">::</span><span class="fu">install_precommit</span>()</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>precommit<span class="sc">::</span><span class="fu">autoupdate</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -533,31 +533,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://r-pkgs.org/">R Packages book by Hadley Wickham and Jenny Bryan</a></li>
-<li><a href="https://happygitwithr.com">Happy Git and GitHub for the userR by Jenny Bryan</a></li>
+<li><a href="https://r-pkgs.org/" target="_blank">R Packages book by Hadley Wickham and Jenny Bryan</a></li>
+<li><a href="https://happygitwithr.com" target="_blank">Happy Git and GitHub for the userR by Jenny Bryan</a></li>
 </ul>
 <section id="r-packages" class="level3">
 <h3 class="anchored" data-anchor-id="r-packages">R Packages</h3>
 <ul>
-<li><a href="https://devtools.r-lib.org/">devtools</a></li>
-<li><a href="https://usethis.r-lib.org">usethis</a></li>
-<li><a href="https://roxygen2.r-lib.org/">roxygen2</a></li>
-<li><a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html">R precommit</a></li>
-<li>(<a href="https://github.com/lorenzwalthert/precommit">GitHub | lorenzwalthert/precommit</a> check the <a href="https://github.com/lorenzwalthert/precommit/issues">Issues</a>, can be useful for troubleshooting.</li>
+<li><a href="https://devtools.r-lib.org/" target="_blank">devtools</a></li>
+<li><a href="https://usethis.r-lib.org" target="_blank">usethis</a></li>
+<li><a href="https://roxygen2.r-lib.org/" target="_blank">roxygen2</a></li>
+<li><a href="https://cran.r-project.org/web//packages/precommit/vignettes/precommit.html" target="_blank">R precommit</a></li>
+<li>(<a href="https://github.com/lorenzwalthert/precommit" target="_blank">GitHub | lorenzwalthert/precommit</a> check the <a href="https://github.com/lorenzwalthert/precommit/issues" target="_blank">Issues</a>, can be useful for troubleshooting.</li>
 </ul>
 </section>
 <section id="python" class="level3">
 <h3 class="anchored" data-anchor-id="python">Python</h3>
 <ul>
-<li><a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a></li>
+<li><a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank">Miniconda</a></li>
 </ul>
 </section>
 <section id="pre-commit-1" class="level3">
 <h3 class="anchored" data-anchor-id="pre-commit-1">Pre-commit</h3>
 <ul>
-<li><a href="https://pre-commit.com">pre-commit</a></li>
-<li><a href="https://pre-commit.ci">pre-commit.ci</a></li>
-<li><a href="https://ns-rse.github.io/#category=pre-commit">ns-rse | pre-commit</a> blog posts I’ve made about <code>pre-commit</code>.</li>
+<li><a href="https://pre-commit.com" target="_blank">pre-commit</a></li>
+<li><a href="https://pre-commit.ci" target="_blank">pre-commit.ci</a></li>
+<li><a href="https://ns-rse.github.io/#category=pre-commit" target="_blank">ns-rse | pre-commit</a> blog posts I’ve made about <code>pre-commit</code>.</li>
 </ul>
 
 

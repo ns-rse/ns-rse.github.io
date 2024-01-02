@@ -255,7 +255,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p><strong>NB</strong> This article originally appeared on <a href="https://rse.shef.ac.uk/blog/">RSE University of Sheffield</a> but is updated here.</p>
+<p><strong>NB</strong> This article originally appeared on <a href="https://rse.shef.ac.uk/blog/" target="_blank">RSE University of Sheffield</a> but is updated here.</p>
 <p>If you’ve been dabbling in programming for a while you may have heard of “linting your code” which is a process of static code analysis to remove the “fluff” from your code. Just as physically linting your clothes removes unwanted fluff, linting your code removes “fluff” and can help…</p>
 <ul>
 <li>Reduce bugs.</li>
@@ -264,25 +264,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Improve coding skills.</li>
 <li>Consistent coding style.</li>
 </ul>
-<p>This helps reduce the <a href="https://en.wikipedia.org/wiki/Technical_debt">technical debt</a> which impacts the amount of time required for maintenance and further development of a code base. The main focus of this article is the use of linting to ensure consistent coding style, it focuses on Python under Linux but similar tools are available for other operating systems and languages.</p>
+<p>This helps reduce the <a href="https://en.wikipedia.org/wiki/Technical_debt" target="_blank">technical debt</a> which impacts the amount of time required for maintenance and further development of a code base. The main focus of this article is the use of linting to ensure consistent coding style, it focuses on Python under Linux but similar tools are available for other operating systems and languages.</p>
 <!--more-->
 <section id="style-matters" class="level2">
 <h2 class="anchored" data-anchor-id="style-matters">Style Matters</h2>
 <p>What has style got to do with writing code? Trends come and go in fashion but coding styles are meant to be relatively static and not change with the season, although they can and do evolve over time. This is because using a consistent and widely used style when writing code makes it easier for other people, often your future self, to read and understand the code you have written. If code is easier to understand then its easier to modify, update, extend, improve and in general maintain.</p>
-<p>A useful insight from <a href="https://en.wikipedia.org/wiki/Guido_van_Rossum">Gudio van Rossum</a>, the creator of <a href="https://www.python.org">Python</a> is that “<a href="https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds"><em>code is read much more often than it is written</em></a>” and so it should be easy to understand and not obfuscate its intent. Python is quite good for this as it is an expressive language which encourages coders to be explicit when naming variables, functions, classes and so forth so that their purpose and intention is clear, although the same is true of most modern languages. However, going a step further and using consistent styles to format and layout code helps enhance this.</p>
+<p>A useful insight from <a href="https://en.wikipedia.org/wiki/Guido_van_Rossum" target="_blank">Gudio van Rossum</a>, the creator of <a href="https://www.python.org" target="_blank">Python</a> is that “<a href="https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds" target="_blank"><em>code is read much more often than it is written</em></a>” and so it should be easy to understand and not obfuscate its intent. Python is quite good for this as it is an expressive language which encourages coders to be explicit when naming variables, functions, classes and so forth so that their purpose and intention is clear, although the same is true of most modern languages. However, going a step further and using consistent styles to format and layout code helps enhance this.</p>
 </section>
 <section id="linting-in-python" class="level2">
 <h2 class="anchored" data-anchor-id="linting-in-python">Linting in Python</h2>
-<p>The most widely used Python style is defined in the long established <a href="https://pep8.org/">PEP 8: The Style Guide for Python Code</a>. There are a number of tools available that will lint your Python code for you and most integrate with your IDE, whether that is <a href="https://code.visualstudio.com/">Visual Studio Code</a>, <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> or <a href="https://www.gnu.org/software/emacs/">Emacs</a>. Some of the formatting and linting tools available for Python are…</p>
+<p>The most widely used Python style is defined in the long established <a href="https://pep8.org/" target="_blank">PEP 8: The Style Guide for Python Code</a>. There are a number of tools available that will lint your Python code for you and most integrate with your IDE, whether that is <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a>, <a href="https://www.jetbrains.com/pycharm/" target="_blank">PyCharm</a> or <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a>. Some of the formatting and linting tools available for Python are…</p>
 <ul>
-<li><p><a href="https://pylint.pycqa.org/en/latest/index.html">Pylint</a> - checks for errors in Python code, tries to enforce a coding standard and looks for code smells.</p></li>
-<li><p><a href="https://pypi.org/project/yapf/">YAPF</a> - takes the code and reformats it to the best formatting that conforms to the style guide.</p></li>
-<li><p><a href="https://github.com/psf/black">Black</a> - The Uncompromising Code Formatter</p></li>
-<li><p><a href="https://flake8.pycqa.org/en/latest/">Flake8</a> - Your Tool For Style Guide Enforcement</p></li>
-<li><p><a href="https://prospector.landscape.io/en/master/index.html">Prospector</a> - Python Static Analysis</p></li>
-<li><p><a href="http://mypy-lang.org/">mypy</a> - Optional Static Typing for Python</p></li>
+<li><p><a href="https://pylint.pycqa.org/en/latest/index.html" target="_blank">Pylint</a> - checks for errors in Python code, tries to enforce a coding standard and looks for code smells.</p></li>
+<li><p><a href="https://pypi.org/project/yapf/" target="_blank">YAPF</a> - takes the code and reformats it to the best formatting that conforms to the style guide.</p></li>
+<li><p><a href="https://github.com/psf/black" target="_blank">Black</a> - The Uncompromising Code Formatter</p></li>
+<li><p><a href="https://flake8.pycqa.org/en/latest/" target="_blank">Flake8</a> - Your Tool For Style Guide Enforcement</p></li>
+<li><p><a href="https://prospector.landscape.io/en/master/index.html" target="_blank">Prospector</a> - Python Static Analysis</p></li>
+<li><p><a href="http://mypy-lang.org/" target="_blank">mypy</a> - Optional Static Typing for Python</p></li>
 </ul>
-<p>Here we will work through linting and formatting the simple file below (available as a download <a href="../../www/python/save_random_numbers.py">here</a>) using PyLint and Black.</p>
+<p>Here we will work through linting and formatting the simple file below (available as a download <a href="../../www/python/save_random_numbers.py" target="_blank">here</a>) using PyLint and Black.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
@@ -310,8 +310,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        writer.writerows(random_numbers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="linting-with-pylint" class="level3">
 <h3 class="anchored" data-anchor-id="linting-with-pylint">Linting with PyLint</h3>
-<p>We will lint this file using <a href="https://pylint.pycqa.org/en/latest/index.html">Pylint</a> to find out what errors there are and how its style can be improved to conform with PEP8 guidelines.</p>
-<p>First you need to install <code>pylint</code>, typically in your <a href="https://realpython.com/python-virtual-environments-a-primer/">virtual environment</a>.</p>
+<p>We will lint this file using <a href="https://pylint.pycqa.org/en/latest/index.html" target="_blank">Pylint</a> to find out what errors there are and how its style can be improved to conform with PEP8 guidelines.</p>
+<p>First you need to install <code>pylint</code>, typically in your <a href="https://realpython.com/python-virtual-environments-a-primer/" target="_blank">virtual environment</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install pylint</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Pylint can be configured using a <code>~/.pylintrc</code> file in your home directory and over time this will grow as you customise your configuration but for now we will make one simple change from the default which is to increase the accepted line length. Create the file and save it with the following content.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[FORMAT]</span></span>
@@ -349,7 +349,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="undefined-variable-union-undefined-variable" class="level4">
 <h4 class="anchored" data-anchor-id="undefined-variable-union-undefined-variable"><code>Undefined variable 'Union' (undefined-variable)</code></h4>
-<p>This error arises because the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/">type hint</a> uses <code>Union</code> but it hasn’t been imported. It’s from the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/">typing</a> module so we can import it.</p>
+<p>This error arises because the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/" target="_blank">type hint</a> uses <code>Union</code> but it hasn’t been imported. It’s from the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/" target="_blank">typing</a> module so we can import it.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Module for saving randomly generated numbers."""</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -404,7 +404,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">------------------------------------------------------------------</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Your</span> code has been rated at 5.00/10 <span class="er">(</span><span class="ex">previous</span> run: 4.00/10, +1.00<span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>That is an improvement in score (of <code>+1.00</code>) but we now have another error telling us that <code>E1136: Value 'Union' is unsubscriptable (unsubscriptable-object)</code>. You are unlikely to know what all the error codes mean, but there are a few handy on-line lists <a href="http://pylint-messages.wikidot.com/all-codes">all PyLint codes</a> or <a href="http://pylint-messages.wikidot.com/all-messages">all PyLint messages</a> and what they are telling you are worth consulting (<a href="https://docs.quantifiedcode.com/python-anti-patterns/index.html">The Little Book of Python Anti-Patterns</a> is also useful). In this instance PyLint has returned a false-positive because <code>Union</code> can and should be subscripted here because it means the argument can be either a string (<code>str</code>) or a <a href="https://docs.python.org/3/library/pathlib.html">pathlib</a> Path (<code>Path</code>). So how do we get around this complaint?</p>
+<p>That is an improvement in score (of <code>+1.00</code>) but we now have another error telling us that <code>E1136: Value 'Union' is unsubscriptable (unsubscriptable-object)</code>. You are unlikely to know what all the error codes mean, but there are a few handy on-line lists <a href="http://pylint-messages.wikidot.com/all-codes" target="_blank">all PyLint codes</a> or <a href="http://pylint-messages.wikidot.com/all-messages" target="_blank">all PyLint messages</a> and what they are telling you are worth consulting (<a href="https://docs.quantifiedcode.com/python-anti-patterns/index.html" target="_blank">The Little Book of Python Anti-Patterns</a> is also useful). In this instance PyLint has returned a false-positive because <code>Union</code> can and should be subscripted here because it means the argument can be either a string (<code>str</code>) or a <a href="https://docs.python.org/3/library/pathlib.html" target="_blank">pathlib</a> Path (<code>Path</code>). So how do we get around this complaint?</p>
 <p>You can disable PyLint from complaining about specific error codes/messages on a per-file basis by adding a line that disables them. You can use either codes or messages (the bit in the brackets at the end of the line, in this case <code>unsubscriptable-object</code>) and it is advisable to use the message form as it is more informative to those who read your code subequently.</p>
 <p>If we add the following line it prevents PyLint from reporting the specific error…</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -428,11 +428,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># option multiple times (only on the command line, not in the configuration</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># file where it should appear only once).</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="va">disable</span><span class="op">=</span>unsubscriptable-object</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>For more on configuriong PyLint refer to the <a href="https://pylint.pycqa.org/en/latest/user_guide/options.html">documentation</a> and also details of how to <a href="https://pylint.pycqa.org/en/latest/user_guide/ide-integration.html">integrate with your editor and IDE</a></p>
+<p>For more on configuriong PyLint refer to the <a href="https://pylint.pycqa.org/en/latest/user_guide/options.html" target="_blank">documentation</a> and also details of how to <a href="https://pylint.pycqa.org/en/latest/user_guide/ide-integration.html" target="_blank">integrate with your editor and IDE</a></p>
 </section>
 <section id="automated-formatting-with-black" class="level3">
 <h3 class="anchored" data-anchor-id="automated-formatting-with-black">Automated Formatting with Black</h3>
-<p><a href="https://github.com/psf/black">Black</a> is <em>The Uncompromising Code Formatter</em> and is very strict about the way in which it formats code. This could be a good or bad thing depending on your point of view, but it does result in highly consistent code when applied to all files. It formats files in place, so be mindful of this if you run it against one of your files it <em>will</em> change it.</p>
+<p><a href="https://github.com/psf/black" target="_blank">Black</a> is <em>The Uncompromising Code Formatter</em> and is very strict about the way in which it formats code. This could be a good or bad thing depending on your point of view, but it does result in highly consistent code when applied to all files. It formats files in place, so be mindful of this if you run it against one of your files it <em>will</em> change it.</p>
 <p>Install <code>black</code> in your virtual environment and make a backup of your <code>save_random_number.py</code> file that you have just tidied up with linting.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install black</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> save_random_numbers.py tidy_save_random_numbers.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -455,31 +455,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="when-to-lint" class="level2">
 <h2 class="anchored" data-anchor-id="when-to-lint">When to Lint</h2>
-<p>It is worth linting your code from the outset of a project as not only does it result in a consistent style across your code base it also avoids the problem that can arise when applying linting retrospectively. If an existing code base has linting applied then the <a href="https://www.git-scm.com/docs/git-blame"><code>git blame</code></a>, which indicates who the last person to edit a section was, then resides with the person who applied the linting, rather than the original author of the code. Its possible though that the person who applied the linting knows very little about the underlying functionality of the code but they may receive questions about it if they are indicated as the last person to have modified particular lines.</p>
+<p>It is worth linting your code from the outset of a project as not only does it result in a consistent style across your code base it also avoids the problem that can arise when applying linting retrospectively. If an existing code base has linting applied then the <a href="https://www.git-scm.com/docs/git-blame" target="_blank"><code>git blame</code></a>, which indicates who the last person to edit a section was, then resides with the person who applied the linting, rather than the original author of the code. Its possible though that the person who applied the linting knows very little about the underlying functionality of the code but they may receive questions about it if they are indicated as the last person to have modified particular lines.</p>
 <p>Fortunately there are a number of ways to automate and integrate linting into your workflow.</p>
 </section>
 <section id="automating-linting" class="level2">
 <h2 class="anchored" data-anchor-id="automating-linting">Automating Linting</h2>
 <section id="ide-integration" class="level3">
 <h3 class="anchored" data-anchor-id="ide-integration">IDE Integration</h3>
-<p>When programming it is really useful to use an <a href="https://en.wikipedia.org/wiki/Integrated_development_environment">Integrated Development Environment (IDE)</a> as most allow the integration of linting tools and apply them to your code automatically, whether its using PyLint, YAPF, Black or otherwise. Setup and configuration is beyond the scope of this article but some links are provided to useful resources to get you started.</p>
+<p>When programming it is really useful to use an <a href="https://en.wikipedia.org/wiki/Integrated_development_environment" target="_blank">Integrated Development Environment (IDE)</a> as most allow the integration of linting tools and apply them to your code automatically, whether its using PyLint, YAPF, Black or otherwise. Setup and configuration is beyond the scope of this article but some links are provided to useful resources to get you started.</p>
 </section>
 <section id="vscode" class="level3">
 <h3 class="anchored" data-anchor-id="vscode">VSCode</h3>
-<p>VSCode supports linting in most languages, and both <a href="https://code.visualstudio.com/docs/python/linting">Python</a> and <a href="https://docs.microsoft.com/en-us/visualstudio/rtvs/linting-r-code?view=vs-2017">R</a> are supported along with other languages.</p>
+<p>VSCode supports linting in most languages, and both <a href="https://code.visualstudio.com/docs/python/linting" target="_blank">Python</a> and <a href="https://docs.microsoft.com/en-us/visualstudio/rtvs/linting-r-code?view=vs-2017" target="_blank">R</a> are supported along with other languages.</p>
 </section>
 <section id="pycharm" class="level3">
 <h3 class="anchored" data-anchor-id="pycharm">PyCharm</h3>
-<p>PyCharm supports automated formatting of code, for more information please refer to <a href="https://www.jetbrains.com/help/pycharm/reformat-and-rearrange-code.html">Reformat and rearrange code | PyCharm</a>.</p>
+<p>PyCharm supports automated formatting of code, for more information please refer to <a href="https://www.jetbrains.com/help/pycharm/reformat-and-rearrange-code.html" target="_blank">Reformat and rearrange code | PyCharm</a>.</p>
 </section>
 <section id="emacs" class="level3">
 <h3 class="anchored" data-anchor-id="emacs">Emacs</h3>
-<p>There are various options available for linting within Emacs, which you use depends on your preferences but <a href="https://emacs-lsp.github.io/lsp-mode/">LSP mode</a> integrates with YAPF (via <a href="https://github.com/JorisE/yapfify">yapfify</a>), Flake8 (via <a href="https://www.flycheck.org/en/latest/">flycheck</a>) and Black (via <a href="https://github.com/pythonic-emacs/blacken">blacken</a>).</p>
+<p>There are various options available for linting within Emacs, which you use depends on your preferences but <a href="https://emacs-lsp.github.io/lsp-mode/" target="_blank">LSP mode</a> integrates with YAPF (via <a href="https://github.com/JorisE/yapfify" target="_blank">yapfify</a>), Flake8 (via <a href="https://www.flycheck.org/en/latest/" target="_blank">flycheck</a>) and Black (via <a href="https://github.com/pythonic-emacs/blacken" target="_blank">blacken</a>).</p>
 </section>
 </section>
 <section id="git-integration" class="level2">
 <h2 class="anchored" data-anchor-id="git-integration">Git Integration</h2>
-<p>If you are using an IDE then if configured correctly your code should be linted automatically for you, but an additional step that can capture anything that hasn’t been correctly formatted is to use a <a href="https://githooks.com/">git hook</a> to run linting on your code prior to making commits. There is <a href="https://github.com/sebdah/git-pylint-commit-hook">git-pylint-commit-hook</a> available on PyPi which runs automatically when you make commits to <code>.py</code> files.</p>
+<p>If you are using an IDE then if configured correctly your code should be linted automatically for you, but an additional step that can capture anything that hasn’t been correctly formatted is to use a <a href="https://githooks.com/" target="_blank">git hook</a> to run linting on your code prior to making commits. There is <a href="https://github.com/sebdah/git-pylint-commit-hook" target="_blank">git-pylint-commit-hook</a> available on PyPi which runs automatically when you make commits to <code>.py</code> files.</p>
 </section>
 <section id="continuous-integration" class="level2">
 <h2 class="anchored" data-anchor-id="continuous-integration">Continuous Integration</h2>
@@ -487,34 +487,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="megalinter" class="level2">
 <h2 class="anchored" data-anchor-id="megalinter">Megalinter</h2>
-<p>Perhaps not necessary for everyone but worth mentioning the beast that is <a href="https://megalinter.github.io/latest/">MegaLinter</a> which will lint code across multiple languages and integrates easily into your pipeline (GitHub Action, CI on GitLab, Jenkins etc.). A useful article on doing so is <a href="https://nicolas.vuillamy.fr/improve-uniformize-and-secure-your-code-base-with-megalinter-62ebab422c1">Limit your technical debt and secure your code base using MegaLinter</a>.</p>
+<p>Perhaps not necessary for everyone but worth mentioning the beast that is <a href="https://megalinter.github.io/latest/" target="_blank">MegaLinter</a> which will lint code across multiple languages and integrates easily into your pipeline (GitHub Action, CI on GitLab, Jenkins etc.). A useful article on doing so is <a href="https://nicolas.vuillamy.fr/improve-uniformize-and-secure-your-code-base-with-megalinter-62ebab422c1" target="_blank">Limit your technical debt and secure your code base using MegaLinter</a>.</p>
 </section>
 <section id="pre-commit" class="level2">
 <h2 class="anchored" data-anchor-id="pre-commit">Pre-commit</h2>
-<p><a href="https://pre-commit.com/">Pre-commit</a> is a Python package that adds a set of configurable hooks for linting your code, and not just Python, using a Git pre-commit <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">hook</a>. Hooks are run conditional on certain changes in states, in this case code that is run before commits are made. It creates a virtual Python Environment and installs the required packages there to lint your code. More will be written on this in a subsequent post.</p>
+<p><a href="https://pre-commit.com/" target="_blank">Pre-commit</a> is a Python package that adds a set of configurable hooks for linting your code, and not just Python, using a Git pre-commit <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks" target="_blank">hook</a>. Hooks are run conditional on certain changes in states, in this case code that is run before commits are made. It creates a virtual Python Environment and installs the required packages there to lint your code. More will be written on this in a subsequent post.</p>
 </section>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <section id="python" class="level3">
 <h3 class="anchored" data-anchor-id="python">Python</h3>
 <ul>
-<li><a href="https://flake8.pycqa.org/en/latest/">Flake8</a> - Your Tool For Style Guide Enforcement</li>
-<li><a href="https://github.com/psf/black">Black</a> - The Uncompromising Code Formatter</li>
-<li><a href="https://code.visualstudio.com/docs/python/linting">Linting Python in Visual Studio Code</a></li>
-<li><a href="https://pylint.pycqa.org/en/latest/messages/messages_list.html">Pylint - Overview of all Pylint messages</a></li>
+<li><a href="https://flake8.pycqa.org/en/latest/" target="_blank">Flake8</a> - Your Tool For Style Guide Enforcement</li>
+<li><a href="https://github.com/psf/black" target="_blank">Black</a> - The Uncompromising Code Formatter</li>
+<li><a href="https://code.visualstudio.com/docs/python/linting" target="_blank">Linting Python in Visual Studio Code</a></li>
+<li><a href="https://pylint.pycqa.org/en/latest/messages/messages_list.html" target="_blank">Pylint - Overview of all Pylint messages</a></li>
 </ul>
 </section>
 <section id="r" class="level3">
 <h3 class="anchored" data-anchor-id="r">R</h3>
 <ul>
-<li><a href="https://github.com/r-lib/lintr">GitHub - r-lib/lintr: Static Code Analysis for R</a></li>
-<li><a href="https://rowannicholls.github.io/R/intro/linting.html">Introduction to R: Linting R (and R Markdown)</a></li>
+<li><a href="https://github.com/r-lib/lintr" target="_blank">GitHub - r-lib/lintr: Static Code Analysis for R</a></li>
+<li><a href="https://rowannicholls.github.io/R/intro/linting.html" target="_blank">Introduction to R: Linting R (and R Markdown)</a></li>
 </ul>
 </section>
 <section id="c" class="level3">
 <h3 class="anchored" data-anchor-id="c">C++</h3>
 <ul>
-<li><a href="https://github.com/cpplint/cpplint">cpplint</a></li>
+<li><a href="https://github.com/cpplint/cpplint" target="_blank">cpplint</a></li>
 </ul>
 
 

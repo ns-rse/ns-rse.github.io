@@ -15,7 +15,327 @@
 <link>https://ns-rse.github.io/about.html#category=python</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Sat, 23 Dec 2023 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 01 Jan 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pytest Parameterisation</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://ns-rse.github.io/posts/pytest-param/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a> is an excellent framework for writing tests in <a href="https://python.org" target="_blank">Python</a>. One of the neat features it includes is the ability to parameterise your tests which means you can write one test and pass different sets of parameters into it to test the range of actions that the function/method are meant to handle.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://ns-rse.github.io/posts/pytest-param/https:/live.staticflickr.com/65535/53258274023_f628d3291a_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53258274023/in/datetaken/" target="_blank">Minerals by Me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="example" class="level2">
+<h2 class="anchored" data-anchor-id="example">Example</h2>
+<p>A simple example to work through is provided in my <a href="https://github.com/ns-rse/pytest-examples" target="_blank">ns-res/pytest_examples</a> repository. We want to have a state where the function can fail so we’ll use a very simple function that carries out division.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;">def</span> divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="bu" style="color: null;">float</span>:</span>
+<span id="cb1-2">    <span class="co" style="color: #5E5E5E;">"""Divide a by b.</span></span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;">    Parameters</span></span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;">    ----------</span></span>
+<span id="cb1-6"><span class="co" style="color: #5E5E5E;">    a: float | int</span></span>
+<span id="cb1-7"><span class="co" style="color: #5E5E5E;">        Number to be divided.</span></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;">    b: float | int</span></span>
+<span id="cb1-9"><span class="co" style="color: #5E5E5E;">        Number to divide by.</span></span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="co" style="color: #5E5E5E;">    Returns</span></span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;">    -------</span></span>
+<span id="cb1-13"><span class="co" style="color: #5E5E5E;">    float</span></span>
+<span id="cb1-14"><span class="co" style="color: #5E5E5E;">        a divided by b.</span></span>
+<span id="cb1-15"><span class="co" style="color: #5E5E5E;">    """</span></span>
+<span id="cb1-16">    <span class="cf" style="color: #003B4F;">try</span>:</span>
+<span id="cb1-17">        <span class="cf" style="color: #003B4F;">return</span> a <span class="op" style="color: #5E5E5E;">/</span> b</span>
+<span id="cb1-18">    <span class="cf" style="color: #003B4F;">except</span> <span class="pp" style="color: #AD0000;">TypeError</span> <span class="im" style="color: #00769E;">as</span> e:</span>
+<span id="cb1-19">        <span class="cf" style="color: #003B4F;">if</span> <span class="kw" style="color: #003B4F;">not</span> <span class="bu" style="color: null;">isinstance</span>(a, (<span class="bu" style="color: null;">int</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">float</span>)):</span>
+<span id="cb1-20">            <span class="cf" style="color: #003B4F;">raise</span> <span class="pp" style="color: #AD0000;">TypeError</span>(<span class="ss" style="color: #20794D;">f"Error 'a' should be int or float, not </span><span class="sc" style="color: #5E5E5E;">{</span><span class="bu" style="color: null;">type</span>(a)<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>) <span class="im" style="color: #00769E;">from</span> e</span>
+<span id="cb1-21">        <span class="cf" style="color: #003B4F;">raise</span> <span class="pp" style="color: #AD0000;">TypeError</span>(<span class="ss" style="color: #20794D;">f"Error 'b' should be int or float, not </span><span class="sc" style="color: #5E5E5E;">{</span><span class="bu" style="color: null;">type</span>(b)<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>) <span class="im" style="color: #00769E;">from</span> e</span>
+<span id="cb1-22">    <span class="cf" style="color: #003B4F;">except</span> <span class="pp" style="color: #AD0000;">ZeroDivisionError</span> <span class="im" style="color: #00769E;">as</span> e:</span>
+<span id="cb1-23">        <span class="cf" style="color: #003B4F;">raise</span> <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>(<span class="ss" style="color: #20794D;">f"Can not divide by </span><span class="sc" style="color: #5E5E5E;">{</span>b<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">, choose another number."</span>) <span class="im" style="color: #00769E;">from</span> e</span></code></pre></div>
+</section>
+<section id="structuring-tests" class="level2">
+<h2 class="anchored" data-anchor-id="structuring-tests">Structuring Tests</h2>
+<p>Pytest is well written and will automatically find your tests in a few places. Personally I use a <a href="https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/" target="_blank">flat</a> rather than <code>src/</code> based package layout and keep my tests in the <code>tests/</code> directory of the package root. Pytest looks in this directory automatically for files that begin with <code>test_</code> and within each file for functions/methods that begin with <code>test_</code>.</p>
+<p>With the above function we could write the following basic test to make sure it works because we know that if we divide <code>10</code> by <code>5</code> we should get <code>2</code> as the answer.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;">from</span> pytest_examples.divide <span class="im" style="color: #00769E;">import</span> divide</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"></span>
+<span id="cb2-4"><span class="kw" style="color: #003B4F;">def</span> test_divide_unparameterised() <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb2-5">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb2-6">    <span class="cf" style="color: #003B4F;">assert</span> divide(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>) <span class="op" style="color: #5E5E5E;">==</span> <span class="dv" style="color: #AD0000;">2</span></span></code></pre></div>
+<p>You can find this test along with others in the <a href="https://github.com/ns-rse/pytest-examples/blob/main/tests/test_divide.py" target="_blank"><code>tests/test_divide.py</code></a> file of the accompanying repository.</p>
+</section>
+<section id="parameterising-tests" class="level2">
+<h2 class="anchored" data-anchor-id="parameterising-tests">Parameterising Tests</h2>
+<p>In order to make our tests suite robust we should test more scenarios and edge cases, in particular making sure we capture the exceptions that can be raised. This is where the <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest-mark-parametrize" target="_blank"><code>pytest.mark.parameterize()</code></a> fixture comes into play. It takes as a first argument a tuple of variables that you are going to define values for and pass into your test. Following it is a list of tuples with the values that you want to include, one for each of the variables you have first defined. Here we define <code>a</code>, <code>b</code> and the <code>expected</code> value of dividing <code>a</code> by <code>b</code> which is the value the <code>divide()</code> function should return.</p>
+<p>If we expand the number of scenarios we wish to test using <code>@pytest.mark.parametrize()</code> we can write our test as follows.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="im" style="color: #00769E;">from</span> divide <span class="im" style="color: #00769E;">import</span> divide</span>
+<span id="cb3-4"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb3-5">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
+<span id="cb3-6">    [</span>
+<span id="cb3-7">        (<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>),</span>
+<span id="cb3-8">        (<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>),</span>
+<span id="cb3-9">        (<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>),</span>
+<span id="cb3-10"></span>
+<span id="cb3-11">    ]</span>
+<span id="cb3-12">)</span>
+<span id="cb3-13"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb3-14">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb3-15">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
+</section>
+<section id="ids" class="level2">
+<h2 class="anchored" data-anchor-id="ids">IDs</h2>
+<p>For some time I simply wrote my tests and if the structure was complicated I used comments to mark the code to indicate what the test was doing. When they (inevitably!) failed there was a cryptically long indication of what had failed based on the filename, test name and the values of the various parameters that were in use at the point of failure. These helped narrow down which test failed but took a bit of mental over-head to decipher.</p>
+<p>Recently though I was put onto the <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest.param" target="_blank">pytest.param()</a> function by a <a href="https://mastodon.social/@danjac@masto.ai/111674313059704725" target="_blank">toot from <span class="citation" data-cites="danjac">@danjac</span><span class="citation" data-cites="masto.ai">@masto.ai</span></a> and instantly saw the benefit of using this as it allows us to give each set of parameters a unique <code>id</code> which is then used by Pytest when reporting failures.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="at" style="color: #657422;">@pytest.mark.parameterize</span>(</span>
+<span id="cb4-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
+<span id="cb4-3">    [</span>
+<span id="cb4-4">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"ten divided by five"</span>),</span>
+<span id="cb4-5">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"nine divided by three"</span>),</span>
+<span id="cb4-6">        pytest.param(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"five divided by two"</span>),</span>
+<span id="cb4-7"></span>
+<span id="cb4-8">    ]</span>
+<span id="cb4-9">)</span>
+<span id="cb4-10"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb4-11">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb4-12">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
+<p>Then if/when a test fails the <code>id</code> parameter is reported for the failed test, making it much easier to narrow down where the failure occurred.</p>
+<p>Not only does it allow each set of parameters to be given a unique <code>id = ""</code> to aid with identifying tests that fail it also allows each set of parameters to be marked with <code>marks = &lt;&gt;</code> to indicate the expected behaviour for example <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest-mark-xfail" target="_blank"><code>pytest.mark.xfail</code></a> or <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#id25" target="_blank"><code>pytest.mark.skipif</code></a>.</p>
+<p>We could therefore add another set of parameters that should fail because one of the exceptions is raised.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="im" style="color: #00769E;">from</span> pytest_examples.divide <span class="im" style="color: #00769E;">import</span> divide</span>
+<span id="cb5-4"></span>
+<span id="cb5-5"></span>
+<span id="cb5-6"><span class="at" style="color: #657422;">@pytest.mark.parameterize</span>(</span>
+<span id="cb5-7">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
+<span id="cb5-8">    [</span>
+<span id="cb5-9">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"ten divided by five"</span>),</span>
+<span id="cb5-10">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"nine divided by three"</span>),</span>
+<span id="cb5-11">        pytest.param(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"five divided by two"</span>),</span>
+<span id="cb5-12">        pytest.param(</span>
+<span id="cb5-13">            <span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"zero division error"</span>, marks<span class="op" style="color: #5E5E5E;">=</span>pytest.mark.xfail</span>
+<span id="cb5-14">        ),</span>
+<span id="cb5-15">    ],</span>
+<span id="cb5-16">)</span>
+<span id="cb5-17"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb5-18">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb5-19">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
+</section>
+<section id="testing-exceptions" class="level2">
+<h2 class="anchored" data-anchor-id="testing-exceptions">Testing Exceptions</h2>
+<p>We can combine tests that pass and fail (in the above example a <code>ZeroDivisionError</code>) via parameterisation and whilst Pytest works and allows this some consider this to be bad practice as whilst tests can and should be parameterised it is better to keep tests focused and on-topic and write a separate test for different outcomes such as raising exceptions.</p>
+<p>This is slightly different from the way the Pytest documentation suggests to undertake <a href="https://docs.pytest.org/en/7.1.x/example/parametrize.html#parametrizing-conditional-raising" target="_blank">Parameterising conditional raising</a> but there is a school of thought, which I like, which states that testing different states/behaviours should be separate (see the following thread for some discussion <a href="https://stackoverflow.com/questions/235025/why-should-unit-tests-test-only-one-thing" target="_blank">Why should unit tests test only one thing?</a>.</p>
+<p>With this in mind we can separate out the tests that raise exceptions under different scenarios to their own tests (<strong>NB</strong> obviously its excessive to parameterise <code>test-divide_zero_division_error()</code>).</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb6-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"exception"</span>),</span>
+<span id="cb6-3">    [</span>
+<span id="cb6-4">        pytest.param(<span class="st" style="color: #20794D;">"a"</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"a is string"</span>),</span>
+<span id="cb6-5">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is string"</span>),</span>
+<span id="cb6-6">        pytest.param([<span class="dv" style="color: #AD0000;">1</span>], <span class="dv" style="color: #AD0000;">2</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"a is list"</span>),</span>
+<span id="cb6-7">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, [<span class="dv" style="color: #AD0000;">2</span>], <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is list"</span>),</span>
+<span id="cb6-8">    ],</span>
+<span id="cb6-9">)</span>
+<span id="cb6-10"><span class="kw" style="color: #003B4F;">def</span> test_divide_type_errors(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, exception: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb6-11">    <span class="co" style="color: #5E5E5E;">"""Test that TypeError is raised when objects other than int or float are passed as a and b."""</span></span>
+<span id="cb6-12">    <span class="cf" style="color: #003B4F;">with</span> pytest.raises(exception):</span>
+<span id="cb6-13">        divide(a, b)</span></code></pre></div>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb7-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"exception"</span>),</span>
+<span id="cb7-3">    [</span>
+<span id="cb7-4">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is zero"</span>),</span>
+<span id="cb7-5">    ],</span>
+<span id="cb7-6">)</span>
+<span id="cb7-7"><span class="kw" style="color: #003B4F;">def</span> test_divide_zero_division_error(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, exception: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb7-8">    <span class="co" style="color: #5E5E5E;">"""Test that ZeroDivsionError is raised when attempting to divide by zero."""</span></span>
+<span id="cb7-9">    <span class="cf" style="color: #003B4F;">with</span> pytest.raises(exception):</span>
+<span id="cb7-10">        divide(a, b)</span></code></pre></div>
+</section>
+<section id="parametrising-with-fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="parametrising-with-fixtures">Parametrising with Fixtures</h2>
+<p><a href="https://docs.pytest.org/en/stable/explanation/fixtures.html" target="_blank">Fixtures</a> are a common and useful feature of the Pytest framework that allow you to define “/defined, reliable and consistent context for the tests/”. What this means is that if you always need a particular object, whether that is an instantiated class (a new instance of a class) or something else, you can mark a function with <code>@pytest.fixture()</code> and use it in subsequent tests (often fixtures are defined in <code>tests/conftest.py</code> to keep things tidy, at least that is what I do!)<sup>1</sup>.</p>
+<p>It can be useful to parameterise fixtures themselves so that they too testsa number of different states and this saves writing more sets of parameters under each tests <code>@pytest.mark.parameterize()</code> decorator.</p>
+<p>For this example we use a simple function <code>summarise_shapes()</code> which returns the results of summarising a 2-D Numpy array using <a href="https://scikit-image.org" target="_blank">scikit-image</a> and its <a href="https://scikit-image.org/docs/stable/api/skimage.measure.html#skimage.measure.regionprops" target="_blank"><code>skimage.measure.regionprops()</code></a> function (see <a href="https://github.com/ns-rse/pytest-examples/blob/main/pytest_examples/shapes.py" target="_blank">pytest_examples/shapes.py</a>).</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;">"""Summarise Shapes."""</span></span>
+<span id="cb8-2"><span class="im" style="color: #00769E;">import</span> numpy.typing <span class="im" style="color: #00769E;">as</span> npt</span>
+<span id="cb8-3"><span class="im" style="color: #00769E;">from</span> skimage <span class="im" style="color: #00769E;">import</span> measure</span>
+<span id="cb8-4"></span>
+<span id="cb8-5"></span>
+<span id="cb8-6"><span class="kw" style="color: #003B4F;">def</span> summarise_shape(shape: npt.NDArray) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="bu" style="color: null;">list</span>:</span>
+<span id="cb8-7">    <span class="co" style="color: #5E5E5E;">"""</span></span>
+<span id="cb8-8"><span class="co" style="color: #5E5E5E;">    Summarise the region properties of a 2D numpy array using Scikit-Image.</span></span>
+<span id="cb8-9"></span>
+<span id="cb8-10"><span class="co" style="color: #5E5E5E;">    Parameters</span></span>
+<span id="cb8-11"><span class="co" style="color: #5E5E5E;">    ----------</span></span>
+<span id="cb8-12"><span class="co" style="color: #5E5E5E;">    shape : npt.NDArray</span></span>
+<span id="cb8-13"><span class="co" style="color: #5E5E5E;">        2D binary array of a shape.</span></span>
+<span id="cb8-14"></span>
+<span id="cb8-15"><span class="co" style="color: #5E5E5E;">    Returns</span></span>
+<span id="cb8-16"><span class="co" style="color: #5E5E5E;">    -------</span></span>
+<span id="cb8-17"><span class="co" style="color: #5E5E5E;">    list</span></span>
+<span id="cb8-18"><span class="co" style="color: #5E5E5E;">        List of Region Properties each item describing one labelled region.</span></span>
+<span id="cb8-19"><span class="co" style="color: #5E5E5E;">    """</span></span>
+<span id="cb8-20">    <span class="cf" style="color: #003B4F;">return</span> measure.regionprops(shape)</span></code></pre></div>
+<p>We want to write some tests for these using fixtures which we define in <code>tests/conftest.py</code>. These define two <a href="https://numpy.org/" target="_blank">Numpy</a> 2-D binary arrays of <code>0</code>’s and <code>1</code>’s in particular shapes (the names should give an indication of the shapes!)</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<span id="cb9-2"><span class="im" style="color: #00769E;">import</span> numpy.typing <span class="im" style="color: #00769E;">as</span> npt</span>
+<span id="cb9-3"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb9-4"></span>
+<span id="cb9-5"><span class="im" style="color: #00769E;">from</span> skimage <span class="im" style="color: #00769E;">import</span> draw</span>
+<span id="cb9-6"></span>
+<span id="cb9-7"></span>
+<span id="cb9-8"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
+<span id="cb9-9"><span class="kw" style="color: #003B4F;">def</span> square() <span class="op" style="color: #5E5E5E;">-&gt;</span> npt.NDArray:</span>
+<span id="cb9-10">    <span class="co" style="color: #5E5E5E;">"""Return a 2D numpy array of a square."""</span></span>
+<span id="cb9-11">    square <span class="op" style="color: #5E5E5E;">=</span> np.zeros((<span class="dv" style="color: #AD0000;">6</span>, <span class="dv" style="color: #AD0000;">6</span>), dtype<span class="op" style="color: #5E5E5E;">=</span>np.uint8)</span>
+<span id="cb9-12">    start <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb9-13">    end <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">5</span>)</span>
+<span id="cb9-14">    rr, cc <span class="op" style="color: #5E5E5E;">=</span> draw.rectangle_perimeter(start, end, shape<span class="op" style="color: #5E5E5E;">=</span>square.shape)</span>
+<span id="cb9-15">    square[rr, cc] <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb9-16">    <span class="cf" style="color: #003B4F;">return</span> square</span>
+<span id="cb9-17"></span>
+<span id="cb9-18"></span>
+<span id="cb9-19"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
+<span id="cb9-20"><span class="kw" style="color: #003B4F;">def</span> circle() <span class="op" style="color: #5E5E5E;">-&gt;</span> npt.NDArray:</span>
+<span id="cb9-21">    <span class="co" style="color: #5E5E5E;">"""Return a 2D numpy array of a circle."""</span></span>
+<span id="cb9-22">    circle <span class="op" style="color: #5E5E5E;">=</span> np.zeros((<span class="dv" style="color: #AD0000;">7</span>, <span class="dv" style="color: #AD0000;">7</span>), dtype<span class="op" style="color: #5E5E5E;">=</span>np.uint8)</span>
+<span id="cb9-23">    rr, cc <span class="op" style="color: #5E5E5E;">=</span> draw.circle_perimeter(r<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">4</span>, c<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">4</span>, radius<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">2</span>, shape<span class="op" style="color: #5E5E5E;">=</span>circle.shape)</span>
+<span id="cb9-24">    circle[rr, cc] <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb9-25">    <span class="cf" style="color: #003B4F;">return</span> circle</span></code></pre></div>
+<p>There are two different methods to using these fixtures in parameterised tests.</p>
+<section id="request.getfixturevalue" class="level3">
+<h3 class="anchored" data-anchor-id="request.getfixturevalue"><code>request.getfixturevalue()</code></h3>
+<p>The first uses <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest.FixtureRequest.getfixturevalue" target="_blank"><code>request.getfixturevalue()</code></a> which “<em>is a special fixture providing information of the requesting test function.</em>”, in this case the “<em>named fixture function</em>”.</p>
+<p>You define the fixture name (in quotes) in the <code>@pytest.mark.parametrize()</code> and then when the parameter, in this case <code>shape</code> is referred to in the test itself, you wrap it in <code>request.getfixturevalue()</code> and the named fixture is then returned and used.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="co" style="color: #5E5E5E;">"""Test the shapes module."""</span></span>
+<span id="cb10-2"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb10-3"></span>
+<span id="cb10-4"><span class="im" style="color: #00769E;">from</span> pytest_examples.shapes <span class="im" style="color: #00769E;">import</span> summarise_shape</span>
+<span id="cb10-5"></span>
+<span id="cb10-6"></span>
+<span id="cb10-7"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb10-8">    (<span class="st" style="color: #20794D;">"shape"</span>, <span class="st" style="color: #20794D;">"area"</span>, <span class="st" style="color: #20794D;">"feret_diameter_max"</span>, <span class="st" style="color: #20794D;">"centroid"</span>),</span>
+<span id="cb10-9">    [</span>
+<span id="cb10-10">        pytest.param(<span class="st" style="color: #20794D;">"square"</span>, <span class="dv" style="color: #AD0000;">11</span>, <span class="fl" style="color: #AD0000;">7.810249675906654</span>, (<span class="fl" style="color: #AD0000;">1.3636363636363635</span>, <span class="fl" style="color: #AD0000;">1.3636363636363635</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of square"</span>),</span>
+<span id="cb10-11">        pytest.param(<span class="st" style="color: #20794D;">"circle"</span>, <span class="dv" style="color: #AD0000;">12</span>, <span class="fl" style="color: #AD0000;">5.385164807134504</span>, (<span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">4</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of circle"</span>),</span>
+<span id="cb10-12">    ],</span>
+<span id="cb10-13">)</span>
+<span id="cb10-14"><span class="kw" style="color: #003B4F;">def</span> test_summarise_shape_get_fixture_value(</span>
+<span id="cb10-15">    shape: <span class="bu" style="color: null;">str</span>, area: <span class="bu" style="color: null;">float</span>, feret_diameter_max: <span class="bu" style="color: null;">float</span>, centroid: <span class="bu" style="color: null;">tuple</span>, request</span>
+<span id="cb10-16">) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb10-17">    <span class="co" style="color: #5E5E5E;">"""Test the summarisation of shapes."""</span></span>
+<span id="cb10-18">    shape_summary <span class="op" style="color: #5E5E5E;">=</span> summarise_shape(request.getfixturevalue(shape))</span>
+<span id="cb10-19">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"area"</span>] <span class="op" style="color: #5E5E5E;">==</span> area</span>
+<span id="cb10-20">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"feret_diameter_max"</span>] <span class="op" style="color: #5E5E5E;">==</span> feret_diameter_max</span>
+<span id="cb10-21">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"centroid"</span>] <span class="op" style="color: #5E5E5E;">==</span> centroid</span></code></pre></div>
+</section>
+<section id="pytest-lazy-fixture" class="level3">
+<h3 class="anchored" data-anchor-id="pytest-lazy-fixture"><code>pytest-lazy-fixture</code></h3>
+<p>An alternative is to use the Pytest plugin <a href="https://github.com/tvorog/pytest-lazy-fixture" target="_blank">pytest-lazy-fixture</a> and instead of marking the value to be obtained in the test itself you do so when setting up the parameters by referring to the fixture name as an argument to <code>pytest.lazy_fixture()</code> within <code>@pytest.mark.parametrize()</code>.</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="co" style="color: #5E5E5E;">"""Test the shapes module."""</span></span>
+<span id="cb11-2"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb11-3"></span>
+<span id="cb11-4"><span class="im" style="color: #00769E;">from</span> pytest_examples.shapes <span class="im" style="color: #00769E;">import</span> summarise_shape</span>
+<span id="cb11-5"></span>
+<span id="cb11-6"></span>
+<span id="cb11-7"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb11-8">    (<span class="st" style="color: #20794D;">"shape"</span>, <span class="st" style="color: #20794D;">"area"</span>, <span class="st" style="color: #20794D;">"feret_diameter_max"</span>, <span class="st" style="color: #20794D;">"centroid"</span>),</span>
+<span id="cb11-9">    [</span>
+<span id="cb11-10">        pytest.param(</span>
+<span id="cb11-11">            pytest.lazy_fixture(<span class="st" style="color: #20794D;">"square"</span>),</span>
+<span id="cb11-12">            <span class="dv" style="color: #AD0000;">11</span>,</span>
+<span id="cb11-13">            <span class="fl" style="color: #AD0000;">7.810249675906654</span>,</span>
+<span id="cb11-14">            (<span class="fl" style="color: #AD0000;">1.3636363636363635</span>, <span class="fl" style="color: #AD0000;">1.3636363636363635</span>),</span>
+<span id="cb11-15">            <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of square"</span>,</span>
+<span id="cb11-16">        ),</span>
+<span id="cb11-17">        pytest.param(pytest.lazy_fixture(<span class="st" style="color: #20794D;">"circle"</span>), <span class="dv" style="color: #AD0000;">12</span>, <span class="fl" style="color: #AD0000;">5.385164807134504</span>, (<span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">4</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of circle"</span>),</span>
+<span id="cb11-18">    ],</span>
+<span id="cb11-19">)</span>
+<span id="cb11-20"><span class="kw" style="color: #003B4F;">def</span> test_summarise_shape_lazy_fixture(</span>
+<span id="cb11-21">    shape: <span class="bu" style="color: null;">str</span>, area: <span class="bu" style="color: null;">float</span>, feret_diameter_max: <span class="bu" style="color: null;">float</span>, centroid: <span class="bu" style="color: null;">tuple</span>, request</span>
+<span id="cb11-22">) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb11-23">    <span class="co" style="color: #5E5E5E;">"""Test the summarisation of shapes."""</span></span>
+<span id="cb11-24">    shape_summary <span class="op" style="color: #5E5E5E;">=</span> summarise_shape(shape)</span>
+<span id="cb11-25">    <span class="bu" style="color: null;">print</span>(<span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">'centroid'</span>]<span class="op" style="color: #5E5E5E;">=</span><span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>)</span>
+<span id="cb11-26">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"area"</span>] <span class="op" style="color: #5E5E5E;">==</span> area</span>
+<span id="cb11-27">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"feret_diameter_max"</span>] <span class="op" style="color: #5E5E5E;">==</span> feret_diameter_max</span>
+<span id="cb11-28">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"centroid"</span>] <span class="op" style="color: #5E5E5E;">==</span> centroid</span></code></pre></div>
+</section>
+</section>
+<section id="parameterise-fixtures" class="level2">
+<h2 class="anchored" data-anchor-id="parameterise-fixtures">Parameterise Fixtures</h2>
+<p>The <a href="https://github.com/tvorog/pytest-lazy-fixture" target="_blank">pytest-lazy-fixture</a> also allows fixtures themselves to be parameterised using the <code>pytest_lazyfixture.lazy_fixture()</code> function and demonstrated in the packages <a href="https://github.com/tvorog/pytest-lazy-fixture#usage" target="_blank">README</a> which I’ve reproduced below.</p>
+<p>The fixture called <code>some()</code> uses <code>lazy_fixture()</code> to include both the <code>one()</code> and the <code>two()</code> fixtures which return their respective integers. <code>test_func()</code> then checks that the value returned by the <code>some()</code> fixture is in the list <code>[1, 2]</code>. Obviously this example is contrived but it serves to demonstrate how fixtures themselves can be parameterised.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb12-2"><span class="im" style="color: #00769E;">from</span> pytest_lazyfixture <span class="im" style="color: #00769E;">import</span> lazy_fixture</span>
+<span id="cb12-3"></span>
+<span id="cb12-4"><span class="at" style="color: #657422;">@pytest.fixture</span>(params<span class="op" style="color: #5E5E5E;">=</span>[</span>
+<span id="cb12-5">    lazy_fixture(<span class="st" style="color: #20794D;">'one'</span>),</span>
+<span id="cb12-6">    lazy_fixture(<span class="st" style="color: #20794D;">'two'</span>)</span>
+<span id="cb12-7">])</span>
+<span id="cb12-8"><span class="kw" style="color: #003B4F;">def</span> some(request):</span>
+<span id="cb12-9">    <span class="cf" style="color: #003B4F;">return</span> request.param</span>
+<span id="cb12-10"></span>
+<span id="cb12-11"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
+<span id="cb12-12"><span class="kw" style="color: #003B4F;">def</span> one():</span>
+<span id="cb12-13">    <span class="cf" style="color: #003B4F;">return</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb12-14"></span>
+<span id="cb12-15"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
+<span id="cb12-16"><span class="kw" style="color: #003B4F;">def</span> two():</span>
+<span id="cb12-17">    <span class="cf" style="color: #003B4F;">return</span> <span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb12-18"></span>
+<span id="cb12-19"><span class="kw" style="color: #003B4F;">def</span> test_func(some):</span>
+<span id="cb12-20">    <span class="cf" style="color: #003B4F;">assert</span> some <span class="kw" style="color: #003B4F;">in</span> [<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">2</span>]</span></code></pre></div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p><a href="https://pytest.org" target="_blank">Pytest</a> is a powerful and flexible suite for writing tests in Python. One of the strengths is the ability to parameterise the tests to test multiple scenarios. This can include both successes and failures, however a common approach is to separate tests based on the expected behaviour, although Pytest allows you the flexibility to choose.</p>
+<p>Ultimately though parameterising tests is a simple and effective way of reducing the amount of code you have to write to unit-tests for different aspects of your code.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a></li>
+<li><a href="https://docs.pytest.org/en/7.1.x/example/parametrize.html" target="_blank">Parametrizing tests — pytest documentation</a></li>
+<li><a href="https://packaging.python.org/en/latest/discussions/src-layout-vs-flat-layout/" target="_blank">Src Layout vs Flat Layout</a></li>
+<li><a href="https://stackoverflow.com/questions/42014484/pytest-using-fixtures-as-arguments-in-parametrize" target="_blank">pytest using fixtures as arguments in parametrize - Stack Overflow</a></li>
+<li><a href="http://www.owenpellegrin.com/blog/testing/how-do-you-solve-multiple-asserts/" target="_blank">How do you solve multiple asserts?</a></li>
+<li><a href="https://stackoverflow.com/questions/235025/why-should-unit-tests-test-only-one-thing" target="_blank">Why should unit tests test only one thing? - Stack Overflow</a></li>
+</ul>
+
+
+
+</section>
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>A caveat to this is the use of Random Number Generators as once seeded these can produce different numbers depending on the order in which the fixture is used but that is beyond the scope of this post.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>python</category>
+  <category>testing</category>
+  <category>pytest</category>
+  <guid>https://ns-rse.github.io/posts/pytest-param/index.html</guid>
+  <pubDate>Mon, 01 Jan 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/53258274023_f628d3291a_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>virtualenvwrapper</title>
   <dc:creator>Neil Shephard</dc:creator>
@@ -25,16 +345,16 @@
 
 
 
-<p>If you use Python heavily you will likely be familiar with Virtual Environments. These provide isolated installs of specific packages that take precedence over any packages installed at the system level. There are lots of tools and frameworks for working with virtual environments such as <a href="https://docs.python.org/3/library/venv.html"><code>venv</code></a>, <a href="https://pypi.python.org/pypi/virtualenv"><code>virtualenv</code></a> and <a href="https://docs.conda.io/en/latest/">Conda</a>. This post introduces and shows some of the features of <a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a>.</p>
+<p>If you use Python heavily you will likely be familiar with Virtual Environments. These provide isolated installs of specific packages that take precedence over any packages installed at the system level. There are lots of tools and frameworks for working with virtual environments such as <a href="https://docs.python.org/3/library/venv.html" target="_blank"><code>venv</code></a>, <a href="https://pypi.python.org/pypi/virtualenv" target="_blank"><code>virtualenv</code></a> and <a href="https://docs.conda.io/en/latest/" target="_blank">Conda</a>. This post introduces and shows some of the features of <a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank">virtualenvwrapper</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://ns-rse.github.io/posts/virtualenvwrapper/https:/live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53176160657/in/album-72177720311078585/">Clouds Rising at Sunset by Me</a></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53176160657/in/album-72177720311078585/" target="_blank">Clouds Rising at Sunset by Me</a></figcaption><p></p>
 </figure>
 </div>
 <section id="virtualenvwrapper" class="level2">
 <h2 class="anchored" data-anchor-id="virtualenvwrapper">virtualenvwrapper</h2>
-<p><a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a> is…</p>
+<p><a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank">virtualenvwrapper</a> is…</p>
 <blockquote class="blockquote">
 <p>a set of extensions to Ian Bicking’s <code>virtualenv</code> tool. The extensions include wrappers for creating and deleting virtual environments and otherwise managing your development workflow, making it easier to work on more than one project at a time without introducing conflicts in their dependencies.</p>
 </blockquote>
@@ -56,7 +376,7 @@
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">emerge</span> <span class="at" style="color: #657422;">-av</span> virtualenvwrapper          <span class="co" style="color: #5E5E5E;"># Gentoo</span></span>
 <span id="cb1-2"><span class="ex" style="color: null;">pacman</span> <span class="at" style="color: #657422;">-Syu</span> python-virtualenvwrapper  <span class="co" style="color: #5E5E5E;"># Arch</span></span>
 <span id="cb1-3"><span class="ex" style="color: null;">apt-get</span> install virtualenvwrapper     <span class="co" style="color: #5E5E5E;"># Debian</span></span></code></pre></div>
-<p>Once installed you need to set two key variables <code>$WORKON_HOME</code> and <code>$PROJECT_HOME</code> and ensure the <code>virtualenvwrapper.sh</code> is sourced on starting a shell. <code>$WORKON_HOME</code> is where your virtual environments will be created and stored, whilst <code>$PROJECT_HOME</code> is where projects will be created if you choose to use the helper functions for making projects. Set these to what you want, my options are below. To find out where <code>virtualenvwrapper.sh</code> is installed on your system use <code>which virtualenvwrapper.sh</code>. Once you’ve decided substitute the values in the following of your <code>.bashrc</code> (<a href="https://www.gnu.org/software/bash/">Bash</a>)or <code>.zshrc</code> (<a href="https://www.zsh.org/">ZSH</a>) depending on which shell you use.</p>
+<p>Once installed you need to set two key variables <code>$WORKON_HOME</code> and <code>$PROJECT_HOME</code> and ensure the <code>virtualenvwrapper.sh</code> is sourced on starting a shell. <code>$WORKON_HOME</code> is where your virtual environments will be created and stored, whilst <code>$PROJECT_HOME</code> is where projects will be created if you choose to use the helper functions for making projects. Set these to what you want, my options are below. To find out where <code>virtualenvwrapper.sh</code> is installed on your system use <code>which virtualenvwrapper.sh</code>. Once you’ve decided substitute the values in the following of your <code>.bashrc</code> (<a href="https://www.gnu.org/software/bash/" target="_blank">Bash</a>)or <code>.zshrc</code> (<a href="https://www.zsh.org/" target="_blank">ZSH</a>) depending on which shell you use.</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="bu" style="color: null;">export</span> <span class="va" style="color: #111111;">WORKON_HOME</span><span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">${HOME}</span>/.virtualenvs</span>
 <span id="cb2-2"><span class="bu" style="color: null;">export</span> <span class="va" style="color: #111111;">PROJECT_HOME</span><span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">${HOME}</span>/work/git/</span>
 <span id="cb2-3"><span class="bu" style="color: null;">source</span> /usr/bin/virtualenvwrapper.sh</span></code></pre></div>
@@ -67,14 +387,14 @@
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;">mkvirtualenv</span> <span class="op" style="color: #5E5E5E;">&lt;</span>env_name<span class="op" style="color: #5E5E5E;">&gt;</span></span></code></pre></div>
 <section id="postmkvirtualenv" class="level3">
 <h3 class="anchored" data-anchor-id="postmkvirtualenv"><code>postmkvirtualenv</code></h3>
-<p>But what if there are some tools that you want to install each and every time you create a virtual environment, regardless of the project you are working on? For example I use the <a href="https://github.com/pappasam/jedi-language-server">jedi-language-server</a> and want to have various packages such as <a href="https://ipython.org">ipython</a>, <a href="https://docs.pytest.org/en/latest/">pytest</a> and various extensions, linters such as <a href="https://astral.sh/ruff">ruff</a> and <a href="https://pylint.org">pylint</a> available by default in every environment you create. Fortunately there is a simple hook that can be run after the creation of a new environment. The file <code>~/.virtualenvs/postmkvirtualenv</code> is sourced and run <em>after</em> having run <code>mkvirtualenv</code> and so any commands in there are executed as it is essentially a Bash script.</p>
-<p>If you maintain a <a href="https://dotfiles.github.io/">dotfiles</a> directory and have a file that lists the packages you want installed under <code>~/dotfiles/python/venv_minimal_requirements.txt</code> then you can have the files listed here installed when creating a new virtual environment by appending the command <code>pip install -r ~/dotfiles/python/venv_minimal_requirements.txt</code> to the <code>~/.virtualenvs/postmkvirtualenv</code> file.</p>
+<p>But what if there are some tools that you want to install each and every time you create a virtual environment, regardless of the project you are working on? For example I use the <a href="https://github.com/pappasam/jedi-language-server" target="_blank">jedi-language-server</a> and want to have various packages such as <a href="https://ipython.org" target="_blank">ipython</a>, <a href="https://docs.pytest.org/en/latest/" target="_blank">pytest</a> and various extensions, linters such as <a href="https://astral.sh/ruff" target="_blank">ruff</a> and <a href="https://pylint.org" target="_blank">pylint</a> available by default in every environment you create. Fortunately there is a simple hook that can be run after the creation of a new environment. The file <code>~/.virtualenvs/postmkvirtualenv</code> is sourced and run <em>after</em> having run <code>mkvirtualenv</code> and so any commands in there are executed as it is essentially a Bash script.</p>
+<p>If you maintain a <a href="https://dotfiles.github.io/" target="_blank">dotfiles</a> directory and have a file that lists the packages you want installed under <code>~/dotfiles/python/venv_minimal_requirements.txt</code> then you can have the files listed here installed when creating a new virtual environment by appending the command <code>pip install -r ~/dotfiles/python/venv_minimal_requirements.txt</code> to the <code>~/.virtualenvs/postmkvirtualenv</code> file.</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"pip install -r ~/dotfiles/python/venv_minimal_requirements.txt"</span> <span class="op" style="color: #5E5E5E;">&gt;&gt;</span> ~/.virtualenvs/postmkvirtualenv</span></code></pre></div>
 </section>
 </section>
 <section id="project-directories" class="level2">
 <h2 class="anchored" data-anchor-id="project-directories">Project Directories</h2>
-<p>Typically code for a project resides in its own directory and this can be automatically bound to the virtual environment using the <code>mkproject</code> command instead of <code>mkvirtualenv</code>. The project directory is stored in the <code>$PROJECT_HOME</code> path you will have configured during <a href="installation">installation</a>. You can then create a project <em>and</em> a virtual environment with…</p>
+<p>Typically code for a project resides in its own directory and this can be automatically bound to the virtual environment using the <code>mkproject</code> command instead of <code>mkvirtualenv</code>. The project directory is stored in the <code>$PROJECT_HOME</code> path you will have configured during <a href="installation" target="_blank">installation</a>. You can then create a project <em>and</em> a virtual environment with…</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">mkproject</span> new_project</span></code></pre></div>
 <section id="switching-to-project-directories" class="level3">
 <h3 class="anchored" data-anchor-id="switching-to-project-directories">Switching to Project Directories</h3>
@@ -93,17 +413,17 @@
 <section id="drawbacks" class="level2">
 <h2 class="anchored" data-anchor-id="drawbacks">Drawbacks</h2>
 <p>There are a couple of drawbacks I’ve found to using using <code>virtualenvwrapper</code>.</p>
-<p>The first is that <code>mkproject</code> doesn’t allow nesting of project directories, you have to specify a single directory and it will be created under the <code>$PROJECT_HOME</code> directory with the associated environment name. This doesn’t work for me as I use the structure <code>~/work/git</code> as the base but then have sub-directories based on the Git Forge (<a href="https://github.com">GitHub</a>/<a href="https://gitlab.com">GitLab</a>/<a href="https://codeberg.org/">Codeberg</a>) the repository is associated with and further nesting to reflect the user/organisation within as I have both a personal and work accounts. E.g. <code>~/work/git/hub/ns-rse/ns-rse.github.io</code> which is the source for this site and associated with my work account (<code>ns-rse</code>) or <code>~/work/git/lab/nshephard/tcx2gpx</code> which is a project of mine (<a href="https://gitlab.com/nshephard/tcx2gpx">tcx2gpx</a>) hosted on GitLab. This means that if I wanted to create a project with <code>mkproject</code> based on <code>$PROJECT_HOME</code> being <code>/work/git</code> following this structure I would specify <code>mkproject git/lab/new_project</code> and whilst the directory is created, the virtual environment is created as <code>git/lab/new_project</code> which is truncated to <code>git</code> and you can’t <code>workon git</code> because the activation scripts are nested deeper under <code>git/lab/new_project</code>. Further each environment I created would then conflict. I could probably work around this by creating symbolic links but in practice I just use <code>mkvirtualenv</code> and <code>setvirtualenvproject</code> after I <code>git clone</code> work.</p>
+<p>The first is that <code>mkproject</code> doesn’t allow nesting of project directories, you have to specify a single directory and it will be created under the <code>$PROJECT_HOME</code> directory with the associated environment name. This doesn’t work for me as I use the structure <code>~/work/git</code> as the base but then have sub-directories based on the Git Forge (<a href="https://github.com" target="_blank">GitHub</a>/<a href="https://gitlab.com" target="_blank">GitLab</a>/<a href="https://codeberg.org/" target="_blank">Codeberg</a>) the repository is associated with and further nesting to reflect the user/organisation within as I have both a personal and work accounts. E.g. <code>~/work/git/hub/ns-rse/ns-rse.github.io</code> which is the source for this site and associated with my work account (<code>ns-rse</code>) or <code>~/work/git/lab/nshephard/tcx2gpx</code> which is a project of mine (<a href="https://gitlab.com/nshephard/tcx2gpx" target="_blank">tcx2gpx</a>) hosted on GitLab. This means that if I wanted to create a project with <code>mkproject</code> based on <code>$PROJECT_HOME</code> being <code>/work/git</code> following this structure I would specify <code>mkproject git/lab/new_project</code> and whilst the directory is created, the virtual environment is created as <code>git/lab/new_project</code> which is truncated to <code>git</code> and you can’t <code>workon git</code> because the activation scripts are nested deeper under <code>git/lab/new_project</code>. Further each environment I created would then conflict. I could probably work around this by creating symbolic links but in practice I just use <code>mkvirtualenv</code> and <code>setvirtualenvproject</code> after I <code>git clone</code> work.</p>
 <p>This is a problem specifically of my own creation though, something other users might find causes greater friction is that <code>virtualenvwrapper</code> doesn’t support creating and keeping the virtual environments within the project directory itself. This is never something that I’ve wanted to do myself though as I find it tidier to keep them all in one place and easier to find and remove obsolete environments.</p>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>I’ve used <a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper</a> for years and its a nice light-weight alternative to other solutions of using Pythons Virtual Environments such as <a href="https://docs.python.org/3/library/venv.html"><code>venv</code></a> or <a href="https://docs.conda.io/en/latest/">Conda</a>. It has some limitations but its worth giving it a whirl as there are lots of useful helper functions and hooks that smooth the process of creating, using and switching between virtual environments.</p>
+<p>I’ve used <a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank">virtualenvwrapper</a> for years and its a nice light-weight alternative to other solutions of using Pythons Virtual Environments such as <a href="https://docs.python.org/3/library/venv.html" target="_blank"><code>venv</code></a> or <a href="https://docs.conda.io/en/latest/" target="_blank">Conda</a>. It has some limitations but its worth giving it a whirl as there are lots of useful helper functions and hooks that smooth the process of creating, using and switching between virtual environments.</p>
 </section>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://virtualenvwrapper.readthedocs.io/en/latest/">virtualenvwrapper documentation</a></li>
+<li><a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank">virtualenvwrapper documentation</a></li>
 </ul>
 
 
@@ -133,33 +453,33 @@ No matching items
 
 
 
-<p>I’ve written before about <a href="https://ns-rse.github.io/#category=packaging">Python Packaging</a> and <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> which I’m a big fan of. Today I discovered a really useful tool for checking your packaging configuration and pre-commit configuration from the <a href="https://learn.scientific-python.org/development/">Scientific Python Development Guide</a>.</p>
+<p>I’ve written before about <a href="https://ns-rse.github.io/#category=packaging" target="_blank">Python Packaging</a> and <a href="https://ns-rse.github.io/#category=pre-commit" target="_blank">pre-commit</a> which I’m a big fan of. Today I discovered a really useful tool for checking your packaging configuration and pre-commit configuration from the <a href="https://learn.scientific-python.org/development/" target="_blank">Scientific Python Development Guide</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://ns-rse.github.io/posts/repository-review/https:/live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53258300629/">Elektro</a></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53258300629/" target="_blank">Elektro</a></figcaption><p></p>
 </figure>
 </div>
-<p>This development guide is really well written and has <a href="https://learn.scientific-python.org/development/tutorials/">Tutorials</a> and <a href="https://learn.scientific-python.org/development/guides/">Topical Guides</a> that cover package development, style guides, type checking and tests amongst other things.</p>
+<p>This development guide is really well written and has <a href="https://learn.scientific-python.org/development/tutorials/" target="_blank">Tutorials</a> and <a href="https://learn.scientific-python.org/development/guides/" target="_blank">Topical Guides</a> that cover package development, style guides, type checking and tests amongst other things.</p>
 <section id="repo-review" class="level2">
 <h2 class="anchored" data-anchor-id="repo-review">Repo Review</h2>
-<p>Of particular use is the <a href="https://learn.scientific-python.org/development/guides/repo-review/">Repo-Review - Scientific Python Development Guide</a> which will automatically check a GitHub hosted repository against the Scientific Python development guidelines and make recommendations where improvements can be made to the package configuration and pre-commit configuration.</p>
-<p>Having tested it against <a href="https://learn.scientific-python.org/development/guides/repo-review/?repo=AFM-SPM%2FTopoStats&amp;branch=main">AFM-SPM/TopoStats main branch</a> there are a lot of useful and simple recommendations made.</p>
+<p>Of particular use is the <a href="https://learn.scientific-python.org/development/guides/repo-review/" target="_blank">Repo-Review - Scientific Python Development Guide</a> which will automatically check a GitHub hosted repository against the Scientific Python development guidelines and make recommendations where improvements can be made to the package configuration and pre-commit configuration.</p>
+<p>Having tested it against <a href="https://learn.scientific-python.org/development/guides/repo-review/?repo=AFM-SPM%2FTopoStats&amp;branch=main" target="_blank">AFM-SPM/TopoStats main branch</a> there are a lot of useful and simple recommendations made.</p>
 </section>
 <section id="more-pre-commit-hooks" class="level2">
 <h2 class="anchored" data-anchor-id="more-pre-commit-hooks">More Pre-Commit hooks</h2>
-<p>More <a href="https://pre-commit.com/hooks">pre-commit hooks</a> is only a good thing in my view, they don’t take that long to run against most reasonably sized repositories, particularly if <a href="https://astral.sh/ruff">ruff</a> is used in favour of more traditional tools such as <code>flake8</code> and <code>isort</code>.</p>
-<p>There are a few <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> hooks that I wasn’t aware of and will be adding to my projects such as..,</p>
+<p>More <a href="https://pre-commit.com/hooks" target="_blank">pre-commit hooks</a> is only a good thing in my view, they don’t take that long to run against most reasonably sized repositories, particularly if <a href="https://astral.sh/ruff" target="_blank">ruff</a> is used in favour of more traditional tools such as <code>flake8</code> and <code>isort</code>.</p>
+<p>There are a few <a href="https://ns-rse.github.io/#category=pre-commit" target="_blank">pre-commit</a> hooks that I wasn’t aware of and will be adding to my projects such as..,</p>
 <ul>
-<li><a href="https://pypi.org/project/check-manifest/">Check-manifest</a> that verifies you have working SDist (source) packages.</li>
-<li><a href="https://github.com/codespell-project/codespell">Codespell</a> for checking the spelling used in code.</li>
-<li><a href="https://validate-pyproject.readthedocs.io/">validate-pyproject</a> for validating <code>pyproject.toml</code>.</li>
+<li><a href="https://pypi.org/project/check-manifest/" target="_blank">Check-manifest</a> that verifies you have working SDist (source) packages.</li>
+<li><a href="https://github.com/codespell-project/codespell" target="_blank">Codespell</a> for checking the spelling used in code.</li>
+<li><a href="https://validate-pyproject.readthedocs.io/" target="_blank">validate-pyproject</a> for validating <code>pyproject.toml</code>.</li>
 </ul>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>If you are involved in Python package development of any sort give your repository a review and see what recommendations are suggested. You may not agree with all of the recommendations but the vast majority of tools are highly configurable so you can disable the checks you don’t want applied. It won’t do any harm.</p>
-<p>Now I just need to find time to apply <a href="https://mypy.readthedocs.io/en/stable/">MyPy</a>.</p>
+<p>Now I just need to find time to apply <a href="https://mypy.readthedocs.io/en/stable/" target="_blank">MyPy</a>.</p>
 
 
 
@@ -190,11 +510,11 @@ No matching items
 
 
 
-<p>I’ve written previously on <a href="https://ns-rse.github.io/posts/python-packaging">Python Packaging</a> and in that article included details of how to <a href="https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi">automate publishing to PyPI from GitHub</a>. This article details how to automatically publish your package to <a href="https://pypi.org">PyPI</a> from <a href="https://gitlab.com">GitLab</a>.</p>
+<p>I’ve written previously on <a href="https://ns-rse.github.io/posts/python-packaging" target="_blank">Python Packaging</a> and in that article included details of how to <a href="https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi" target="_blank">automate publishing to PyPI from GitHub</a>. This article details how to automatically publish your package to <a href="https://pypi.org" target="_blank">PyPI</a> from <a href="https://gitlab.com" target="_blank">GitLab</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://ns-rse.github.io/posts/gitlab-ci-pypi/https:/live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985552723/in/dateposted/">Packages with Legs, by Me</a></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985552723/in/dateposted/" target="_blank">Packages with Legs, by Me</a></figcaption><p></p>
 </figure>
 </div>
 <section id="repository-configuration" class="level2">
@@ -205,20 +525,20 @@ No matching items
 </section>
 <section id="protecting-tags" class="level3">
 <h3 class="anchored" data-anchor-id="protecting-tags">Protecting Tags</h3>
-<p>This really stumped me I could build and push automatically from the <code>master</code> branch but could not use the <code>- if  $CI_COMMIT_TAG</code> condition to publish commits that were tagged. I wrote a <a href="https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309">post on the GitLab Forums</a> asking how to do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from <a href="https://mastodon.social/@manu_faktur/111159226739296263"><span class="citation" data-cites="manu_faktur">@manu_faktur</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span></a> and one from <a href="https://mastodon.social/@diazona@techhub.social/111159429646899283"><span class="citation" data-cites="diazona">@diazona</span><span class="citation" data-cites="techhub.social">@techhub.social</span></a>) both asking if I’d protected the tags on my repository.</p>
-<p>I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a> and sure enough this was possible. Go to <em>settings &gt; Repository &gt; Protected tags</em> and set a <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags">wildcard to protect my tags</a>, e.g.&nbsp;<code>v*</code> and the <code>pypi</code> CI job defined below will work as expected, building <em>and</em> uploading to PyPI on tagged commits.</p>
+<p>This really stumped me I could build and push automatically from the <code>master</code> branch but could not use the <code>- if  $CI_COMMIT_TAG</code> condition to publish commits that were tagged. I wrote a <a href="https://forum.gitlab.com/t/ci-variables-missing-when-triggering-build-based-on-tag-solved/93309" target="_blank">post on the GitLab Forums</a> asking how to do this and posted it to Mastodon asking if anyone had any ideas. I got two replies (one from <a href="https://mastodon.social/@manu_faktur/111159226739296263" target="_blank"><span class="citation" data-cites="manu_faktur">@manu_faktur</span><span class="citation" data-cites="mastodon.social">@mastodon.social</span></a> and one from <a href="https://mastodon.social/@diazona@techhub.social/111159429646899283" target="_blank"><span class="citation" data-cites="diazona">@diazona</span><span class="citation" data-cites="techhub.social">@techhub.social</span></a>) both asking if I’d protected the tags on my repository.</p>
+<p>I had no idea that you could protect tags on GitLab (or GitHub for that matter) so looked up the documentation on <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html" target="_blank">Protected tags</a> and sure enough this was possible. Go to <em>settings &gt; Repository &gt; Protected tags</em> and set a <a href="https://docs.gitlab.com/ee/user/project/protected_tags.html#wildcard-protected-tags" target="_blank">wildcard to protect my tags</a>, e.g.&nbsp;<code>v*</code> and the <code>pypi</code> CI job defined below will work as expected, building <em>and</em> uploading to PyPI on tagged commits.</p>
 </section>
 </section>
 <section id="ci-configuration" class="level2">
 <h2 class="anchored" data-anchor-id="ci-configuration">CI Configuration</h2>
 <section id="ci" class="level3">
 <h3 class="anchored" data-anchor-id="ci">CI</h3>
-<p>GitLabs CI/CD is configured via a <a href="https://yaml.org/">YAML</a> file <a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html"><code>.gitlab-ci.yaml</code></a> in the root of your project folder, a useful reference for writing these files is the <a href="https://docs.gitlab.com/ee/ci/yaml/index.html">.gitlab-ci.yml reference</a>.</p>
-<p>An example file from the <a href="https://gitlab.com/nshephard/tcx2gpx/">tcx2gpx</a> package is shown below (see <a href="-/blob/master/.gitlab-ci.yml?ref_type=heads">here</a>).</p>
+<p>GitLabs CI/CD is configured via a <a href="https://yaml.org/" target="_blank">YAML</a> file <a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html" target="_blank"><code>.gitlab-ci.yaml</code></a> in the root of your project folder, a useful reference for writing these files is the <a href="https://docs.gitlab.com/ee/ci/yaml/index.html" target="_blank">.gitlab-ci.yml reference</a>.</p>
+<p>An example file from the <a href="https://gitlab.com/nshephard/tcx2gpx/" target="_blank">tcx2gpx</a> package is shown below (see <a href="-/blob/master/.gitlab-ci.yml?ref_type=heads" target="_blank">here</a>).</p>
 <p>This defines the following…</p>
 <ul>
 <li><code>image</code> - the use of a Docker Python 3.11 image for running the pipeline.</li>
-<li><code>variables</code> - Configures <a href="https://ns-rse.github.io/#category=pre-commit">pre-commit</a> to run and automatically fix issues found on pull requests.</li>
+<li><code>variables</code> - Configures <a href="https://ns-rse.github.io/#category=pre-commit" target="_blank">pre-commit</a> to run and automatically fix issues found on pull requests.</li>
 <li><code>stages</code> - the subsequent stages to run (<strong>NB</strong> the <code>debug</code> stage which prints the environment variables is commented out).</li>
 <li><code>pylint</code> - runs linting on Python 3.10 and 3.11.</li>
 <li><code>pytest</code> - Runs tests on Python 3.10 and 3.11.</li>
@@ -285,12 +605,12 @@ No matching items
 <span id="cb1-58"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> python -m build</span></span>
 <span id="cb1-59"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> twine upload --non-interactive --repository pypi dist/*</span></span></code></pre></div>
 <p>The <code>pypi</code> stage is named and a <code>rule</code> is defined that says to only run this stage if the value of the environment variable <code>$CI_COMMIT_TAG</code> is <code>True</code>. This only happens when a commit has a (protected <span class="emoji" data-emoji="wink">😉</span>) tag.</p>
-<p>The <code>script</code> section then installs the package along with the <code>project.optional-dependencies</code> defined in the <code>pypi</code> section of the <a href="https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies"><code>pyproject.toml</code></a>.</p>
-<p>The package is then built using <a href="https://github.com/pypa/build">build</a> and <a href="https://twine.readthedocs.io/en/stable/index.html">twine</a> is used to push the to push the built package to <a href="https://pypi.org">PyPI</a>.</p>
+<p>The <code>script</code> section then installs the package along with the <code>project.optional-dependencies</code> defined in the <code>pypi</code> section of the <a href="https://ns-rse.github.io/posts/python-packaging/#project.optional-dependencies" target="_blank"><code>pyproject.toml</code></a>.</p>
+<p>The package is then built using <a href="https://github.com/pypa/build" target="_blank">build</a> and <a href="https://twine.readthedocs.io/en/stable/index.html" target="_blank">twine</a> is used to push the to push the built package to <a href="https://pypi.org" target="_blank">PyPI</a>.</p>
 </section>
 <section id="pypi-tokens" class="level3">
 <h3 class="anchored" data-anchor-id="pypi-tokens">PyPI Tokens</h3>
-<p>You should first test building and deploying to the <a href="https://test.pypi.org/">Test PyPI</a> and when this is working simply switch to using the main <a href="https://pypi.org">PyPI</a>. To do so you will need to create an account on both<sup>1</sup>. Once you have set yourself up with an account you can <a href="https://pypi.org/help/#apitoken">generate an API token to authenticate with PyPI</a>. After verifying your email got to <em>Account Settings</em> and select <em>Add API token</em>. These are generated once so copy and paste it into the <a href="https://packaging.python.org/en/latest/specifications/pypirc/#pypirc"><code>.pypirc</code></a> of your project (add this file to your <code>.gitignore</code> so it doesn’t accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI for reference.</p>
+<p>You should first test building and deploying to the <a href="https://test.pypi.org/" target="_blank">Test PyPI</a> and when this is working simply switch to using the main <a href="https://pypi.org" target="_blank">PyPI</a>. To do so you will need to create an account on both<sup>1</sup>. Once you have set yourself up with an account you can <a href="https://pypi.org/help/#apitoken" target="_blank">generate an API token to authenticate with PyPI</a>. After verifying your email got to <em>Account Settings</em> and select <em>Add API token</em>. These are generated once so copy and paste it into the <a href="https://packaging.python.org/en/latest/specifications/pypirc/#pypirc" target="_blank"><code>.pypirc</code></a> of your project (add this file to your <code>.gitignore</code> so it doesn’t accidentally get added). Remember to do this twice, once for PyPI and once for Test PyPI and once for PyPI for reference.</p>
 <pre class="{conf}"><code>[testpypi]
 username = __token__
 password = pypi-&lt;token_value&gt;
@@ -318,7 +638,7 @@ password = pypi-&lt;token_value&gt;</code></pre>
 <span id="cb3-7"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> pip install build</span></span>
 <span id="cb3-8"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> python -m build</span></span>
 <span id="cb3-9"><span class="at" style="color: #657422;">        </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> twine upload --non-interactive --repository testpypi dist/*</span></span></code></pre></div>
-<p>Once this is set create a tag for the current commit using the <em>Code &gt; Tags</em> settings from the left menu of your repository and then the <em>New tag</em> button on the top right. The tag you create should match the wild card pattern you have set for protecting tags and it should comply to the Public version identifiers specified in <a href="https://peps.python.org/pep-0440/#public-version-identifiers">PEP440</a>. On creation it triggers the Pipeline, you can check progress and status by navigating to <em>CI/CD &gt; Pipelines</em> and then viewing it. The <code>pypi</code> job should complete and you should be able to navigate to your package on <a href="https://test.pypi.org">Test PyPI</a>. You can find it under your account settings.</p>
+<p>Once this is set create a tag for the current commit using the <em>Code &gt; Tags</em> settings from the left menu of your repository and then the <em>New tag</em> button on the top right. The tag you create should match the wild card pattern you have set for protecting tags and it should comply to the Public version identifiers specified in <a href="https://peps.python.org/pep-0440/#public-version-identifiers" target="_blank">PEP440</a>. On creation it triggers the Pipeline, you can check progress and status by navigating to <em>CI/CD &gt; Pipelines</em> and then viewing it. The <code>pypi</code> job should complete and you should be able to navigate to your package on <a href="https://test.pypi.org" target="_blank">Test PyPI</a>. You can find it under your account settings.</p>
 <p>If you find there is a problem you will have to correct it and either delete the tag you created and try again or increment the version. PyPI, and in turn Test PyPI which is a mirror with the same functionality, does not permit uploading packages with a version number that already exists.</p>
 </section>
 <section id="publishing-to-pypi" class="level2">
@@ -332,7 +652,7 @@ password = pypi-&lt;token_value&gt;</code></pre>
 <p>Once you have done so you can create a new tag and the upload will be made to PyPI.</p>
 <section id="releases" class="level3">
 <h3 class="anchored" data-anchor-id="releases">Releases</h3>
-<p>An alternative way to apply tags to commits is to make a <a href="https://docs.gitlab.com/ee/user/project/releases/">Releases</a>. In creating a release you apply a tag to the current commit. In addition GitLab will build and compress snapshot of the files and you can add Release Notes detailing what has changed. GitLab will automatically build release artifacts of your repository and make them available for download directly from GitLab.</p>
+<p>An alternative way to apply tags to commits is to make a <a href="https://docs.gitlab.com/ee/user/project/releases/" target="_blank">Releases</a>. In creating a release you apply a tag to the current commit. In addition GitLab will build and compress snapshot of the files and you can add Release Notes detailing what has changed. GitLab will automatically build release artifacts of your repository and make them available for download directly from GitLab.</p>
 </section>
 </section>
 <section id="links" class="level2">
@@ -340,18 +660,18 @@ password = pypi-&lt;token_value&gt;</code></pre>
 <section id="python-packaging" class="level3">
 <h3 class="anchored" data-anchor-id="python-packaging">Python Packaging</h3>
 <ul>
-<li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html">PyPA : Building and Distributing Packages with Setuptools</a></li>
-<li><a href="https://packaging.python.org/en/latest/specifications/">PyPA : Specifications</a></li>
-<li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">Packaging Python Projects</a></li>
-<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
+<li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html" target="_blank">PyPA : Building and Distributing Packages with Setuptools</a></li>
+<li><a href="https://packaging.python.org/en/latest/specifications/" target="_blank">PyPA : Specifications</a></li>
+<li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/" target="_blank">Packaging Python Projects</a></li>
+<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html" target="_blank">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
 </ul>
 </section>
 <section id="gitlab-documentation" class="level3">
 <h3 class="anchored" data-anchor-id="gitlab-documentation">GitLab Documentation</h3>
 <ul>
-<li><a href="https://docs.gitlab.com/ee/topics/build_your_application.html">Use CI/CD to build your application | GitLab</a></li>
-<li><a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html">The <code>.gitlab-ci.yml</code> file | GitLab</a> +</li>
-<li><a href="https://docs.gitlab.com/ee/user/project/protected_tags.html">Protected tags</a></li>
+<li><a href="https://docs.gitlab.com/ee/topics/build_your_application.html" target="_blank">Use CI/CD to build your application | GitLab</a></li>
+<li><a href="https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html" target="_blank">The <code>.gitlab-ci.yml</code> file | GitLab</a> +</li>
+<li><a href="https://docs.gitlab.com/ee/user/project/protected_tags.html" target="_blank">Protected tags</a></li>
 </ul>
 
 
@@ -370,7 +690,7 @@ No matching items
 </div><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p>PyPI now enforces Two Factor Authentication (2FA) for new accounts, see <a href="https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/">2FA Enforcement for New User Registrations</a>↩︎</p></li>
+<li id="fn1"><p>PyPI now enforces Two Factor Authentication (2FA) for new accounts, see <a href="https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/" target="_blank">2FA Enforcement for New User Registrations</a>↩︎</p></li>
 </ol>
 </section></div> ]]></description>
   <category>python</category>
@@ -391,20 +711,20 @@ No matching items
 
 
 
-<p>How to generate documentation websites for your Python package using <a href="https://www.sphinx-doc.org/en/master/">Sphinx</a>, including generating API documentation automatically, build multiple versions across releases and automatically build and host them on GitHub Pages.</p>
+<p>How to generate documentation websites for your Python package using <a href="https://www.sphinx-doc.org/en/master/" target="_blank">Sphinx</a>, including generating API documentation automatically, build multiple versions across releases and automatically build and host them on GitHub Pages.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://ns-rse.github.io/posts/sphinx-docs/https:/live.staticflickr.com/7180/6891757680_739a505d05_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/6891757680/"><em>This is going on my blog</em> Picture by Me.</a></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/6891757680/" target="_blank"><em>This is going on my blog</em> Picture by Me.</a></figcaption><p></p>
 </figure>
 </div>
 <section id="pre-requisites" class="level2">
 <h2 class="anchored" data-anchor-id="pre-requisites">Pre-requisites</h2>
-<p>The instructions here assume that you have your <a href="https://ns-rse.github.io/posts/python-packaging/">Python Packaging</a> well structured, under version control and backed up on <a href="https://github.com">GitHub</a>.</p>
+<p>The instructions here assume that you have your <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a> well structured, under version control and backed up on <a href="https://github.com" target="_blank">GitHub</a>.</p>
 </section>
 <section id="initial-setup" class="level2">
 <h2 class="anchored" data-anchor-id="initial-setup">Initial Setup</h2>
-<p>Sphinx comes with the <a href="https://www.sphinx-doc.org/en/master/man/sphinx-quickstart.html"><code>sphinx-quickstart</code></a> interactive tool which will help setup your repository with a basic <code>conf.py</code> and <code>Makefile</code>. There are a number of command line options but it is also interactive so you can answer questions to configure your setup. I like to keep the source and build directories separate and so use the <code>--sep</code> flag as well as the <code>--makefile</code> flag to generate a <code>Makefile</code> for building documentation on GNU/Linux or OSX (if you use M$-Win the use the <code>--batchfile</code> flag instead).</p>
+<p>Sphinx comes with the <a href="https://www.sphinx-doc.org/en/master/man/sphinx-quickstart.html" target="_blank"><code>sphinx-quickstart</code></a> interactive tool which will help setup your repository with a basic <code>conf.py</code> and <code>Makefile</code>. There are a number of command line options but it is also interactive so you can answer questions to configure your setup. I like to keep the source and build directories separate and so use the <code>--sep</code> flag as well as the <code>--makefile</code> flag to generate a <code>Makefile</code> for building documentation on GNU/Linux or OSX (if you use M$-Win the use the <code>--batchfile</code> flag instead).</p>
 <p>I keep documentation under <code>docs/</code> directory within the root of the package directory.</p>
 <pre class="{bash}"><code>cd ~/path/to/package
 mkdir docs
@@ -425,7 +745,7 @@ sphinx-quickstart --makefile</code></pre>
 This is my package, there are many packages like it but this one is mine.</code></pre>
 <section id="including-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="including-markdown">Including Markdown</h3>
-<p>I already know <a href="https://www.markdownguide.org/">Markdown</a> fairly well and would rather use that to write documents (as I do with thisblog). Fortunately Sphinx can incorporate documentation written in <a href="https://github.com/ryanfox/sphinx-markdown-tables">Markdown</a> using the <a href="https://myst-parser.readthedocs.io/en/latest/"><code>myst_parser</code></a> package. Simply include it in the <code>extensions</code>.</p>
+<p>I already know <a href="https://www.markdownguide.org/" target="_blank">Markdown</a> fairly well and would rather use that to write documents (as I do with thisblog). Fortunately Sphinx can incorporate documentation written in <a href="https://github.com/ryanfox/sphinx-markdown-tables" target="_blank">Markdown</a> using the <a href="https://myst-parser.readthedocs.io/en/latest/" target="_blank"><code>myst_parser</code></a> package. Simply include it in the <code>extensions</code>.</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">extensions <span class="op" style="color: #5E5E5E;">=</span> [</span>
 <span id="cb3-2">    <span class="st" style="color: #20794D;">"myst_parser"</span>,</span>
@@ -448,11 +768,11 @@ This is my package, there are many packages like it but this one is mine.
    configuration</code></pre>
 <section id="markdown-tables" class="level4">
 <h4 class="anchored" data-anchor-id="markdown-tables">Markdown Tables</h4>
-<p>If you have tables in Markdown (and its likely that you will) then you will need the <a href="https://github.com/ryanfox/sphinx-markdown-tables"><code>sphinx-markdown-tables</code></a> package which ensures they are rendered correctly.</p>
+<p>If you have tables in Markdown (and its likely that you will) then you will need the <a href="https://github.com/ryanfox/sphinx-markdown-tables" target="_blank"><code>sphinx-markdown-tables</code></a> package which ensures they are rendered correctly.</p>
 </section>
 <section id="mermaid-diagrams" class="level4">
 <h4 class="anchored" data-anchor-id="mermaid-diagrams">Mermaid Diagrams</h4>
-<p>Further Sphinx has support for <a href="https://mermaid.js.org/">Mermaid</a> diagrams that have been written in Markdown documents via the <a href="https://github.com/mgaitan/sphinxcontrib-mermaid"><code>sphinxcontrib-mermaid</code></a> package. This means that you can include all sorts of neat diagrams such as <a href="https://mermaid.live/edit#pako:eNqlVl1v2jAU_SuWJcQLQ4kTWpI31o-tU7tupX2ZeDHJDVhNbOQ4HS3iv-8mIRPQpBBKHrDjc66Pfc91vKKBCoH6tNNZCSmMT1ZdM4cEuj7pTnkK3R7pzoT5pvli3s1HtTLcwIVKEmFu-RRifGt0BuuJJNUP2-tOp3xRkf8PBwWViNAnE3rLU0Mi4CbTMKH1mBerb_etrdGp5jKYb0ZIJJaQvudO6ONcpBUWW5HSJZYYRXJmXcQ7kaZCzsiP8f1PRMdQ8vbgO_JGYUiSbdomfN_ahN0mziF4Vplp0p6AnsFpMoop7bq5Ei5kPee63Hi7Cs52trkOyo6AvhvdzhdrylfJPZAz1i5nrGXO2OGcsRNyVq9aacDYXM6O0Pu0CLHoyAUPQb5xEquZOgB9uBpd3l2dsow2uoo9a2m6ahFf8XSJhWws-yc8jsgjpKaUAS88zrhROj2WIHERATTjUbzT6FPnUz516qJei2Xuj1QlYOZ5S0iCZy2JsryyiJL7zN0CFMsmamOWncYst9dywD7tVsk-WmWOTnkCZKHVNIak4pxemp_TVJictdjk9y5rWSIPEPEArU6-j0a_b5oib6HGx6F-3Xyg0m2sBfdTteDW71yx-kYXaLwWqAi3SL4SCX-rK0LamAX3Q0fupn5f1L4BK9_ZG2ccBWZ14AMSt_x5vMIiVS0NdavwUEzyk31zKiYgDSqhPYoakBfiFXCVcye0uP5NaE4LuX7OJ1ojLiu-K1ehQC9RP7_x9SjPjBq_yqDql5hLwWeaJ9XLBZd_lMJuxOO07FN_RZfU_-IOrb43OMfH8twzNhwOevSV-mdW_8xiA8-ybc_DP2_do29FCPxAM9dyhoOBw5xzzx6s_wG-Ijr0">Git Graph</a>.</p>
+<p>Further Sphinx has support for <a href="https://mermaid.js.org/" target="_blank">Mermaid</a> diagrams that have been written in Markdown documents via the <a href="https://github.com/mgaitan/sphinxcontrib-mermaid" target="_blank"><code>sphinxcontrib-mermaid</code></a> package. This means that you can include all sorts of neat diagrams such as <a href="https://mermaid.live/edit#pako:eNqlVl1v2jAU_SuWJcQLQ4kTWpI31o-tU7tupX2ZeDHJDVhNbOQ4HS3iv-8mIRPQpBBKHrDjc66Pfc91vKKBCoH6tNNZCSmMT1ZdM4cEuj7pTnkK3R7pzoT5pvli3s1HtTLcwIVKEmFu-RRifGt0BuuJJNUP2-tOp3xRkf8PBwWViNAnE3rLU0Mi4CbTMKH1mBerb_etrdGp5jKYb0ZIJJaQvudO6ONcpBUWW5HSJZYYRXJmXcQ7kaZCzsiP8f1PRMdQ8vbgO_JGYUiSbdomfN_ahN0mziF4Vplp0p6AnsFpMoop7bq5Ei5kPee63Hi7Cs52trkOyo6AvhvdzhdrylfJPZAz1i5nrGXO2OGcsRNyVq9aacDYXM6O0Pu0CLHoyAUPQb5xEquZOgB9uBpd3l2dsow2uoo9a2m6ahFf8XSJhWws-yc8jsgjpKaUAS88zrhROj2WIHERATTjUbzT6FPnUz516qJei2Xuj1QlYOZ5S0iCZy2JsryyiJL7zN0CFMsmamOWncYst9dywD7tVsk-WmWOTnkCZKHVNIak4pxemp_TVJictdjk9y5rWSIPEPEArU6-j0a_b5oib6HGx6F-3Xyg0m2sBfdTteDW71yx-kYXaLwWqAi3SL4SCX-rK0LamAX3Q0fupn5f1L4BK9_ZG2ccBWZ14AMSt_x5vMIiVS0NdavwUEzyk31zKiYgDSqhPYoakBfiFXCVcye0uP5NaE4LuX7OJ1ojLiu-K1ehQC9RP7_x9SjPjBq_yqDql5hLwWeaJ9XLBZd_lMJuxOO07FN_RZfU_-IOrb43OMfH8twzNhwOevSV-mdW_8xiA8-ybc_DP2_do29FCPxAM9dyhoOBw5xzzx6s_wG-Ijr0" target="_blank">Git Graph</a>.</p>
 <div class="cell" data-fig-height="2">
 <div class="cell-output-display">
 <div>
@@ -495,16 +815,16 @@ gitGraph
 </section>
 <section id="including-api-documentation" class="level2">
 <h2 class="anchored" data-anchor-id="including-api-documentation">Including API Documentation</h2>
-<p>As you write your package it is good practice include <a href="https://realpython.com/documenting-python-code/">docstrings</a> for each module/class/method/function that you write. For Python there are several different styles for writing these, my personal preference is for <a href="https://numpydoc.readthedocs.io/en/latest/format.html">numpydoc style</a> but regardless of your preference you should write them. They are invaluable to users (including your future self) to understand how the code works and as many modern Integrated Development Environments (IDEs) supporting functionality to show the documentation for functions as you type they are an invaluable reference. If you’re an <a href="https://www.gnu.org/software/emacs/">Emacs</a> user then you can leverage the <a href="https://github.com/douglasdavis/numpydoc.el">numpydoc</a> package to automatically insert NumPy docstrings in Python function definitions based on the function definition, it automatically detects names, type hints, exceptions and return types to generate the docstring (yet another reason to use Emacs!).</p>
+<p>As you write your package it is good practice include <a href="https://realpython.com/documenting-python-code/" target="_blank">docstrings</a> for each module/class/method/function that you write. For Python there are several different styles for writing these, my personal preference is for <a href="https://numpydoc.readthedocs.io/en/latest/format.html" target="_blank">numpydoc style</a> but regardless of your preference you should write them. They are invaluable to users (including your future self) to understand how the code works and as many modern Integrated Development Environments (IDEs) supporting functionality to show the documentation for functions as you type they are an invaluable reference. If you’re an <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> user then you can leverage the <a href="https://github.com/douglasdavis/numpydoc.el" target="_blank">numpydoc</a> package to automatically insert NumPy docstrings in Python function definitions based on the function definition, it automatically detects names, type hints, exceptions and return types to generate the docstring (yet another reason to use Emacs!).</p>
 <p>Whilst it is useful to have this API available in an IDE as you work it is also useful to include the reference on a packages website and this is relatively straight-forward with Sphinx which provides several tools and extensions.</p>
 <section id="sphinx-apidoc" class="level3">
 <h3 class="anchored" data-anchor-id="sphinx-apidoc"><code>sphinx-apidoc</code></h3>
-<p>The first is the the <a href="https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html"><code>sphinx-apidoc</code></a> command to generate documentation from the embedded docstrings. This is a command line tool that could be added to the <code>Makefile</code>.</p>
+<p>The first is the the <a href="https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html" target="_blank"><code>sphinx-apidoc</code></a> command to generate documentation from the embedded docstrings. This is a command line tool that could be added to the <code>Makefile</code>.</p>
 </section>
 <section id="sphinx-autoapi" class="level3">
 <h3 class="anchored" data-anchor-id="sphinx-autoapi"><code>sphinx-autoapi</code></h3>
-<p>However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
-<p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html">configuring</a> at a bare minimum which directories to generate documentation from. i</p>
+<p>However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/" target="_blank">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
+<p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html" target="_blank">configuring</a> at a bare minimum which directories to generate documentation from. i</p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">extensions <span class="op" style="color: #5E5E5E;">=</span> [</span>
 <span id="cb6-2">    <span class="st" style="color: #20794D;">"autoapi.extension"</span>,</span>
@@ -514,12 +834,12 @@ gitGraph
 <span id="cb6-6">autotype_api <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"python"</span></span>
 <span id="cb6-7">autoapi_dirs <span class="op" style="color: #5E5E5E;">=</span> [<span class="st" style="color: #20794D;">"../mypackage"</span>]</span></code></pre></div>
 </div>
-<p>There are a lot of subtle configuration options and I would recommend reading the <a href="https://sphinx-autoapi.readthedocs.io/en/latest/">documentation</a> and working through the <a href="https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html">Tutorials</a> and <a href="https://sphinx-autoapi.readthedocs.io/en/latest/how_to.html">How To Guides</a>.</p>
-<p>This has the added advantage that it works with <a href="https://readthedocs.org">ReadTheDocs</a>.</p>
+<p>There are a lot of subtle configuration options and I would recommend reading the <a href="https://sphinx-autoapi.readthedocs.io/en/latest/" target="_blank">documentation</a> and working through the <a href="https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html" target="_blank">Tutorials</a> and <a href="https://sphinx-autoapi.readthedocs.io/en/latest/how_to.html" target="_blank">How To Guides</a>.</p>
+<p>This has the added advantage that it works with <a href="https://readthedocs.org" target="_blank">ReadTheDocs</a>.</p>
 </section>
 <section id="sphinx-autosummary" class="level3">
 <h3 class="anchored" data-anchor-id="sphinx-autosummary">Sphinx Autosummary</h3>
-<p>In addition the <a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html">sphinx_ext_autosummary</a> automates summarising the API docstrings.</p>
+<p>In addition the <a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html" target="_blank">sphinx_ext_autosummary</a> automates summarising the API docstrings.</p>
 <p>Add the package as a dependency to the <code>extensions</code>…</p>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">extensions <span class="op" style="color: #5E5E5E;">=</span> [</span>
@@ -545,7 +865,7 @@ gitGraph
 </section>
 <section id="multiple-versions" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-versions">Multiple Versions</h2>
-<p>Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision documentation for each version that is available. Fortunately the Sphinx extension <a href="https://holzhaus.github.io/sphinx-multiversion/master/">sphinx-multiversion</a> makes this relatively painless.</p>
+<p>Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision documentation for each version that is available. Fortunately the Sphinx extension <a href="https://holzhaus.github.io/sphinx-multiversion/master/" target="_blank">sphinx-multiversion</a> makes this relatively painless.</p>
 <p>You need to include it in the list of <code>extensions</code> of <code>docs/conf.py</code></p>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">extensions <span class="op" style="color: #5E5E5E;">=</span> [</span>
@@ -564,7 +884,7 @@ gitGraph
 <span id="cb11-4"></span>
 <span id="cb11-5">html_sidebars <span class="op" style="color: #5E5E5E;">=</span>  {<span class="st" style="color: #20794D;">"**"</span>:   <span class="st" style="color: #20794D;">"versioning.html"</span>,}</span></code></pre></div>
 </div>
-<p>The <code>versioning.html</code> file can take a number of formats, refer to the <a href="https://holzhaus.github.io/sphinx-multiversion/master/templates.html">documentation</a> for all options, but the following is an example.</p>
+<p>The <code>versioning.html</code> file can take a number of formats, refer to the <a href="https://holzhaus.github.io/sphinx-multiversion/master/templates.html" target="_blank">documentation</a> for all options, but the following is an example.</p>
 <pre class="{html}"><code>{% if versions %}
 &lt;h3&gt;{{ _('Versions') }}&lt;/h3&gt;
 &lt;ul&gt;
@@ -577,7 +897,7 @@ gitGraph
 </section>
 <section id="tagsbranches" class="level4">
 <h4 class="anchored" data-anchor-id="tagsbranches">Tags/Branches</h4>
-<p>If no options are set then <code>sphinx-multiversion</code> will build documentation for <em>all</em> branhces, which is probably undesirable. Typically you want to restrict this to the released versions which are identified by <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tags</a> and perhaps your <code>main</code>/<code>master</code> branch. If you prefix your tags with <code>v</code> and you want to build the documentation for the <code>HEAD</code> of your <code>main</code> (or <code>master</code>) branch then you should set options as shown below for <code>sphinx-multiversion</code>. I like to be able to test documentation builds and so I have a section that allows me to include a given branch.</p>
+<p>If no options are set then <code>sphinx-multiversion</code> will build documentation for <em>all</em> branhces, which is probably undesirable. Typically you want to restrict this to the released versions which are identified by <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging" target="_blank">git tags</a> and perhaps your <code>main</code>/<code>master</code> branch. If you prefix your tags with <code>v</code> and you want to build the documentation for the <code>HEAD</code> of your <code>main</code> (or <code>master</code>) branch then you should set options as shown below for <code>sphinx-multiversion</code>. I like to be able to test documentation builds and so I have a section that allows me to include a given branch.</p>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">smv_tag_whitelist <span class="op" style="color: #5E5E5E;">=</span> <span class="vs" style="color: #20794D;">r"^v\d+.*$"</span>  <span class="co" style="color: #5E5E5E;"># Tags begining with v#</span></span>
 <span id="cb13-2">smv_branch_whitelist <span class="op" style="color: #5E5E5E;">=</span> <span class="vs" style="color: #20794D;">r"^main$"</span>  <span class="co" style="color: #5E5E5E;"># main branch</span></span>
@@ -598,14 +918,14 @@ gitGraph
 </section>
 <section id="themes" class="level2">
 <h2 class="anchored" data-anchor-id="themes">Themes</h2>
-<p>There are a number of different themes available for including in your package. Which is used is defined by the <code>html_theme</code> variable in <code>docs/conf.py</code>. I like the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html"><code>pydata-sphinx-theme</code></a> that is used by <a href="https://pandas.pydata.org">Pandas</a>/<a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">Matplotlib</a>.</p>
+<p>There are a number of different themes available for including in your package. Which is used is defined by the <code>html_theme</code> variable in <code>docs/conf.py</code>. I like the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank"><code>pydata-sphinx-theme</code></a> that is used by <a href="https://pandas.pydata.org" target="_blank">Pandas</a>/<a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank">Matplotlib</a>.</p>
 <div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">html_theme <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"pydata_sphinx_theme"</span></span></code></pre></div>
 </div>
 </section>
 <section id="package-dependencies" class="level2">
 <h2 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h2>
-<p>Since the documentation is part of your package it is important to include all of the dependencies that are required for building the documentation dependencies of your package so they can be easily installed and are available to Sphinx (since Sphinx will try loading anything listed in your <code>docs/conf.py</code>). These days you should really be using <code>pyproject.toml</code> to configure and manage your package, if you are unfamiliar with the packaging process see my post on <a href="https://ns-rse.github.io/posts/python-packaging/">Python Packaging</a>.</p>
+<p>Since the documentation is part of your package it is important to include all of the dependencies that are required for building the documentation dependencies of your package so they can be easily installed and are available to Sphinx (since Sphinx will try loading anything listed in your <code>docs/conf.py</code>). These days you should really be using <code>pyproject.toml</code> to configure and manage your package, if you are unfamiliar with the packaging process see my post on <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a>.</p>
 <div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">[project.optional<span class="op" style="color: #5E5E5E;">-</span>dependencies]</span>
 <span id="cb15-2"></span>
@@ -635,8 +955,8 @@ sphinx-multiversion . _build/html</code></pre>
 <p>Output should reside under the <code>~/path/to/package/docs/_build/html/</code> directory and there should be a directory for every tag as well as <code>main</code> (or <code>master</code>).</p>
 <section id="deploying-on-github-pages" class="level3">
 <h3 class="anchored" data-anchor-id="deploying-on-github-pages">Deploying on GitHub Pages</h3>
-<p>The final stage is to leverage <a href="https://pages.github.com/">GitHub Pages</a> to host your documentation. This can be achieved using a <a href="https://docs.github.com/en/actions">GitHub Action</a>. These are a way of running certain tasks automatically on GitHub in response to certain actions. You can configure your actions to use those defined by others. I found the <a href="https://github.com/uibcdf/action-sphinx-docs-to-gh-pages"><code>action-sphinx-docs-to-gh-pages</code></a> action for generating Sphinx documentation but it didn’t support generating API documentation nor multiple versions of documentation so I have <a href="https://github.com/ns-rse/action-sphinx-docs-to-gh-pages">forked</a> it and added this functionality (I intend to work with the authors and push the changes upstream).</p>
-<p>To use this action you need to create a file in <code>~/path/to/package/.github/workflows/</code> called <code>sphinx_docs_to_gh_pages.yaml</code> and copy and paste the following <a href="https://yaml.org/">YAML</a>.</p>
+<p>The final stage is to leverage <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> to host your documentation. This can be achieved using a <a href="https://docs.github.com/en/actions" target="_blank">GitHub Action</a>. These are a way of running certain tasks automatically on GitHub in response to certain actions. You can configure your actions to use those defined by others. I found the <a href="https://github.com/uibcdf/action-sphinx-docs-to-gh-pages" target="_blank"><code>action-sphinx-docs-to-gh-pages</code></a> action for generating Sphinx documentation but it didn’t support generating API documentation nor multiple versions of documentation so I have <a href="https://github.com/ns-rse/action-sphinx-docs-to-gh-pages" target="_blank">forked</a> it and added this functionality (I intend to work with the authors and push the changes upstream).</p>
+<p>To use this action you need to create a file in <code>~/path/to/package/.github/workflows/</code> called <code>sphinx_docs_to_gh_pages.yaml</code> and copy and paste the following <a href="https://yaml.org/" target="_blank">YAML</a>.</p>
 <pre class="{yaml}"><code>name: Sphinx docs to gh-pages
 
 on:
@@ -677,25 +997,25 @@ jobs:
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://www.sphinx-doc.org/en/master/">Sphinx</a></li>
+<li><a href="https://www.sphinx-doc.org/en/master/" target="_blank">Sphinx</a></li>
 </ul>
 <section id="sphinx-extensions" class="level3">
 <h3 class="anchored" data-anchor-id="sphinx-extensions">Sphinx Extensions</h3>
 <ul>
-<li><a href="https://myst-parser.readthedocs.io/en/latest/"><code>myst_parser</code></a></li>
-<li><a href="https://sphinx-autoapi.readthedocs.io/en/latest/"><code>sphinx-autoapi</code></a></li>
-<li><a href="https://github.com/ryanfox/sphinx-markdown-tables"><code>sphinx-markdown-tables</code></a></li>
-<li><a href="https://holzhaus.github.io/sphinx-multiversion/master/"><code>sphinx-multiversion</code></a></li>
-<li><a href="https://github.com/mgaitan/sphinxcontrib-mermaid"><code>sphinxcontrib-mermaid</code></a></li>
-<li><a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html"><code>sphinx-ext-autosummary</code></a></li>
+<li><a href="https://myst-parser.readthedocs.io/en/latest/" target="_blank"><code>myst_parser</code></a></li>
+<li><a href="https://sphinx-autoapi.readthedocs.io/en/latest/" target="_blank"><code>sphinx-autoapi</code></a></li>
+<li><a href="https://github.com/ryanfox/sphinx-markdown-tables" target="_blank"><code>sphinx-markdown-tables</code></a></li>
+<li><a href="https://holzhaus.github.io/sphinx-multiversion/master/" target="_blank"><code>sphinx-multiversion</code></a></li>
+<li><a href="https://github.com/mgaitan/sphinxcontrib-mermaid" target="_blank"><code>sphinxcontrib-mermaid</code></a></li>
+<li><a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html" target="_blank"><code>sphinx-ext-autosummary</code></a></li>
 </ul>
 </section>
 <section id="github" class="level3">
 <h3 class="anchored" data-anchor-id="github">GitHub</h3>
 <ul>
-<li><a href="https://pages.github.com/">GitHub Pages</a></li>
-<li><a href="https://docs.github.com/en/actions">GitHub Action</a></li>
-<li><a href="https://github.com/marketplace/actions/sphinx-docs-to-github-pages">Sphinx docs to GitHub Pages · Actions · GitHub Marketplace</a> ( <a href="https://github.com/ns-rse/action-sphinx-docs-to-gh-pages">my fork</a> with added <code>sphinx-multiversion</code> support).</li>
+<li><a href="https://pages.github.com/" target="_blank">GitHub Pages</a></li>
+<li><a href="https://docs.github.com/en/actions" target="_blank">GitHub Action</a></li>
+<li><a href="https://github.com/marketplace/actions/sphinx-docs-to-github-pages" target="_blank">Sphinx docs to GitHub Pages · Actions · GitHub Marketplace</a> ( <a href="https://github.com/ns-rse/action-sphinx-docs-to-gh-pages" target="_blank">my fork</a> with added <code>sphinx-multiversion</code> support).</li>
 </ul>
 
 
@@ -729,20 +1049,20 @@ No matching items
 
 
 
-<p>This post describes steps in creating a <a href="https://www.python/org">Python</a> package. If you are looking for information on installing packages this is done using <a href="https://pypi.org/">Python PIP</a>.</p>
+<p>This post describes steps in creating a <a href="https://www.python/org" target="_blank">Python</a> package. If you are looking for information on installing packages this is done using <a href="https://pypi.org/" target="_blank">Python PIP</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://ns-rse.github.io/posts/python-packaging/https:/live.staticflickr.com/65535/52595884731_fb5c7d576e_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52595884731/"><em>Water and Light</em> - Picture by Me</a></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52595884731/" target="_blank"><em>Water and Light</em> - Picture by Me</a></figcaption><p></p>
 </figure>
 </div>
-<p><a href="https://www.python/org">Python</a> packaging is in a constant state of flux. There is the official <a href="https://packaging.python.org/en/latest/">Python Packaging User Guide</a> and the <a href="https://www.pypa.io/en/latest/">Python Packaging Authority (PyPA)</a> which is probably the best resource to read but things change, and often quickly. The focus here is on the PyPA <a href="https://setuptools.pypa.io/en/latest/index.html">Setuptools</a> using <code>pyproject.toml</code> which works with Python &gt;= 3.7, but you may wish to consider other packages such as <a href="../../posts/python-packaging/index.html#poetry">Poetry</a> or <a href="../../posts/python-packaging/index.html#PDM">PDM</a> which offer some advantages but with additional frameworks to learn.</p>
-<p>A few examples of Python packages that I have packaged are listed below, most have also been released to <a href="https://pypi.org/">PyPI</a>.</p>
+<p><a href="https://www.python/org" target="_blank">Python</a> packaging is in a constant state of flux. There is the official <a href="https://packaging.python.org/en/latest/" target="_blank">Python Packaging User Guide</a> and the <a href="https://www.pypa.io/en/latest/" target="_blank">Python Packaging Authority (PyPA)</a> which is probably the best resource to read but things change, and often quickly. The focus here is on the PyPA <a href="https://setuptools.pypa.io/en/latest/index.html" target="_blank">Setuptools</a> using <code>pyproject.toml</code> which works with Python &gt;= 3.7, but you may wish to consider other packages such as <a href="../../posts/python-packaging/index.html#poetry" target="_blank">Poetry</a> or <a href="../../posts/python-packaging/index.html#PDM" target="_blank">PDM</a> which offer some advantages but with additional frameworks to learn.</p>
+<p>A few examples of Python packages that I have packaged are listed below, most have also been released to <a href="https://pypi.org/" target="_blank">PyPI</a>.</p>
 <ul>
-<li><a href="https://pypi.org/project/tcx2gpx/">tcx2gpx</a> (personal)</li>
-<li><a href="https://github.com/AFM-SPM/TopoStats/">TopoStats</a> (professional)</li>
-<li><a href="https://github.com/claritychallenge/clarity">clarity</a> (professional)</li>
-<li><a href="https://github.com/Mesnage-Org/pgfinder">pgfinder</a> (professional)</li>
+<li><a href="https://pypi.org/project/tcx2gpx/" target="_blank">tcx2gpx</a> (personal)</li>
+<li><a href="https://github.com/AFM-SPM/TopoStats/" target="_blank">TopoStats</a> (professional)</li>
+<li><a href="https://github.com/claritychallenge/clarity" target="_blank">clarity</a> (professional)</li>
+<li><a href="https://github.com/Mesnage-Org/pgfinder" target="_blank">pgfinder</a> (professional)</li>
 </ul>
 <section id="package-structure" class="level2">
 <h2 class="anchored" data-anchor-id="package-structure">Package Structure</h2>
@@ -764,14 +1084,14 @@ No matching items
 <span id="cb1-15">        <span class="ex" style="color: null;">└──</span> ./tests/something/test_module_c.py</span></code></pre></div>
 <section id="init__.py" class="level3">
 <h3 class="anchored" data-anchor-id="init__.py"><code>__init__.py</code></h3>
-<p>In older versions of Python (&lt;3.3) a <code>__init__.py</code> was required in every directory and sub-directory that was to be a module/sub-module. In more recent versions of Python (&gt;\=3.3) they are not essential though as Python uses <a href="https://docs.python.org/3/reference/import.html#namespace-packages">namespace packages</a>. But in most cases its simpler to include such a file in the top level of your directory. <code>__init__.py</code> files can be completely empty or they can contain code that is used throughout your package, such as setting up a logger.</p>
+<p>In older versions of Python (&lt;3.3) a <code>__init__.py</code> was required in every directory and sub-directory that was to be a module/sub-module. In more recent versions of Python (&gt;\=3.3) they are not essential though as Python uses <a href="https://docs.python.org/3/reference/import.html#namespace-packages" target="_blank">namespace packages</a>. But in most cases its simpler to include such a file in the top level of your directory. <code>__init__.py</code> files can be completely empty or they can contain code that is used throughout your package, such as setting up a logger.</p>
 </section>
 </section>
 <section id="configuration-pyproject.toml" class="level2">
 <h2 class="anchored" data-anchor-id="configuration-pyproject.toml">Configuration <code>pyproject.toml</code></h2>
 <p>Package configuration has been and is in a state of flux, there was originally <code>setup.py</code> which was then complemented and gradually replaced by <code>setup.cfg</code>. The new method on the block though is <code>pyproject.toml</code> which, with a little tweaking and judicious choice of packages can handle everything.</p>
-<p>Setuptools is shifting towards using <code>pyproject.toml</code> and whilst it is still under development its already highly functional. It’s written in <a href="https://toml.io/en/">Tom's Obvious Minimal Language</a> and isn't too dissimilar in structure to <code>setup.cfg</code>.</p>
-<p>A useful reference for writing your configuration in <code>pyproject.toml</code> is <a href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html">Configuring setuptools using pyproject.toml files</a>. It is based around <a href="https://peps.python.org/pep-0621/">PEP 621 – Storing project metadata in pyproject.toml | peps.python.org</a>.</p>
+<p>Setuptools is shifting towards using <code>pyproject.toml</code> and whilst it is still under development its already highly functional. It’s written in <a href="https://toml.io/en/" target="_blank">Tom's Obvious Minimal Language</a> and isn't too dissimilar in structure to <code>setup.cfg</code>.</p>
+<p>A useful reference for writing your configuration in <code>pyproject.toml</code> is <a href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html" target="_blank">Configuring setuptools using pyproject.toml files</a>. It is based around <a href="https://peps.python.org/pep-0621/" target="_blank">PEP 621 – Storing project metadata in pyproject.toml | peps.python.org</a>.</p>
 <p>A bare-bones <code>pyproject.toml</code> file should reside in the top level of your directory with the following (<strong>NB</strong> This includes the minimum versions and <code>setuptools_scm</code> extension for dynamically setting package version)…</p>
 <section id="build-system" class="level3">
 <h3 class="anchored" data-anchor-id="build-system"><code>build-system</code></h3>
@@ -783,8 +1103,8 @@ No matching items
 <section id="project" class="level3">
 <h3 class="anchored" data-anchor-id="project"><code>project</code></h3>
 <p>This is the main body of the project description detailing <code>name</code>, <code>authors</code>, <code>description</code>, <code>readme</code>, <code>license</code>, <code>keywords</code>, <code>classifiers</code>, <code>dependencies</code> and <code>version</code> amongst other things.</p>
-<p>The type of license you have chosen to apply to your package. For guidance see <a href="https://choosealicense.com/">Choose an Open Source License</a>.</p>
-<p>The <code>README</code> of your package which may be in <a href="https://www.markdownguide.org/">Markdown</a> or Restructured Text.</p>
+<p>The type of license you have chosen to apply to your package. For guidance see <a href="https://choosealicense.com/" target="_blank">Choose an Open Source License</a>.</p>
+<p>The <code>README</code> of your package which may be in <a href="https://www.markdownguide.org/" target="_blank">Markdown</a> or Restructured Text.</p>
 <p>Sets the components of your package which are set dynamically. In this example we only set the version dynamically using <code>setuptools_scm</code>.</p>
 <p>The <code>dependencies</code> are those that are required for running the code. They should not include packages that are required for development (e.g.&nbsp;<code>black</code>. <code>flake8</code>, <code>ruff</code>, <code>pre-comit</code>, <code>pylint</code> etc.), nor those required for testing (e.g.&nbsp;<code>pytest</code>, <code>pytest-regtest</code>, <code>pytest-cov</code> etc.), documentation (e.g.&nbsp;<code>Sphinx</code>, <code>numpydoc</code>, <code>sphinx_markdown_table</code>, <code>sphinx-autodoc-typehints</code>, <code>sphinxcontrib-mermaid</code> etc.) as these are defined in a separate section.</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">project</span><span class="kw" style="color: #003B4F;">]</span></span>
@@ -864,7 +1184,7 @@ No matching items
 <h3 class="anchored" data-anchor-id="tool"><code>tool</code></h3>
 <section id="tool.setuptools" class="level4">
 <h4 class="anchored" data-anchor-id="tool.setuptools"><code>tool.setuptools</code></h4>
-<p><a href="https://setuptools.pypa.io/en/latest/index.html">setuptools</a> is perhaps the most common package for configuring Python packages and is the one that is being exposed here. Its configuration is multi-level depending on which component you are configuring.</p>
+<p><a href="https://setuptools.pypa.io/en/latest/index.html" target="_blank">setuptools</a> is perhaps the most common package for configuring Python packages and is the one that is being exposed here. Its configuration is multi-level depending on which component you are configuring.</p>
 <section id="tool.setuptools.packages.find" class="level5">
 <h5 class="anchored" data-anchor-id="tool.setuptools.packages.find"><code>tool.setuptools.packages.find</code></h5>
 <p>Uses the <code>find</code> utility to search for packages to include, based on my understanding it looks for <code>__init__.py</code> in a directory and includes it (see above note about these no longer being required in every directory). Typically you would want to exclude <code>tests/</code> from a package you are making as most users won’t need to run the test suite (if they do they would clone from the source repository).</p>
@@ -911,7 +1231,7 @@ No matching items
 </section>
 <section id="tool.flake8" class="level4">
 <h4 class="anchored" data-anchor-id="tool.flake8"><code>tool.flake8</code></h4>
-<p>The developers of Flake8 will not be supporting <code>pyproject.toml</code> for configuration. This is a shame but a work around is available in the form of <a href="https://github.com/john-hen/Flake8-pyproject">Flake8-pyproject</a>. Make sure to add this to your requirements section to ensure it is installed when people use <code>pre-commit</code>.</p>
+<p>The developers of Flake8 will not be supporting <code>pyproject.toml</code> for configuration. This is a shame but a work around is available in the form of <a href="https://github.com/john-hen/Flake8-pyproject" target="_blank">Flake8-pyproject</a>. Make sure to add this to your requirements section to ensure it is installed when people use <code>pre-commit</code>.</p>
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb11-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">tool</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">flake8</span><span class="kw" style="color: #003B4F;">]</span></span>
 <span id="cb11-2"><span class="dt" style="color: #AD0000;">ignore</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[</span><span class="st" style="color: #20794D;">'</span><span class="vs" style="color: #20794D;">E231</span><span class="st" style="color: #20794D;">'</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">'</span><span class="vs" style="color: #20794D;">E241</span><span class="st" style="color: #20794D;">'</span><span class="op" style="color: #5E5E5E;">]</span></span>
 <span id="cb11-3"><span class="dt" style="color: #AD0000;">per-file-ignores</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[</span></span>
@@ -922,7 +1242,7 @@ No matching items
 </section>
 <section id="tool.setuptools_scm" class="level4">
 <h4 class="anchored" data-anchor-id="tool.setuptools_scm"><code>tool.setuptools_scm</code></h4>
-<p><a href="https://github.com/pypa/setuptools_scm/">setuptools_scm</a> is a simple to use extension to setuptools that dynamically sets the package version based on the version control data. It is important to note that by default <code>setuptools_scm</code> will attempt to bump the version of the release. The following configuration forces the use of the current <code>git tag</code>.</p>
+<p><a href="https://github.com/pypa/setuptools_scm/" target="_blank">setuptools_scm</a> is a simple to use extension to setuptools that dynamically sets the package version based on the version control data. It is important to note that by default <code>setuptools_scm</code> will attempt to bump the version of the release. The following configuration forces the use of the current <code>git tag</code>.</p>
 <div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb12-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">tool</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">setuptools_scm</span><span class="kw" style="color: #003B4F;">]</span></span>
 <span id="cb12-2"><span class="dt" style="color: #AD0000;">write_to</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"tcx2gpx/_version.py"</span></span>
 <span id="cb12-3"><span class="dt" style="color: #AD0000;">version_scheme</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"post-release"</span></span>
@@ -931,7 +1251,7 @@ No matching items
 </section>
 <section id="tool.ruff" class="level4">
 <h4 class="anchored" data-anchor-id="tool.ruff"><code>tool.ruff</code></h4>
-<p><a href="https://github.com/charliermarsh/ruff">ruff</a> is a Python linter written in <a href="https://www.rust-lang.org/">Rust</a> which is therefore very fast. It provides the same functionality as <code>black</code>, <code>flake8</code> and <code>pylint</code> and can auto-correct many issues if configured to do so. A <a href="https://github.com/charliermarsh/ruff#usage">GitHub Actions</a> is also available. I'd recommend checking it out.</p>
+<p><a href="https://github.com/charliermarsh/ruff" target="_blank">ruff</a> is a Python linter written in <a href="https://www.rust-lang.org/" target="_blank">Rust</a> which is therefore very fast. It provides the same functionality as <code>black</code>, <code>flake8</code> and <code>pylint</code> and can auto-correct many issues if configured to do so. A <a href="https://github.com/charliermarsh/ruff#usage" target="_blank">GitHub Actions</a> is also available. I'd recommend checking it out.</p>
 <div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb13-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">tool</span><span class="kw" style="color: #003B4F;">.</span><span class="dt" style="color: #AD0000;">ruff</span><span class="kw" style="color: #003B4F;">]</span></span>
 <span id="cb13-2"><span class="dt" style="color: #AD0000;">fixable</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[</span><span class="st" style="color: #20794D;">"A"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"B"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"C"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"D"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"E"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"F"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"R"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"S"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"W"</span><span class="op" style="color: #5E5E5E;">,</span> <span class="st" style="color: #20794D;">"U"</span><span class="op" style="color: #5E5E5E;">]</span></span>
 <span id="cb13-3"><span class="dt" style="color: #AD0000;">unfixable</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[]</span></span></code></pre></div>
@@ -941,10 +1261,10 @@ No matching items
 <section id="versioning" class="level2">
 <h2 class="anchored" data-anchor-id="versioning">Versioning</h2>
 <p>Typically the version is defined in the <code>__version__</code> variable/object in the top-level <code>__init__.py</code> or as a value in <code>[metadata]</code> of either <code>setup.cfg</code> or <code>pyproject.toml</code> but this has some downsides in that you have to remember to update the string manually when you are ready for a release and it doesn't tie in with using tags in Git to tag versions of your commits.</p>
-<p>It is worth taking a moment to read and understand about <a href="https://semver.org/">Semantic Versioning</a> which you are likely to use when tagging versions of your software to work with <code>setuptools_scm</code>.</p>
+<p>It is worth taking a moment to read and understand about <a href="https://semver.org/" target="_blank">Semantic Versioning</a> which you are likely to use when tagging versions of your software to work with <code>setuptools_scm</code>.</p>
 <section id="setuptools-scm" class="level3">
 <h3 class="anchored" data-anchor-id="setuptools-scm">Setuptools-scm</h3>
-<p><a href="https://github.com/pypa/setuptools_scm">setuptools_scm</a> is simpler to setup and use than <a href="https://github.com/python-versioneer/python-versioneer">versioneer</a> as it relies solely on configuration via <code>pyproject.toml</code> rather than being dependent on now deprecated <code>setup.py</code>.</p>
+<p><a href="https://github.com/pypa/setuptools_scm" target="_blank">setuptools_scm</a> is simpler to setup and use than <a href="https://github.com/python-versioneer/python-versioneer" target="_blank">versioneer</a> as it relies solely on configuration via <code>pyproject.toml</code> rather than being dependent on now deprecated <code>setup.py</code>.</p>
 <p>As shown above you should have set the minimum versions of <code>"setuptools&gt;=45"</code> and <code>"setuptools_scm[toml]&gt;=6.2"</code>, <code>dynamic = ["version"]</code> under <code>project</code> and set the <code>write_to = "pkg/_version.py"</code> (<strong>NB</strong> substitute <code>pkg</code> for your package directory, whether its <code>src</code> or the package name).</p>
 <div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">[build<span class="op" style="color: #5E5E5E;">-</span>system]</span>
 <span id="cb14-2">requires <span class="op" style="color: #5E5E5E;">=</span> [<span class="st" style="color: #20794D;">"setuptools&gt;=65.6.3"</span>, <span class="st" style="color: #20794D;">"setuptools_scm[toml]&gt;=6.2"</span>]</span>
@@ -970,7 +1290,7 @@ No matching items
 <h2 class="anchored" data-anchor-id="building-your-package">Building your Package</h2>
 <section id="generate-distribution-archive" class="level3">
 <h3 class="anchored" data-anchor-id="generate-distribution-archive">Generate Distribution Archive</h3>
-<p>In your package directory you can create a distribution of your package with the latest versions of <code>setuptools</code> and <code>wheel</code>. To do this in your virtual environment run the following. The documentation for how to do this is at <a href="https://setuptools.pypa.io/en/latest/setuptools.html">Building and Distributing Packages with Setuptools</a>.</p>
+<p>In your package directory you can create a distribution of your package with the latest versions of <code>setuptools</code> and <code>wheel</code>. To do this in your virtual environment run the following. The documentation for how to do this is at <a href="https://setuptools.pypa.io/en/latest/setuptools.html" target="_blank">Building and Distributing Packages with Setuptools</a>.</p>
 <div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb16-1"><span class="kw" style="color: #003B4F;">[</span><span class="dt" style="color: #AD0000;">build-system</span><span class="kw" style="color: #003B4F;">]</span></span>
 <span id="cb16-2"><span class="dt" style="color: #AD0000;">requires</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">[</span></span>
 <span id="cb16-3">  <span class="st" style="color: #20794D;">"setuptools &gt;= 65.6.3"</span><span class="op" style="color: #5E5E5E;">,</span></span>
@@ -984,9 +1304,9 @@ No matching items
 </section>
 </section>
 <section id="publishing-to-pypi" class="level2">
-<h2 class="anchored" data-anchor-id="publishing-to-pypi">Publishing to <a href="https://pypi.org">PyPI</a></h2>
-<p>Before pushing the package to the main PyPi server it is prudent to test things out on <a href="https://test.pypi.org/">TestPyPI</a> first. You must first generate an API Token from your account settings page. It needs a name and the scope should be `Entire account (all projects)`. This token will be shown once so do <strong>not</strong> navigate away from the page until you have copied it.</p>
-<p>You use <a href="https://twine.readthedocs.io/en/latest/">twine</a> to upload the package and should create a <code>.pypirc</code> file in the root of the package directory that contains your API key and the username <code>__token__</code>. For the TestPyPI server it follows the following format.</p>
+<h2 class="anchored" data-anchor-id="publishing-to-pypi">Publishing to <a href="https://pypi.org" target="_blank">PyPI</a></h2>
+<p>Before pushing the package to the main PyPi server it is prudent to test things out on <a href="https://test.pypi.org/" target="_blank">TestPyPI</a> first. You must first generate an API Token from your account settings page. It needs a name and the scope should be `Entire account (all projects)`. This token will be shown once so do <strong>not</strong> navigate away from the page until you have copied it.</p>
+<p>You use <a href="https://twine.readthedocs.io/en/latest/" target="_blank">twine</a> to upload the package and should create a <code>.pypirc</code> file in the root of the package directory that contains your API key and the username <code>__token__</code>. For the TestPyPI server it follows the following format.</p>
 <pre class="conf"><code>[testpypi]
   username = __token__
   password = pypi-dfkjh9384hdszfkjnkjahkjfhd3YAJKSHE0089asdf0lkjsjJLLS_-0942358JKHDKjhkljna39o854yurlaoisdvnzli8yw459872jkhlkjsdfkjhasdfadsfasdf</code></pre>
@@ -1000,7 +1320,7 @@ No matching items
 </section>
 <section id="repeat-for-pypi" class="level3">
 <h3 class="anchored" data-anchor-id="repeat-for-pypi">Repeat for PyPI</h3>
-<p>Once you are happy this is working you can repeat the process on the main <a href="https://pypi.org">PyPI</a> server. You can add the token that you generate to <code>/.pypirc</code> under a separate heading.</p>
+<p>Once you are happy this is working you can repeat the process on the main <a href="https://pypi.org" target="_blank">PyPI</a> server. You can add the token that you generate to <code>/.pypirc</code> under a separate heading.</p>
 <pre class="conf"><code>[testpypi]
   username = __token__
   password = pypi-dfkjh9384hdszfkjnkjahkjfhd3YAJKSHE0089asdf0lkjsjJLLS_-0942358JKHDKjhkljna39o854yurlaoisdvnzli8yw459872jkhlkjsdfkjhdfJZZZZZF
@@ -1010,7 +1330,7 @@ No matching items
 </section>
 <section id="github-action" class="level3">
 <h3 class="anchored" data-anchor-id="github-action">GitHub Action</h3>
-<p>Manually uploading is somewhat time consuming and tedious. Fortunately though with <code>setuptools_scm</code> in place and tokens generated we can automate the process of building and uploading packages to PyPI using the GitHub Action <a href="https://github.com/pypa/gh-action-pypi-publish">gh-action-pypi-publish</a> (read more about <a href="id:e19b6eb6-46b2-440a-ba35-be29feb33407">GitHub Actions</a>). You will have already generated a <a href="https://pypi.org/help/#apitoken">PYPI token</a> (and similarly one for <a href="https://test.pypi.org">test PyPI</a>) and these can stored on the projects GitHub account under <em>Settings &gt; Secrets &gt; Actions</em> with the names <code>PYPI_API_TOKEN</code> and <code>TEST_PYPI_API_TOKEN</code> respectively. You can then add the following GitHub Action under <code>.github/workflow/pypi.yaml</code>.</p>
+<p>Manually uploading is somewhat time consuming and tedious. Fortunately though with <code>setuptools_scm</code> in place and tokens generated we can automate the process of building and uploading packages to PyPI using the GitHub Action <a href="https://github.com/pypa/gh-action-pypi-publish" target="_blank">gh-action-pypi-publish</a> (read more about <a href="id:e19b6eb6-46b2-440a-ba35-be29feb33407" target="_blank">GitHub Actions</a>). You will have already generated a <a href="https://pypi.org/help/#apitoken" target="_blank">PYPI token</a> (and similarly one for <a href="https://test.pypi.org" target="_blank">test PyPI</a>) and these can stored on the projects GitHub account under <em>Settings &gt; Secrets &gt; Actions</em> with the names <code>PYPI_API_TOKEN</code> and <code>TEST_PYPI_API_TOKEN</code> respectively. You can then add the following GitHub Action under <code>.github/workflow/pypi.yaml</code>.</p>
 <div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb22-1"><span class="fu" style="color: #4758AB;">name</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> Publish package to PyPi</span></span>
 <span id="cb22-2"></span>
 <span id="cb22-3"><span class="fu" style="color: #4758AB;">on</span><span class="kw" style="color: #003B4F;">:</span></span>
@@ -1045,7 +1365,7 @@ No matching items
 </section>
 <section id="releasing-via-github" class="level3">
 <h3 class="anchored" data-anchor-id="releasing-via-github">Releasing via GitHub</h3>
-<p>With <code>setuptools_scm</code> in place and a <a href="id:5e1f167e-5c0c-4206-b2ac-6694e08524d8">GitHub Action</a> setup and configured it is now possible to make a release to PyPI via GitHub Releases.</p>
+<p>With <code>setuptools_scm</code> in place and a <a href="id:5e1f167e-5c0c-4206-b2ac-6694e08524d8" target="_blank">GitHub Action</a> setup and configured it is now possible to make a release to PyPI via GitHub Releases.</p>
 <ol type="1">
 <li>Go to the Releases page (its linked from the right-hand side of the front-page).</li>
 <li>Draft a New release.</li>
@@ -1063,26 +1383,26 @@ No matching items
 <p>There are some frameworks that are meant to ease the pain of this process and make it easier. I'm yet to test these for two reasons. Firstly I wanted to understand what is going on rather than learn another framework. Secondly it was an additional framework to learn.</p>
 <section id="pdm" class="level3">
 <h3 class="anchored" data-anchor-id="pdm">PDM</h3>
-<p><a href="https://pdm.fming.dev/latest/">PDM</a> (Python package and Dependency Manager) handles all stages of setting up and creating a package and managing its dependencies. In essence its a tool for interactively generating the configuration files described above. I've not yet.</p>
+<p><a href="https://pdm.fming.dev/latest/" target="_blank">PDM</a> (Python package and Dependency Manager) handles all stages of setting up and creating a package and managing its dependencies. In essence its a tool for interactively generating the configuration files described above. I've not yet.</p>
 </section>
 <section id="poetry" class="level3">
 <h3 class="anchored" data-anchor-id="poetry">Poetry</h3>
-<p><a href="https://python-poetry.org/">Poetry</a> is another package for managing packaging and dependencies. Again, I've not yet used it.</p>
+<p><a href="https://python-poetry.org/" target="_blank">Poetry</a> is another package for managing packaging and dependencies. Again, I've not yet used it.</p>
 </section>
 </section>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html">PyPA : Building and Distributing Packages with Setuptools</a></li>
-<li><a href="https://packaging.python.org/en/latest/specifications/">PyPA : Specifications</a></li>
-<li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/">Packaging Python Projects</a></li>
-<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
-<li><a href="https://github.com/wimglenn/resources-example">Packaging Data files in a Python Distribution</a></li>
-<li><a href="https://pdm.fming.dev/latest/">PDM - Python package and Dependency Manager</a></li>
-<li><a href="https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html">Why you shouldn't invoke setup.py directly</a></li>
-<li><a href="https://github.com/python-versioneer/python-versioneer">python-versioneer/python-versioneer: version-string management for VCS-controlled trees</a></li>
-<li><a href="https://github.com/pypa/setuptools_scm">pypa/setuptools<sub>scm</sub>: the blessed package to manage your versions by scm tags</a></li>
-<li><a href="https://github.com/mitsuhiko/rye">rye one-shop-stop for Python</a></li>
+<li><a href="https://setuptools.pypa.io/en/latest/userguide/index.html" target="_blank">PyPA : Building and Distributing Packages with Setuptools</a></li>
+<li><a href="https://packaging.python.org/en/latest/specifications/" target="_blank">PyPA : Specifications</a></li>
+<li><a href="https://packaging.python.org/en/latest/tutorials/packaging-projects/" target="_blank">Packaging Python Projects</a></li>
+<li><a href="https://www.pyopensci.org/python-package-guide/package-structure-code/intro.html" target="_blank">Python package structure information — pyOpenSci Python Packaging Guide</a></li>
+<li><a href="https://github.com/wimglenn/resources-example" target="_blank">Packaging Data files in a Python Distribution</a></li>
+<li><a href="https://pdm.fming.dev/latest/" target="_blank">PDM - Python package and Dependency Manager</a></li>
+<li><a href="https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html" target="_blank">Why you shouldn't invoke setup.py directly</a></li>
+<li><a href="https://github.com/python-versioneer/python-versioneer" target="_blank">python-versioneer/python-versioneer: version-string management for VCS-controlled trees</a></li>
+<li><a href="https://github.com/pypa/setuptools_scm" target="_blank">pypa/setuptools<sub>scm</sub>: the blessed package to manage your versions by scm tags</a></li>
+<li><a href="https://github.com/mitsuhiko/rye" target="_blank">rye one-shop-stop for Python</a></li>
 </ul>
 
 
@@ -1116,7 +1436,7 @@ No matching items
 
 
 
-<p><strong>NB</strong> This article originally appeared on <a href="https://rse.shef.ac.uk/blog/">RSE University of Sheffield</a> but is updated here.</p>
+<p><strong>NB</strong> This article originally appeared on <a href="https://rse.shef.ac.uk/blog/" target="_blank">RSE University of Sheffield</a> but is updated here.</p>
 <p>If you’ve been dabbling in programming for a while you may have heard of “linting your code” which is a process of static code analysis to remove the “fluff” from your code. Just as physically linting your clothes removes unwanted fluff, linting your code removes “fluff” and can help…</p>
 <ul>
 <li>Reduce bugs.</li>
@@ -1125,25 +1445,25 @@ No matching items
 <li>Improve coding skills.</li>
 <li>Consistent coding style.</li>
 </ul>
-<p>This helps reduce the <a href="https://en.wikipedia.org/wiki/Technical_debt">technical debt</a> which impacts the amount of time required for maintenance and further development of a code base. The main focus of this article is the use of linting to ensure consistent coding style, it focuses on Python under Linux but similar tools are available for other operating systems and languages.</p>
+<p>This helps reduce the <a href="https://en.wikipedia.org/wiki/Technical_debt" target="_blank">technical debt</a> which impacts the amount of time required for maintenance and further development of a code base. The main focus of this article is the use of linting to ensure consistent coding style, it focuses on Python under Linux but similar tools are available for other operating systems and languages.</p>
 <!--more-->
 <section id="style-matters" class="level2">
 <h2 class="anchored" data-anchor-id="style-matters">Style Matters</h2>
 <p>What has style got to do with writing code? Trends come and go in fashion but coding styles are meant to be relatively static and not change with the season, although they can and do evolve over time. This is because using a consistent and widely used style when writing code makes it easier for other people, often your future self, to read and understand the code you have written. If code is easier to understand then its easier to modify, update, extend, improve and in general maintain.</p>
-<p>A useful insight from <a href="https://en.wikipedia.org/wiki/Guido_van_Rossum">Gudio van Rossum</a>, the creator of <a href="https://www.python.org">Python</a> is that “<a href="https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds"><em>code is read much more often than it is written</em></a>” and so it should be easy to understand and not obfuscate its intent. Python is quite good for this as it is an expressive language which encourages coders to be explicit when naming variables, functions, classes and so forth so that their purpose and intention is clear, although the same is true of most modern languages. However, going a step further and using consistent styles to format and layout code helps enhance this.</p>
+<p>A useful insight from <a href="https://en.wikipedia.org/wiki/Guido_van_Rossum" target="_blank">Gudio van Rossum</a>, the creator of <a href="https://www.python.org" target="_blank">Python</a> is that “<a href="https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds" target="_blank"><em>code is read much more often than it is written</em></a>” and so it should be easy to understand and not obfuscate its intent. Python is quite good for this as it is an expressive language which encourages coders to be explicit when naming variables, functions, classes and so forth so that their purpose and intention is clear, although the same is true of most modern languages. However, going a step further and using consistent styles to format and layout code helps enhance this.</p>
 </section>
 <section id="linting-in-python" class="level2">
 <h2 class="anchored" data-anchor-id="linting-in-python">Linting in Python</h2>
-<p>The most widely used Python style is defined in the long established <a href="https://pep8.org/">PEP 8: The Style Guide for Python Code</a>. There are a number of tools available that will lint your Python code for you and most integrate with your IDE, whether that is <a href="https://code.visualstudio.com/">Visual Studio Code</a>, <a href="https://www.jetbrains.com/pycharm/">PyCharm</a> or <a href="https://www.gnu.org/software/emacs/">Emacs</a>. Some of the formatting and linting tools available for Python are…</p>
+<p>The most widely used Python style is defined in the long established <a href="https://pep8.org/" target="_blank">PEP 8: The Style Guide for Python Code</a>. There are a number of tools available that will lint your Python code for you and most integrate with your IDE, whether that is <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a>, <a href="https://www.jetbrains.com/pycharm/" target="_blank">PyCharm</a> or <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a>. Some of the formatting and linting tools available for Python are…</p>
 <ul>
-<li><p><a href="https://pylint.pycqa.org/en/latest/index.html">Pylint</a> - checks for errors in Python code, tries to enforce a coding standard and looks for code smells.</p></li>
-<li><p><a href="https://pypi.org/project/yapf/">YAPF</a> - takes the code and reformats it to the best formatting that conforms to the style guide.</p></li>
-<li><p><a href="https://github.com/psf/black">Black</a> - The Uncompromising Code Formatter</p></li>
-<li><p><a href="https://flake8.pycqa.org/en/latest/">Flake8</a> - Your Tool For Style Guide Enforcement</p></li>
-<li><p><a href="https://prospector.landscape.io/en/master/index.html">Prospector</a> - Python Static Analysis</p></li>
-<li><p><a href="http://mypy-lang.org/">mypy</a> - Optional Static Typing for Python</p></li>
+<li><p><a href="https://pylint.pycqa.org/en/latest/index.html" target="_blank">Pylint</a> - checks for errors in Python code, tries to enforce a coding standard and looks for code smells.</p></li>
+<li><p><a href="https://pypi.org/project/yapf/" target="_blank">YAPF</a> - takes the code and reformats it to the best formatting that conforms to the style guide.</p></li>
+<li><p><a href="https://github.com/psf/black" target="_blank">Black</a> - The Uncompromising Code Formatter</p></li>
+<li><p><a href="https://flake8.pycqa.org/en/latest/" target="_blank">Flake8</a> - Your Tool For Style Guide Enforcement</p></li>
+<li><p><a href="https://prospector.landscape.io/en/master/index.html" target="_blank">Prospector</a> - Python Static Analysis</p></li>
+<li><p><a href="http://mypy-lang.org/" target="_blank">mypy</a> - Optional Static Typing for Python</p></li>
 </ul>
-<p>Here we will work through linting and formatting the simple file below (available as a download <a href="../../www/python/save_random_numbers.py">here</a>) using PyLint and Black.</p>
+<p>Here we will work through linting and formatting the simple file below (available as a download <a href="../../www/python/save_random_numbers.py" target="_blank">here</a>) using PyLint and Black.</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
 <span id="cb1-2"><span class="im" style="color: #00769E;">from</span> pathlib <span class="im" style="color: #00769E;">import</span> Path</span>
 <span id="cb1-3"><span class="im" style="color: #00769E;">from</span> typing <span class="im" style="color: #00769E;">import</span> Union</span>
@@ -1171,8 +1491,8 @@ No matching items
 <span id="cb1-25">        writer.writerows(random_numbers)</span></code></pre></div>
 <section id="linting-with-pylint" class="level3">
 <h3 class="anchored" data-anchor-id="linting-with-pylint">Linting with PyLint</h3>
-<p>We will lint this file using <a href="https://pylint.pycqa.org/en/latest/index.html">Pylint</a> to find out what errors there are and how its style can be improved to conform with PEP8 guidelines.</p>
-<p>First you need to install <code>pylint</code>, typically in your <a href="https://realpython.com/python-virtual-environments-a-primer/">virtual environment</a>.</p>
+<p>We will lint this file using <a href="https://pylint.pycqa.org/en/latest/index.html" target="_blank">Pylint</a> to find out what errors there are and how its style can be improved to conform with PEP8 guidelines.</p>
+<p>First you need to install <code>pylint</code>, typically in your <a href="https://realpython.com/python-virtual-environments-a-primer/" target="_blank">virtual environment</a>.</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;">pip</span> install pylint</span></code></pre></div>
 <p>Pylint can be configured using a <code>~/.pylintrc</code> file in your home directory and over time this will grow as you customise your configuration but for now we will make one simple change from the default which is to increase the accepted line length. Create the file and save it with the following content.</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;">[FORMAT]</span></span>
@@ -1210,7 +1530,7 @@ No matching items
 </section>
 <section id="undefined-variable-union-undefined-variable" class="level4">
 <h4 class="anchored" data-anchor-id="undefined-variable-union-undefined-variable"><code>Undefined variable 'Union' (undefined-variable)</code></h4>
-<p>This error arises because the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/">type hint</a> uses <code>Union</code> but it hasn’t been imported. It’s from the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/">typing</a> module so we can import it.</p>
+<p>This error arises because the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/" target="_blank">type hint</a> uses <code>Union</code> but it hasn’t been imported. It’s from the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/" target="_blank">typing</a> module so we can import it.</p>
 <div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;">"""Module for saving randomly generated numbers."""</span></span>
 <span id="cb7-2"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
 <span id="cb7-3"><span class="im" style="color: #00769E;">from</span> pathlib <span class="im" style="color: #00769E;">import</span> Path</span>
@@ -1265,7 +1585,7 @@ No matching items
 <span id="cb11-4"></span>
 <span id="cb11-5"><span class="ex" style="color: null;">------------------------------------------------------------------</span></span>
 <span id="cb11-6"><span class="ex" style="color: null;">Your</span> code has been rated at 5.00/10 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">previous</span> run: 4.00/10, +1.00<span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
-<p>That is an improvement in score (of <code>+1.00</code>) but we now have another error telling us that <code>E1136: Value 'Union' is unsubscriptable (unsubscriptable-object)</code>. You are unlikely to know what all the error codes mean, but there are a few handy on-line lists <a href="http://pylint-messages.wikidot.com/all-codes">all PyLint codes</a> or <a href="http://pylint-messages.wikidot.com/all-messages">all PyLint messages</a> and what they are telling you are worth consulting (<a href="https://docs.quantifiedcode.com/python-anti-patterns/index.html">The Little Book of Python Anti-Patterns</a> is also useful). In this instance PyLint has returned a false-positive because <code>Union</code> can and should be subscripted here because it means the argument can be either a string (<code>str</code>) or a <a href="https://docs.python.org/3/library/pathlib.html">pathlib</a> Path (<code>Path</code>). So how do we get around this complaint?</p>
+<p>That is an improvement in score (of <code>+1.00</code>) but we now have another error telling us that <code>E1136: Value 'Union' is unsubscriptable (unsubscriptable-object)</code>. You are unlikely to know what all the error codes mean, but there are a few handy on-line lists <a href="http://pylint-messages.wikidot.com/all-codes" target="_blank">all PyLint codes</a> or <a href="http://pylint-messages.wikidot.com/all-messages" target="_blank">all PyLint messages</a> and what they are telling you are worth consulting (<a href="https://docs.quantifiedcode.com/python-anti-patterns/index.html" target="_blank">The Little Book of Python Anti-Patterns</a> is also useful). In this instance PyLint has returned a false-positive because <code>Union</code> can and should be subscripted here because it means the argument can be either a string (<code>str</code>) or a <a href="https://docs.python.org/3/library/pathlib.html" target="_blank">pathlib</a> Path (<code>Path</code>). So how do we get around this complaint?</p>
 <p>You can disable PyLint from complaining about specific error codes/messages on a per-file basis by adding a line that disables them. You can use either codes or messages (the bit in the brackets at the end of the line, in this case <code>unsubscriptable-object</code>) and it is advisable to use the message form as it is more informative to those who read your code subequently.</p>
 <p>If we add the following line it prevents PyLint from reporting the specific error…</p>
 <div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
@@ -1289,11 +1609,11 @@ No matching items
 <span id="cb14-4"><span class="co" style="color: #5E5E5E;"># option multiple times (only on the command line, not in the configuration</span></span>
 <span id="cb14-5"><span class="co" style="color: #5E5E5E;"># file where it should appear only once).</span></span>
 <span id="cb14-6"><span class="va" style="color: #111111;">disable</span><span class="op" style="color: #5E5E5E;">=</span>unsubscriptable-object</span></code></pre></div>
-<p>For more on configuriong PyLint refer to the <a href="https://pylint.pycqa.org/en/latest/user_guide/options.html">documentation</a> and also details of how to <a href="https://pylint.pycqa.org/en/latest/user_guide/ide-integration.html">integrate with your editor and IDE</a></p>
+<p>For more on configuriong PyLint refer to the <a href="https://pylint.pycqa.org/en/latest/user_guide/options.html" target="_blank">documentation</a> and also details of how to <a href="https://pylint.pycqa.org/en/latest/user_guide/ide-integration.html" target="_blank">integrate with your editor and IDE</a></p>
 </section>
 <section id="automated-formatting-with-black" class="level3">
 <h3 class="anchored" data-anchor-id="automated-formatting-with-black">Automated Formatting with Black</h3>
-<p><a href="https://github.com/psf/black">Black</a> is <em>The Uncompromising Code Formatter</em> and is very strict about the way in which it formats code. This could be a good or bad thing depending on your point of view, but it does result in highly consistent code when applied to all files. It formats files in place, so be mindful of this if you run it against one of your files it <em>will</em> change it.</p>
+<p><a href="https://github.com/psf/black" target="_blank">Black</a> is <em>The Uncompromising Code Formatter</em> and is very strict about the way in which it formats code. This could be a good or bad thing depending on your point of view, but it does result in highly consistent code when applied to all files. It formats files in place, so be mindful of this if you run it against one of your files it <em>will</em> change it.</p>
 <p>Install <code>black</code> in your virtual environment and make a backup of your <code>save_random_number.py</code> file that you have just tidied up with linting.</p>
 <div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;">pip</span> install black</span>
 <span id="cb15-2"><span class="fu" style="color: #4758AB;">cp</span> save_random_numbers.py tidy_save_random_numbers.py</span></code></pre></div>
@@ -1316,31 +1636,31 @@ No matching items
 </section>
 <section id="when-to-lint" class="level2">
 <h2 class="anchored" data-anchor-id="when-to-lint">When to Lint</h2>
-<p>It is worth linting your code from the outset of a project as not only does it result in a consistent style across your code base it also avoids the problem that can arise when applying linting retrospectively. If an existing code base has linting applied then the <a href="https://www.git-scm.com/docs/git-blame"><code>git blame</code></a>, which indicates who the last person to edit a section was, then resides with the person who applied the linting, rather than the original author of the code. Its possible though that the person who applied the linting knows very little about the underlying functionality of the code but they may receive questions about it if they are indicated as the last person to have modified particular lines.</p>
+<p>It is worth linting your code from the outset of a project as not only does it result in a consistent style across your code base it also avoids the problem that can arise when applying linting retrospectively. If an existing code base has linting applied then the <a href="https://www.git-scm.com/docs/git-blame" target="_blank"><code>git blame</code></a>, which indicates who the last person to edit a section was, then resides with the person who applied the linting, rather than the original author of the code. Its possible though that the person who applied the linting knows very little about the underlying functionality of the code but they may receive questions about it if they are indicated as the last person to have modified particular lines.</p>
 <p>Fortunately there are a number of ways to automate and integrate linting into your workflow.</p>
 </section>
 <section id="automating-linting" class="level2">
 <h2 class="anchored" data-anchor-id="automating-linting">Automating Linting</h2>
 <section id="ide-integration" class="level3">
 <h3 class="anchored" data-anchor-id="ide-integration">IDE Integration</h3>
-<p>When programming it is really useful to use an <a href="https://en.wikipedia.org/wiki/Integrated_development_environment">Integrated Development Environment (IDE)</a> as most allow the integration of linting tools and apply them to your code automatically, whether its using PyLint, YAPF, Black or otherwise. Setup and configuration is beyond the scope of this article but some links are provided to useful resources to get you started.</p>
+<p>When programming it is really useful to use an <a href="https://en.wikipedia.org/wiki/Integrated_development_environment" target="_blank">Integrated Development Environment (IDE)</a> as most allow the integration of linting tools and apply them to your code automatically, whether its using PyLint, YAPF, Black or otherwise. Setup and configuration is beyond the scope of this article but some links are provided to useful resources to get you started.</p>
 </section>
 <section id="vscode" class="level3">
 <h3 class="anchored" data-anchor-id="vscode">VSCode</h3>
-<p>VSCode supports linting in most languages, and both <a href="https://code.visualstudio.com/docs/python/linting">Python</a> and <a href="https://docs.microsoft.com/en-us/visualstudio/rtvs/linting-r-code?view=vs-2017">R</a> are supported along with other languages.</p>
+<p>VSCode supports linting in most languages, and both <a href="https://code.visualstudio.com/docs/python/linting" target="_blank">Python</a> and <a href="https://docs.microsoft.com/en-us/visualstudio/rtvs/linting-r-code?view=vs-2017" target="_blank">R</a> are supported along with other languages.</p>
 </section>
 <section id="pycharm" class="level3">
 <h3 class="anchored" data-anchor-id="pycharm">PyCharm</h3>
-<p>PyCharm supports automated formatting of code, for more information please refer to <a href="https://www.jetbrains.com/help/pycharm/reformat-and-rearrange-code.html">Reformat and rearrange code | PyCharm</a>.</p>
+<p>PyCharm supports automated formatting of code, for more information please refer to <a href="https://www.jetbrains.com/help/pycharm/reformat-and-rearrange-code.html" target="_blank">Reformat and rearrange code | PyCharm</a>.</p>
 </section>
 <section id="emacs" class="level3">
 <h3 class="anchored" data-anchor-id="emacs">Emacs</h3>
-<p>There are various options available for linting within Emacs, which you use depends on your preferences but <a href="https://emacs-lsp.github.io/lsp-mode/">LSP mode</a> integrates with YAPF (via <a href="https://github.com/JorisE/yapfify">yapfify</a>), Flake8 (via <a href="https://www.flycheck.org/en/latest/">flycheck</a>) and Black (via <a href="https://github.com/pythonic-emacs/blacken">blacken</a>).</p>
+<p>There are various options available for linting within Emacs, which you use depends on your preferences but <a href="https://emacs-lsp.github.io/lsp-mode/" target="_blank">LSP mode</a> integrates with YAPF (via <a href="https://github.com/JorisE/yapfify" target="_blank">yapfify</a>), Flake8 (via <a href="https://www.flycheck.org/en/latest/" target="_blank">flycheck</a>) and Black (via <a href="https://github.com/pythonic-emacs/blacken" target="_blank">blacken</a>).</p>
 </section>
 </section>
 <section id="git-integration" class="level2">
 <h2 class="anchored" data-anchor-id="git-integration">Git Integration</h2>
-<p>If you are using an IDE then if configured correctly your code should be linted automatically for you, but an additional step that can capture anything that hasn’t been correctly formatted is to use a <a href="https://githooks.com/">git hook</a> to run linting on your code prior to making commits. There is <a href="https://github.com/sebdah/git-pylint-commit-hook">git-pylint-commit-hook</a> available on PyPi which runs automatically when you make commits to <code>.py</code> files.</p>
+<p>If you are using an IDE then if configured correctly your code should be linted automatically for you, but an additional step that can capture anything that hasn’t been correctly formatted is to use a <a href="https://githooks.com/" target="_blank">git hook</a> to run linting on your code prior to making commits. There is <a href="https://github.com/sebdah/git-pylint-commit-hook" target="_blank">git-pylint-commit-hook</a> available on PyPi which runs automatically when you make commits to <code>.py</code> files.</p>
 </section>
 <section id="continuous-integration" class="level2">
 <h2 class="anchored" data-anchor-id="continuous-integration">Continuous Integration</h2>
@@ -1348,34 +1668,34 @@ No matching items
 </section>
 <section id="megalinter" class="level2">
 <h2 class="anchored" data-anchor-id="megalinter">Megalinter</h2>
-<p>Perhaps not necessary for everyone but worth mentioning the beast that is <a href="https://megalinter.github.io/latest/">MegaLinter</a> which will lint code across multiple languages and integrates easily into your pipeline (GitHub Action, CI on GitLab, Jenkins etc.). A useful article on doing so is <a href="https://nicolas.vuillamy.fr/improve-uniformize-and-secure-your-code-base-with-megalinter-62ebab422c1">Limit your technical debt and secure your code base using MegaLinter</a>.</p>
+<p>Perhaps not necessary for everyone but worth mentioning the beast that is <a href="https://megalinter.github.io/latest/" target="_blank">MegaLinter</a> which will lint code across multiple languages and integrates easily into your pipeline (GitHub Action, CI on GitLab, Jenkins etc.). A useful article on doing so is <a href="https://nicolas.vuillamy.fr/improve-uniformize-and-secure-your-code-base-with-megalinter-62ebab422c1" target="_blank">Limit your technical debt and secure your code base using MegaLinter</a>.</p>
 </section>
 <section id="pre-commit" class="level2">
 <h2 class="anchored" data-anchor-id="pre-commit">Pre-commit</h2>
-<p><a href="https://pre-commit.com/">Pre-commit</a> is a Python package that adds a set of configurable hooks for linting your code, and not just Python, using a Git pre-commit <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">hook</a>. Hooks are run conditional on certain changes in states, in this case code that is run before commits are made. It creates a virtual Python Environment and installs the required packages there to lint your code. More will be written on this in a subsequent post.</p>
+<p><a href="https://pre-commit.com/" target="_blank">Pre-commit</a> is a Python package that adds a set of configurable hooks for linting your code, and not just Python, using a Git pre-commit <a href="https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks" target="_blank">hook</a>. Hooks are run conditional on certain changes in states, in this case code that is run before commits are made. It creates a virtual Python Environment and installs the required packages there to lint your code. More will be written on this in a subsequent post.</p>
 </section>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <section id="python" class="level3">
 <h3 class="anchored" data-anchor-id="python">Python</h3>
 <ul>
-<li><a href="https://flake8.pycqa.org/en/latest/">Flake8</a> - Your Tool For Style Guide Enforcement</li>
-<li><a href="https://github.com/psf/black">Black</a> - The Uncompromising Code Formatter</li>
-<li><a href="https://code.visualstudio.com/docs/python/linting">Linting Python in Visual Studio Code</a></li>
-<li><a href="https://pylint.pycqa.org/en/latest/messages/messages_list.html">Pylint - Overview of all Pylint messages</a></li>
+<li><a href="https://flake8.pycqa.org/en/latest/" target="_blank">Flake8</a> - Your Tool For Style Guide Enforcement</li>
+<li><a href="https://github.com/psf/black" target="_blank">Black</a> - The Uncompromising Code Formatter</li>
+<li><a href="https://code.visualstudio.com/docs/python/linting" target="_blank">Linting Python in Visual Studio Code</a></li>
+<li><a href="https://pylint.pycqa.org/en/latest/messages/messages_list.html" target="_blank">Pylint - Overview of all Pylint messages</a></li>
 </ul>
 </section>
 <section id="r" class="level3">
 <h3 class="anchored" data-anchor-id="r">R</h3>
 <ul>
-<li><a href="https://github.com/r-lib/lintr">GitHub - r-lib/lintr: Static Code Analysis for R</a></li>
-<li><a href="https://rowannicholls.github.io/R/intro/linting.html">Introduction to R: Linting R (and R Markdown)</a></li>
+<li><a href="https://github.com/r-lib/lintr" target="_blank">GitHub - r-lib/lintr: Static Code Analysis for R</a></li>
+<li><a href="https://rowannicholls.github.io/R/intro/linting.html" target="_blank">Introduction to R: Linting R (and R Markdown)</a></li>
 </ul>
 </section>
 <section id="c" class="level3">
 <h3 class="anchored" data-anchor-id="c">C++</h3>
 <ul>
-<li><a href="https://github.com/cpplint/cpplint">cpplint</a></li>
+<li><a href="https://github.com/cpplint/cpplint" target="_blank">cpplint</a></li>
 </ul>
 
 

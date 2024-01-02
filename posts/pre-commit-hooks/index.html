@@ -279,24 +279,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>I’m a big fan of <a href="https://pre-commit.com">pre-commit</a> and have written about it before (see posts on <a href="https://ns-rse.github.io/posts/pre-commit/">pre-commit</a>, <a href="https://ns-rse.github.io/posts/pre-commit-ci/">pre-commit CI</a> and <a href="https://ns-rse.github.io/posts/pre-commit-updating/">pre-commit updating</a>). This post discusses some of the <a href="https://pre-commit.com/hooks">hooks</a> that I use and how to configure them.</p>
+<p>I’m a big fan of <a href="https://pre-commit.com" target="_blank">pre-commit</a> and have written about it before (see posts on <a href="https://ns-rse.github.io/posts/pre-commit/" target="_blank">pre-commit</a>, <a href="https://ns-rse.github.io/posts/pre-commit-ci/" target="_blank">pre-commit CI</a> and <a href="https://ns-rse.github.io/posts/pre-commit-updating/" target="_blank">pre-commit updating</a>). This post discusses some of the <a href="https://pre-commit.com/hooks" target="_blank">hooks</a> that I use and how to configure them.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52842122133/in/datetaken/"><em>Irridescent</em> Picture by me</a></figcaption><p></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52842122133/in/datetaken/" target="_blank"><em>Irridescent</em> Picture by me</a></figcaption><p></p>
 </figure>
 </div>
 <section id="python-linting" class="level2">
 <h2 class="anchored" data-anchor-id="python-linting">Python Linting</h2>
 <section id="ruff" class="level3">
 <h3 class="anchored" data-anchor-id="ruff">Ruff</h3>
-<p><a href="https://github.com/charliermarsh/ruff">ruff</a> is a Python linter written in Rust which means its considerably faster than many native linters. It aims for parity with Flake8 and covers a lot of the linting that PyLint undertakes too. Its configured via <code>pyproject.toml</code> which makes incorporating it into your Python Package simple.</p>
+<p><a href="https://github.com/charliermarsh/ruff" target="_blank">ruff</a> is a Python linter written in Rust which means its considerably faster than many native linters. It aims for parity with Flake8 and covers a lot of the linting that PyLint undertakes too. Its configured via <code>pyproject.toml</code> which makes incorporating it into your Python Package simple.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/charliermarsh/ruff-pre-commit</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v0.0.191</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/python-packaging/">Python Packaging</a> worth reading to understand more on this.</p>
+<p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a> worth reading to understand more on this.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">ruff</span><span class="kw">]</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">exclude</span> <span class="op">=</span> <span class="op">[]</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># per-file-ignores = []</span></span>
@@ -309,14 +309,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="black" class="level3">
 <h3 class="anchored" data-anchor-id="black">Black</h3>
-<p><a href="https://black.readthedocs.io/en/stable/index.html">Black</a> is an opinionated formatter for Python that is <a href="https://pep8.org/">PEP8</a> compliant. By using <code>black</code> to format your code you end up with a consistent style across the code base and commit changes end up being minimal. This helps speed up code-review of pull-requests.</p>
+<p><a href="https://black.readthedocs.io/en/stable/index.html" target="_blank">Black</a> is an opinionated formatter for Python that is <a href="https://pep8.org/" target="_blank">PEP8</a> compliant. By using <code>black</code> to format your code you end up with a consistent style across the code base and commit changes end up being minimal. This helps speed up code-review of pull-requests.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/psf/black</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> </span><span class="fl">22.10.0</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> black</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">types</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">python</span><span class="kw">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/pre-commit-updating/">Python Packaging</a> worth reading to understand more on this.</p>
+<p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/pre-commit-updating/" target="_blank">Python Packaging</a> worth reading to understand more on this.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[</span><span class="dt">tool</span><span class="kw">.</span><span class="dt">black</span><span class="kw">]</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">line-length</span> <span class="op">=</span> <span class="dv">120</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">target-version</span> <span class="op">=</span> <span class="op">[</span><span class="st">"py38"</span><span class="op">,</span> <span class="st">"py39"</span><span class="op">,</span> <span class="st">"py310"</span><span class="op">]</span></span>
@@ -324,7 +324,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="pydocstyle" class="level3">
 <h3 class="anchored" data-anchor-id="pydocstyle">pydocstyle</h3>
-<p>You can check your docstrings are correctly written using the <a href="https://www.pydocstyle.org/en/stable/usage.html#usage-with-the-pre-commit-git-hooks-framework">pydocstyle</a> hook.</p>
+<p>You can check your docstrings are correctly written using the <a href="https://www.pydocstyle.org/en/stable/usage.html#usage-with-the-pre-commit-git-hooks-framework" target="_blank">pydocstyle</a> hook.</p>
 <p>Its pretty straight-forward to use and accepts arguments so you can pass all the command line options you might want to use into the hook when it runs. It supports three different doc string styles, <code>pep257</code>, <code>numpy</code> and <code>google</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> repo  https://github.com/pycqa/pydocstyle</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> </span><span class="fl">6.3.0</span><span class="co">  # pick a git hash / tag to point to</span></span>
@@ -345,7 +345,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="markdown-linting" class="level2">
 <h2 class="anchored" data-anchor-id="markdown-linting">Markdown Linting</h2>
-<p><a href="https://github.com/DavidAnson/markdownlint-cli2">markdownlint-cli2</a> is a useful and highly configurable hook for linting <a href="https://www.markdownguide.org">Markdown</a> and <a href="https://commonmark.org/">CommonMark</a>. I wanted to use it on this blog though which is written using <a href="https://quarto.org/docs/authoring/markdown-basics.html">Quarto</a> and therefore uses <a href="https://pandoc.org/MANUAL.html#pandocs-markdown">PandocMarkdown</a> with files that have extension <code>.qmd</code>. I therefore enable the hook in <code>.pre-commit-config.yaml</code> with a configuration file specified</p>
+<p><a href="https://github.com/DavidAnson/markdownlint-cli2" target="_blank">markdownlint-cli2</a> is a useful and highly configurable hook for linting <a href="https://www.markdownguide.org" target="_blank">Markdown</a> and <a href="https://commonmark.org/" target="_blank">CommonMark</a>. I wanted to use it on this blog though which is written using <a href="https://quarto.org/docs/authoring/markdown-basics.html" target="_blank">Quarto</a> and therefore uses <a href="https://pandoc.org/MANUAL.html#pandocs-markdown" target="_blank">PandocMarkdown</a> with files that have extension <code>.qmd</code>. I therefore enable the hook in <code>.pre-commit-config.yaml</code> with a configuration file specified</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/DavidAnson/markdownlint-cli2</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v0.6.0</span></span>
@@ -374,7 +374,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="emacs-lisp" class="level2">
 <h2 class="anchored" data-anchor-id="emacs-lisp">Emacs Lisp</h2>
-<p>As I use <a href="https://www.gnu.org/software/emacs/">Emacs</a> I have recourse to write some <a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/">Emacs Lisp</a> and so its useful to applying formatting to my <code>.el</code> files before committing them. <a href="https://github.com/eschulte/lisp-format">lisp-format</a> does the job nicely.</p>
+<p>As I use <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> I have recourse to write some <a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/" target="_blank">Emacs Lisp</a> and so its useful to applying formatting to my <code>.el</code> files before committing them. <a href="https://github.com/eschulte/lisp-format" target="_blank">lisp-format</a> does the job nicely.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/eschulte/lisp-format</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> 088c8f78ca41204b44f2636275517ac09a2de6a9</span></span>
@@ -388,28 +388,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>There are a <em>lot</em> of hooks out there to be used with <a href="https://pre-commit.com">pre-commit</a> and incorporated into your Continuous Integration pipeline with <a href="https://pre-commit.ci">pre-commit.ci</a>. Which you find useful will depend to a large extent on the languages that you are using for any given project. Here I’ve focused mainly on common tools for Python Packages, Markdown and Lisp but you can find hooks for Docker, Ansible, Rust, Go, JavaScript, C++ and many more, there is even <a href="https://github.com/jorisroovers/gitlint">gitlint</a> which lints your commit messages! Checkout the long list of available <a href="https://pre-commit.com/hooks">hooks</a> and try some out.</p>
+<p>There are a <em>lot</em> of hooks out there to be used with <a href="https://pre-commit.com" target="_blank">pre-commit</a> and incorporated into your Continuous Integration pipeline with <a href="https://pre-commit.ci" target="_blank">pre-commit.ci</a>. Which you find useful will depend to a large extent on the languages that you are using for any given project. Here I’ve focused mainly on common tools for Python Packages, Markdown and Lisp but you can find hooks for Docker, Ansible, Rust, Go, JavaScript, C++ and many more, there is even <a href="https://github.com/jorisroovers/gitlint" target="_blank">gitlint</a> which lints your commit messages! Checkout the long list of available <a href="https://pre-commit.com/hooks" target="_blank">hooks</a> and try some out.</p>
 </section>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <section id="related-pre-commit-posts" class="level3">
 <h3 class="anchored" data-anchor-id="related-pre-commit-posts">Related pre-commit posts</h3>
 <ul>
-<li><a href="https://ns-rse.github.io/posts/pre-commit/">pre-commit</a></li>
-<li><a href="https://ns-rse.github.io/posts/pre-commit-ci/">pre-commit CI</a></li>
-<li><a href="https://ns-rse.github.io/posts/pre-commit-updating/">pre-commit updating</a></li>
+<li><a href="https://ns-rse.github.io/posts/pre-commit/" target="_blank">pre-commit</a></li>
+<li><a href="https://ns-rse.github.io/posts/pre-commit-ci/" target="_blank">pre-commit CI</a></li>
+<li><a href="https://ns-rse.github.io/posts/pre-commit-updating/" target="_blank">pre-commit updating</a></li>
 </ul>
 </section>
 <section id="pre-commit-hooks" class="level3">
 <h3 class="anchored" data-anchor-id="pre-commit-hooks">Pre-commit hooks</h3>
 <ul>
-<li><a href="https://pre-commit.com">pre-commit</a> (<a href="https://pre-commit.com/hooks">pre-commit hooks</a>)</li>
-<li><a href="https://pre-commit.ci">pre-commit.ci</a></li>
-<li><a href="https://github.com/charliermarsh/ruff">ruff</a></li>
-<li><a href="https://github.com/DavidAnson/markdownlint-cli2">markdownlint-cli2</a></li>
-<li><a href="https://black.readthedocs.io/en/stable/index.html">Black</a></li>
-<li><a href="https://github.com/eschulte/lisp-format">lisp-format</a></li>
-<li><a href="https://github.com/jorisroovers/gitlint">gitlint</a></li>
+<li><a href="https://pre-commit.com" target="_blank">pre-commit</a> (<a href="https://pre-commit.com/hooks" target="_blank">pre-commit hooks</a>)</li>
+<li><a href="https://pre-commit.ci" target="_blank">pre-commit.ci</a></li>
+<li><a href="https://github.com/charliermarsh/ruff" target="_blank">ruff</a></li>
+<li><a href="https://github.com/DavidAnson/markdownlint-cli2" target="_blank">markdownlint-cli2</a></li>
+<li><a href="https://black.readthedocs.io/en/stable/index.html" target="_blank">Black</a></li>
+<li><a href="https://github.com/eschulte/lisp-format" target="_blank">lisp-format</a></li>
+<li><a href="https://github.com/jorisroovers/gitlint" target="_blank">gitlint</a></li>
 </ul>
 
 

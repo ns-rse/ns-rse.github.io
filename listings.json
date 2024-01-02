@@ -2,6 +2,7 @@
   {
     "listing": "/about.html",
     "items": [
+      "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
       "/posts/repository-review/index.html",
       "/posts/git-remotes/index.html",
@@ -25,6 +26,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
       "/posts/repository-review/index.html",
       "/posts/git-remotes/index.html",
@@ -94,6 +96,10 @@
     "items": []
   },
   {
+    "listing": "/posts/pytest-param/index.html",
+    "items": []
+  },
+  {
     "listing": "/posts/pre-commit-r/index.html",
     "items": []
   },
@@ -120,6 +126,7 @@
   {
     "listing": "/links.html",
     "items": [
+      "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
       "/posts/repository-review/index.html",
       "/posts/git-remotes/index.html",
