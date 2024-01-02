@@ -364,7 +364,6 @@ def test_summarise_shape_lazy_fixture(
 
 ```
 
-
 ## Parameterise Fixtures
 
 The [pytest-lazy-fixture](https://github.com/tvorog/pytest-lazy-fixture) also allows fixtures themselves to be
