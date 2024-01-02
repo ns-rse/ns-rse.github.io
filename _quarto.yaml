@@ -45,3 +45,5 @@ listing:
       - code
   sort-ui: false
   filter-ui: false
+filters:
+  - openlinksinnewpage

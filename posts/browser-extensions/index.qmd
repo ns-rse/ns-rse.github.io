@@ -20,6 +20,8 @@ Most people use web-browsers a fair bit. There are a number of extensions availa
 stream-lined and efficient. This post covers those that I use. If there is something that you use regularly and find
 useful I'd love to hear about it (see links at top of page).
 
+![[Branching Out by Me](https://www.flickr.com/photos/slackline/52703385696/in/photostream/)](https://live.staticflickr.com/65535/52703385696_6455dcef49_k.jpg)
+
 ## Browser Choice
 
 I deliberately eschew Chrome and even its open-source relative [Chromium](https://chromium.org/) because of the tracking

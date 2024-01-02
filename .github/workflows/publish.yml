@@ -27,6 +27,7 @@ jobs:
         run: |
           quarto install --no-prompt extension jmbuhr/quarto-qrcode
           quarto install --no-prompt extension mcanouil/quarto-elevator
+          quarto install --no-prompt extension davidwilby/openlinksinnewpage
 
       - name: Install Python and Dependencies
         uses: actions/setup-python@v4.3.0
