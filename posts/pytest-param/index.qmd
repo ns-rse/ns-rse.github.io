@@ -80,7 +80,7 @@ accompanying  repository.
 
 ## Parameterising Tests
 
-In order to make our tests suite robust we should test more scenarios and edge cases, in particular making sure we
+In order to make our test suite robust we should test more scenarios and edge cases, in particular making sure we
 capture the exceptions that can be raised. This is where the
 [`pytest.mark.parameterize()`](https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest-mark-parametrize)
 fixture comes into play. It takes as a first argument a tuple of variables that you are going to define values for and
@@ -229,16 +229,16 @@ def test_divide_zero_division_error(a: float | int, b: float | int, exception: f
         divide(a, b)
 ```
 
-## Parametrising with Fixtures
+## Parameterising with Fixtures
 
 [Fixtures](https://docs.pytest.org/en/stable/explanation/fixtures.html) are a common and useful feature of the Pytest
-framework that allow you to define "/defined, reliable and consistent context for the tests/". What this means is that
+framework that allow you to define "_defined, reliable and consistent context for the tests_". What this means is that
 if you always need a particular object, whether that is an instantiated class (a new instance of a class) or something
 else, you can mark a function with `@pytest.fixture()` and use it in subsequent tests (often fixtures are defined in
 `tests/conftest.py` to keep things tidy, at least that is what I do!)[^1].
 
-It can be useful to parameterise fixtures themselves so that they too testsa number of different states and this saves
-writing more sets of parameters under each tests `@pytest.mark.parameterize()` decorator.
+It can be useful to parameterise fixtures themselves so that they too test a number of different states and this saves
+writing more sets of parameters under the `@pytest.mark.parameterize()` decorator of each test.
 
 For this example we use a simple function `summarise_shapes()` which returns the results of summarising a 2-D Numpy
 array using [scikit-image](https://scikit-image.org) and its
@@ -312,7 +312,7 @@ which "_is a special fixture providing information of the requesting test functi
 function_".
 
 You define the fixture name (in quotes) in the `@pytest.mark.parametrize()` and then when the parameter, in this case
-`shape` is referred to in the test itself, you wrap it in `request.getfixturevalue()` and the named fixture is then
+`shape`, is referred to in the test itself, you wrap it in `request.getfixturevalue()` and the named fixture is then
 returned and used.
 
 ```python
