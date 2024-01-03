@@ -109,12 +109,26 @@ def test_divide(a: float | int, b: float | int, expected: float) -> None:
     assert divide(a, b) == expected
 ```
 
-## IDs
+## Parameter set IDs
 
 For some time I simply wrote my tests and if the structure was complicated I used comments to mark the code to indicate
 what the test was doing. When they (inevitably!) failed there was a cryptically long indication of what had failed based
 on the filename, test name and the values of the various parameters that were in use at the point of failure. These
 helped narrow down which test failed but took a bit of mental over-head to decipher.
+
+For the above test _without_ ID's we can force them to fail by adding 1 to the expected value (i.e. `== expected + 1`)
+and the resulting output shows how the parameters are concatenated to indicate which test failed.
+
+```python
+======================= short test summary info ====================================
+FAILED tests/test_divide.py::test_divide_fail[10-5-2] - assert 2.0 == (2 + 1)
+FAILED tests/test_divide.py::test_divide_fail[9-3-3] - assert 3.0 == (3 + 1)
+FAILED tests/test_divide.py::test_divide_fail[5-2-2.5] - assert 2.5 == (2.5 + 1)
+======================= 3 failed in 0.79s ==========================================
+```
+
+Whilst it is possible to work out which failed test is which if you have many sets of parameters with multiple values
+and only one or two are failing it can take a while to work out which set has failed.
 
 Recently though I was put onto the
 [pytest.param()](https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest.param) function
@@ -172,16 +186,16 @@ def test_divide(a: float | int, b: float | int, expected: float) -> None:
 
 ## Testing Exceptions
 
-We can combine tests that pass and fail (in the above example a `ZeroDivisionError`) via parameterisation and
-whilst Pytest works and allows this some consider this to be bad practice as whilst tests can and should be
-parameterised it is better to keep tests focused and on-topic and write a separate test for different outcomes such as
-raising exceptions.
+The above example shows that Pytest allows us to combine tests that pass and fail (in the above example a
+`ZeroDivisionError`) via parmeterisation. However, whilst tests can and should be parameterised, some consider that it
+is better to keep tests focused and on-topic and write a separate test for different outcomes such as raising
+exceptions.
 
 This is slightly different from the way the Pytest documentation suggests to undertake [Parameterising conditional
 raising](https://docs.pytest.org/en/7.1.x/example/parametrize.html#parametrizing-conditional-raising) but there is a
 school of thought, which I like, which states that testing different states/behaviours should be separate (see the
 following thread for some discussion [Why should unit tests test only one
-thing?](https://stackoverflow.com/questions/235025/why-should-unit-tests-test-only-one-thing).
+thing?](https://stackoverflow.com/questions/235025/why-should-unit-tests-test-only-one-thing)).
 
 With this in mind we can separate out the tests that raise exceptions under different scenarios to their own tests
 (**NB** obviously its excessive to parameterise `test-divide_zero_division_error()`).
@@ -290,7 +304,7 @@ def circle() -> npt.NDArray:
 
 There are two different methods to using these fixtures in parameterised tests.
 
-### `request.getfixturevalue()`
+### request.getfixturevalue()
 
 The first uses
 [`request.getfixturevalue()`](https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest.FixtureRequest.getfixturevalue)
@@ -326,7 +340,7 @@ def test_summarise_shape_get_fixture_value(
 
 ```
 
-### `pytest-lazy-fixture`
+### pytest-lazy-fixture
 
 An alternative is to use the Pytest plugin [pytest-lazy-fixture](https://github.com/tvorog/pytest-lazy-fixture) and
 instead of marking the value to be obtained in the test itself you do so when setting up the parameters by referring to
