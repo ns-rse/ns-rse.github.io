@@ -91,155 +91,137 @@
 <span id="cb3-14">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
 <span id="cb3-15">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
 </section>
-<section id="ids" class="level2">
-<h2 class="anchored" data-anchor-id="ids">IDs</h2>
+<section id="parameter-set-ids" class="level2">
+<h2 class="anchored" data-anchor-id="parameter-set-ids">Parameter set IDs</h2>
 <p>For some time I simply wrote my tests and if the structure was complicated I used comments to mark the code to indicate what the test was doing. When they (inevitably!) failed there was a cryptically long indication of what had failed based on the filename, test name and the values of the various parameters that were in use at the point of failure. These helped narrow down which test failed but took a bit of mental over-head to decipher.</p>
+<p>For the above test <em>without</em> ID’s we can force them to fail by adding 1 to the expected value (i.e.&nbsp;<code>== expected + 1</code>) and the resulting output shows how the parameters are concatenated to indicate which test failed.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="op" style="color: #5E5E5E;">=======================</span> short test summary info <span class="op" style="color: #5E5E5E;">====================================</span></span>
+<span id="cb4-2">FAILED tests<span class="op" style="color: #5E5E5E;">/</span>test_divide.py::test_divide_fail[<span class="dv" style="color: #AD0000;">10</span><span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">2</span>] <span class="op" style="color: #5E5E5E;">-</span> <span class="cf" style="color: #003B4F;">assert</span> <span class="fl" style="color: #AD0000;">2.0</span> <span class="op" style="color: #5E5E5E;">==</span> (<span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb4-3">FAILED tests<span class="op" style="color: #5E5E5E;">/</span>test_divide.py::test_divide_fail[<span class="dv" style="color: #AD0000;">9</span><span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">3</span><span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">3</span>] <span class="op" style="color: #5E5E5E;">-</span> <span class="cf" style="color: #003B4F;">assert</span> <span class="fl" style="color: #AD0000;">3.0</span> <span class="op" style="color: #5E5E5E;">==</span> (<span class="dv" style="color: #AD0000;">3</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb4-4">FAILED tests<span class="op" style="color: #5E5E5E;">/</span>test_divide.py::test_divide_fail[<span class="dv" style="color: #AD0000;">5</span><span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">-</span><span class="fl" style="color: #AD0000;">2.5</span>] <span class="op" style="color: #5E5E5E;">-</span> <span class="cf" style="color: #003B4F;">assert</span> <span class="fl" style="color: #AD0000;">2.5</span> <span class="op" style="color: #5E5E5E;">==</span> (<span class="fl" style="color: #AD0000;">2.5</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb4-5"><span class="op" style="color: #5E5E5E;">=======================</span> <span class="dv" style="color: #AD0000;">3</span> failed <span class="kw" style="color: #003B4F;">in</span> <span class="fl" style="color: #AD0000;">0.79</span><span class="er" style="color: #AD0000;">s</span> <span class="op" style="color: #5E5E5E;">==========================================</span></span></code></pre></div>
+<p>Whilst it is possible to work out which failed test is which if you have many sets of parameters with multiple values and only one or two are failing it can take a while to work out which set has failed.</p>
 <p>Recently though I was put onto the <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest.param" target="_blank">pytest.param()</a> function by a <a href="https://mastodon.social/@danjac@masto.ai/111674313059704725" target="_blank">toot from <span class="citation" data-cites="danjac">@danjac</span><span class="citation" data-cites="masto.ai">@masto.ai</span></a> and instantly saw the benefit of using this as it allows us to give each set of parameters a unique <code>id</code> which is then used by Pytest when reporting failures.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="at" style="color: #657422;">@pytest.mark.parameterize</span>(</span>
-<span id="cb4-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
-<span id="cb4-3">    [</span>
-<span id="cb4-4">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"ten divided by five"</span>),</span>
-<span id="cb4-5">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"nine divided by three"</span>),</span>
-<span id="cb4-6">        pytest.param(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"five divided by two"</span>),</span>
-<span id="cb4-7"></span>
-<span id="cb4-8">    ]</span>
-<span id="cb4-9">)</span>
-<span id="cb4-10"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
-<span id="cb4-11">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
-<span id="cb4-12">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="at" style="color: #657422;">@pytest.mark.parameterize</span>(</span>
+<span id="cb5-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
+<span id="cb5-3">    [</span>
+<span id="cb5-4">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"ten divided by five"</span>),</span>
+<span id="cb5-5">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"nine divided by three"</span>),</span>
+<span id="cb5-6">        pytest.param(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"five divided by two"</span>),</span>
+<span id="cb5-7"></span>
+<span id="cb5-8">    ]</span>
+<span id="cb5-9">)</span>
+<span id="cb5-10"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb5-11">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb5-12">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
 <p>Then if/when a test fails the <code>id</code> parameter is reported for the failed test, making it much easier to narrow down where the failure occurred.</p>
 <p>Not only does it allow each set of parameters to be given a unique <code>id = ""</code> to aid with identifying tests that fail it also allows each set of parameters to be marked with <code>marks = &lt;&gt;</code> to indicate the expected behaviour for example <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest-mark-xfail" target="_blank"><code>pytest.mark.xfail</code></a> or <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#id25" target="_blank"><code>pytest.mark.skipif</code></a>.</p>
 <p>We could therefore add another set of parameters that should fail because one of the exceptions is raised.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;">import</span> pytest</span>
-<span id="cb5-2"></span>
-<span id="cb5-3"><span class="im" style="color: #00769E;">from</span> pytest_examples.divide <span class="im" style="color: #00769E;">import</span> divide</span>
-<span id="cb5-4"></span>
-<span id="cb5-5"></span>
-<span id="cb5-6"><span class="at" style="color: #657422;">@pytest.mark.parameterize</span>(</span>
-<span id="cb5-7">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
-<span id="cb5-8">    [</span>
-<span id="cb5-9">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"ten divided by five"</span>),</span>
-<span id="cb5-10">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"nine divided by three"</span>),</span>
-<span id="cb5-11">        pytest.param(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"five divided by two"</span>),</span>
-<span id="cb5-12">        pytest.param(</span>
-<span id="cb5-13">            <span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"zero division error"</span>, marks<span class="op" style="color: #5E5E5E;">=</span>pytest.mark.xfail</span>
-<span id="cb5-14">        ),</span>
-<span id="cb5-15">    ],</span>
-<span id="cb5-16">)</span>
-<span id="cb5-17"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
-<span id="cb5-18">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
-<span id="cb5-19">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb6-2"></span>
+<span id="cb6-3"><span class="im" style="color: #00769E;">from</span> pytest_examples.divide <span class="im" style="color: #00769E;">import</span> divide</span>
+<span id="cb6-4"></span>
+<span id="cb6-5"></span>
+<span id="cb6-6"><span class="at" style="color: #657422;">@pytest.mark.parameterize</span>(</span>
+<span id="cb6-7">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
+<span id="cb6-8">    [</span>
+<span id="cb6-9">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"ten divided by five"</span>),</span>
+<span id="cb6-10">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"nine divided by three"</span>),</span>
+<span id="cb6-11">        pytest.param(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"five divided by two"</span>),</span>
+<span id="cb6-12">        pytest.param(</span>
+<span id="cb6-13">            <span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"zero division error"</span>, marks<span class="op" style="color: #5E5E5E;">=</span>pytest.mark.xfail</span>
+<span id="cb6-14">        ),</span>
+<span id="cb6-15">    ],</span>
+<span id="cb6-16">)</span>
+<span id="cb6-17"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb6-18">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb6-19">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
 </section>
 <section id="testing-exceptions" class="level2">
 <h2 class="anchored" data-anchor-id="testing-exceptions">Testing Exceptions</h2>
-<p>We can combine tests that pass and fail (in the above example a <code>ZeroDivisionError</code>) via parameterisation and whilst Pytest works and allows this some consider this to be bad practice as whilst tests can and should be parameterised it is better to keep tests focused and on-topic and write a separate test for different outcomes such as raising exceptions.</p>
-<p>This is slightly different from the way the Pytest documentation suggests to undertake <a href="https://docs.pytest.org/en/7.1.x/example/parametrize.html#parametrizing-conditional-raising" target="_blank">Parameterising conditional raising</a> but there is a school of thought, which I like, which states that testing different states/behaviours should be separate (see the following thread for some discussion <a href="https://stackoverflow.com/questions/235025/why-should-unit-tests-test-only-one-thing" target="_blank">Why should unit tests test only one thing?</a>.</p>
+<p>The above example shows that Pytest allows us to combine tests that pass and fail (in the above example a <code>ZeroDivisionError</code>) via parmeterisation. However, whilst tests can and should be parameterised, some consider that it is better to keep tests focused and on-topic and write a separate test for different outcomes such as raising exceptions.</p>
+<p>This is slightly different from the way the Pytest documentation suggests to undertake <a href="https://docs.pytest.org/en/7.1.x/example/parametrize.html#parametrizing-conditional-raising" target="_blank">Parameterising conditional raising</a> but there is a school of thought, which I like, which states that testing different states/behaviours should be separate (see the following thread for some discussion <a href="https://stackoverflow.com/questions/235025/why-should-unit-tests-test-only-one-thing" target="_blank">Why should unit tests test only one thing?</a>).</p>
 <p>With this in mind we can separate out the tests that raise exceptions under different scenarios to their own tests (<strong>NB</strong> obviously its excessive to parameterise <code>test-divide_zero_division_error()</code>).</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
-<span id="cb6-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"exception"</span>),</span>
-<span id="cb6-3">    [</span>
-<span id="cb6-4">        pytest.param(<span class="st" style="color: #20794D;">"a"</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"a is string"</span>),</span>
-<span id="cb6-5">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is string"</span>),</span>
-<span id="cb6-6">        pytest.param([<span class="dv" style="color: #AD0000;">1</span>], <span class="dv" style="color: #AD0000;">2</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"a is list"</span>),</span>
-<span id="cb6-7">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, [<span class="dv" style="color: #AD0000;">2</span>], <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is list"</span>),</span>
-<span id="cb6-8">    ],</span>
-<span id="cb6-9">)</span>
-<span id="cb6-10"><span class="kw" style="color: #003B4F;">def</span> test_divide_type_errors(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, exception: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
-<span id="cb6-11">    <span class="co" style="color: #5E5E5E;">"""Test that TypeError is raised when objects other than int or float are passed as a and b."""</span></span>
-<span id="cb6-12">    <span class="cf" style="color: #003B4F;">with</span> pytest.raises(exception):</span>
-<span id="cb6-13">        divide(a, b)</span></code></pre></div>
 <div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
 <span id="cb7-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"exception"</span>),</span>
 <span id="cb7-3">    [</span>
-<span id="cb7-4">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is zero"</span>),</span>
-<span id="cb7-5">    ],</span>
-<span id="cb7-6">)</span>
-<span id="cb7-7"><span class="kw" style="color: #003B4F;">def</span> test_divide_zero_division_error(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, exception: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
-<span id="cb7-8">    <span class="co" style="color: #5E5E5E;">"""Test that ZeroDivsionError is raised when attempting to divide by zero."""</span></span>
-<span id="cb7-9">    <span class="cf" style="color: #003B4F;">with</span> pytest.raises(exception):</span>
-<span id="cb7-10">        divide(a, b)</span></code></pre></div>
+<span id="cb7-4">        pytest.param(<span class="st" style="color: #20794D;">"a"</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"a is string"</span>),</span>
+<span id="cb7-5">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is string"</span>),</span>
+<span id="cb7-6">        pytest.param([<span class="dv" style="color: #AD0000;">1</span>], <span class="dv" style="color: #AD0000;">2</span>, <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"a is list"</span>),</span>
+<span id="cb7-7">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, [<span class="dv" style="color: #AD0000;">2</span>], <span class="pp" style="color: #AD0000;">TypeError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is list"</span>),</span>
+<span id="cb7-8">    ],</span>
+<span id="cb7-9">)</span>
+<span id="cb7-10"><span class="kw" style="color: #003B4F;">def</span> test_divide_type_errors(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, exception: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb7-11">    <span class="co" style="color: #5E5E5E;">"""Test that TypeError is raised when objects other than int or float are passed as a and b."""</span></span>
+<span id="cb7-12">    <span class="cf" style="color: #003B4F;">with</span> pytest.raises(exception):</span>
+<span id="cb7-13">        divide(a, b)</span></code></pre></div>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb8-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"exception"</span>),</span>
+<span id="cb8-3">    [</span>
+<span id="cb8-4">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"b is zero"</span>),</span>
+<span id="cb8-5">    ],</span>
+<span id="cb8-6">)</span>
+<span id="cb8-7"><span class="kw" style="color: #003B4F;">def</span> test_divide_zero_division_error(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, exception: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb8-8">    <span class="co" style="color: #5E5E5E;">"""Test that ZeroDivsionError is raised when attempting to divide by zero."""</span></span>
+<span id="cb8-9">    <span class="cf" style="color: #003B4F;">with</span> pytest.raises(exception):</span>
+<span id="cb8-10">        divide(a, b)</span></code></pre></div>
 </section>
 <section id="parametrising-with-fixtures" class="level2">
 <h2 class="anchored" data-anchor-id="parametrising-with-fixtures">Parametrising with Fixtures</h2>
 <p><a href="https://docs.pytest.org/en/stable/explanation/fixtures.html" target="_blank">Fixtures</a> are a common and useful feature of the Pytest framework that allow you to define “/defined, reliable and consistent context for the tests/”. What this means is that if you always need a particular object, whether that is an instantiated class (a new instance of a class) or something else, you can mark a function with <code>@pytest.fixture()</code> and use it in subsequent tests (often fixtures are defined in <code>tests/conftest.py</code> to keep things tidy, at least that is what I do!)<sup>1</sup>.</p>
 <p>It can be useful to parameterise fixtures themselves so that they too testsa number of different states and this saves writing more sets of parameters under each tests <code>@pytest.mark.parameterize()</code> decorator.</p>
 <p>For this example we use a simple function <code>summarise_shapes()</code> which returns the results of summarising a 2-D Numpy array using <a href="https://scikit-image.org" target="_blank">scikit-image</a> and its <a href="https://scikit-image.org/docs/stable/api/skimage.measure.html#skimage.measure.regionprops" target="_blank"><code>skimage.measure.regionprops()</code></a> function (see <a href="https://github.com/ns-rse/pytest-examples/blob/main/pytest_examples/shapes.py" target="_blank">pytest_examples/shapes.py</a>).</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;">"""Summarise Shapes."""</span></span>
-<span id="cb8-2"><span class="im" style="color: #00769E;">import</span> numpy.typing <span class="im" style="color: #00769E;">as</span> npt</span>
-<span id="cb8-3"><span class="im" style="color: #00769E;">from</span> skimage <span class="im" style="color: #00769E;">import</span> measure</span>
-<span id="cb8-4"></span>
-<span id="cb8-5"></span>
-<span id="cb8-6"><span class="kw" style="color: #003B4F;">def</span> summarise_shape(shape: npt.NDArray) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="bu" style="color: null;">list</span>:</span>
-<span id="cb8-7">    <span class="co" style="color: #5E5E5E;">"""</span></span>
-<span id="cb8-8"><span class="co" style="color: #5E5E5E;">    Summarise the region properties of a 2D numpy array using Scikit-Image.</span></span>
-<span id="cb8-9"></span>
-<span id="cb8-10"><span class="co" style="color: #5E5E5E;">    Parameters</span></span>
-<span id="cb8-11"><span class="co" style="color: #5E5E5E;">    ----------</span></span>
-<span id="cb8-12"><span class="co" style="color: #5E5E5E;">    shape : npt.NDArray</span></span>
-<span id="cb8-13"><span class="co" style="color: #5E5E5E;">        2D binary array of a shape.</span></span>
-<span id="cb8-14"></span>
-<span id="cb8-15"><span class="co" style="color: #5E5E5E;">    Returns</span></span>
-<span id="cb8-16"><span class="co" style="color: #5E5E5E;">    -------</span></span>
-<span id="cb8-17"><span class="co" style="color: #5E5E5E;">    list</span></span>
-<span id="cb8-18"><span class="co" style="color: #5E5E5E;">        List of Region Properties each item describing one labelled region.</span></span>
-<span id="cb8-19"><span class="co" style="color: #5E5E5E;">    """</span></span>
-<span id="cb8-20">    <span class="cf" style="color: #003B4F;">return</span> measure.regionprops(shape)</span></code></pre></div>
-<p>We want to write some tests for these using fixtures which we define in <code>tests/conftest.py</code>. These define two <a href="https://numpy.org/" target="_blank">Numpy</a> 2-D binary arrays of <code>0</code>’s and <code>1</code>’s in particular shapes (the names should give an indication of the shapes!)</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="co" style="color: #5E5E5E;">"""Summarise Shapes."""</span></span>
 <span id="cb9-2"><span class="im" style="color: #00769E;">import</span> numpy.typing <span class="im" style="color: #00769E;">as</span> npt</span>
-<span id="cb9-3"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb9-3"><span class="im" style="color: #00769E;">from</span> skimage <span class="im" style="color: #00769E;">import</span> measure</span>
 <span id="cb9-4"></span>
-<span id="cb9-5"><span class="im" style="color: #00769E;">from</span> skimage <span class="im" style="color: #00769E;">import</span> draw</span>
-<span id="cb9-6"></span>
-<span id="cb9-7"></span>
-<span id="cb9-8"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
-<span id="cb9-9"><span class="kw" style="color: #003B4F;">def</span> square() <span class="op" style="color: #5E5E5E;">-&gt;</span> npt.NDArray:</span>
-<span id="cb9-10">    <span class="co" style="color: #5E5E5E;">"""Return a 2D numpy array of a square."""</span></span>
-<span id="cb9-11">    square <span class="op" style="color: #5E5E5E;">=</span> np.zeros((<span class="dv" style="color: #AD0000;">6</span>, <span class="dv" style="color: #AD0000;">6</span>), dtype<span class="op" style="color: #5E5E5E;">=</span>np.uint8)</span>
-<span id="cb9-12">    start <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span>)</span>
-<span id="cb9-13">    end <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">5</span>)</span>
-<span id="cb9-14">    rr, cc <span class="op" style="color: #5E5E5E;">=</span> draw.rectangle_perimeter(start, end, shape<span class="op" style="color: #5E5E5E;">=</span>square.shape)</span>
-<span id="cb9-15">    square[rr, cc] <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb9-16">    <span class="cf" style="color: #003B4F;">return</span> square</span>
-<span id="cb9-17"></span>
-<span id="cb9-18"></span>
-<span id="cb9-19"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
-<span id="cb9-20"><span class="kw" style="color: #003B4F;">def</span> circle() <span class="op" style="color: #5E5E5E;">-&gt;</span> npt.NDArray:</span>
-<span id="cb9-21">    <span class="co" style="color: #5E5E5E;">"""Return a 2D numpy array of a circle."""</span></span>
-<span id="cb9-22">    circle <span class="op" style="color: #5E5E5E;">=</span> np.zeros((<span class="dv" style="color: #AD0000;">7</span>, <span class="dv" style="color: #AD0000;">7</span>), dtype<span class="op" style="color: #5E5E5E;">=</span>np.uint8)</span>
-<span id="cb9-23">    rr, cc <span class="op" style="color: #5E5E5E;">=</span> draw.circle_perimeter(r<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">4</span>, c<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">4</span>, radius<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">2</span>, shape<span class="op" style="color: #5E5E5E;">=</span>circle.shape)</span>
-<span id="cb9-24">    circle[rr, cc] <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb9-25">    <span class="cf" style="color: #003B4F;">return</span> circle</span></code></pre></div>
+<span id="cb9-5"></span>
+<span id="cb9-6"><span class="kw" style="color: #003B4F;">def</span> summarise_shape(shape: npt.NDArray) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="bu" style="color: null;">list</span>:</span>
+<span id="cb9-7">    <span class="co" style="color: #5E5E5E;">"""</span></span>
+<span id="cb9-8"><span class="co" style="color: #5E5E5E;">    Summarise the region properties of a 2D numpy array using Scikit-Image.</span></span>
+<span id="cb9-9"></span>
+<span id="cb9-10"><span class="co" style="color: #5E5E5E;">    Parameters</span></span>
+<span id="cb9-11"><span class="co" style="color: #5E5E5E;">    ----------</span></span>
+<span id="cb9-12"><span class="co" style="color: #5E5E5E;">    shape : npt.NDArray</span></span>
+<span id="cb9-13"><span class="co" style="color: #5E5E5E;">        2D binary array of a shape.</span></span>
+<span id="cb9-14"></span>
+<span id="cb9-15"><span class="co" style="color: #5E5E5E;">    Returns</span></span>
+<span id="cb9-16"><span class="co" style="color: #5E5E5E;">    -------</span></span>
+<span id="cb9-17"><span class="co" style="color: #5E5E5E;">    list</span></span>
+<span id="cb9-18"><span class="co" style="color: #5E5E5E;">        List of Region Properties each item describing one labelled region.</span></span>
+<span id="cb9-19"><span class="co" style="color: #5E5E5E;">    """</span></span>
+<span id="cb9-20">    <span class="cf" style="color: #003B4F;">return</span> measure.regionprops(shape)</span></code></pre></div>
+<p>We want to write some tests for these using fixtures which we define in <code>tests/conftest.py</code>. These define two <a href="https://numpy.org/" target="_blank">Numpy</a> 2-D binary arrays of <code>0</code>’s and <code>1</code>’s in particular shapes (the names should give an indication of the shapes!)</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="im" style="color: #00769E;">import</span> numpy <span class="im" style="color: #00769E;">as</span> np</span>
+<span id="cb10-2"><span class="im" style="color: #00769E;">import</span> numpy.typing <span class="im" style="color: #00769E;">as</span> npt</span>
+<span id="cb10-3"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb10-4"></span>
+<span id="cb10-5"><span class="im" style="color: #00769E;">from</span> skimage <span class="im" style="color: #00769E;">import</span> draw</span>
+<span id="cb10-6"></span>
+<span id="cb10-7"></span>
+<span id="cb10-8"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
+<span id="cb10-9"><span class="kw" style="color: #003B4F;">def</span> square() <span class="op" style="color: #5E5E5E;">-&gt;</span> npt.NDArray:</span>
+<span id="cb10-10">    <span class="co" style="color: #5E5E5E;">"""Return a 2D numpy array of a square."""</span></span>
+<span id="cb10-11">    square <span class="op" style="color: #5E5E5E;">=</span> np.zeros((<span class="dv" style="color: #AD0000;">6</span>, <span class="dv" style="color: #AD0000;">6</span>), dtype<span class="op" style="color: #5E5E5E;">=</span>np.uint8)</span>
+<span id="cb10-12">    start <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb10-13">    end <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">5</span>)</span>
+<span id="cb10-14">    rr, cc <span class="op" style="color: #5E5E5E;">=</span> draw.rectangle_perimeter(start, end, shape<span class="op" style="color: #5E5E5E;">=</span>square.shape)</span>
+<span id="cb10-15">    square[rr, cc] <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb10-16">    <span class="cf" style="color: #003B4F;">return</span> square</span>
+<span id="cb10-17"></span>
+<span id="cb10-18"></span>
+<span id="cb10-19"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
+<span id="cb10-20"><span class="kw" style="color: #003B4F;">def</span> circle() <span class="op" style="color: #5E5E5E;">-&gt;</span> npt.NDArray:</span>
+<span id="cb10-21">    <span class="co" style="color: #5E5E5E;">"""Return a 2D numpy array of a circle."""</span></span>
+<span id="cb10-22">    circle <span class="op" style="color: #5E5E5E;">=</span> np.zeros((<span class="dv" style="color: #AD0000;">7</span>, <span class="dv" style="color: #AD0000;">7</span>), dtype<span class="op" style="color: #5E5E5E;">=</span>np.uint8)</span>
+<span id="cb10-23">    rr, cc <span class="op" style="color: #5E5E5E;">=</span> draw.circle_perimeter(r<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">4</span>, c<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">4</span>, radius<span class="op" style="color: #5E5E5E;">=</span><span class="dv" style="color: #AD0000;">2</span>, shape<span class="op" style="color: #5E5E5E;">=</span>circle.shape)</span>
+<span id="cb10-24">    circle[rr, cc] <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb10-25">    <span class="cf" style="color: #003B4F;">return</span> circle</span></code></pre></div>
 <p>There are two different methods to using these fixtures in parameterised tests.</p>
 <section id="request.getfixturevalue" class="level3">
-<h3 class="anchored" data-anchor-id="request.getfixturevalue"><code>request.getfixturevalue()</code></h3>
+<h3 class="anchored" data-anchor-id="request.getfixturevalue">request.getfixturevalue()</h3>
 <p>The first uses <a href="https://docs.pytest.org/en/7.1.x/reference/reference.html?#pytest.FixtureRequest.getfixturevalue" target="_blank"><code>request.getfixturevalue()</code></a> which “<em>is a special fixture providing information of the requesting test function.</em>”, in this case the “<em>named fixture function</em>”.</p>
 <p>You define the fixture name (in quotes) in the <code>@pytest.mark.parametrize()</code> and then when the parameter, in this case <code>shape</code> is referred to in the test itself, you wrap it in <code>request.getfixturevalue()</code> and the named fixture is then returned and used.</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="co" style="color: #5E5E5E;">"""Test the shapes module."""</span></span>
-<span id="cb10-2"><span class="im" style="color: #00769E;">import</span> pytest</span>
-<span id="cb10-3"></span>
-<span id="cb10-4"><span class="im" style="color: #00769E;">from</span> pytest_examples.shapes <span class="im" style="color: #00769E;">import</span> summarise_shape</span>
-<span id="cb10-5"></span>
-<span id="cb10-6"></span>
-<span id="cb10-7"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
-<span id="cb10-8">    (<span class="st" style="color: #20794D;">"shape"</span>, <span class="st" style="color: #20794D;">"area"</span>, <span class="st" style="color: #20794D;">"feret_diameter_max"</span>, <span class="st" style="color: #20794D;">"centroid"</span>),</span>
-<span id="cb10-9">    [</span>
-<span id="cb10-10">        pytest.param(<span class="st" style="color: #20794D;">"square"</span>, <span class="dv" style="color: #AD0000;">11</span>, <span class="fl" style="color: #AD0000;">7.810249675906654</span>, (<span class="fl" style="color: #AD0000;">1.3636363636363635</span>, <span class="fl" style="color: #AD0000;">1.3636363636363635</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of square"</span>),</span>
-<span id="cb10-11">        pytest.param(<span class="st" style="color: #20794D;">"circle"</span>, <span class="dv" style="color: #AD0000;">12</span>, <span class="fl" style="color: #AD0000;">5.385164807134504</span>, (<span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">4</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of circle"</span>),</span>
-<span id="cb10-12">    ],</span>
-<span id="cb10-13">)</span>
-<span id="cb10-14"><span class="kw" style="color: #003B4F;">def</span> test_summarise_shape_get_fixture_value(</span>
-<span id="cb10-15">    shape: <span class="bu" style="color: null;">str</span>, area: <span class="bu" style="color: null;">float</span>, feret_diameter_max: <span class="bu" style="color: null;">float</span>, centroid: <span class="bu" style="color: null;">tuple</span>, request</span>
-<span id="cb10-16">) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
-<span id="cb10-17">    <span class="co" style="color: #5E5E5E;">"""Test the summarisation of shapes."""</span></span>
-<span id="cb10-18">    shape_summary <span class="op" style="color: #5E5E5E;">=</span> summarise_shape(request.getfixturevalue(shape))</span>
-<span id="cb10-19">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"area"</span>] <span class="op" style="color: #5E5E5E;">==</span> area</span>
-<span id="cb10-20">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"feret_diameter_max"</span>] <span class="op" style="color: #5E5E5E;">==</span> feret_diameter_max</span>
-<span id="cb10-21">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"centroid"</span>] <span class="op" style="color: #5E5E5E;">==</span> centroid</span></code></pre></div>
-</section>
-<section id="pytest-lazy-fixture" class="level3">
-<h3 class="anchored" data-anchor-id="pytest-lazy-fixture"><code>pytest-lazy-fixture</code></h3>
-<p>An alternative is to use the Pytest plugin <a href="https://github.com/tvorog/pytest-lazy-fixture" target="_blank">pytest-lazy-fixture</a> and instead of marking the value to be obtained in the test itself you do so when setting up the parameters by referring to the fixture name as an argument to <code>pytest.lazy_fixture()</code> within <code>@pytest.mark.parametrize()</code>.</p>
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="co" style="color: #5E5E5E;">"""Test the shapes module."""</span></span>
 <span id="cb11-2"><span class="im" style="color: #00769E;">import</span> pytest</span>
 <span id="cb11-3"></span>
@@ -249,51 +231,76 @@
 <span id="cb11-7"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
 <span id="cb11-8">    (<span class="st" style="color: #20794D;">"shape"</span>, <span class="st" style="color: #20794D;">"area"</span>, <span class="st" style="color: #20794D;">"feret_diameter_max"</span>, <span class="st" style="color: #20794D;">"centroid"</span>),</span>
 <span id="cb11-9">    [</span>
-<span id="cb11-10">        pytest.param(</span>
-<span id="cb11-11">            pytest.lazy_fixture(<span class="st" style="color: #20794D;">"square"</span>),</span>
-<span id="cb11-12">            <span class="dv" style="color: #AD0000;">11</span>,</span>
-<span id="cb11-13">            <span class="fl" style="color: #AD0000;">7.810249675906654</span>,</span>
-<span id="cb11-14">            (<span class="fl" style="color: #AD0000;">1.3636363636363635</span>, <span class="fl" style="color: #AD0000;">1.3636363636363635</span>),</span>
-<span id="cb11-15">            <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of square"</span>,</span>
-<span id="cb11-16">        ),</span>
-<span id="cb11-17">        pytest.param(pytest.lazy_fixture(<span class="st" style="color: #20794D;">"circle"</span>), <span class="dv" style="color: #AD0000;">12</span>, <span class="fl" style="color: #AD0000;">5.385164807134504</span>, (<span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">4</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of circle"</span>),</span>
-<span id="cb11-18">    ],</span>
-<span id="cb11-19">)</span>
-<span id="cb11-20"><span class="kw" style="color: #003B4F;">def</span> test_summarise_shape_lazy_fixture(</span>
-<span id="cb11-21">    shape: <span class="bu" style="color: null;">str</span>, area: <span class="bu" style="color: null;">float</span>, feret_diameter_max: <span class="bu" style="color: null;">float</span>, centroid: <span class="bu" style="color: null;">tuple</span>, request</span>
-<span id="cb11-22">) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
-<span id="cb11-23">    <span class="co" style="color: #5E5E5E;">"""Test the summarisation of shapes."""</span></span>
-<span id="cb11-24">    shape_summary <span class="op" style="color: #5E5E5E;">=</span> summarise_shape(shape)</span>
-<span id="cb11-25">    <span class="bu" style="color: null;">print</span>(<span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">'centroid'</span>]<span class="op" style="color: #5E5E5E;">=</span><span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>)</span>
-<span id="cb11-26">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"area"</span>] <span class="op" style="color: #5E5E5E;">==</span> area</span>
-<span id="cb11-27">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"feret_diameter_max"</span>] <span class="op" style="color: #5E5E5E;">==</span> feret_diameter_max</span>
-<span id="cb11-28">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"centroid"</span>] <span class="op" style="color: #5E5E5E;">==</span> centroid</span></code></pre></div>
+<span id="cb11-10">        pytest.param(<span class="st" style="color: #20794D;">"square"</span>, <span class="dv" style="color: #AD0000;">11</span>, <span class="fl" style="color: #AD0000;">7.810249675906654</span>, (<span class="fl" style="color: #AD0000;">1.3636363636363635</span>, <span class="fl" style="color: #AD0000;">1.3636363636363635</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of square"</span>),</span>
+<span id="cb11-11">        pytest.param(<span class="st" style="color: #20794D;">"circle"</span>, <span class="dv" style="color: #AD0000;">12</span>, <span class="fl" style="color: #AD0000;">5.385164807134504</span>, (<span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">4</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of circle"</span>),</span>
+<span id="cb11-12">    ],</span>
+<span id="cb11-13">)</span>
+<span id="cb11-14"><span class="kw" style="color: #003B4F;">def</span> test_summarise_shape_get_fixture_value(</span>
+<span id="cb11-15">    shape: <span class="bu" style="color: null;">str</span>, area: <span class="bu" style="color: null;">float</span>, feret_diameter_max: <span class="bu" style="color: null;">float</span>, centroid: <span class="bu" style="color: null;">tuple</span>, request</span>
+<span id="cb11-16">) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb11-17">    <span class="co" style="color: #5E5E5E;">"""Test the summarisation of shapes."""</span></span>
+<span id="cb11-18">    shape_summary <span class="op" style="color: #5E5E5E;">=</span> summarise_shape(request.getfixturevalue(shape))</span>
+<span id="cb11-19">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"area"</span>] <span class="op" style="color: #5E5E5E;">==</span> area</span>
+<span id="cb11-20">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"feret_diameter_max"</span>] <span class="op" style="color: #5E5E5E;">==</span> feret_diameter_max</span>
+<span id="cb11-21">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"centroid"</span>] <span class="op" style="color: #5E5E5E;">==</span> centroid</span></code></pre></div>
+</section>
+<section id="pytest-lazy-fixture" class="level3">
+<h3 class="anchored" data-anchor-id="pytest-lazy-fixture">pytest-lazy-fixture</h3>
+<p>An alternative is to use the Pytest plugin <a href="https://github.com/tvorog/pytest-lazy-fixture" target="_blank">pytest-lazy-fixture</a> and instead of marking the value to be obtained in the test itself you do so when setting up the parameters by referring to the fixture name as an argument to <code>pytest.lazy_fixture()</code> within <code>@pytest.mark.parametrize()</code>.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="co" style="color: #5E5E5E;">"""Test the shapes module."""</span></span>
+<span id="cb12-2"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb12-3"></span>
+<span id="cb12-4"><span class="im" style="color: #00769E;">from</span> pytest_examples.shapes <span class="im" style="color: #00769E;">import</span> summarise_shape</span>
+<span id="cb12-5"></span>
+<span id="cb12-6"></span>
+<span id="cb12-7"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb12-8">    (<span class="st" style="color: #20794D;">"shape"</span>, <span class="st" style="color: #20794D;">"area"</span>, <span class="st" style="color: #20794D;">"feret_diameter_max"</span>, <span class="st" style="color: #20794D;">"centroid"</span>),</span>
+<span id="cb12-9">    [</span>
+<span id="cb12-10">        pytest.param(</span>
+<span id="cb12-11">            pytest.lazy_fixture(<span class="st" style="color: #20794D;">"square"</span>),</span>
+<span id="cb12-12">            <span class="dv" style="color: #AD0000;">11</span>,</span>
+<span id="cb12-13">            <span class="fl" style="color: #AD0000;">7.810249675906654</span>,</span>
+<span id="cb12-14">            (<span class="fl" style="color: #AD0000;">1.3636363636363635</span>, <span class="fl" style="color: #AD0000;">1.3636363636363635</span>),</span>
+<span id="cb12-15">            <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of square"</span>,</span>
+<span id="cb12-16">        ),</span>
+<span id="cb12-17">        pytest.param(pytest.lazy_fixture(<span class="st" style="color: #20794D;">"circle"</span>), <span class="dv" style="color: #AD0000;">12</span>, <span class="fl" style="color: #AD0000;">5.385164807134504</span>, (<span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">4</span>), <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"summary of circle"</span>),</span>
+<span id="cb12-18">    ],</span>
+<span id="cb12-19">)</span>
+<span id="cb12-20"><span class="kw" style="color: #003B4F;">def</span> test_summarise_shape_lazy_fixture(</span>
+<span id="cb12-21">    shape: <span class="bu" style="color: null;">str</span>, area: <span class="bu" style="color: null;">float</span>, feret_diameter_max: <span class="bu" style="color: null;">float</span>, centroid: <span class="bu" style="color: null;">tuple</span>, request</span>
+<span id="cb12-22">) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb12-23">    <span class="co" style="color: #5E5E5E;">"""Test the summarisation of shapes."""</span></span>
+<span id="cb12-24">    shape_summary <span class="op" style="color: #5E5E5E;">=</span> summarise_shape(shape)</span>
+<span id="cb12-25">    <span class="bu" style="color: null;">print</span>(<span class="ss" style="color: #20794D;">f"</span><span class="sc" style="color: #5E5E5E;">{</span>shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">'centroid'</span>]<span class="op" style="color: #5E5E5E;">=</span><span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>)</span>
+<span id="cb12-26">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"area"</span>] <span class="op" style="color: #5E5E5E;">==</span> area</span>
+<span id="cb12-27">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"feret_diameter_max"</span>] <span class="op" style="color: #5E5E5E;">==</span> feret_diameter_max</span>
+<span id="cb12-28">    <span class="cf" style="color: #003B4F;">assert</span> shape_summary[<span class="dv" style="color: #AD0000;">0</span>][<span class="st" style="color: #20794D;">"centroid"</span>] <span class="op" style="color: #5E5E5E;">==</span> centroid</span></code></pre></div>
 </section>
 </section>
 <section id="parameterise-fixtures" class="level2">
 <h2 class="anchored" data-anchor-id="parameterise-fixtures">Parameterise Fixtures</h2>
 <p>The <a href="https://github.com/tvorog/pytest-lazy-fixture" target="_blank">pytest-lazy-fixture</a> also allows fixtures themselves to be parameterised using the <code>pytest_lazyfixture.lazy_fixture()</code> function and demonstrated in the packages <a href="https://github.com/tvorog/pytest-lazy-fixture#usage" target="_blank">README</a> which I’ve reproduced below.</p>
 <p>The fixture called <code>some()</code> uses <code>lazy_fixture()</code> to include both the <code>one()</code> and the <code>two()</code> fixtures which return their respective integers. <code>test_func()</code> then checks that the value returned by the <code>some()</code> fixture is in the list <code>[1, 2]</code>. Obviously this example is contrived but it serves to demonstrate how fixtures themselves can be parameterised.</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;">import</span> pytest</span>
-<span id="cb12-2"><span class="im" style="color: #00769E;">from</span> pytest_lazyfixture <span class="im" style="color: #00769E;">import</span> lazy_fixture</span>
-<span id="cb12-3"></span>
-<span id="cb12-4"><span class="at" style="color: #657422;">@pytest.fixture</span>(params<span class="op" style="color: #5E5E5E;">=</span>[</span>
-<span id="cb12-5">    lazy_fixture(<span class="st" style="color: #20794D;">'one'</span>),</span>
-<span id="cb12-6">    lazy_fixture(<span class="st" style="color: #20794D;">'two'</span>)</span>
-<span id="cb12-7">])</span>
-<span id="cb12-8"><span class="kw" style="color: #003B4F;">def</span> some(request):</span>
-<span id="cb12-9">    <span class="cf" style="color: #003B4F;">return</span> request.param</span>
-<span id="cb12-10"></span>
-<span id="cb12-11"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
-<span id="cb12-12"><span class="kw" style="color: #003B4F;">def</span> one():</span>
-<span id="cb12-13">    <span class="cf" style="color: #003B4F;">return</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb12-14"></span>
-<span id="cb12-15"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
-<span id="cb12-16"><span class="kw" style="color: #003B4F;">def</span> two():</span>
-<span id="cb12-17">    <span class="cf" style="color: #003B4F;">return</span> <span class="dv" style="color: #AD0000;">2</span></span>
-<span id="cb12-18"></span>
-<span id="cb12-19"><span class="kw" style="color: #003B4F;">def</span> test_func(some):</span>
-<span id="cb12-20">    <span class="cf" style="color: #003B4F;">assert</span> some <span class="kw" style="color: #003B4F;">in</span> [<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;">import</span> pytest</span>
+<span id="cb13-2"><span class="im" style="color: #00769E;">from</span> pytest_lazyfixture <span class="im" style="color: #00769E;">import</span> lazy_fixture</span>
+<span id="cb13-3"></span>
+<span id="cb13-4"><span class="at" style="color: #657422;">@pytest.fixture</span>(params<span class="op" style="color: #5E5E5E;">=</span>[</span>
+<span id="cb13-5">    lazy_fixture(<span class="st" style="color: #20794D;">'one'</span>),</span>
+<span id="cb13-6">    lazy_fixture(<span class="st" style="color: #20794D;">'two'</span>)</span>
+<span id="cb13-7">])</span>
+<span id="cb13-8"><span class="kw" style="color: #003B4F;">def</span> some(request):</span>
+<span id="cb13-9">    <span class="cf" style="color: #003B4F;">return</span> request.param</span>
+<span id="cb13-10"></span>
+<span id="cb13-11"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
+<span id="cb13-12"><span class="kw" style="color: #003B4F;">def</span> one():</span>
+<span id="cb13-13">    <span class="cf" style="color: #003B4F;">return</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb13-14"></span>
+<span id="cb13-15"><span class="at" style="color: #657422;">@pytest.fixture</span></span>
+<span id="cb13-16"><span class="kw" style="color: #003B4F;">def</span> two():</span>
+<span id="cb13-17">    <span class="cf" style="color: #003B4F;">return</span> <span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb13-18"></span>
+<span id="cb13-19"><span class="kw" style="color: #003B4F;">def</span> test_func(some):</span>
+<span id="cb13-20">    <span class="cf" style="color: #003B4F;">assert</span> some <span class="kw" style="color: #003B4F;">in</span> [<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">2</span>]</span></code></pre></div>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
