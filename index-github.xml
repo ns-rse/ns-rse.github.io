@@ -414,7 +414,7 @@ No matching items
 <p></p><figcaption class="figure-caption">GitLab pre-commit pipeline.</figcaption><p></p>
 </figure>
 </div>
-<p>…and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to download and intialise all of the environments for each configured hook unlike <a href="https://pre-commit.ci" target="_blank"><code>pre-commit.ci</code></a> (this is akin to writing your own <a href="https://docs.github.com/en/actions" target="_blank">GitHub Action</a> to run <code>pre-commit</code> which would also have to download and initialise the environments).</p>
+<p>…and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to download and initialise all of the environments for each configured hook unlike <a href="https://pre-commit.ci" target="_blank"><code>pre-commit.ci</code></a> (this is akin to writing your own <a href="https://docs.github.com/en/actions" target="_blank">GitHub Action</a> to run <code>pre-commit</code> which would also have to download and initialise the environments).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline-pass.png" class="img-fluid figure-img"></p>

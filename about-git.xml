@@ -203,7 +203,7 @@ No matching items
 </section>
 <section id="usethis-package" class="level2">
 <h2 class="anchored" data-anchor-id="usethis-package">usethis package</h2>
-<p>The <a href="https://usethis.r-lib.org" target="_blank">usethis</a> package is a compliment to the <a href="https://devtools.r-lib.org" target="_blank">devtools</a> package that has a lot of very useful helper functions. Some of these enable additional <code>pre-commit</code> hooks whilst others enable GitHub actions, which are part of Continuous Integration piplelines and I would highly recommend enabling them.</p>
+<p>The <a href="https://usethis.r-lib.org" target="_blank">usethis</a> package is a compliment to the <a href="https://devtools.r-lib.org" target="_blank">devtools</a> package that has a lot of very useful helper functions. Some of these enable additional <code>pre-commit</code> hooks whilst others enable GitHub actions, which are part of Continuous Integration pipelines and I would highly recommend enabling them.</p>
 <section id="readme.rmd" class="level3">
 <h3 class="anchored" data-anchor-id="readme.rmd"><code>README.Rmd</code></h3>
 <p>The <a href="https://usethis.r-lib.org/reference/use_readme_rmd.html" target="_blank"><code>user_readme_rmd()</code></a> function automatically generates a <code>README.Rmd</code> template and will also create a <code>pre-commit</code> hook that keeps it synchronised with <code>README.md</code> whenever you update it. This is useful because the later, plain-markdown, file is automatically rendered by GitHub/GitLab/Codeberg as your repositories front-page.</p>
@@ -241,7 +241,7 @@ No matching items
 <p>Below I detail common “gotchas” I encountered when developing the package, what they mean and how to resolve them.</p>
 <section id="the-following-spelling-errors-were-found" class="level3">
 <h3 class="anchored" data-anchor-id="the-following-spelling-errors-were-found"><code>The following spelling errors were found:</code></h3>
-<p>The <code>spell-check</code> hook <em>will</em> fail if you’ve introduced new words that aren’t in standard dictionaries with messages similar to the those shown below. Sometimes these will be new words, sometimes they might be catching tpyos you have made. In the example below <code>famiy</code> should be <code>family</code> so you need to correct the source of the tpyo (and you’re told where this is, in this case it was line 27 of <code>CITATION.cff</code>), or if the new word should be added to the dictionary you will have to stage the updated <code>inst/WORDLIST</code> file for inclusion in your commit.</p>
+<p>The <code>spell-check</code> hook <em>will</em> fail if you’ve introduced new words that aren’t in standard dictionaries with messages similar to the those shown below. Sometimes these will be new words, sometimes they might be catching typos you have made. In the example below <code>famiy</code> should be <code>family</code> so you need to correct the source of the typo (and you’re told where this is, in this case it was line 27 of <code>CITATION.cff</code>), or if the new word should be added to the dictionary you will have to stage the updated <code>inst/WORDLIST</code> file for inclusion in your commit.</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">spell-check..............................................................Failed</span></span>
 <span id="cb5-2"><span class="ex" style="color: null;">-</span> hook id: spell-check</span>
 <span id="cb5-3"><span class="ex" style="color: null;">-</span> exit code: 1</span>
@@ -372,7 +372,7 @@ No matching items
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
 <li><a href="https://r-pkgs.org/" target="_blank">R Packages book by Hadley Wickham and Jenny Bryan</a></li>
-<li><a href="https://happygitwithr.com" target="_blank">Happy Git and GitHub for the userR by Jenny Bryan</a></li>
+<li><a href="https://happygitwithr.com" target="_blank">Happy Git and GitHub for the useR by Jenny Bryan</a></li>
 </ul>
 <section id="r-packages" class="level3">
 <h3 class="anchored" data-anchor-id="r-packages">R Packages</h3>
@@ -702,7 +702,7 @@ No matching items
 <p></p><figcaption class="figure-caption">GitLab pre-commit pipeline.</figcaption><p></p>
 </figure>
 </div>
-<p>…and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to download and intialise all of the environments for each configured hook unlike <a href="https://pre-commit.ci" target="_blank"><code>pre-commit.ci</code></a> (this is akin to writing your own <a href="https://docs.github.com/en/actions" target="_blank">GitHub Action</a> to run <code>pre-commit</code> which would also have to download and initialise the environments).</p>
+<p>…and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to download and initialise all of the environments for each configured hook unlike <a href="https://pre-commit.ci" target="_blank"><code>pre-commit.ci</code></a> (this is akin to writing your own <a href="https://docs.github.com/en/actions" target="_blank">GitHub Action</a> to run <code>pre-commit</code> which would also have to download and initialise the environments).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline-pass.png" class="img-fluid figure-img"></p>

@@ -113,7 +113,7 @@ when the package is installed the necessary dependencies are also pulled in, fai
 
 The [usethis](https://usethis.r-lib.org) package is a compliment to the [devtools](https://devtools.r-lib.org) package
 that has a lot of very useful helper functions. Some of these enable additional `pre-commit` hooks whilst others enable
-GitHub actions, which are part of Continuous Integration piplelines and I would highly recommend enabling them.
+GitHub actions, which are part of Continuous Integration pipelines and I would highly recommend enabling them.
 
 ### `README.Rmd`
 
@@ -171,8 +171,8 @@ Below I detail common "gotchas" I encountered when developing the package, what 
 ### `The following spelling errors were found:`
 
 The `spell-check` hook _will_ fail if you've introduced new words that aren't in standard dictionaries with messages
-similar to the those shown below. Sometimes these will be new words, sometimes they might be catching tpyos you have
-made. In the example below `famiy` should be `family` so you need to correct the source of the tpyo (and you're told
+similar to the those shown below. Sometimes these will be new words, sometimes they might be catching typos you have
+made. In the example below `famiy` should be `family` so you need to correct the source of the typo (and you're told
 where this is, in this case it was line 27 of `CITATION.cff`), or if the new word should be added to the dictionary you
 will have to stage the updated `inst/WORDLIST` file for inclusion in your commit.
 
@@ -372,7 +372,7 @@ precommit::use_precommit(install_hooks = TRUE)
 ## Links
 
 + [R Packages book by Hadley Wickham and Jenny Bryan](https://r-pkgs.org/)
-+ [Happy Git and GitHub for the userR by Jenny Bryan](https://happygitwithr.com)
++ [Happy Git and GitHub for the useR by Jenny Bryan](https://happygitwithr.com)
 
 ### R Packages
 

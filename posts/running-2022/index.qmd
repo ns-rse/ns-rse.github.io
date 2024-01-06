@@ -28,7 +28,7 @@ on two feet rather than two wheels.
 Having worked as a statistician (of different sorts) over a number of years I also like data and analysing it. I
 therefore record my runs (and occasional cycles). A long time ago I used to use Endomondo but didn't like the idea of
 sharing my personal location data with a random company so went private and now use the privacy respecting
-[OpenTracks](https://opentracksapp.com/)^[Converting existing logs from Endomondo which were in TCX promted me to write
+[OpenTracks](https://opentracksapp.com/)^[Converting existing logs from Endomondo which were in TCX prompted me to write
 the Python package [tcx2gpx](https://gitlab.com/nshephard/tcx2gpx) to convert these to GPX which I could import
 to OpenTracks].
 
