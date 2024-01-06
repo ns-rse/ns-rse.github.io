@@ -156,7 +156,7 @@ The messages are quite informative, taking each in turn we can work through reso
 #### `Missing module docstring (missing-module-docstring)`
 
 Each Python module should have a docstring as the very first line that describes what it does. In this example it might
-be considered superflous but its good practice to get in the habit of writing these as it comes in useful when
+be considered superfluous but its good practice to get in the habit of writing these as it comes in useful when
 documentation is automatically generated from the docstrings in the code. To fix it we can add a short docstring at the top.
 
 ```python
@@ -260,7 +260,7 @@ because it means the argument can be either a string (`str`) or a
 You can disable PyLint from complaining about specific error codes/messages on a per-file basis by adding a line that
 disables them. You can use either codes or messages (the bit in the brackets at the end of the line, in this case
 `unsubscriptable-object`) and it is advisable to use the message form as it is more informative to those who read your
-code subequently.
+code subsequently.
 
 If we add the following line it prevents PyLint from reporting the specific error...
 
