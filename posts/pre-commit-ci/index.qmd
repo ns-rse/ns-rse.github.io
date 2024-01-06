@@ -177,7 +177,7 @@ Once you have done this your CI/CD pipeline should show at the very start the `.
 ![GitLab pre-commit pipeline.](img/gitlab-pre-commit-pipeline.png)
 
 ...and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to
-download and intialise all of the environments for each configured hook unlike [`pre-commit.ci`](https://pre-commit.ci)
+download and initialise all of the environments for each configured hook unlike [`pre-commit.ci`](https://pre-commit.ci)
 (this is akin to writing your own [GitHub Action](https://docs.github.com/en/actions) to run `pre-commit` which would
 also have to download and initialise the environments).
 
