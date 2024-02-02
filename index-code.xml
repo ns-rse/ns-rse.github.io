@@ -165,7 +165,17 @@
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
+  author = {Neil Shephard},
+  title = {Pre-Commit : {Useful} {Hooks}},
+  date = {2023-05-07},
+  url = {https://ns-rse.github.io//posts/pre-commit-hooks},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2023. <span>“Pre-Commit : Useful Hooks.”</span> May 7,
+2023. <a href="https://ns-rse.github.io//posts/pre-commit-hooks">https://ns-rse.github.io//posts/pre-commit-hooks</a>.
+</div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
   <category>linting</category>
@@ -333,7 +343,17 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
+  author = {Neil Shephard},
+  title = {Pre-Commit.ci : {Integrating} {Pre-Commit} into {CI/CD}},
+  date = {2023-02-06},
+  url = {https://ns-rse.github.io//posts/pre-commit-ci},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2023. <span>“Pre-Commit.ci : Integrating Pre-Commit into
+CI/CD.”</span> February 6, 2023. <a href="https://ns-rse.github.io//posts/pre-commit-ci">https://ns-rse.github.io//posts/pre-commit-ci</a>.
+</div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
   <category>linting</category>
@@ -414,7 +434,17 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
+  author = {Neil Shephard},
+  title = {Who’s to {Blame}},
+  date = {2022-12-17},
+  url = {https://ns-rse.github.io//posts/whos_to_blame},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2022. <span>“Who’s to Blame.”</span> December 17, 2022.
+<a href="https://ns-rse.github.io//posts/whos_to_blame">https://ns-rse.github.io//posts/whos_to_blame</a>.
+</div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
   <category>git</category>
@@ -536,7 +566,17 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
+  author = {Neil Shephard},
+  title = {Pre-Commit : {Customising} and {Updating}},
+  date = {2022-11-15},
+  url = {https://ns-rse.github.io//posts/pre-commit-updates},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2022. <span>“Pre-Commit : Customising and
+Updating.”</span> November 15, 2022. <a href="https://ns-rse.github.io//posts/pre-commit-updates">https://ns-rse.github.io//posts/pre-commit-updates</a>.
+</div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
   <category>linting</category>
@@ -913,7 +953,17 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
+  author = {Neil Shephard},
+  title = {Linux {Command} {Line} {Alternatives}},
+  date = {2022-09-18},
+  url = {https://ns-rse.github.io//posts/cli-alternatives},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2022. <span>“Linux Command Line Alternatives.”</span>
+September 18, 2022. <a href="https://ns-rse.github.io//posts/cli-alternatives">https://ns-rse.github.io//posts/cli-alternatives</a>.
+</div></div></section></div> ]]></description>
   <category>code</category>
   <category>linux</category>
   <category>bash</category>
@@ -1083,7 +1133,17 @@ git add .pre-commit-config.yaml</code></pre>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
+  author = {Neil Shephard},
+  title = {Pre-Commit : {Protecting} Your Future Self},
+  date = {2022-08-28},
+  url = {https://ns-rse.github.io//posts/pre-commit},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2022. <span>“Pre-Commit : Protecting Your Future
+Self.”</span> August 28, 2022. <a href="https://ns-rse.github.io//posts/pre-commit">https://ns-rse.github.io//posts/pre-commit</a>.
+</div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
   <category>linting</category>
@@ -1378,7 +1438,17 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
+  author = {Neil Shephard},
+  title = {Linting - {What} Is All the Fluff About?},
+  date = {2022-08-18},
+  url = {https://ns-rse.github.io//posts/linting},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2022. <span>“Linting - What Is All the Fluff
+About?”</span> August 18, 2022. <a href="https://ns-rse.github.io//posts/linting">https://ns-rse.github.io//posts/linting</a>.
+</div></div></section></div> ]]></description>
   <category>code</category>
   <category>linting</category>
   <category>python</category>

@@ -335,7 +335,17 @@ No matching items
 <ol>
 <li id="fn1"><p>A caveat to this is the use of Random Number Generators as once seeded these can produce different numbers depending on the order in which the fixture is used but that is beyond the scope of this post.↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
+  author = {Neil Shephard},
+  title = {Pytest {Parameterisation}},
+  date = {2024-01-01},
+  url = {https://ns-rse.github.io//posts/pytest-param},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2024" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2024. <span>“Pytest Parameterisation.”</span> January 1,
+2024. <a href="https://ns-rse.github.io//posts/pytest-param">https://ns-rse.github.io//posts/pytest-param</a>.
+</div></div></section></div> ]]></description>
   <category>python</category>
   <category>testing</category>
   <category>pytest</category>
@@ -444,7 +454,17 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
+  author = {Neil Shephard},
+  title = {Virtualenvwrapper},
+  date = {2023-12-23},
+  url = {https://ns-rse.github.io//posts/virtualenvwrapper},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2023. <span>“Virtualenvwrapper.”</span> December 23,
+2023. <a href="https://ns-rse.github.io//posts/virtualenvwrapper">https://ns-rse.github.io//posts/virtualenvwrapper</a>.
+</div></div></section></div> ]]></description>
   <category>python</category>
   <category>virtual environments</category>
   <guid>https://ns-rse.github.io/posts/virtualenvwrapper/index.html</guid>
@@ -499,7 +519,17 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
+  author = {Neil Shephard},
+  title = {Repository {Review} with {Scientific} {Python}},
+  date = {2023-11-17},
+  url = {https://ns-rse.github.io//posts/repository-review},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2023. <span>“Repository Review with Scientific
+Python.”</span> November 17, 2023. <a href="https://ns-rse.github.io//posts/repository-review">https://ns-rse.github.io//posts/repository-review</a>.
+</div></div></section></div> ]]></description>
   <category>pre-commit</category>
   <category>packaging</category>
   <category>scientific python</category>
@@ -699,7 +729,17 @@ No matching items
 <ol>
 <li id="fn1"><p>PyPI now enforces Two Factor Authentication (2FA) for new accounts, see <a href="https://blog.pypi.org/posts/2023-08-08-2fa-enforcement-for-new-users/" target="_blank">2FA Enforcement for New User Registrations</a>↩︎</p></li>
 </ol>
-</section></div> ]]></description>
+</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
+  author = {Neil Shephard},
+  title = {GitLab {CI} - {Automatic} {Publishing} to {PyPI}},
+  date = {2023-10-03},
+  url = {https://ns-rse.github.io//posts/gitlab-ci-pypi},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2023. <span>“GitLab CI - Automatic Publishing to
+PyPI.”</span> October 3, 2023. <a href="https://ns-rse.github.io//posts/gitlab-ci-pypi">https://ns-rse.github.io//posts/gitlab-ci-pypi</a>.
+</div></div></section></div> ]]></description>
   <category>python</category>
   <category>documentation</category>
   <category>packaging</category>
@@ -1037,7 +1077,17 @@ jobs:
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
+  author = {Neil Shephard},
+  title = {Sphinx {Documentation}},
+  date = {2023-05-07},
+  url = {https://ns-rse.github.io//posts/sphinx-docs},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2023. <span>“Sphinx Documentation.”</span> May 7, 2023.
+<a href="https://ns-rse.github.io//posts/sphinx-docs">https://ns-rse.github.io//posts/sphinx-docs</a>.
+</div></div></section></div> ]]></description>
   <category>quarto</category>
   <category>python</category>
   <category>documentation</category>
@@ -1423,7 +1473,16 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
+  author = {Neil Shephard},
+  title = {Python {Packaging}},
+  date = {2023-03-25},
+  url = {https://ns-rse.github.io//posts/python-packaging},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2023. <span>“Python Packaging.”</span> March 25, 2023. <a href="https://ns-rse.github.io//posts/python-packaging">https://ns-rse.github.io//posts/python-packaging</a>.
+</div></div></section></div> ]]></description>
   <category>quarto</category>
   <category>python</category>
   <category>packaging</category>
@@ -1717,7 +1776,17 @@ No matching items
 <div class="listing-no-matching d-none">
 No matching items
 </div>
-</div> ]]></description>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
+  author = {Neil Shephard},
+  title = {Linting - {What} Is All the Fluff About?},
+  date = {2022-08-18},
+  url = {https://ns-rse.github.io//posts/linting},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2022. <span>“Linting - What Is All the Fluff
+About?”</span> August 18, 2022. <a href="https://ns-rse.github.io//posts/linting">https://ns-rse.github.io//posts/linting</a>.
+</div></div></section></div> ]]></description>
   <category>code</category>
   <category>linting</category>
   <category>python</category>
