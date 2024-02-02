@@ -76,7 +76,7 @@ def test_divide_unparameterised() -> None:
 
 You can find this test along with others in the
 [`tests/test_divide.py`](https://github.com/ns-rse/pytest-examples/blob/main/tests/test_divide.py) file of the
-accompanying  repository.
+accompanying repository.
 
 ## Parameterising Tests
 
