@@ -1,0 +1,277 @@
+---
+title: "Git Remotes Revisited"
+date: "2024-02-17"
+categories: [git, github, gitlab]
+image: https://live.staticflickr.com/65535/53494024371_1eecc0b722_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+I've written before about [Git Remotes](https://ns-rse.github.io/posts/git-remotes/) but in my on-going effort to
+improve my understanding of the tools I use daily I've discovered that it is possible to have a single `remote` push to
+two different URLs so am revisiting the topic and perhaps writing a little more clearly on it.
+
+![[Microcosmos by
+Me](https://www.flickr.com/photos/slackline/53494024371/in/datetaken/)](https://live.staticflickr.com/65535/53494024371_1eecc0b722_k.jpg)
+
+[Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes) are where other copies of your repository
+exist and typically where collaboration occurs (i.e. issue tracking, merge requests, bug reports etc.).
+
+The main remote that a repository is configured to use by default is called `origin` but it is possible to have multiple
+remotes tracked by your local copy.
+
+## Listing Remotes
+
+List remotes with `git remote [-v]` the `-v` flag will show the URLs that are stored for the short-cut.
+
+``` bash
+❱ git remote -v
+forgejo forgejo@forgejo.hopto.org:nshephard/mvdate.git (fetch)
+forgejo forgejo@forgejo.hopto.org:nshephard/mvdate.git (push)
+origin git@gitlab.com:nshephard/mvdate.git (fetch)
+origin git@gitlab.com:nshephard/mvdate.git (push)
+```
+
+You can get more information about a remote using `git remote show origin`
+
+``` bash
+❱ git remote show origin
+ * remote origin
+   Fetch URL: git@gitlab.com:nshephard/mvdate.git
+   Push  URL: git@gitlab.com:nshephard/mvdate.git
+   HEAD branch: main
+   Remote branches:
+     main                                                tracked
+     refs/merge-requests/18/head                         new (next fetch will store in remotes/origin
+     refs/pullreqs/15                                    stale (use 'git remote prune' to remove)
+     refs/remotes/origin/nshephard/update-pre-commit     stale (use 'git remote prune' to remove)
+     refs/remotes/origin/nshephard/update-readme         stale (use 'git remote prune' to remove)
+   Local branches configured for 'git pull':
+     main                            merges with remote main
+     nshephard/fix-mtime             merges with remote nshephard/fix-mtime
+     nshephard/update-pre-commit     merges with remote nshephard/update-pre-commit
+   Local ref configured for 'git push':
+     main pushes to main (local out of date)
+```
+
+This can be useful to show you what you need to tidy up if there are lots of stale branches around. In this example I
+can run `git remote prune origin` as advised to remove these.
+
+### Default Remote
+
+The default remote to push to can be set with
+
+``` conf
+git config --local remote.pushDefault origin
+```
+
+This adds the following to your `.git/config`
+
+``` bash
+[remote]
+    pushDefault = origin
+```
+
+## Adding Remotes
+
+It is straight forward to add a remote with `git remote add <shortcut> <URL>` where the URL is either the `https` or the
+`git` URL.
+
+``` bash
+❱ git remote add forgejo forgejo@forgejo.hopto.org:nshephard/mvdate.git
+```
+
+With two remotes setup you can choose, at the branch level, where to push your changes by specifying the remote you wish
+to use. So if you wanted to push a new branch, `change-just-for-forgejo` that we create to the newly added `forgejo`
+remote you would configure it with.
+
+``` bash
+❱ git switch -c change-just-for-forgejo
+❱ git commit --allow-empty -m "Test push just to forgejo"
+❱ git push --set-upstream forgejo change-just-for-forgejo
+Enumerating objects: 2, done.
+Counting objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 376 bytes | 376.00 KiB/s, done.
+Total 2 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a new pull request for 'change-just-for-forgejo':
+remote:   <https://forgejo.hopto.org/nshephard/mvdate/compare/main...change-just-for-forgejo>
+remote:
+remote: . Processing 1 references
+remote: Processed 1 references in total
+To ssh://forgejo.hopto.org:1234/nshephard/mvdate.git
+
+-   [new branch]      change-just-for-forgejo -> change-just-for-forgejo
+
+branch 'change-just-for-forgejo' set up to track 'forgejo/change-just-for-forgejo'.
+```
+
+Git reports that the local `change-just-for-forgejo` has been setup to tracke `forgejo/change-just-for-forgejo`.
+
+### A Note on SSH Ports
+
+If a remote is using a non-standard port for SSH connections (i.e. anything other than `22`) then you have to use a
+different format for specifying the remote URL. Instead of `forgejo@forgejo.hopto.org:nshephard/mvdate.git` you must
+explicitly state the protocol (`ssh://`) and include the port so that it reads
+`ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git` and so to add it you would&#x2026;
+
+``` bash
+❱ git remote add forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git
+❱ git remote -v
+forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (fetch)
+forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (push)
+origin  git@gitlab.com:nshephard/mvdate.git (fetch)
+origin  git@gitlab.com:nshephard/mvdate.git (push)
+```
+
+## Multiple Remotes
+
+The really neat thing is that it is possible to have a local repository track multiple remotes, which means when you
+push your changes it will go to both. You could add a second remote and then configure an alias to push to both, but
+there is an excellent post on [StackOverflow](https://stackoverflow.com/a/14290145/1444043) that shows how to do this
+with Git itself because each remote can have multiple `pushurls`.
+
+With a single remote `origin` the configuration `.git/config` for [mvdate](https://gitlab.com/nsshephard/mvdate) looks
+like the following
+
+``` conf
+    [remote "origin"]
+        url = git@gitlab.com:nshephard/mvdate.git
+        fetch = +refs/heads/*:refs/remotes/origin/*
+        fetch = +refs/merge-requests/*/head:refs/pullreqs/*
+    [branch "main"]
+        remote = origin
+        merge = refs/heads/main
+    [remote]
+        pushDefault = origin
+    [remote "forgejo"]
+        url = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git
+        fetch = +refs/heads/*:refs/remotes/forgejo/*
+```
+
+A single `remote` is defined called `origin` and it points to the repository on
+`git@github.com:ns-rse/pytest-examples.git`. Both the `main` and `ns-rse/typing` branch are configured to use this
+`origin` remote. You can check the configuration with&#x2026;
+
+``` bash
+❱ git remote -v
+forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (fetch)
+forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (push)
+origin  git@gitlab.com:nshephard/mvdate.git (fetch)
+origin  git@gitlab.com:nshephard/mvdate.git (push)
+```
+
+Assuming you have already created an empty repository on another Forge. In this example I'm using my self-hosted
+[Forgejo](https://forgejo.hopto.org) instance but you could use [GitHub](https://github.com),
+[Codeberg](https://codeberg.org) or any other Git Forge. you can add a `pushurl` to the `origin` branch by doing the
+following (**NB** Note I use a non-standard port, see above note).
+
+``` bash
+❱ git remote set-url --add --push origin ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git
+❱ git remote -v
+forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (fetch)
+forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (push)
+origin  git@gitlab.com:nshephard/mvdate.git (fetch)
+origin  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (push)
+```
+
+Note that this has removed the original `push` target on `origin` which pointed to  `gitlab` so we need to add that back
+in.
+
+``` bash
+❱ git remote set-url --add --push origin git@gitlab.com:nshephard/mvdate.git
+❱ git remote -v
+forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (fetch)
+forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (push)
+origin  git@gitlab.com:nshephard/mvdate.git (fetch)
+origin  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (push)
+origin  git@gitlab.com:nshephard/mvdate.git (push)
+```
+
+We now have two `push` targets on `origin`, one pointing to `gitlab.com` (using the default port `22`) and one pointing
+to `forgejo.hopto.org` (on port `1234`) and as the default target is `origin` when we `git push` it will send the
+changes to both.
+
+We can test this with an empty commit on a new branch, `test-forgejo`, which we first create.
+
+``` bash
+❱ git switch -c test-forgejo
+❱ git commit --allow-empty -m "Testing pushing to GitLab and Forgejo"
+[test-forgejo c07caf6] Testing pushing to GitLab and Forgejo
+❱ git push
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 210 bytes | 210.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a new pull request for 'test-forgejo':
+remote:   <https://forgejo.hopto.org/nshephard/mvdate/compare/main...test-forgejo>
+remote:
+remote: . Processing 1 references
+remote: Processed 1 references in total
+To ssh://forgejo.hopto.org:1234/nshephard/mvdate.git
+
+-   [new branch]      test-forgejo -> test-forgejo
+
+branch 'test-forgejo' set up to track 'origin/test-forgejo'.
+Enumerating objects: 26, done.
+Counting objects: 100% (26/26), done.
+Writing objects: 100% (26/26), 16.75 KiB | 8.37 MiB/s, done.
+Total 26 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: To create a merge request for test-forgejo, visit:
+remote:   <https://gitlab.com/nshephard/mvdate/-/merge_requests/new?merge_request%5Bsource_branch%5D=test-forgejo>
+remote:
+To gitlab.com:nshephard/mvdate.git
+
+-   [new branch]      test-forgejo -> test-forgejo
+
+branch 'test-forgejo' set up to track 'origin/test-forgejo'.
+```
+
+The output above shows that the branch `test-forgejo` was pushed to both the URLs we have added as push targets to
+`origin` and if you visit the repositories you will find the branches now exist there.
+
+## Deleting Remotes
+
+Having added `forgejo` as its own remote as well as adding it as a push URL to `origin` it is of course possible to push
+changes *just* there but that kind of defeats the object of having two URLs defined under a single `remote` which allows
+them both to be kept up-to-date and in sync. Its easy to delete a remote though.
+
+``` bash
+❱ git remote remove forgejo
+❱ git remote -v
+origin  git@gitlab.com:nshephard/mvdate.git (fetch)
+origin  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (push)
+origin  git@gitlab.com:nshephard/mvdate.git (push)
+```
+
+## Conclusion
+
+Having a local repository is a simple way of having a mirror of a repository. Whether you have a use case for it depends
+on what you are doing. I could easily imagine this could get very complicated if changes were pushed by others to each
+remote, but I wouldn't be surprised if Git is regularly used in this way by others.
+
+Of course if you want to push changes that you wish to keep private to one remote only then you would have to be very
+careful in how you use this setup and, as the original StackOverflow post that showed me how to do this suggests, you
+would probably want to leave `origin`  as is and setup another `remote` (e.g. `all`) so that you can push changes to
+`origin` and `all` (and any other remotes you setup) independently.
+
+Its been good for me to return to a topic I've delved into in the past, this second time round I feel I've got a
+slightly better grasp of what I'm doing and have a neater solution to achieve what is required.
+
+## Links
+
+- [Git - Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
+- [Git - git-remote Documentation](https://git-scm.com/docs/git-remote)
+- [github - Git - Pushing code to two remotes - Stack
+    Overflow](https://stackoverflow.com/questions/14290113/git-pushing-code-to-two-remotes)
