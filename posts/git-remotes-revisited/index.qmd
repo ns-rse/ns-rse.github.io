@@ -70,7 +70,7 @@ can run `git remote prune origin` as advised to remove these.
 
 The default remote to push to can be set with
 
-``` conf
+``` bash
 git config --local remote.pushDefault origin
 ```
 
@@ -143,7 +143,7 @@ with Git itself because each remote can have multiple `pushurls`.
 With a single remote `origin` the configuration `.git/config` for [mvdate](https://gitlab.com/nsshephard/mvdate) looks
 like the following
 
-``` conf
+``` bash
     [remote "origin"]
         url = git@gitlab.com:nshephard/mvdate.git
         fetch = +refs/heads/*:refs/remotes/origin/*

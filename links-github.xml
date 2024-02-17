@@ -64,7 +64,7 @@
 <section id="default-remote" class="level3">
 <h3 class="anchored" data-anchor-id="default-remote">Default Remote</h3>
 <p>The default remote to push to can be set with</p>
-<pre class="conf"><code>git config --local remote.pushDefault origin</code></pre>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--local</span> remote.pushDefault origin</span></code></pre></div>
 <p>This adds the following to your <code>.git/config</code></p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;">[remote]</span></span>
 <span id="cb4-2">    <span class="ex" style="color: null;">pushDefault</span> = origin</span></code></pre></div>
@@ -109,18 +109,18 @@
 <h2 class="anchored" data-anchor-id="multiple-remotes">Multiple Remotes</h2>
 <p>The really neat thing is that it is possible to have a local repository track multiple remotes, which means when you push your changes it will go to both. You could add a second remote and then configure an alias to push to both, but there is an excellent post on <a href="https://stackoverflow.com/a/14290145/1444043" target="_blank">StackOverflow</a> that shows how to do this with Git itself because each remote can have multiple <code>pushurls</code>.</p>
 <p>With a single remote <code>origin</code> the configuration <code>.git/config</code> for <a href="https://gitlab.com/nsshephard/mvdate" target="_blank">mvdate</a> looks like the following</p>
-<pre class="conf"><code>    [remote "origin"]
-        url = git@gitlab.com:nshephard/mvdate.git
-        fetch = +refs/heads/*:refs/remotes/origin/*
-        fetch = +refs/merge-requests/*/head:refs/pullreqs/*
-    [branch "main"]
-        remote = origin
-        merge = refs/heads/main
-    [remote]
-        pushDefault = origin
-    [remote "forgejo"]
-        url = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git
-        fetch = +refs/heads/*:refs/remotes/forgejo/*</code></pre>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1">    <span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"origin"</span>]</span>
+<span id="cb8-2">        <span class="ex" style="color: null;">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb8-3">        <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/origin/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb8-4">        <span class="ex" style="color: null;">fetch</span> = +refs/merge-requests/<span class="pp" style="color: #AD0000;">*</span>/head:refs/pullreqs/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb8-5">    <span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"main"</span>]</span>
+<span id="cb8-6">        <span class="ex" style="color: null;">remote</span> = origin</span>
+<span id="cb8-7">        <span class="ex" style="color: null;">merge</span> = refs/heads/main</span>
+<span id="cb8-8">    <span class="ex" style="color: null;">[remote]</span></span>
+<span id="cb8-9">        <span class="ex" style="color: null;">pushDefault</span> = origin</span>
+<span id="cb8-10">    <span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"forgejo"</span>]</span>
+<span id="cb8-11">        <span class="ex" style="color: null;">url</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb8-12">        <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/forgejo/<span class="pp" style="color: #AD0000;">*</span></span></code></pre></div>
 <p>A single <code>remote</code> is defined called <code>origin</code> and it points to the repository on <code>git@github.com:ns-rse/pytest-examples.git</code>. Both the <code>main</code> and <code>ns-rse/typing</code> branch are configured to use this <code>origin</code> remote. You can check the configuration with…</p>
 <div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
 <span id="cb9-2"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
