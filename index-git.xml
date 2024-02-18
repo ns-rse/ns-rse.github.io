@@ -71,17 +71,17 @@
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">❱</span> git remote add forgejo forgejo@forgejo.hopto.org:nshephard/mvdate.git</span></code></pre></div>
 <p>This adds details to your <code>.git/config</code> so that it has the following</p>
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"origin"</span>]</span>
-<span id="cb6-2"> <span class="ex" style="color: null;">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
-<span id="cb6-3"> <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/origin/<span class="pp" style="color: #AD0000;">*</span></span>
-<span id="cb6-4"> <span class="ex" style="color: null;">fetch</span> = +refs/merge-requests/<span class="pp" style="color: #AD0000;">*</span>/head:refs/pullreqs/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb6-2">    <span class="ex" style="color: null;">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb6-3">    <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/origin/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb6-4">    <span class="ex" style="color: null;">fetch</span> = +refs/merge-requests/<span class="pp" style="color: #AD0000;">*</span>/head:refs/pullreqs/<span class="pp" style="color: #AD0000;">*</span></span>
 <span id="cb6-5"><span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"forgejo"</span>]</span>
 <span id="cb6-6">    <span class="ex" style="color: null;">url</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
 <span id="cb6-7">    <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/forgejo/<span class="pp" style="color: #AD0000;">*</span></span>
 <span id="cb6-8"><span class="ex" style="color: null;">[remote]</span></span>
-<span id="cb6-9"> <span class="ex" style="color: null;">pushDefault</span> = origin</span>
+<span id="cb6-9">    <span class="ex" style="color: null;">pushDefault</span> = origin</span>
 <span id="cb6-10"><span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"main"</span>]</span>
-<span id="cb6-11"> <span class="ex" style="color: null;">remote</span> = origin</span>
-<span id="cb6-12"> <span class="ex" style="color: null;">merge</span> = refs/heads/main</span></code></pre></div>
+<span id="cb6-11">    <span class="ex" style="color: null;">remote</span> = origin</span>
+<span id="cb6-12">    <span class="ex" style="color: null;">merge</span> = refs/heads/main</span></code></pre></div>
 <p>Two remotes are defined, <code>origin</code> and <code>forgejo</code>, the default to push to is set to <code>origin</code> and the <code>main</code> branch is setup to track the remote <code>origin</code>.</p>
 <section id="pushing-to-specific-remote" class="level3">
 <h3 class="anchored" data-anchor-id="pushing-to-specific-remote">Pushing to specific remote</h3>

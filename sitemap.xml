@@ -2,94 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ns-rse.github.io/about.html</loc>
-    <lastmod>2024-02-18T09:03:41.316Z</lastmod>
+    <lastmod>2024-02-18T09:10:09.821Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/links.html</loc>
-    <lastmod>2024-02-18T09:03:42.172Z</lastmod>
+    <lastmod>2024-02-18T09:10:10.657Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/index.html</loc>
-    <lastmod>2024-02-18T09:03:42.792Z</lastmod>
+    <lastmod>2024-02-18T09:10:11.269Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/sphinx-docs/index.html</loc>
-    <lastmod>2024-02-18T09:03:46.280Z</lastmod>
+    <lastmod>2024-02-18T09:10:15.065Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/git-remotes-revisited/index.html</loc>
-    <lastmod>2024-02-18T09:03:46.808Z</lastmod>
+    <lastmod>2024-02-18T09:10:15.565Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</loc>
-    <lastmod>2024-02-18T09:03:47.260Z</lastmod>
+    <lastmod>2024-02-18T09:10:16.001Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/whos_to_blame/index.html</loc>
-    <lastmod>2024-02-18T09:03:47.660Z</lastmod>
+    <lastmod>2024-02-18T09:10:16.381Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pre-commit-updates/index.html</loc>
-    <lastmod>2024-02-18T09:03:48.096Z</lastmod>
+    <lastmod>2024-02-18T09:10:16.809Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/cli-alternatives/index.html</loc>
-    <lastmod>2024-02-18T09:03:48.576Z</lastmod>
+    <lastmod>2024-02-18T09:10:17.281Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pre-commit-ci/index.html</loc>
-    <lastmod>2024-02-18T09:03:49.092Z</lastmod>
+    <lastmod>2024-02-18T09:10:17.777Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/repository-review/index.html</loc>
-    <lastmod>2024-02-18T09:03:49.468Z</lastmod>
+    <lastmod>2024-02-18T09:10:18.153Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/linting/index.html</loc>
-    <lastmod>2024-02-18T09:03:50.028Z</lastmod>
+    <lastmod>2024-02-18T09:10:18.705Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/virtualenvwrapper/index.html</loc>
-    <lastmod>2024-02-18T09:03:50.476Z</lastmod>
+    <lastmod>2024-02-18T09:10:19.129Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pytest-param/index.html</loc>
-    <lastmod>2024-02-18T09:03:51.000Z</lastmod>
+    <lastmod>2024-02-18T09:10:19.645Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/browser-extensions/index.html</loc>
-    <lastmod>2024-02-18T09:03:51.472Z</lastmod>
+    <lastmod>2024-02-18T09:10:20.097Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pre-commit-r/index.html</loc>
-    <lastmod>2024-02-18T09:03:52.188Z</lastmod>
+    <lastmod>2024-02-18T09:10:20.789Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/r-resources/index.html</loc>
-    <lastmod>2024-02-18T09:03:52.740Z</lastmod>
+    <lastmod>2024-02-18T09:10:21.337Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/pre-commit/index.html</loc>
-    <lastmod>2024-02-18T09:03:55.348Z</lastmod>
+    <lastmod>2024-02-18T09:10:23.933Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/gitlab-ci-pypi/index.html</loc>
-    <lastmod>2024-02-18T09:03:57.976Z</lastmod>
+    <lastmod>2024-02-18T09:10:26.481Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/git-ssh/index.html</loc>
-    <lastmod>2024-02-18T09:03:58.428Z</lastmod>
+    <lastmod>2024-02-18T09:10:26.941Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/running-2022/index.html</loc>
-    <lastmod>2024-02-18T09:04:08.824Z</lastmod>
+    <lastmod>2024-02-18T09:10:37.029Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/python-packaging/index.html</loc>
-    <lastmod>2024-02-18T09:04:09.588Z</lastmod>
+    <lastmod>2024-02-18T09:10:37.817Z</lastmod>
   </url>
   <url>
     <loc>https://ns-rse.github.io/posts/git-remotes/index.html</loc>
-    <lastmod>2024-02-18T09:04:10.208Z</lastmod>
+    <lastmod>2024-02-18T09:10:38.429Z</lastmod>
   </url>
 </urlset>
