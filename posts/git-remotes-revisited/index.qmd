@@ -328,10 +328,10 @@ Having a local repository push to two remotes is a simple way of a mirroring. Wh
 on what you are doing. I could easily imagine this could get very complicated if changes were pushed by others to each
 remote, but I wouldn't be surprised if Git is regularly used in this way by others.
 
-Of course if you want to push changes that you wish to keep private to one remote only then you would have to be very
-careful in how you use this setup. The original StackOverflow post that showed me how to do this suggests, you would
-probably want to leave `origin`  as is and setup another `remote` (e.g. `all`) so that you can push changes to `origin`
-and `all` (and any other remotes you setup) independently.
+Of course if you want to push a branch that you wish to keep private to one remote only then you would have to be very
+careful in how you use this setup. The original StackOverflow solution inspired that this post suggests creating an
+independent remote  (e.g. `all`) so that you can push changes to `origin` or the second remote (in this example
+`forgejo`) and use `all` only when you wish to push changes to both.
 
 Its been good for me to return to a topic I've delved into in the past, this second time round I feel I've got a
 slightly better grasp of what I'm doing and have a neater solution to achieve what is required.
