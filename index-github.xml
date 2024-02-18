@@ -58,9 +58,9 @@
 <p>This can be useful to show you what you need to tidy up if there are lots of stale branches around. In this example I can run <code>git remote prune origin</code> as advised to remove these.</p>
 <section id="default-remote" class="level3">
 <h3 class="anchored" data-anchor-id="default-remote">Default Remote</h3>
-<p>The default remote to push to can be set with</p>
+<p>The default remote to push to can be set with the following command, it will likely already be set to <code>origin</code> so this would not change anything.</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> config <span class="at" style="color: #657422;">--local</span> remote.pushDefault origin</span></code></pre></div>
-<p>This adds the following to your <code>.git/config</code></p>
+<p>This adds the following to your <code>.git/config</code> if it wasn’t already there.</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;">[remote]</span></span>
 <span id="cb4-2">    <span class="ex" style="color: null;">pushDefault</span> = origin</span></code></pre></div>
 </section>
@@ -69,123 +69,167 @@
 <h2 class="anchored" data-anchor-id="adding-remotes">Adding Remotes</h2>
 <p>It is straight forward to add a remote with <code>git remote add &lt;shortcut&gt; &lt;URL&gt;</code> where the URL is either the <code>https</code> or the <code>git</code> URL.</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">❱</span> git remote add forgejo forgejo@forgejo.hopto.org:nshephard/mvdate.git</span></code></pre></div>
-<p>With two remotes setup you can choose, at the branch level, where to push your changes by specifying the remote you wish to use. So if you wanted to push a new branch, <code>change-just-for-forgejo</code> that we create to the newly added <code>forgejo</code> remote you would configure it with.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;">❱</span> git switch <span class="at" style="color: #657422;">-c</span> change-just-for-forgejo</span>
-<span id="cb6-2"><span class="ex" style="color: null;">❱</span> git commit <span class="at" style="color: #657422;">--allow-empty</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Test push just to forgejo"</span></span>
-<span id="cb6-3"><span class="ex" style="color: null;">❱</span> git push <span class="at" style="color: #657422;">--set-upstream</span> forgejo change-just-for-forgejo</span>
-<span id="cb6-4"><span class="ex" style="color: null;">Enumerating</span> objects: 2, done.</span>
-<span id="cb6-5"><span class="ex" style="color: null;">Counting</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">2/2</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> done.</span>
-<span id="cb6-6"><span class="ex" style="color: null;">Writing</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">2/2</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> 376 bytes <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">376.00</span> KiB/s, done.</span>
-<span id="cb6-7"><span class="ex" style="color: null;">Total</span> 2 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> reused 0 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> pack-reused 0</span>
-<span id="cb6-8"><span class="ex" style="color: null;">remote:</span></span>
-<span id="cb6-9"><span class="ex" style="color: null;">remote:</span> Create a new pull request for <span class="st" style="color: #20794D;">'change-just-for-forgejo'</span>:</span>
-<span id="cb6-10"><span class="ex" style="color: null;">remote:</span>   <span class="op" style="color: #5E5E5E;">&lt;</span>https://forgejo.hopto.org/nshephard/mvdate/compare/main...change-just-for-forgejo<span class="op" style="color: #5E5E5E;">&gt;</span></span>
-<span id="cb6-11"><span class="ex" style="color: null;">remote:</span></span>
-<span id="cb6-12"><span class="ex" style="color: null;">remote:</span> . Processing 1 references</span>
-<span id="cb6-13"><span class="ex" style="color: null;">remote:</span> Processed 1 references in total</span>
-<span id="cb6-14"><span class="ex" style="color: null;">To</span> ssh://forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb6-15"></span>
-<span id="cb6-16"><span class="ex" style="color: null;">-</span>   [new branch]      change-just-for-forgejo <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> change-just-for-forgejo</span>
-<span id="cb6-17"></span>
-<span id="cb6-18"><span class="ex" style="color: null;">branch</span> <span class="st" style="color: #20794D;">'change-just-for-forgejo'</span> set up to track <span class="st" style="color: #20794D;">'forgejo/change-just-for-forgejo'</span>.</span></code></pre></div>
-<p>Git reports that the local <code>change-just-for-forgejo</code> has been setup to tracke <code>forgejo/change-just-for-forgejo</code>.</p>
+<p>This adds details to your <code>.git/config</code> so that it has the following</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"origin"</span>]</span>
+<span id="cb6-2"> <span class="ex" style="color: null;">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb6-3"> <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/origin/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb6-4"> <span class="ex" style="color: null;">fetch</span> = +refs/merge-requests/<span class="pp" style="color: #AD0000;">*</span>/head:refs/pullreqs/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb6-5"><span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"forgejo"</span>]</span>
+<span id="cb6-6">    <span class="ex" style="color: null;">url</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb6-7">    <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/forgejo/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb6-8"><span class="ex" style="color: null;">[remote]</span></span>
+<span id="cb6-9"> <span class="ex" style="color: null;">pushDefault</span> = origin</span>
+<span id="cb6-10"><span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"main"</span>]</span>
+<span id="cb6-11"> <span class="ex" style="color: null;">remote</span> = origin</span>
+<span id="cb6-12"> <span class="ex" style="color: null;">merge</span> = refs/heads/main</span></code></pre></div>
+<p>Two remotes are defined, <code>origin</code> and <code>forgejo</code>, the default to push to is set to <code>origin</code> and the <code>main</code> branch is setup to track the remote <code>origin</code>.</p>
+<section id="pushing-to-specific-remote" class="level3">
+<h3 class="anchored" data-anchor-id="pushing-to-specific-remote">Pushing to specific remote</h3>
+<p>With two remotes setup you can choose, at the branch level, where to push your changes by specifying the remote you wish to use. If you wanted to push a newly created branch, <code>change-just-for-forgejo</code>, to the newly added <code>forgejo</code> remote you would configure it with.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;">❱</span> git switch <span class="at" style="color: #657422;">-c</span> change-just-for-forgejo</span>
+<span id="cb7-2"><span class="ex" style="color: null;">❱</span> git commit <span class="at" style="color: #657422;">--allow-empty</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Test push just to forgejo"</span></span>
+<span id="cb7-3"><span class="ex" style="color: null;">❱</span> git push <span class="at" style="color: #657422;">--set-upstream</span> forgejo change-just-for-forgejo</span>
+<span id="cb7-4"><span class="ex" style="color: null;">Enumerating</span> objects: 2, done.</span>
+<span id="cb7-5"><span class="ex" style="color: null;">Counting</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">2/2</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> done.</span>
+<span id="cb7-6"><span class="ex" style="color: null;">Writing</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">2/2</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> 376 bytes <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">376.00</span> KiB/s, done.</span>
+<span id="cb7-7"><span class="ex" style="color: null;">Total</span> 2 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> reused 0 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> pack-reused 0</span>
+<span id="cb7-8"><span class="ex" style="color: null;">remote:</span></span>
+<span id="cb7-9"><span class="ex" style="color: null;">remote:</span> Create a new pull request for <span class="st" style="color: #20794D;">'change-just-for-forgejo'</span>:</span>
+<span id="cb7-10"><span class="ex" style="color: null;">remote:</span>   <span class="op" style="color: #5E5E5E;">&lt;</span>https://forgejo.hopto.org/nshephard/mvdate/compare/main...change-just-for-forgejo<span class="op" style="color: #5E5E5E;">&gt;</span></span>
+<span id="cb7-11"><span class="ex" style="color: null;">remote:</span></span>
+<span id="cb7-12"><span class="ex" style="color: null;">remote:</span> . Processing 1 references</span>
+<span id="cb7-13"><span class="ex" style="color: null;">remote:</span> Processed 1 references in total</span>
+<span id="cb7-14"><span class="ex" style="color: null;">To</span> ssh://forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb7-15"></span>
+<span id="cb7-16"><span class="ex" style="color: null;">-</span>   [new branch]      change-just-for-forgejo <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> change-just-for-forgejo</span>
+<span id="cb7-17"></span>
+<span id="cb7-18"><span class="ex" style="color: null;">branch</span> <span class="st" style="color: #20794D;">'change-just-for-forgejo'</span> set up to track <span class="st" style="color: #20794D;">'forgejo/change-just-for-forgejo'</span>.</span></code></pre></div>
+<p>Git reports that the local <code>change-just-for-forgejo</code> has been setup to track <code>forgejo/change-just-for-forgejo</code> and the following entry has been added to <code>.git/config</code></p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"change-just-for-forgejo"</span>]</span>
+<span id="cb8-2">    <span class="ex" style="color: null;">remote</span> <span class="st" style="color: #20794D;">"forgejo"</span></span>
+<span id="cb8-3">    <span class="ex" style="color: null;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div>
+</section>
 <section id="a-note-on-ssh-ports" class="level3">
 <h3 class="anchored" data-anchor-id="a-note-on-ssh-ports">A Note on SSH Ports</h3>
-<p>If a remote is using a non-standard port for SSH connections (i.e.&nbsp;anything other than <code>22</code>) then you have to use a different format for specifying the remote URL. Instead of <code>forgejo@forgejo.hopto.org:nshephard/mvdate.git</code> you must explicitly state the protocol (<code>ssh://</code>) and include the port so that it reads <code>ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</code> and so to add it you would…</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;">❱</span> git remote add forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb7-2"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
-<span id="cb7-3"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb7-4"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb7-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb7-6"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+<p>If a remote is using a non-standard port for SSH connections (i.e.&nbsp;anything other than <code>22</code>) then you have to use a different format for specifying the remote URL. Instead of <code>forgejo@forgejo.hopto.org:nshephard/mvdate.git</code> you must explicitly state the protocol (<code>ssh://</code>) and include the port so that it reads <code>ssh://forgejo@forgejo.hopto.org:1234</code> and so to add it you would be added with the following</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;">❱</span> git remote add forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb9-2"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
+<span id="cb9-3"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb9-4"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb9-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb9-6"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+<p>I use a non-standard port and so use that convention for the remainder of this article. If you do not use a non-standard port you can either change the port (<code>1234</code>) to the default (<code>22</code>) or use the conventional syntax for referring to the remote.</p>
 </section>
 </section>
-<section id="multiple-remotes" class="level2">
-<h2 class="anchored" data-anchor-id="multiple-remotes">Multiple Remotes</h2>
-<p>The really neat thing is that it is possible to have a local repository track multiple remotes, which means when you push your changes it will go to both. You could add a second remote and then configure an alias to push to both, but there is an excellent post on <a href="https://stackoverflow.com/a/14290145/1444043" target="_blank">StackOverflow</a> that shows how to do this with Git itself because each remote can have multiple <code>pushurls</code>.</p>
-<p>With a single remote <code>origin</code> the configuration <code>.git/config</code> for <a href="https://gitlab.com/nsshephard/mvdate" target="_blank">mvdate</a> looks like the following</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1">    <span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"origin"</span>]</span>
-<span id="cb8-2">        <span class="ex" style="color: null;">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
-<span id="cb8-3">        <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/origin/<span class="pp" style="color: #AD0000;">*</span></span>
-<span id="cb8-4">        <span class="ex" style="color: null;">fetch</span> = +refs/merge-requests/<span class="pp" style="color: #AD0000;">*</span>/head:refs/pullreqs/<span class="pp" style="color: #AD0000;">*</span></span>
-<span id="cb8-5">    <span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"main"</span>]</span>
-<span id="cb8-6">        <span class="ex" style="color: null;">remote</span> = origin</span>
-<span id="cb8-7">        <span class="ex" style="color: null;">merge</span> = refs/heads/main</span>
-<span id="cb8-8">    <span class="ex" style="color: null;">[remote]</span></span>
-<span id="cb8-9">        <span class="ex" style="color: null;">pushDefault</span> = origin</span>
-<span id="cb8-10">    <span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"forgejo"</span>]</span>
-<span id="cb8-11">        <span class="ex" style="color: null;">url</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb8-12">        <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/forgejo/<span class="pp" style="color: #AD0000;">*</span></span></code></pre></div>
-<p>A single <code>remote</code> is defined called <code>origin</code> and it points to the repository on <code>git@github.com:ns-rse/pytest-examples.git</code>. Both the <code>main</code> and <code>ns-rse/typing</code> branch are configured to use this <code>origin</code> remote. You can check the configuration with…</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
-<span id="cb9-2"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb9-3"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb9-4"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb9-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
-<p>Assuming you have already created an empty repository on another Forge. In this example I’m using my self-hosted <a href="https://forgejo.hopto.org" target="_blank">Forgejo</a> instance but you could use <a href="https://github.com" target="_blank">GitHub</a>, <a href="https://codeberg.org" target="_blank">Codeberg</a> or any other Git Forge. you can add a <code>pushurl</code> to the <code>origin</code> branch by doing the following (<strong>NB</strong> Note I use a non-standard port, see above note).</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;">❱</span> git remote set-url <span class="at" style="color: #657422;">--add</span> <span class="at" style="color: #657422;">--push</span> origin ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb10-2"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
-<span id="cb10-3"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb10-4"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb10-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb10-6"><span class="ex" style="color: null;">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
-<p>Note that this has removed the original <code>push</code> target on <code>origin</code> which pointed to <code>gitlab</code> so we need to add that back in.</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;">❱</span> git remote set-url <span class="at" style="color: #657422;">--add</span> <span class="at" style="color: #657422;">--push</span> origin git@gitlab.com:nshephard/mvdate.git</span>
-<span id="cb11-2"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
-<span id="cb11-3"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb11-4"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb11-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb11-6"><span class="ex" style="color: null;">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb11-7"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
-<p>We now have two <code>push</code> targets on <code>origin</code>, one pointing to <code>gitlab.com</code> (using the default port <code>22</code>) and one pointing to <code>forgejo.hopto.org</code> (on port <code>1234</code>) and as the default target is <code>origin</code> when we <code>git push</code> it will send the changes to both.</p>
+<section id="mirroring-remotes" class="level2">
+<h2 class="anchored" data-anchor-id="mirroring-remotes">Mirroring Remotes</h2>
+<p>The really neat thing is that it is possible to have a local repository track multiple remotes, which means when you push your changes it will go to both. You could configure an alias to push to both of the remotes we currently have defined, but there is an excellent post on <a href="https://stackoverflow.com/a/14290145/1444043" target="_blank">StackOverflow</a> that shows how to do this with Git itself because each remote can have multiple <code>pushurls</code>.</p>
+<p>As we have added a second remote to our configuration our <code>.git/config</code> for <a href="https://gitlab.com/nsshephard/mvdate" target="_blank">mvdate</a> our configuration currently looks like this.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"origin"</span>]</span>
+<span id="cb10-2">    <span class="ex" style="color: null;">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb10-3">    <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/origin/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb10-4">    <span class="ex" style="color: null;">fetch</span> = +refs/merge-requests/<span class="pp" style="color: #AD0000;">*</span>/head:refs/pullreqs/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb10-5"><span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"forgejo"</span>]</span>
+<span id="cb10-6">    <span class="ex" style="color: null;">url</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb10-7">    <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/forgejo/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb10-8"><span class="ex" style="color: null;">[remote]</span></span>
+<span id="cb10-9">    <span class="ex" style="color: null;">pushDefault</span> = origin</span>
+<span id="cb10-10"><span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"main"</span>]</span>
+<span id="cb10-11">    <span class="ex" style="color: null;">remote</span> = origin</span>
+<span id="cb10-12">    <span class="ex" style="color: null;">merge</span> = refs/heads/main</span>
+<span id="cb10-13"><span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"change-just-for-forgejo"</span>]</span>
+<span id="cb10-14">    <span class="ex" style="color: null;">remote</span> = forgejo</span>
+<span id="cb10-15">    <span class="ex" style="color: null;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div>
+<p>As above, there are two remotes are defined, <code>origin</code> and <code>forgejo</code>, the default to push to is set to <code>origin</code> and the <code>main</code> branch is setup to track <code>origin</code> whilst the <code>change-just-for-forgejo</code> branch is setup to track <code>forgejo</code>.</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
+<span id="cb11-2"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb11-3"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb11-4"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb11-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+<p>How do we get the <code>origin</code> remote setup and configured to push to both gitlab and forgejo? This can be done using the <code>set-url --add --push</code> options to <code>git remote</code>, below we add <code>forgejo</code> as a push target to <code>origin</code>.</p>
+<p><strong>NB</strong> Note I use a non-standard SSH port in the following, see above note.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;">❱</span> git remote set-url <span class="at" style="color: #657422;">--add</span> <span class="at" style="color: #657422;">--push</span> origin ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb12-2"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
+<span id="cb12-3"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb12-4"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb12-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb12-6"><span class="ex" style="color: null;">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+<p>But this has removed the original <code>push</code> target under <code>origin</code> which pointed to <code>gitlab</code> so we need to add that back in.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;">❱</span> git remote set-url <span class="at" style="color: #657422;">--add</span> <span class="at" style="color: #657422;">--push</span> origin git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb13-2"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
+<span id="cb13-3"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb13-4"><span class="ex" style="color: null;">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb13-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb13-6"><span class="ex" style="color: null;">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb13-7"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+<p>We now have two <code>push</code> targets on <code>origin</code>, one pointing to <code>gitlab.com</code> (using the default port <code>22</code>) and one pointing to <code>forgejo.hopto.org</code> (on port <code>1234</code>) and as the default target is <code>origin</code> when we <code>git push</code> it will send the changes to both. We still have the <code>forgejo</code> remote defined and it only tracks the <code>forgejo</code> URL.</p>
 <p>We can test this with an empty commit on a new branch, <code>test-forgejo</code>, which we first create.</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;">❱</span> git switch <span class="at" style="color: #657422;">-c</span> test-forgejo</span>
-<span id="cb12-2"><span class="ex" style="color: null;">❱</span> git commit <span class="at" style="color: #657422;">--allow-empty</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Testing pushing to GitLab and Forgejo"</span></span>
-<span id="cb12-3"><span class="ex" style="color: null;">[test-forgejo</span> c07caf6] Testing pushing to GitLab and Forgejo</span>
-<span id="cb12-4"><span class="ex" style="color: null;">❱</span> git push</span>
-<span id="cb12-5"><span class="ex" style="color: null;">Enumerating</span> objects: 1, done.</span>
-<span id="cb12-6"><span class="ex" style="color: null;">Counting</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">1/1</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> done.</span>
-<span id="cb12-7"><span class="ex" style="color: null;">Writing</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">1/1</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> 210 bytes <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">210.00</span> KiB/s, done.</span>
-<span id="cb12-8"><span class="ex" style="color: null;">Total</span> 1 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> reused 0 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> pack-reused 0</span>
-<span id="cb12-9"><span class="ex" style="color: null;">remote:</span></span>
-<span id="cb12-10"><span class="ex" style="color: null;">remote:</span> Create a new pull request for <span class="st" style="color: #20794D;">'test-forgejo'</span>:</span>
-<span id="cb12-11"><span class="ex" style="color: null;">remote:</span>   <span class="op" style="color: #5E5E5E;">&lt;</span>https://forgejo.hopto.org/nshephard/mvdate/compare/main...test-forgejo<span class="op" style="color: #5E5E5E;">&gt;</span></span>
-<span id="cb12-12"><span class="ex" style="color: null;">remote:</span></span>
-<span id="cb12-13"><span class="ex" style="color: null;">remote:</span> . Processing 1 references</span>
-<span id="cb12-14"><span class="ex" style="color: null;">remote:</span> Processed 1 references in total</span>
-<span id="cb12-15"><span class="ex" style="color: null;">To</span> ssh://forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb12-16"></span>
-<span id="cb12-17"><span class="ex" style="color: null;">-</span>   [new branch]      test-forgejo <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> test-forgejo</span>
-<span id="cb12-18"></span>
-<span id="cb12-19"><span class="ex" style="color: null;">branch</span> <span class="st" style="color: #20794D;">'test-forgejo'</span> set up to track <span class="st" style="color: #20794D;">'origin/test-forgejo'</span>.</span>
-<span id="cb12-20"><span class="ex" style="color: null;">Enumerating</span> objects: 26, done.</span>
-<span id="cb12-21"><span class="ex" style="color: null;">Counting</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">26/26</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> done.</span>
-<span id="cb12-22"><span class="ex" style="color: null;">Writing</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">26/26</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> 16.75 KiB <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">8.37</span> MiB/s, done.</span>
-<span id="cb12-23"><span class="ex" style="color: null;">Total</span> 26 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> reused 0 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> pack-reused 0</span>
-<span id="cb12-24"><span class="ex" style="color: null;">remote:</span></span>
-<span id="cb12-25"><span class="ex" style="color: null;">remote:</span> To create a merge request for test-forgejo, visit:</span>
-<span id="cb12-26"><span class="ex" style="color: null;">remote:</span>   <span class="op" style="color: #5E5E5E;">&lt;</span>https://gitlab.com/nshephard/mvdate/-/merge_requests/new<span class="pp" style="color: #AD0000;">?</span>merge_request%5Bsource_branch%5D=test-forgejo<span class="op" style="color: #5E5E5E;">&gt;</span></span>
-<span id="cb12-27"><span class="ex" style="color: null;">remote:</span></span>
-<span id="cb12-28"><span class="ex" style="color: null;">To</span> gitlab.com:nshephard/mvdate.git</span>
-<span id="cb12-29"></span>
-<span id="cb12-30"><span class="ex" style="color: null;">-</span>   [new branch]      test-forgejo <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> test-forgejo</span>
-<span id="cb12-31"></span>
-<span id="cb12-32"><span class="ex" style="color: null;">branch</span> <span class="st" style="color: #20794D;">'test-forgejo'</span> set up to track <span class="st" style="color: #20794D;">'origin/test-forgejo'</span>.</span></code></pre></div>
-<p>The output above shows that the branch <code>test-forgejo</code> was pushed to both the URLs we have added as push targets to <code>origin</code> and if you visit the repositories you will find the branches now exist there.</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;">❱</span> git switch <span class="at" style="color: #657422;">-c</span> test-both</span>
+<span id="cb14-2"><span class="ex" style="color: null;">❱</span> git commit <span class="at" style="color: #657422;">--allow-empty</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Testing pushing to GitLab and Forgejo"</span></span>
+<span id="cb14-3"><span class="ex" style="color: null;">[test-both</span> c07caf6] Testing pushing to GitLab and Forgejo</span>
+<span id="cb14-4"><span class="ex" style="color: null;">❱</span> git push</span>
+<span id="cb14-5"><span class="ex" style="color: null;">Enumerating</span> objects: 1, done.</span>
+<span id="cb14-6"><span class="ex" style="color: null;">Counting</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">1/1</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> done.</span>
+<span id="cb14-7"><span class="ex" style="color: null;">Writing</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">1/1</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> 210 bytes <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">210.00</span> KiB/s, done.</span>
+<span id="cb14-8"><span class="ex" style="color: null;">Total</span> 1 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> reused 0 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> pack-reused 0</span>
+<span id="cb14-9"><span class="ex" style="color: null;">remote:</span></span>
+<span id="cb14-10"><span class="ex" style="color: null;">remote:</span> Create a new pull request for <span class="st" style="color: #20794D;">'test-both'</span>:</span>
+<span id="cb14-11"><span class="ex" style="color: null;">remote:</span>   <span class="op" style="color: #5E5E5E;">&lt;</span>https://forgejo.hopto.org/nshephard/mvdate/compare/main...test-both<span class="op" style="color: #5E5E5E;">&gt;</span></span>
+<span id="cb14-12"><span class="ex" style="color: null;">remote:</span></span>
+<span id="cb14-13"><span class="ex" style="color: null;">remote:</span> . Processing 1 references</span>
+<span id="cb14-14"><span class="ex" style="color: null;">remote:</span> Processed 1 references in total</span>
+<span id="cb14-15"><span class="ex" style="color: null;">To</span> ssh://forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb14-16"></span>
+<span id="cb14-17"><span class="ex" style="color: null;">-</span>   [new branch]      test-both <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> test-both</span>
+<span id="cb14-18"></span>
+<span id="cb14-19"><span class="ex" style="color: null;">branch</span> <span class="st" style="color: #20794D;">'test-both'</span> set up to track <span class="st" style="color: #20794D;">'origin/test-both'</span>.</span>
+<span id="cb14-20"><span class="ex" style="color: null;">Enumerating</span> objects: 26, done.</span>
+<span id="cb14-21"><span class="ex" style="color: null;">Counting</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">26/26</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> done.</span>
+<span id="cb14-22"><span class="ex" style="color: null;">Writing</span> objects: 100% <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">26/26</span><span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> 16.75 KiB <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">8.37</span> MiB/s, done.</span>
+<span id="cb14-23"><span class="ex" style="color: null;">Total</span> 26 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> reused 0 <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">delta</span> 0<span class="kw" style="color: #003B4F;">)</span><span class="ex" style="color: null;">,</span> pack-reused 0</span>
+<span id="cb14-24"><span class="ex" style="color: null;">remote:</span></span>
+<span id="cb14-25"><span class="ex" style="color: null;">remote:</span> To create a merge request for test-both, visit:</span>
+<span id="cb14-26"><span class="ex" style="color: null;">remote:</span>   <span class="op" style="color: #5E5E5E;">&lt;</span>https://gitlab.com/nshephard/mvdate/-/merge_requests/new<span class="pp" style="color: #AD0000;">?</span>merge_request%5Bsource_branch%5D=test-both<span class="op" style="color: #5E5E5E;">&gt;</span></span>
+<span id="cb14-27"><span class="ex" style="color: null;">remote:</span></span>
+<span id="cb14-28"><span class="ex" style="color: null;">To</span> gitlab.com:nshephard/mvdate.git</span>
+<span id="cb14-29"></span>
+<span id="cb14-30"><span class="ex" style="color: null;">-</span>   [new branch]      test-both <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> test-both</span>
+<span id="cb14-31"></span>
+<span id="cb14-32"><span class="ex" style="color: null;">branch</span> <span class="st" style="color: #20794D;">'test-both'</span> set up to track <span class="st" style="color: #20794D;">'origin/test-both'</span>.</span></code></pre></div>
+<p>The output above shows that the branch <code>test-both</code> was pushed to both the URLs we have configured as push targets to <code>origin</code> and if you visit the repositories you will find the branches now exist there.</p>
 </section>
 <section id="deleting-remotes" class="level2">
 <h2 class="anchored" data-anchor-id="deleting-remotes">Deleting Remotes</h2>
-<p>Having added <code>forgejo</code> as its own remote as well as adding it as a push URL to <code>origin</code> it is of course possible to push changes <em>just</em> there but that kind of defeats the object of having two URLs defined under a single <code>remote</code> which allows them both to be kept up-to-date and in sync. Its easy to delete a remote though.</p>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;">❱</span> git remote remove forgejo</span>
-<span id="cb13-2"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
-<span id="cb13-3"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb13-4"><span class="ex" style="color: null;">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
-<span id="cb13-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+<p>In my use case I simply want to push both remotes so that they mirror each other so I can delete the <code>forgejo</code> remote. This will leave the push URL for that remote under the configuration for <code>origin</code> and allows us to set any branch to use the <code>origin</code> as a the remote and any changes will be pushed to both.</p>
+<p>There may be instances where you want to leave the additional remote in place if you wanted to push some changes just to that remote so its not essential that you remove it, but if you want to you can delete reference to a remote from your local configuration.</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;">❱</span> git remote remove forgejo</span>
+<span id="cb15-2"><span class="ex" style="color: null;">❱</span> git remote <span class="at" style="color: #657422;">-v</span></span>
+<span id="cb15-3"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">fetch</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb15-4"><span class="ex" style="color: null;">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb15-5"><span class="ex" style="color: null;">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">push</span><span class="kw" style="color: #003B4F;">)</span></span></code></pre></div>
+<p>Because the <code>change-just-for-forgejo</code> was setup to track the <code>forejo</code> remote we would need to change that target, we can do so with the following</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="ex" style="color: null;">❱</span> git switch change-just-for-forgejo</span>
+<span id="cb16-2"><span class="ex" style="color: null;">❱</span> git branch <span class="at" style="color: #657422;">--set-upstream-to</span><span class="op" style="color: #5E5E5E;">=</span>origin/change-just-for-forgejo change-just-for-forgejo</span></code></pre></div>
+<p>This changes the remote target for the branches definition and our configuration now looks like the following.</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><span class="ex" style="color: null;">[remote</span> <span class="st" style="color: #20794D;">"origin"</span>]</span>
+<span id="cb17-2">    <span class="ex" style="color: null;">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb17-3">    <span class="ex" style="color: null;">fetch</span> = +refs/heads/<span class="pp" style="color: #AD0000;">*</span>:refs/remotes/origin/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb17-4">    <span class="ex" style="color: null;">fetch</span> = +refs/merge-requests/<span class="pp" style="color: #AD0000;">*</span>/head:refs/pullreqs/<span class="pp" style="color: #AD0000;">*</span></span>
+<span id="cb17-5">    <span class="ex" style="color: null;">pushurl</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb17-6">    <span class="ex" style="color: null;">pushurl</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb17-7"><span class="ex" style="color: null;">[remote]</span></span>
+<span id="cb17-8">    <span class="ex" style="color: null;">pushDefault</span> = origin</span>
+<span id="cb17-9"><span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"main"</span>]</span>
+<span id="cb17-10">    <span class="ex" style="color: null;">remote</span> = origin</span>
+<span id="cb17-11">    <span class="ex" style="color: null;">merge</span> = refs/heads/main</span>
+<span id="cb17-12"><span class="ex" style="color: null;">[branch</span> <span class="st" style="color: #20794D;">"change-just-for-forgejo"</span>]</span>
+<span id="cb17-13">    <span class="ex" style="color: null;">remote</span> = origin</span>
+<span id="cb17-14">    <span class="ex" style="color: null;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Having a local repository is a simple way of having a mirror of a repository. Whether you have a use case for it depends on what you are doing. I could easily imagine this could get very complicated if changes were pushed by others to each remote, but I wouldn’t be surprised if Git is regularly used in this way by others.</p>
-<p>Of course if you want to push changes that you wish to keep private to one remote only then you would have to be very careful in how you use this setup and, as the original StackOverflow post that showed me how to do this suggests, you would probably want to leave <code>origin</code> as is and setup another <code>remote</code> (e.g.&nbsp;<code>all</code>) so that you can push changes to <code>origin</code> and <code>all</code> (and any other remotes you setup) independently.</p>
+<p>Having a local repository push to two remotes is a simple way of a mirroring. Whether you have a use case for it depends on what you are doing. I could easily imagine this could get very complicated if changes were pushed by others to each remote, but I wouldn’t be surprised if Git is regularly used in this way by others.</p>
+<p>Of course if you want to push changes that you wish to keep private to one remote only then you would have to be very careful in how you use this setup. The original StackOverflow post that showed me how to do this suggests, you would probably want to leave <code>origin</code> as is and setup another <code>remote</code> (e.g.&nbsp;<code>all</code>) so that you can push changes to <code>origin</code> and <code>all</code> (and any other remotes you setup) independently.</p>
 <p>Its been good for me to return to a topic I’ve delved into in the past, this second time round I feel I’ve got a slightly better grasp of what I’m doing and have a neater solution to achieve what is required.</p>
 </section>
 <section id="links" class="level2">

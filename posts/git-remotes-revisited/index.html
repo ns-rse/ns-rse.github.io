@@ -258,9 +258,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#adding-remotes" id="toc-adding-remotes" class="nav-link" data-scroll-target="#adding-remotes">Adding Remotes</a>
   <ul>
+  <li><a href="#pushing-to-specific-remote" id="toc-pushing-to-specific-remote" class="nav-link" data-scroll-target="#pushing-to-specific-remote">Pushing to specific remote</a></li>
   <li><a href="#a-note-on-ssh-ports" id="toc-a-note-on-ssh-ports" class="nav-link" data-scroll-target="#a-note-on-ssh-ports">A Note on SSH Ports</a></li>
   </ul></li>
-  <li><a href="#multiple-remotes" id="toc-multiple-remotes" class="nav-link" data-scroll-target="#multiple-remotes">Multiple Remotes</a></li>
+  <li><a href="#mirroring-remotes" id="toc-mirroring-remotes" class="nav-link" data-scroll-target="#mirroring-remotes">Mirroring Remotes</a></li>
   <li><a href="#deleting-remotes" id="toc-deleting-remotes" class="nav-link" data-scroll-target="#deleting-remotes">Deleting Remotes</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a></li>
@@ -311,9 +312,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This can be useful to show you what you need to tidy up if there are lots of stale branches around. In this example I can run <code>git remote prune origin</code> as advised to remove these.</p>
 <section id="default-remote" class="level3">
 <h3 class="anchored" data-anchor-id="default-remote">Default Remote</h3>
-<p>The default remote to push to can be set with</p>
+<p>The default remote to push to can be set with the following command, it will likely already be set to <code>origin</code> so this would not change anything.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> remote.pushDefault origin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This adds the following to your <code>.git/config</code></p>
+<p>This adds the following to your <code>.git/config</code> if it wasn’t already there.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote]</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pushDefault</span> = origin</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
@@ -322,123 +323,167 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="adding-remotes">Adding Remotes</h2>
 <p>It is straight forward to add a remote with <code>git remote add &lt;shortcut&gt; &lt;URL&gt;</code> where the URL is either the <code>https</code> or the <code>git</code> URL.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote add forgejo forgejo@forgejo.hopto.org:nshephard/mvdate.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>With two remotes setup you can choose, at the branch level, where to push your changes by specifying the remote you wish to use. So if you wanted to push a new branch, <code>change-just-for-forgejo</code> that we create to the newly added <code>forgejo</code> remote you would configure it with.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git switch <span class="at">-c</span> change-just-for-forgejo</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git commit <span class="at">--allow-empty</span> <span class="at">-m</span> <span class="st">"Test push just to forgejo"</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git push <span class="at">--set-upstream</span> forgejo change-just-for-forgejo</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 2, done.</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">2/2</span><span class="kw">)</span><span class="ex">,</span> done.</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">2/2</span><span class="kw">)</span><span class="ex">,</span> 376 bytes <span class="kw">|</span> <span class="ex">376.00</span> KiB/s, done.</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 2 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a new pull request for <span class="st">'change-just-for-forgejo'</span>:</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>   <span class="op">&lt;</span>https://forgejo.hopto.org/nshephard/mvdate/compare/main...change-just-for-forgejo<span class="op">&gt;</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> . Processing 1 references</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Processed 1 references in total</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> ssh://forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span>   [new branch]      change-just-for-forgejo <span class="at">-</span><span class="op">&gt;</span> change-just-for-forgejo</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'change-just-for-forgejo'</span> set up to track <span class="st">'forgejo/change-just-for-forgejo'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Git reports that the local <code>change-just-for-forgejo</code> has been setup to tracke <code>forgejo/change-just-for-forgejo</code>.</p>
+<p>This adds details to your <code>.git/config</code> so that it has the following</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote</span> <span class="st">"origin"</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a> <span class="ex">fetch</span> = +refs/heads/<span class="pp">*</span>:refs/remotes/origin/<span class="pp">*</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a> <span class="ex">fetch</span> = +refs/merge-requests/<span class="pp">*</span>/head:refs/pullreqs/<span class="pp">*</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote</span> <span class="st">"forgejo"</span>]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">url</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fetch</span> = +refs/heads/<span class="pp">*</span>:refs/remotes/forgejo/<span class="pp">*</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote]</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a> <span class="ex">pushDefault</span> = origin</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">[branch</span> <span class="st">"main"</span>]</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a> <span class="ex">remote</span> = origin</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a> <span class="ex">merge</span> = refs/heads/main</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Two remotes are defined, <code>origin</code> and <code>forgejo</code>, the default to push to is set to <code>origin</code> and the <code>main</code> branch is setup to track the remote <code>origin</code>.</p>
+<section id="pushing-to-specific-remote" class="level3">
+<h3 class="anchored" data-anchor-id="pushing-to-specific-remote">Pushing to specific remote</h3>
+<p>With two remotes setup you can choose, at the branch level, where to push your changes by specifying the remote you wish to use. If you wanted to push a newly created branch, <code>change-just-for-forgejo</code>, to the newly added <code>forgejo</code> remote you would configure it with.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git switch <span class="at">-c</span> change-just-for-forgejo</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git commit <span class="at">--allow-empty</span> <span class="at">-m</span> <span class="st">"Test push just to forgejo"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git push <span class="at">--set-upstream</span> forgejo change-just-for-forgejo</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 2, done.</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">2/2</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">2/2</span><span class="kw">)</span><span class="ex">,</span> 376 bytes <span class="kw">|</span> <span class="ex">376.00</span> KiB/s, done.</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 2 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a new pull request for <span class="st">'change-just-for-forgejo'</span>:</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>   <span class="op">&lt;</span>https://forgejo.hopto.org/nshephard/mvdate/compare/main...change-just-for-forgejo<span class="op">&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> . Processing 1 references</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Processed 1 references in total</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> ssh://forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span>   [new branch]      change-just-for-forgejo <span class="at">-</span><span class="op">&gt;</span> change-just-for-forgejo</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'change-just-for-forgejo'</span> set up to track <span class="st">'forgejo/change-just-for-forgejo'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Git reports that the local <code>change-just-for-forgejo</code> has been setup to track <code>forgejo/change-just-for-forgejo</code> and the following entry has been added to <code>.git/config</code></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[branch</span> <span class="st">"change-just-for-forgejo"</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">remote</span> <span class="st">"forgejo"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">merge</span> = refs/heads/change-just-for-forgejo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="a-note-on-ssh-ports" class="level3">
 <h3 class="anchored" data-anchor-id="a-note-on-ssh-ports">A Note on SSH Ports</h3>
-<p>If a remote is using a non-standard port for SSH connections (i.e.&nbsp;anything other than <code>22</code>) then you have to use a different format for specifying the remote URL. Instead of <code>forgejo@forgejo.hopto.org:nshephard/mvdate.git</code> you must explicitly state the protocol (<code>ssh://</code>) and include the port so that it reads <code>ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</code> and so to add it you would…</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote add forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If a remote is using a non-standard port for SSH connections (i.e.&nbsp;anything other than <code>22</code>) then you have to use a different format for specifying the remote URL. Instead of <code>forgejo@forgejo.hopto.org:nshephard/mvdate.git</code> you must explicitly state the protocol (<code>ssh://</code>) and include the port so that it reads <code>ssh://forgejo@forgejo.hopto.org:1234</code> and so to add it you would be added with the following</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote add forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>I use a non-standard port and so use that convention for the remainder of this article. If you do not use a non-standard port you can either change the port (<code>1234</code>) to the default (<code>22</code>) or use the conventional syntax for referring to the remote.</p>
 </section>
 </section>
-<section id="multiple-remotes" class="level2">
-<h2 class="anchored" data-anchor-id="multiple-remotes">Multiple Remotes</h2>
-<p>The really neat thing is that it is possible to have a local repository track multiple remotes, which means when you push your changes it will go to both. You could add a second remote and then configure an alias to push to both, but there is an excellent post on <a href="https://stackoverflow.com/a/14290145/1444043" target="_blank">StackOverflow</a> that shows how to do this with Git itself because each remote can have multiple <code>pushurls</code>.</p>
-<p>With a single remote <code>origin</code> the configuration <code>.git/config</code> for <a href="https://gitlab.com/nsshephard/mvdate" target="_blank">mvdate</a> looks like the following</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">[remote</span> <span class="st">"origin"</span>]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="ex">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="ex">fetch</span> = +refs/heads/<span class="pp">*</span>:refs/remotes/origin/<span class="pp">*</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="ex">fetch</span> = +refs/merge-requests/<span class="pp">*</span>/head:refs/pullreqs/<span class="pp">*</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">[branch</span> <span class="st">"main"</span>]</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="ex">remote</span> = origin</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="ex">merge</span> = refs/heads/main</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">[remote]</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="ex">pushDefault</span> = origin</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">[remote</span> <span class="st">"forgejo"</span>]</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="ex">url</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        <span class="ex">fetch</span> = +refs/heads/<span class="pp">*</span>:refs/remotes/forgejo/<span class="pp">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>A single <code>remote</code> is defined called <code>origin</code> and it points to the repository on <code>git@github.com:ns-rse/pytest-examples.git</code>. Both the <code>main</code> and <code>ns-rse/typing</code> branch are configured to use this <code>origin</code> remote. You can check the configuration with…</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Assuming you have already created an empty repository on another Forge. In this example I’m using my self-hosted <a href="https://forgejo.hopto.org" target="_blank">Forgejo</a> instance but you could use <a href="https://github.com" target="_blank">GitHub</a>, <a href="https://codeberg.org" target="_blank">Codeberg</a> or any other Git Forge. you can add a <code>pushurl</code> to the <code>origin</code> branch by doing the following (<strong>NB</strong> Note I use a non-standard port, see above note).</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote set-url <span class="at">--add</span> <span class="at">--push</span> origin ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Note that this has removed the original <code>push</code> target on <code>origin</code> which pointed to <code>gitlab</code> so we need to add that back in.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote set-url <span class="at">--add</span> <span class="at">--push</span> origin git@gitlab.com:nshephard/mvdate.git</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We now have two <code>push</code> targets on <code>origin</code>, one pointing to <code>gitlab.com</code> (using the default port <code>22</code>) and one pointing to <code>forgejo.hopto.org</code> (on port <code>1234</code>) and as the default target is <code>origin</code> when we <code>git push</code> it will send the changes to both.</p>
+<section id="mirroring-remotes" class="level2">
+<h2 class="anchored" data-anchor-id="mirroring-remotes">Mirroring Remotes</h2>
+<p>The really neat thing is that it is possible to have a local repository track multiple remotes, which means when you push your changes it will go to both. You could configure an alias to push to both of the remotes we currently have defined, but there is an excellent post on <a href="https://stackoverflow.com/a/14290145/1444043" target="_blank">StackOverflow</a> that shows how to do this with Git itself because each remote can have multiple <code>pushurls</code>.</p>
+<p>As we have added a second remote to our configuration our <code>.git/config</code> for <a href="https://gitlab.com/nsshephard/mvdate" target="_blank">mvdate</a> our configuration currently looks like this.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote</span> <span class="st">"origin"</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fetch</span> = +refs/heads/<span class="pp">*</span>:refs/remotes/origin/<span class="pp">*</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fetch</span> = +refs/merge-requests/<span class="pp">*</span>/head:refs/pullreqs/<span class="pp">*</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote</span> <span class="st">"forgejo"</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">url</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fetch</span> = +refs/heads/<span class="pp">*</span>:refs/remotes/forgejo/<span class="pp">*</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote]</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pushDefault</span> = origin</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="ex">[branch</span> <span class="st">"main"</span>]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">remote</span> = origin</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="ex">merge</span> = refs/heads/main</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="ex">[branch</span> <span class="st">"change-just-for-forgejo"</span>]</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">remote</span> = forgejo</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="ex">merge</span> = refs/heads/change-just-for-forgejo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As above, there are two remotes are defined, <code>origin</code> and <code>forgejo</code>, the default to push to is set to <code>origin</code> and the <code>main</code> branch is setup to track <code>origin</code> whilst the <code>change-just-for-forgejo</code> branch is setup to track <code>forgejo</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>How do we get the <code>origin</code> remote setup and configured to push to both gitlab and forgejo? This can be done using the <code>set-url --add --push</code> options to <code>git remote</code>, below we add <code>forgejo</code> as a push target to <code>origin</code>.</p>
+<p><strong>NB</strong> Note I use a non-standard SSH port in the following, see above note.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote set-url <span class="at">--add</span> <span class="at">--push</span> origin ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But this has removed the original <code>push</code> target under <code>origin</code> which pointed to <code>gitlab</code> so we need to add that back in.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote set-url <span class="at">--add</span> <span class="at">--push</span> origin git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">forgejo</span> ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We now have two <code>push</code> targets on <code>origin</code>, one pointing to <code>gitlab.com</code> (using the default port <code>22</code>) and one pointing to <code>forgejo.hopto.org</code> (on port <code>1234</code>) and as the default target is <code>origin</code> when we <code>git push</code> it will send the changes to both. We still have the <code>forgejo</code> remote defined and it only tracks the <code>forgejo</code> URL.</p>
 <p>We can test this with an empty commit on a new branch, <code>test-forgejo</code>, which we first create.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git switch <span class="at">-c</span> test-forgejo</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git commit <span class="at">--allow-empty</span> <span class="at">-m</span> <span class="st">"Testing pushing to GitLab and Forgejo"</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[test-forgejo</span> c07caf6] Testing pushing to GitLab and Forgejo</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git push</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 1, done.</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">1/1</span><span class="kw">)</span><span class="ex">,</span> done.</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">1/1</span><span class="kw">)</span><span class="ex">,</span> 210 bytes <span class="kw">|</span> <span class="ex">210.00</span> KiB/s, done.</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 1 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a new pull request for <span class="st">'test-forgejo'</span>:</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>   <span class="op">&lt;</span>https://forgejo.hopto.org/nshephard/mvdate/compare/main...test-forgejo<span class="op">&gt;</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> . Processing 1 references</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Processed 1 references in total</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> ssh://forgejo.hopto.org:1234/nshephard/mvdate.git</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span>   [new branch]      test-forgejo <span class="at">-</span><span class="op">&gt;</span> test-forgejo</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'test-forgejo'</span> set up to track <span class="st">'origin/test-forgejo'</span>.</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 26, done.</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">26/26</span><span class="kw">)</span><span class="ex">,</span> done.</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">26/26</span><span class="kw">)</span><span class="ex">,</span> 16.75 KiB <span class="kw">|</span> <span class="ex">8.37</span> MiB/s, done.</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 26 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> To create a merge request for test-forgejo, visit:</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>   <span class="op">&lt;</span>https://gitlab.com/nshephard/mvdate/-/merge_requests/new<span class="pp">?</span>merge_request%5Bsource_branch%5D=test-forgejo<span class="op">&gt;</span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> gitlab.com:nshephard/mvdate.git</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span>   [new branch]      test-forgejo <span class="at">-</span><span class="op">&gt;</span> test-forgejo</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'test-forgejo'</span> set up to track <span class="st">'origin/test-forgejo'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The output above shows that the branch <code>test-forgejo</code> was pushed to both the URLs we have added as push targets to <code>origin</code> and if you visit the repositories you will find the branches now exist there.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git switch <span class="at">-c</span> test-both</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git commit <span class="at">--allow-empty</span> <span class="at">-m</span> <span class="st">"Testing pushing to GitLab and Forgejo"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[test-both</span> c07caf6] Testing pushing to GitLab and Forgejo</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git push</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 1, done.</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">1/1</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">1/1</span><span class="kw">)</span><span class="ex">,</span> 210 bytes <span class="kw">|</span> <span class="ex">210.00</span> KiB/s, done.</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 1 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Create a new pull request for <span class="st">'test-both'</span>:</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>   <span class="op">&lt;</span>https://forgejo.hopto.org/nshephard/mvdate/compare/main...test-both<span class="op">&gt;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> . Processing 1 references</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> Processed 1 references in total</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> ssh://forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span>   [new branch]      test-both <span class="at">-</span><span class="op">&gt;</span> test-both</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'test-both'</span> set up to track <span class="st">'origin/test-both'</span>.</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Enumerating</span> objects: 26, done.</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="ex">Counting</span> objects: 100% <span class="er">(</span><span class="ex">26/26</span><span class="kw">)</span><span class="ex">,</span> done.</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> objects: 100% <span class="er">(</span><span class="ex">26/26</span><span class="kw">)</span><span class="ex">,</span> 16.75 KiB <span class="kw">|</span> <span class="ex">8.37</span> MiB/s, done.</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="ex">Total</span> 26 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> reused 0 <span class="er">(</span><span class="ex">delta</span> 0<span class="kw">)</span><span class="ex">,</span> pack-reused 0</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span> To create a merge request for test-both, visit:</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span>   <span class="op">&lt;</span>https://gitlab.com/nshephard/mvdate/-/merge_requests/new<span class="pp">?</span>merge_request%5Bsource_branch%5D=test-both<span class="op">&gt;</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="ex">remote:</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="ex">To</span> gitlab.com:nshephard/mvdate.git</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="ex">-</span>   [new branch]      test-both <span class="at">-</span><span class="op">&gt;</span> test-both</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="ex">branch</span> <span class="st">'test-both'</span> set up to track <span class="st">'origin/test-both'</span>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The output above shows that the branch <code>test-both</code> was pushed to both the URLs we have configured as push targets to <code>origin</code> and if you visit the repositories you will find the branches now exist there.</p>
 </section>
 <section id="deleting-remotes" class="level2">
 <h2 class="anchored" data-anchor-id="deleting-remotes">Deleting Remotes</h2>
-<p>Having added <code>forgejo</code> as its own remote as well as adding it as a push URL to <code>origin</code> it is of course possible to push changes <em>just</em> there but that kind of defeats the object of having two URLs defined under a single <code>remote</code> which allows them both to be kept up-to-date and in sync. Its easy to delete a remote though.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote remove forgejo</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In my use case I simply want to push both remotes so that they mirror each other so I can delete the <code>forgejo</code> remote. This will leave the push URL for that remote under the configuration for <code>origin</code> and allows us to set any branch to use the <code>origin</code> as a the remote and any changes will be pushed to both.</p>
+<p>There may be instances where you want to leave the additional remote in place if you wanted to push some changes just to that remote so its not essential that you remove it, but if you want to you can delete reference to a remote from your local configuration.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote remove forgejo</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git remote <span class="at">-v</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">fetch</span><span class="kw">)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">origin</span>  git@gitlab.com:nshephard/mvdate.git <span class="er">(</span><span class="ex">push</span><span class="kw">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Because the <code>change-just-for-forgejo</code> was setup to track the <code>forejo</code> remote we would need to change that target, we can do so with the following</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git switch change-just-for-forgejo</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> git branch <span class="at">--set-upstream-to</span><span class="op">=</span>origin/change-just-for-forgejo change-just-for-forgejo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This changes the remote target for the branches definition and our configuration now looks like the following.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote</span> <span class="st">"origin"</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="ex">url</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fetch</span> = +refs/heads/<span class="pp">*</span>:refs/remotes/origin/<span class="pp">*</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">fetch</span> = +refs/merge-requests/<span class="pp">*</span>/head:refs/pullreqs/<span class="pp">*</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pushurl</span> = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pushurl</span> = git@gitlab.com:nshephard/mvdate.git</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="ex">[remote]</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pushDefault</span> = origin</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="ex">[branch</span> <span class="st">"main"</span>]</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">remote</span> = origin</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="ex">merge</span> = refs/heads/main</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="ex">[branch</span> <span class="st">"change-just-for-forgejo"</span>]</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">remote</span> = origin</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="ex">merge</span> = refs/heads/change-just-for-forgejo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Having a local repository is a simple way of having a mirror of a repository. Whether you have a use case for it depends on what you are doing. I could easily imagine this could get very complicated if changes were pushed by others to each remote, but I wouldn’t be surprised if Git is regularly used in this way by others.</p>
-<p>Of course if you want to push changes that you wish to keep private to one remote only then you would have to be very careful in how you use this setup and, as the original StackOverflow post that showed me how to do this suggests, you would probably want to leave <code>origin</code> as is and setup another <code>remote</code> (e.g.&nbsp;<code>all</code>) so that you can push changes to <code>origin</code> and <code>all</code> (and any other remotes you setup) independently.</p>
+<p>Having a local repository push to two remotes is a simple way of a mirroring. Whether you have a use case for it depends on what you are doing. I could easily imagine this could get very complicated if changes were pushed by others to each remote, but I wouldn’t be surprised if Git is regularly used in this way by others.</p>
+<p>Of course if you want to push changes that you wish to keep private to one remote only then you would have to be very careful in how you use this setup. The original StackOverflow post that showed me how to do this suggests, you would probably want to leave <code>origin</code> as is and setup another <code>remote</code> (e.g.&nbsp;<code>all</code>) so that you can push changes to <code>origin</code> and <code>all</code> (and any other remotes you setup) independently.</p>
 <p>Its been good for me to return to a topic I’ve delved into in the past, this second time round I feel I’ve got a slightly better grasp of what I’m doing and have a neater solution to achieve what is required.</p>
 </section>
 <section id="links" class="level2">
