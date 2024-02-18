@@ -95,17 +95,17 @@ This adds details to your `.git/config` so that it has the following
 
 ``` bash
 [remote "origin"]
-	url = git@gitlab.com:nshephard/mvdate.git
-	fetch = +refs/heads/*:refs/remotes/origin/*
-	fetch = +refs/merge-requests/*/head:refs/pullreqs/*
+ url = git@gitlab.com:nshephard/mvdate.git
+ fetch = +refs/heads/*:refs/remotes/origin/*
+ fetch = +refs/merge-requests/*/head:refs/pullreqs/*
 [remote "forgejo"]
     url = ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git
     fetch = +refs/heads/*:refs/remotes/forgejo/*
 [remote]
-	pushDefault = origin
+ pushDefault = origin
 [branch "main"]
-	remote = origin
-	merge = refs/heads/main
+ remote = origin
+ merge = refs/heads/main
 ```
 
 Two remotes are defined, `origin` and `forgejo`, the default to push to is set to `origin` and the `main` branch is
@@ -197,7 +197,6 @@ As we have added a second remote to our configuration our `.git/config` for
 
 As above, there are two remotes are defined, `origin` and `forgejo`, the default to push to is set to `origin` and the
 `main` branch is setup to track `origin` whilst the `change-just-for-forgejo` branch is setup to track `forgejo`.
-
 
 ``` bash
 ❱ git remote -v
