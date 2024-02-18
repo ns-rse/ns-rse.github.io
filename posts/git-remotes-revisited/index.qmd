@@ -198,7 +198,6 @@ As we have added a second remote to our configuration our `.git/config` for
 As above, there are two remotes are defined, `origin` and `forgejo`, the default to push to is set to `origin` and the
 `main` branch is setup to track `origin` whilst the `change-just-for-forgejo` branch is setup to track `forgejo`.
 
-
 ``` bash
 ❱ git remote -v
 forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git (fetch)
