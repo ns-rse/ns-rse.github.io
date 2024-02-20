@@ -236,7 +236,7 @@ We now have two `push` targets on `origin`, one pointing to `gitlab.com` (using 
 to `forgejo.hopto.org` (on port `1234`) and as the default target is `origin` when we `git push` it will send the
 changes to both. We still have the `forgejo` remote defined and it only tracks the `forgejo` URL.
 
-We can test this with an empty commit on a new branch, `test-forgejo`, which we first create.
+We can test this with an empty commit on a new branch, `test-both`, which we first create.
 
 ``` bash
 ❱ git switch -c test-both
