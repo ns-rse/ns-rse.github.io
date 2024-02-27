@@ -1,5 +1,5 @@
 ---
-title: "ns-rse"
+title: "blog.nshephard.dev"
 listing:
   contents: posts
   sort: "date desc"
