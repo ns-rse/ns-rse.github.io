@@ -8,8 +8,8 @@ project:
     - "*.sh"
     - "*.yaml"
 website:
-  title: "ns-rse"
-  site-url: https://ns-rse.github.io/
+  title: "nshephard.dev"
+  site-url: https://blog.nshephard.dev/
   description: "Software development in a Research Environment"
   navbar:
     right:
