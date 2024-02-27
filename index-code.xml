@@ -5,16 +5,16 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>ns-rse</title>
-<link>https://ns-rse.github.io/index.html#category=code</link>
-<atom:link href="https://ns-rse.github.io/index-code.xml" rel="self" type="application/rss+xml"/>
+<title>nshephard.dev</title>
+<link>https://blog.nshephard.dev/index.html#category=code</link>
+<atom:link href="https://blog.nshephard.dev/index-code.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>
 <generator>quarto-1.3.14</generator>
 <lastBuildDate>Sun, 07 May 2023 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Pre-Commit : Useful Hooks</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</link>
+  <link>https://blog.nshephard.dev/posts/pre-commit-hooks/index.html</link>
   <description><![CDATA[ 
 
 
@@ -23,7 +23,7 @@
 <p>I’m a big fan of <a href="https://pre-commit.com" target="_blank">pre-commit</a> and have written about it before (see posts on <a href="https://ns-rse.github.io/posts/pre-commit/" target="_blank">pre-commit</a>, <a href="https://ns-rse.github.io/posts/pre-commit-ci/" target="_blank">pre-commit CI</a> and <a href="https://ns-rse.github.io/posts/pre-commit-updating/" target="_blank">pre-commit updating</a>). This post discusses some of the <a href="https://pre-commit.com/hooks" target="_blank">hooks</a> that I use and how to configure them.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-hooks/https:/live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-hooks/https:/live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52842122133/in/datetaken/" target="_blank"><em>Irridescent</em> Picture by me</a></figcaption><p></p>
 </figure>
 </div>
@@ -169,12 +169,12 @@ No matching items
   author = {Neil Shephard},
   title = {Pre-Commit : {Useful} {Hooks}},
   date = {2023-05-07},
-  url = {https://ns-rse.github.io//posts/pre-commit-hooks},
+  url = {https://blog.nshephard.dev//posts/pre-commit-hooks},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2023. <span>“Pre-Commit : Useful Hooks.”</span> May 7,
-2023. <a href="https://ns-rse.github.io//posts/pre-commit-hooks">https://ns-rse.github.io//posts/pre-commit-hooks</a>.
+2023. <a href="https://blog.nshephard.dev//posts/pre-commit-hooks">https://blog.nshephard.dev//posts/pre-commit-hooks</a>.
 </div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
@@ -183,14 +183,14 @@ Neil Shephard. 2023. <span>“Pre-Commit : Useful Hooks.”</span> May 7,
   <category>github</category>
   <category>gitlab</category>
   <category>pre-commit</category>
-  <guid>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/pre-commit-hooks/index.html</guid>
   <pubDate>Sun, 07 May 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52842122133_2b441c61ad_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Pre-Commit.ci : Integrating Pre-Commit into CI/CD</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/pre-commit-ci/index.html</link>
+  <link>https://blog.nshephard.dev/posts/pre-commit-ci/index.html</link>
   <description><![CDATA[ 
 
 
@@ -237,14 +237,14 @@ Neil Shephard. 2023. <span>“Pre-Commit : Useful Hooks.”</span> May 7,
 <p>Setup is relatively straight-forward, head to <a href="https://pre-commit.ci" target="_blank">https://pre-commit.ci</a> and sign-in with your GitHub account and grant <code>pre-commit.ci</code> access to your account.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-ci/img/pre-commit-ci.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Pre-commit CI</figcaption><p></p>
 </figure>
 </div>
 <p>Once you have granted access you can choose which repositories <code>pre-commit.ci</code> has access to. It is possible to grant access to all repositories but I would recommend doing so on a per-repository basis so you know and are in control of what is happening across your repositories. If you have administration rights to organisation repositories these should be listed in the “<em>Select repositories</em>” pull-down menu.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/github-pre-commit-access.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-ci/img/github-pre-commit-access.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Granting pre-commit.ci access to GitHub</figcaption><p></p>
 </figure>
 </div>
@@ -254,28 +254,28 @@ Neil Shephard. 2023. <span>“Pre-Commit : Useful Hooks.”</span> May 7,
 <p>When logged into <code>pre-commit.ci</code> using your GitHub account you are presented with a page similar to the following which lists the accounts and any organisations that you have authorised <code>pre-commit.ci</code> to access.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/account-pre-commit-ci.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-ci/img/account-pre-commit-ci.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Pre-commit.ci account access</figcaption><p></p>
 </figure>
 </div>
 <p>You can follow the links through to view the history of jobs run by <code>pre-commit.ci</code> and whether they pass or fail. The page shows the current status and provides both Markdown and reStructured Text code for adding badges to your source documents (e.g.&nbsp;the Markdown badge can be added to your repositories top-level <code>README.md</code> and the badge will be displayed on GitHub)</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-pass2.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-ci/img/pre-commit-ci-pass2.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Pre-commit.ci jobs pass</figcaption><p></p>
 </figure>
 </div>
 <p>You can click through and see the results of a given run and when they <a href="https://results.pre-commit.ci/run/github/168173540/1674062271.Tj4xDOxqRFu3CDIPhXkMJA" target="_blank">pass</a> they look similar to the output you would have seen when making commits locally.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-pass3.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-ci/img/pre-commit-ci-pass3.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Pre-commit.ci jobs pass</figcaption><p></p>
 </figure>
 </div>
 <p>But sometimes things will <a href="https://results.pre-commit.ci/run/github/168173540/1674061180.-2Eo_dbfRAGrukip387Nhg" target="_blank">fail</a> as shown below where the <code>trailing-whitespace</code> hook failed and the file was modified. But since <code>pre-commit.ci</code> corrects and pushes such changes automatically you can see at the bottom that these changes were pushed to the Pull Request from which the originated.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/pre-commit-ci-fail.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-ci/img/pre-commit-ci-fail.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Pre-commit.ci jobs fail</figcaption><p></p>
 </figure>
 </div>
@@ -299,14 +299,14 @@ Neil Shephard. 2023. <span>“Pre-Commit : Useful Hooks.”</span> May 7,
 <p>Once you have done this your CI/CD pipeline should show at the very start the <code>.pre</code> stage…</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">GitLab pre-commit pipeline.</figcaption><p></p>
 </figure>
 </div>
 <p>…and you can click through on this to see the details of the pipeline. Note that it takes a while to run as it has to download and initialise all of the environments for each configured hook unlike <a href="https://pre-commit.ci" target="_blank"><code>pre-commit.ci</code></a> (this is akin to writing your own <a href="https://docs.github.com/en/actions" target="_blank">GitHub Action</a> to run <code>pre-commit</code> which would also have to download and initialise the environments).</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline-pass.png" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pre-commit-ci/img/gitlab-pre-commit-pipeline-pass.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Success! GitLab pre-commit hooks pass!</figcaption><p></p>
 </figure>
 </div>
@@ -347,12 +347,12 @@ No matching items
   author = {Neil Shephard},
   title = {Pre-Commit.ci : {Integrating} {Pre-Commit} into {CI/CD}},
   date = {2023-02-06},
-  url = {https://ns-rse.github.io//posts/pre-commit-ci},
+  url = {https://blog.nshephard.dev//posts/pre-commit-ci},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2023. <span>“Pre-Commit.ci : Integrating Pre-Commit into
-CI/CD.”</span> February 6, 2023. <a href="https://ns-rse.github.io//posts/pre-commit-ci">https://ns-rse.github.io//posts/pre-commit-ci</a>.
+CI/CD.”</span> February 6, 2023. <a href="https://blog.nshephard.dev//posts/pre-commit-ci">https://blog.nshephard.dev//posts/pre-commit-ci</a>.
 </div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
@@ -361,14 +361,14 @@ CI/CD.”</span> February 6, 2023. <a href="https://ns-rse.github.io//posts/pre-
   <category>github</category>
   <category>gitlab</category>
   <category>pre-commit</category>
-  <guid>https://ns-rse.github.io/posts/pre-commit-ci/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/pre-commit-ci/index.html</guid>
   <pubDate>Mon, 06 Feb 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52596382383_eefbf62543_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Who’s to Blame</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/whos_to_blame/index.html</link>
+  <link>https://blog.nshephard.dev/posts/whos_to_blame/index.html</link>
   <description><![CDATA[ 
 
 
@@ -438,12 +438,12 @@ No matching items
   author = {Neil Shephard},
   title = {Who’s to {Blame}},
   date = {2022-12-17},
-  url = {https://ns-rse.github.io//posts/whos_to_blame},
+  url = {https://blog.nshephard.dev//posts/whos_to_blame},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2022. <span>“Who’s to Blame.”</span> December 17, 2022.
-<a href="https://ns-rse.github.io//posts/whos_to_blame">https://ns-rse.github.io//posts/whos_to_blame</a>.
+<a href="https://blog.nshephard.dev//posts/whos_to_blame">https://blog.nshephard.dev//posts/whos_to_blame</a>.
 </div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
@@ -451,14 +451,14 @@ Neil Shephard. 2022. <span>“Who’s to Blame.”</span> December 17, 2022.
   <category>github</category>
   <category>gitlab</category>
   <category>blame</category>
-  <guid>https://ns-rse.github.io/posts/whos_to_blame/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/whos_to_blame/index.html</guid>
   <pubDate>Sat, 17 Dec 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52065067830_734d0ebd51_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Pre-Commit : Customising and Updating</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/pre-commit-updates/index.html</link>
+  <link>https://blog.nshephard.dev/posts/pre-commit-updates/index.html</link>
   <description><![CDATA[ 
 
 
@@ -570,12 +570,12 @@ No matching items
   author = {Neil Shephard},
   title = {Pre-Commit : {Customising} and {Updating}},
   date = {2022-11-15},
-  url = {https://ns-rse.github.io//posts/pre-commit-updates},
+  url = {https://blog.nshephard.dev//posts/pre-commit-updates},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2022. <span>“Pre-Commit : Customising and
-Updating.”</span> November 15, 2022. <a href="https://ns-rse.github.io//posts/pre-commit-updates">https://ns-rse.github.io//posts/pre-commit-updates</a>.
+Updating.”</span> November 15, 2022. <a href="https://blog.nshephard.dev//posts/pre-commit-updates">https://blog.nshephard.dev//posts/pre-commit-updates</a>.
 </div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
@@ -584,14 +584,14 @@ Updating.”</span> November 15, 2022. <a href="https://ns-rse.github.io//posts/
   <category>github</category>
   <category>gitlab</category>
   <category>pre-commit</category>
-  <guid>https://ns-rse.github.io/posts/pre-commit-updates/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/pre-commit-updates/index.html</guid>
   <pubDate>Tue, 15 Nov 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52358442614_416d014454_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Linux Command Line Alternatives</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/cli-alternatives/index.html</link>
+  <link>https://blog.nshephard.dev/posts/cli-alternatives/index.html</link>
   <description><![CDATA[ 
 
 
@@ -957,24 +957,24 @@ No matching items
   author = {Neil Shephard},
   title = {Linux {Command} {Line} {Alternatives}},
   date = {2022-09-18},
-  url = {https://ns-rse.github.io//posts/cli-alternatives},
+  url = {https://blog.nshephard.dev//posts/cli-alternatives},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2022. <span>“Linux Command Line Alternatives.”</span>
-September 18, 2022. <a href="https://ns-rse.github.io//posts/cli-alternatives">https://ns-rse.github.io//posts/cli-alternatives</a>.
+September 18, 2022. <a href="https://blog.nshephard.dev//posts/cli-alternatives">https://blog.nshephard.dev//posts/cli-alternatives</a>.
 </div></div></section></div> ]]></description>
   <category>code</category>
   <category>linux</category>
   <category>bash</category>
-  <guid>https://ns-rse.github.io/posts/cli-alternatives/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/cli-alternatives/index.html</guid>
   <pubDate>Sun, 18 Sep 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/3793/12059147393_1b75269246_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Pre-Commit : Protecting your future self</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/pre-commit/index.html</link>
+  <link>https://blog.nshephard.dev/posts/pre-commit/index.html</link>
   <description><![CDATA[ 
 
 
@@ -1137,12 +1137,12 @@ No matching items
   author = {Neil Shephard},
   title = {Pre-Commit : {Protecting} Your Future Self},
   date = {2022-08-28},
-  url = {https://ns-rse.github.io//posts/pre-commit},
+  url = {https://blog.nshephard.dev//posts/pre-commit},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2022. <span>“Pre-Commit : Protecting Your Future
-Self.”</span> August 28, 2022. <a href="https://ns-rse.github.io//posts/pre-commit">https://ns-rse.github.io//posts/pre-commit</a>.
+Self.”</span> August 28, 2022. <a href="https://blog.nshephard.dev//posts/pre-commit">https://blog.nshephard.dev//posts/pre-commit</a>.
 </div></div></section></div> ]]></description>
   <category>code</category>
   <category>analysis</category>
@@ -1151,14 +1151,14 @@ Self.”</span> August 28, 2022. <a href="https://ns-rse.github.io//posts/pre-co
   <category>github</category>
   <category>gitlab</category>
   <category>pre-commit</category>
-  <guid>https://ns-rse.github.io/posts/pre-commit/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/pre-commit/index.html</guid>
   <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Linting - What is all the fluff about?</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/linting/index.html</link>
+  <link>https://blog.nshephard.dev/posts/linting/index.html</link>
   <description><![CDATA[ 
 
 
@@ -1442,18 +1442,18 @@ No matching items
   author = {Neil Shephard},
   title = {Linting - {What} Is All the Fluff About?},
   date = {2022-08-18},
-  url = {https://ns-rse.github.io//posts/linting},
+  url = {https://blog.nshephard.dev//posts/linting},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2022. <span>“Linting - What Is All the Fluff
-About?”</span> August 18, 2022. <a href="https://ns-rse.github.io//posts/linting">https://ns-rse.github.io//posts/linting</a>.
+About?”</span> August 18, 2022. <a href="https://blog.nshephard.dev//posts/linting">https://blog.nshephard.dev//posts/linting</a>.
 </div></div></section></div> ]]></description>
   <category>code</category>
   <category>linting</category>
   <category>python</category>
   <category>R</category>
-  <guid>https://ns-rse.github.io/posts/linting/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/linting/index.html</guid>
   <pubDate>Thu, 18 Aug 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/153/410254296_e518f48141_k.jpg" medium="image" type="image/jpeg"/>
 </item>

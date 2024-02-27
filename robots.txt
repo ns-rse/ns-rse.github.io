@@ -1,1 +1,1 @@
-Sitemap: https://ns-rse.github.io/sitemap.xml
+Sitemap: https://blog.nshephard.dev/sitemap.xml

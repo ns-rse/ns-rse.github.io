@@ -5,16 +5,16 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>ns-rse</title>
-<link>https://ns-rse.github.io/index.html#category=python</link>
-<atom:link href="https://ns-rse.github.io/index-python.xml" rel="self" type="application/rss+xml"/>
+<title>nshephard.dev</title>
+<link>https://blog.nshephard.dev/index.html#category=python</link>
+<atom:link href="https://blog.nshephard.dev/index-python.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>
 <generator>quarto-1.3.14</generator>
 <lastBuildDate>Mon, 01 Jan 2024 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Pytest Parameterisation</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/pytest-param/index.html</link>
+  <link>https://blog.nshephard.dev/posts/pytest-param/index.html</link>
   <description><![CDATA[ 
 
 
@@ -23,7 +23,7 @@
 <p><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a> is an excellent framework for writing tests in <a href="https://python.org" target="_blank">Python</a>. One of the neat features it includes is the ability to parameterise your tests which means you can write one test and pass different sets of parameters into it to test the range of actions that the function/method are meant to handle.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/pytest-param/https:/live.staticflickr.com/65535/53258274023_f628d3291a_k.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/pytest-param/https:/live.staticflickr.com/65535/53258274023_f628d3291a_k.jpg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53258274023/in/datetaken/" target="_blank">Minerals by Me</a></figcaption><p></p>
 </figure>
 </div>
@@ -334,24 +334,24 @@ No matching items
   author = {Neil Shephard},
   title = {Pytest {Parameterisation}},
   date = {2024-01-01},
-  url = {https://ns-rse.github.io//posts/pytest-param},
+  url = {https://blog.nshephard.dev//posts/pytest-param},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2024" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2024. <span>“Pytest Parameterisation.”</span> January 1,
-2024. <a href="https://ns-rse.github.io//posts/pytest-param">https://ns-rse.github.io//posts/pytest-param</a>.
+2024. <a href="https://blog.nshephard.dev//posts/pytest-param">https://blog.nshephard.dev//posts/pytest-param</a>.
 </div></div></section></div> ]]></description>
   <category>python</category>
   <category>testing</category>
   <category>pytest</category>
-  <guid>https://ns-rse.github.io/posts/pytest-param/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/pytest-param/index.html</guid>
   <pubDate>Mon, 01 Jan 2024 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/53258274023_f628d3291a_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>virtualenvwrapper</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/virtualenvwrapper/index.html</link>
+  <link>https://blog.nshephard.dev/posts/virtualenvwrapper/index.html</link>
   <description><![CDATA[ 
 
 
@@ -360,7 +360,7 @@ Neil Shephard. 2024. <span>“Pytest Parameterisation.”</span> January 1,
 <p>If you use Python heavily you will likely be familiar with Virtual Environments. These provide isolated installs of specific packages that take precedence over any packages installed at the system level. There are lots of tools and frameworks for working with virtual environments such as <a href="https://docs.python.org/3/library/venv.html" target="_blank"><code>venv</code></a>, <a href="https://pypi.python.org/pypi/virtualenv" target="_blank"><code>virtualenv</code></a> and <a href="https://docs.conda.io/en/latest/" target="_blank">Conda</a>. This post introduces and shows some of the features of <a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank">virtualenvwrapper</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/virtualenvwrapper/https:/live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/virtualenvwrapper/https:/live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53176160657/in/album-72177720311078585/" target="_blank">Clouds Rising at Sunset by Me</a></figcaption><p></p>
 </figure>
 </div>
@@ -453,23 +453,23 @@ No matching items
   author = {Neil Shephard},
   title = {Virtualenvwrapper},
   date = {2023-12-23},
-  url = {https://ns-rse.github.io//posts/virtualenvwrapper},
+  url = {https://blog.nshephard.dev//posts/virtualenvwrapper},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2023. <span>“Virtualenvwrapper.”</span> December 23,
-2023. <a href="https://ns-rse.github.io//posts/virtualenvwrapper">https://ns-rse.github.io//posts/virtualenvwrapper</a>.
+2023. <a href="https://blog.nshephard.dev//posts/virtualenvwrapper">https://blog.nshephard.dev//posts/virtualenvwrapper</a>.
 </div></div></section></div> ]]></description>
   <category>python</category>
   <category>virtual environments</category>
-  <guid>https://ns-rse.github.io/posts/virtualenvwrapper/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/virtualenvwrapper/index.html</guid>
   <pubDate>Sat, 23 Dec 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/53176160657_1a148b3c36_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Repository Review with Scientific Python</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/repository-review/index.html</link>
+  <link>https://blog.nshephard.dev/posts/repository-review/index.html</link>
   <description><![CDATA[ 
 
 
@@ -478,7 +478,7 @@ Neil Shephard. 2023. <span>“Virtualenvwrapper.”</span> December 23,
 <p>I’ve written before about <a href="https://ns-rse.github.io/#category=packaging" target="_blank">Python Packaging</a> and <a href="https://ns-rse.github.io/#category=pre-commit" target="_blank">pre-commit</a> which I’m a big fan of. Today I discovered a really useful tool for checking your packaging configuration and pre-commit configuration from the <a href="https://learn.scientific-python.org/development/" target="_blank">Scientific Python Development Guide</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/repository-review/https:/live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/repository-review/https:/live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53258300629/" target="_blank">Elektro</a></figcaption><p></p>
 </figure>
 </div>
@@ -518,25 +518,25 @@ No matching items
   author = {Neil Shephard},
   title = {Repository {Review} with {Scientific} {Python}},
   date = {2023-11-17},
-  url = {https://ns-rse.github.io//posts/repository-review},
+  url = {https://blog.nshephard.dev//posts/repository-review},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2023. <span>“Repository Review with Scientific
-Python.”</span> November 17, 2023. <a href="https://ns-rse.github.io//posts/repository-review">https://ns-rse.github.io//posts/repository-review</a>.
+Python.”</span> November 17, 2023. <a href="https://blog.nshephard.dev//posts/repository-review">https://blog.nshephard.dev//posts/repository-review</a>.
 </div></div></section></div> ]]></description>
   <category>pre-commit</category>
   <category>packaging</category>
   <category>scientific python</category>
   <category>python</category>
-  <guid>https://ns-rse.github.io/posts/repository-review/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/repository-review/index.html</guid>
   <pubDate>Fri, 17 Nov 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/53258300629_64b0ee5703_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>GitLab CI - Automatic Publishing to PyPI</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/gitlab-ci-pypi/index.html</link>
+  <link>https://blog.nshephard.dev/posts/gitlab-ci-pypi/index.html</link>
   <description><![CDATA[ 
 
 
@@ -545,7 +545,7 @@ Python.”</span> November 17, 2023. <a href="https://ns-rse.github.io//posts/re
 <p>I’ve written previously on <a href="https://ns-rse.github.io/posts/python-packaging" target="_blank">Python Packaging</a> and in that article included details of how to <a href="https://ns-rse.github.io/posts/python-packaging/#publishing-to-pypi" target="_blank">automate publishing to PyPI from GitHub</a>. This article details how to automatically publish your package to <a href="https://pypi.org" target="_blank">PyPI</a> from <a href="https://gitlab.com" target="_blank">GitLab</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/gitlab-ci-pypi/https:/live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/gitlab-ci-pypi/https:/live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/52985552723/in/dateposted/" target="_blank">Packages with Legs, by Me</a></figcaption><p></p>
 </figure>
 </div>
@@ -728,26 +728,26 @@ No matching items
   author = {Neil Shephard},
   title = {GitLab {CI} - {Automatic} {Publishing} to {PyPI}},
   date = {2023-10-03},
-  url = {https://ns-rse.github.io//posts/gitlab-ci-pypi},
+  url = {https://blog.nshephard.dev//posts/gitlab-ci-pypi},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2023. <span>“GitLab CI - Automatic Publishing to
-PyPI.”</span> October 3, 2023. <a href="https://ns-rse.github.io//posts/gitlab-ci-pypi">https://ns-rse.github.io//posts/gitlab-ci-pypi</a>.
+PyPI.”</span> October 3, 2023. <a href="https://blog.nshephard.dev//posts/gitlab-ci-pypi">https://blog.nshephard.dev//posts/gitlab-ci-pypi</a>.
 </div></div></section></div> ]]></description>
   <category>python</category>
   <category>documentation</category>
   <category>packaging</category>
   <category>gitlab</category>
   <category>ci</category>
-  <guid>https://ns-rse.github.io/posts/gitlab-ci-pypi/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/gitlab-ci-pypi/index.html</guid>
   <pubDate>Tue, 03 Oct 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52985552723_a975753e12_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Sphinx Documentation</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/sphinx-docs/index.html</link>
+  <link>https://blog.nshephard.dev/posts/sphinx-docs/index.html</link>
   <description><![CDATA[ 
 
 
@@ -756,7 +756,7 @@ PyPI.”</span> October 3, 2023. <a href="https://ns-rse.github.io//posts/gitlab
 <p>How to generate documentation websites for your Python package using <a href="https://www.sphinx-doc.org/en/master/" target="_blank">Sphinx</a>, including generating API documentation automatically, build multiple versions across releases and automatically build and host them on GitHub Pages.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/sphinx-docs/https:/live.staticflickr.com/7180/6891757680_739a505d05_k.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/sphinx-docs/https:/live.staticflickr.com/7180/6891757680_739a505d05_k.jpg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/6891757680/" target="_blank"><em>This is going on my blog</em> Picture by Me.</a></figcaption><p></p>
 </figure>
 </div>
@@ -1076,26 +1076,26 @@ No matching items
   author = {Neil Shephard},
   title = {Sphinx {Documentation}},
   date = {2023-05-07},
-  url = {https://ns-rse.github.io//posts/sphinx-docs},
+  url = {https://blog.nshephard.dev//posts/sphinx-docs},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2023. <span>“Sphinx Documentation.”</span> May 7, 2023.
-<a href="https://ns-rse.github.io//posts/sphinx-docs">https://ns-rse.github.io//posts/sphinx-docs</a>.
+<a href="https://blog.nshephard.dev//posts/sphinx-docs">https://blog.nshephard.dev//posts/sphinx-docs</a>.
 </div></div></section></div> ]]></description>
   <category>quarto</category>
   <category>python</category>
   <category>documentation</category>
   <category>sphinx</category>
   <category>github actions</category>
-  <guid>https://ns-rse.github.io/posts/sphinx-docs/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/sphinx-docs/index.html</guid>
   <pubDate>Sun, 07 May 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/7180/6891757680_739a505d05_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Python Packaging</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/python-packaging/index.html</link>
+  <link>https://blog.nshephard.dev/posts/python-packaging/index.html</link>
   <description><![CDATA[ 
 
 
@@ -1104,7 +1104,7 @@ Neil Shephard. 2023. <span>“Sphinx Documentation.”</span> May 7, 2023.
 <p>This post describes steps in creating a <a href="https://www.python/org" target="_blank">Python</a> package. If you are looking for information on installing packages this is done using <a href="https://pypi.org/" target="_blank">Python PIP</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://ns-rse.github.io/posts/python-packaging/https:/live.staticflickr.com/65535/52595884731_fb5c7d576e_k.jpg" class="img-fluid figure-img"></p>
+<p><img src="https://blog.nshephard.dev/posts/python-packaging/https:/live.staticflickr.com/65535/52595884731_fb5c7d576e_k.jpg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/52595884731/" target="_blank"><em>Water and Light</em> - Picture by Me</a></figcaption><p></p>
 </figure>
 </div>
@@ -1472,11 +1472,11 @@ No matching items
   author = {Neil Shephard},
   title = {Python {Packaging}},
   date = {2023-03-25},
-  url = {https://ns-rse.github.io//posts/python-packaging},
+  url = {https://blog.nshephard.dev//posts/python-packaging},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2023" class="csl-entry quarto-appendix-citeas">
-Neil Shephard. 2023. <span>“Python Packaging.”</span> March 25, 2023. <a href="https://ns-rse.github.io//posts/python-packaging">https://ns-rse.github.io//posts/python-packaging</a>.
+Neil Shephard. 2023. <span>“Python Packaging.”</span> March 25, 2023. <a href="https://blog.nshephard.dev//posts/python-packaging">https://blog.nshephard.dev//posts/python-packaging</a>.
 </div></div></section></div> ]]></description>
   <category>quarto</category>
   <category>python</category>
@@ -1484,14 +1484,14 @@ Neil Shephard. 2023. <span>“Python Packaging.”</span> March 25, 2023. <a hre
   <category>setuptools</category>
   <category>github actions</category>
   <category>pypi</category>
-  <guid>https://ns-rse.github.io/posts/python-packaging/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/python-packaging/index.html</guid>
   <pubDate>Sat, 25 Mar 2023 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52595884731_fb5c7d576e_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Linting - What is all the fluff about?</title>
   <dc:creator>Neil Shephard</dc:creator>
-  <link>https://ns-rse.github.io/posts/linting/index.html</link>
+  <link>https://blog.nshephard.dev/posts/linting/index.html</link>
   <description><![CDATA[ 
 
 
@@ -1775,18 +1775,18 @@ No matching items
   author = {Neil Shephard},
   title = {Linting - {What} Is All the Fluff About?},
   date = {2022-08-18},
-  url = {https://ns-rse.github.io//posts/linting},
+  url = {https://blog.nshephard.dev//posts/linting},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
 Neil Shephard. 2022. <span>“Linting - What Is All the Fluff
-About?”</span> August 18, 2022. <a href="https://ns-rse.github.io//posts/linting">https://ns-rse.github.io//posts/linting</a>.
+About?”</span> August 18, 2022. <a href="https://blog.nshephard.dev//posts/linting">https://blog.nshephard.dev//posts/linting</a>.
 </div></div></section></div> ]]></description>
   <category>code</category>
   <category>linting</category>
   <category>python</category>
   <category>R</category>
-  <guid>https://ns-rse.github.io/posts/linting/index.html</guid>
+  <guid>https://blog.nshephard.dev/posts/linting/index.html</guid>
   <pubDate>Thu, 18 Aug 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/153/410254296_e518f48141_k.jpg" medium="image" type="image/jpeg"/>
 </item>

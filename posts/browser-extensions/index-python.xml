@@ -5,16 +5,16 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>ns-rse</title>
-<link>https://ns-rse.github.io/posts/browser-extensions/index.html#category=python</link>
-<atom:link href="https://ns-rse.github.io/posts/browser-extensions/index-python.xml" rel="self" type="application/rss+xml"/>
+<title>nshephard.dev</title>
+<link>https://blog.nshephard.dev/posts/browser-extensions/index.html#category=python</link>
+<atom:link href="https://blog.nshephard.dev/posts/browser-extensions/index-python.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>
 <image>
 <url>https://live.staticflickr.com/65535/52703385696_6455dcef49_k.jpg</url>
-<title>ns-rse</title>
-<link>https://ns-rse.github.io/posts/browser-extensions/index.html#category=python</link>
+<title>nshephard.dev</title>
+<link>https://blog.nshephard.dev/posts/browser-extensions/index.html#category=python</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Tue, 20 Feb 2024 11:50:36 GMT</lastBuildDate>
+<lastBuildDate>Tue, 27 Feb 2024 10:09:24 GMT</lastBuildDate>
 </channel>
 </rss>

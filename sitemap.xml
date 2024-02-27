@@ -1,95 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ns-rse.github.io/about.html</loc>
-    <lastmod>2024-02-20T11:50:26.939Z</lastmod>
+    <loc>https://blog.nshephard.dev/about.html</loc>
+    <lastmod>2024-02-27T10:09:14.158Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/links.html</loc>
-    <lastmod>2024-02-20T11:50:27.811Z</lastmod>
+    <loc>https://blog.nshephard.dev/links.html</loc>
+    <lastmod>2024-02-27T10:09:14.998Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/index.html</loc>
-    <lastmod>2024-02-20T11:50:28.447Z</lastmod>
+    <loc>https://blog.nshephard.dev/index.html</loc>
+    <lastmod>2024-02-27T10:09:15.618Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/sphinx-docs/index.html</loc>
-    <lastmod>2024-02-20T11:50:31.727Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/sphinx-docs/index.html</loc>
+    <lastmod>2024-02-27T10:09:19.322Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/git-remotes-revisited/index.html</loc>
-    <lastmod>2024-02-20T11:50:32.243Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/git-remotes-revisited/index.html</loc>
+    <lastmod>2024-02-27T10:09:19.818Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/pre-commit-hooks/index.html</loc>
-    <lastmod>2024-02-20T11:50:32.691Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/pre-commit-hooks/index.html</loc>
+    <lastmod>2024-02-27T10:09:20.254Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/whos_to_blame/index.html</loc>
-    <lastmod>2024-02-20T11:50:33.067Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/whos_to_blame/index.html</loc>
+    <lastmod>2024-02-27T10:09:20.630Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/pre-commit-updates/index.html</loc>
-    <lastmod>2024-02-20T11:50:33.495Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/pre-commit-updates/index.html</loc>
+    <lastmod>2024-02-27T10:09:21.054Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/cli-alternatives/index.html</loc>
-    <lastmod>2024-02-20T11:50:33.979Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/cli-alternatives/index.html</loc>
+    <lastmod>2024-02-27T10:09:21.530Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/pre-commit-ci/index.html</loc>
-    <lastmod>2024-02-20T11:50:34.475Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/pre-commit-ci/index.html</loc>
+    <lastmod>2024-02-27T10:09:22.026Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/repository-review/index.html</loc>
-    <lastmod>2024-02-20T11:50:34.843Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/repository-review/index.html</loc>
+    <lastmod>2024-02-27T10:09:22.398Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/linting/index.html</loc>
-    <lastmod>2024-02-20T11:50:35.391Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/linting/index.html</loc>
+    <lastmod>2024-02-27T10:09:22.938Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/virtualenvwrapper/index.html</loc>
-    <lastmod>2024-02-20T11:50:35.835Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/virtualenvwrapper/index.html</loc>
+    <lastmod>2024-02-27T10:09:23.366Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/pytest-param/index.html</loc>
-    <lastmod>2024-02-20T11:50:36.351Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/pytest-param/index.html</loc>
+    <lastmod>2024-02-27T10:09:23.890Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/browser-extensions/index.html</loc>
-    <lastmod>2024-02-20T11:50:36.811Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/browser-extensions/index.html</loc>
+    <lastmod>2024-02-27T10:09:24.346Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/pre-commit-r/index.html</loc>
-    <lastmod>2024-02-20T11:50:37.527Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/pre-commit-r/index.html</loc>
+    <lastmod>2024-02-27T10:09:25.062Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/r-resources/index.html</loc>
-    <lastmod>2024-02-20T11:50:38.079Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/r-resources/index.html</loc>
+    <lastmod>2024-02-27T10:09:25.602Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/pre-commit/index.html</loc>
-    <lastmod>2024-02-20T11:50:40.659Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/pre-commit/index.html</loc>
+    <lastmod>2024-02-27T10:09:28.126Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/gitlab-ci-pypi/index.html</loc>
-    <lastmod>2024-02-20T11:50:43.275Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/gitlab-ci-pypi/index.html</loc>
+    <lastmod>2024-02-27T10:09:30.638Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/git-ssh/index.html</loc>
-    <lastmod>2024-02-20T11:50:43.751Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/git-ssh/index.html</loc>
+    <lastmod>2024-02-27T10:09:31.090Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/running-2022/index.html</loc>
-    <lastmod>2024-02-20T11:50:53.923Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/running-2022/index.html</loc>
+    <lastmod>2024-02-27T10:09:41.418Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/python-packaging/index.html</loc>
-    <lastmod>2024-02-20T11:50:54.687Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/python-packaging/index.html</loc>
+    <lastmod>2024-02-27T10:09:42.178Z</lastmod>
   </url>
   <url>
-    <loc>https://ns-rse.github.io/posts/git-remotes/index.html</loc>
-    <lastmod>2024-02-20T11:50:55.275Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/git-remotes/index.html</loc>
+    <lastmod>2024-02-27T10:09:42.790Z</lastmod>
   </url>
 </urlset>
