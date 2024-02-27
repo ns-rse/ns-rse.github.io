@@ -5,7 +5,7 @@
       xmlns:dc="http://purl.org/dc/elements/1.1/" 
       version="2.0">
 <channel>
-<title>nshephard.dev</title>
+<title>blog.nshephard.dev</title>
 <link>https://blog.nshephard.dev/index.html#category=github</link>
 <atom:link href="https://blog.nshephard.dev/index-github.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>

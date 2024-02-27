@@ -8,7 +8,7 @@ project:
     - "*.sh"
     - "*.yaml"
 website:
-  title: "nshephard.dev"
+  title: "blog.nshephard.dev"
   site-url: https://blog.nshephard.dev/
   description: "Software development in a Research Environment"
   navbar:
