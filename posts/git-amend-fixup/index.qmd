@@ -206,7 +206,7 @@ including commit messages such as `Fixing typo` / `Linting code` / `Fixing tests
 
 If all of this sounds completely unfamiliar to you but you would like to learn more about Git I can highly recommend the
 introductory course developed by [Dr Anna Krystalli][anna] [Git and GitHub through GitKraken : From Zero to
-Hero][gitzerohero]. This course is run regularly by myself and colleagues in [Research Software Engineering][rseshed]
+Hero][gitzerohero]. This course is run regularly by myself and colleagues in [Research Software Engineering][rseshef]
 for post-graduate researchers and staff at the University of Sheffield.
 
 [anna]: https://www.r-rse.eu/
