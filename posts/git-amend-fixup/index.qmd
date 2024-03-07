@@ -34,7 +34,6 @@ git switch -c amend-fixup-tutorial
   Switched to a new branch 'amend-fixup-tutorial'
 ```
 
-
 ## The Git Dance
 
 A typical Git work flow involves making some changes to one or more files (or adding a new one into the
@@ -59,7 +58,6 @@ This should be familiar to users of [Git][git] whether you use the command line 
 Git porcelain [magit][magit] or any other tool such as [GitKraken][gitkraken] or the support in you IDE such as
 [RStudio][rstudio] or VSCode.
 
-
 ## Making Amends
 
 Sometimes you will have made a commit and you realise that you want to add more to it or perhaps you forgot to run your
@@ -82,6 +80,7 @@ git log --oneline
 9f0655b (HEAD -> amend-fixup-tutorial) Ask for PRs via fork in CONTRIBUTING.md
 01191a2 Adding CONTRIBUTING.md
 ```
+
 ...and there is nothing wrong with that. However, Git history can get long and complicated when there are lots of small
 commits, because these two changes to `CONTRIBUTING.md` are essentially the same piece of work and if we'd been thinking
 clearly we would have written about making forks in the first place and made a single commit.
@@ -131,7 +130,6 @@ git log --oneline
   4fda15f Adding CONTRIBUTING.md
 ```
 
-
 And let's expand our `CONTRIBUTING.md` file further.
 
 ``` bash
@@ -160,7 +158,6 @@ git log --oneline
   4fda15f Adding CONTRIBUTING.md
 ```
 
-
 The final step is to perform the automatic squashing via an interactive rebase, again you can either use the hash or the
 relative reference.
 
@@ -168,7 +165,6 @@ relative reference.
 git rebase -i --autosquash 4fda15f
 git rebase -i --autosquash HEAD~2
 ```
-
 
 This will open the default editor and because the `--autosquash` option has been used it will already have marked the
 commits that need combining with `fixup`. All you have to do is save the file and exit and we can check the history and
@@ -200,6 +196,7 @@ this was just an example we can switch branches back to `main` and force deletio
 git switch main
 git branch -D amend-fixup-tutorial
 ```
+
 ## Conclusion
 
 Git has lots of commands to help you maintain a clean history by using `--amend` and `--fixup` flags to `git commit` and
@@ -215,10 +212,7 @@ for post-graduate researchers and staff at the University of Sheffield.
 [anna]: https://www.r-rse.eu/
 [emacs]: https://www.gnu.org/software/emacs/
 [git]: https://git-scm.com
-[gitc]: https://git-scm.com/docs/git-commit
 [gitkraken]: https://www.gitkraken.com/
 [gitzerohero]: https://srse-git-github-zero2hero.netlify.app/
 [magit]: https://magit.vc/
-[rsesoc]: https://society-rse.org/
-[rseshef]: https://rse.shef.ac.uk
 [rstudio]: https://posit.co/products/open-source/rstudio/
