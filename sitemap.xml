@@ -1,95 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://blog.nshephard.dev/about.html</loc>
-    <lastmod>2024-02-27T11:03:30.748Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/links.html</loc>
-    <lastmod>2024-02-27T11:03:31.608Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/index.html</loc>
-    <lastmod>2024-02-27T11:03:32.240Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/sphinx-docs/index.html</loc>
-    <lastmod>2024-02-27T11:03:35.665Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/git-remotes-revisited/index.html</loc>
-    <lastmod>2024-02-27T11:03:36.181Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/pre-commit-hooks/index.html</loc>
-    <lastmod>2024-02-27T11:03:36.629Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/whos_to_blame/index.html</loc>
-    <lastmod>2024-02-27T11:03:37.017Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/pre-commit-updates/index.html</loc>
-    <lastmod>2024-02-27T11:03:37.465Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/cli-alternatives/index.html</loc>
-    <lastmod>2024-02-27T11:03:37.945Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/pre-commit-ci/index.html</loc>
-    <lastmod>2024-02-27T11:03:38.441Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/pytest-param/index.html</loc>
+    <lastmod>2024-03-07T16:51:44.105Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/repository-review/index.html</loc>
-    <lastmod>2024-02-27T11:03:38.809Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/linting/index.html</loc>
-    <lastmod>2024-02-27T11:03:39.369Z</lastmod>
+    <lastmod>2024-03-07T16:51:44.773Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/virtualenvwrapper/index.html</loc>
-    <lastmod>2024-02-27T11:03:39.809Z</lastmod>
+    <lastmod>2024-03-07T16:51:45.253Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.nshephard.dev/posts/pytest-param/index.html</loc>
-    <lastmod>2024-02-27T11:03:40.333Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/browser-extensions/index.html</loc>
-    <lastmod>2024-02-27T11:03:40.797Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/pre-commit-r/index.html</loc>
-    <lastmod>2024-02-27T11:03:41.509Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/r-resources/index.html</loc>
-    <lastmod>2024-02-27T11:03:42.069Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/pre-commit/index.html</loc>
-    <lastmod>2024-02-27T11:03:44.609Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/gitlab-ci-pypi/index.html</loc>
-    <lastmod>2024-02-27T11:03:47.173Z</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.nshephard.dev/posts/git-ssh/index.html</loc>
-    <lastmod>2024-02-27T11:03:47.633Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/git-remotes-revisited/index.html</loc>
+    <lastmod>2024-03-07T16:51:45.757Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/running-2022/index.html</loc>
-    <lastmod>2024-02-27T11:03:58.357Z</lastmod>
+    <lastmod>2024-03-07T16:51:56.313Z</lastmod>
   </url>
   <url>
-    <loc>https://blog.nshephard.dev/posts/python-packaging/index.html</loc>
-    <lastmod>2024-02-27T11:03:59.153Z</lastmod>
+    <loc>https://blog.nshephard.dev/posts/gitlab-ci-pypi/index.html</loc>
+    <lastmod>2024-03-07T16:52:00.441Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/r-resources/index.html</loc>
+    <lastmod>2024-03-07T16:52:01.021Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/git-remotes/index.html</loc>
-    <lastmod>2024-02-27T11:03:59.769Z</lastmod>
+    <lastmod>2024-03-07T16:52:01.645Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/linting/index.html</loc>
+    <lastmod>2024-03-07T16:52:02.225Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/pre-commit/index.html</loc>
+    <lastmod>2024-03-07T16:52:04.937Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/pre-commit-hooks/index.html</loc>
+    <lastmod>2024-03-07T16:52:05.377Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/sphinx-docs/index.html</loc>
+    <lastmod>2024-03-07T16:52:08.129Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/git-ssh/index.html</loc>
+    <lastmod>2024-03-07T16:52:08.585Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/cli-alternatives/index.html</loc>
+    <lastmod>2024-03-07T16:52:09.073Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/pre-commit-r/index.html</loc>
+    <lastmod>2024-03-07T16:52:09.801Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/python-packaging/index.html</loc>
+    <lastmod>2024-03-07T16:52:10.565Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/browser-extensions/index.html</loc>
+    <lastmod>2024-03-07T16:52:11.041Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/git-amend-fixup/index.html</loc>
+    <lastmod>2024-03-07T16:52:11.505Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/pre-commit-updates/index.html</loc>
+    <lastmod>2024-03-07T16:52:11.953Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/pre-commit-ci/index.html</loc>
+    <lastmod>2024-03-07T16:52:12.453Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/posts/whos_to_blame/index.html</loc>
+    <lastmod>2024-03-07T16:52:12.853Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/index.html</loc>
+    <lastmod>2024-03-07T16:52:13.497Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/links.html</loc>
+    <lastmod>2024-03-07T16:52:14.065Z</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.nshephard.dev/about.html</loc>
+    <lastmod>2024-03-07T16:52:14.597Z</lastmod>
   </url>
 </urlset>

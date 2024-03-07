@@ -1,7 +1,92 @@
 [
   {
-    "listing": "/about.html",
+    "listing": "/posts/pytest-param/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/repository-review/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/virtualenvwrapper/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-remotes-revisited/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/running-2022/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/gitlab-ci-pypi/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/r-resources/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-remotes/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/linting/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit-hooks/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/sphinx-docs/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-ssh/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/cli-alternatives/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit-r/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/python-packaging/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/browser-extensions/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-amend-fixup/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit-updates/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit-ci/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/whos_to_blame/index.html",
+    "items": []
+  },
+  {
+    "listing": "/index.html",
     "items": [
+      "/posts/git-amend-fixup/index.html",
       "/posts/git-remotes-revisited/index.html",
       "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
@@ -10,8 +95,8 @@
       "/posts/git-remotes/index.html",
       "/posts/gitlab-ci-pypi/index.html",
       "/posts/pre-commit-r/index.html",
-      "/posts/sphinx-docs/index.html",
       "/posts/pre-commit-hooks/index.html",
+      "/posts/sphinx-docs/index.html",
       "/posts/python-packaging/index.html",
       "/posts/browser-extensions/index.html",
       "/posts/pre-commit-ci/index.html",
@@ -27,6 +112,7 @@
   {
     "listing": "/links.html",
     "items": [
+      "/posts/git-amend-fixup/index.html",
       "/posts/git-remotes-revisited/index.html",
       "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
@@ -35,8 +121,8 @@
       "/posts/git-remotes/index.html",
       "/posts/gitlab-ci-pypi/index.html",
       "/posts/pre-commit-r/index.html",
-      "/posts/sphinx-docs/index.html",
       "/posts/pre-commit-hooks/index.html",
+      "/posts/sphinx-docs/index.html",
       "/posts/python-packaging/index.html",
       "/posts/browser-extensions/index.html",
       "/posts/pre-commit-ci/index.html",
@@ -50,8 +136,9 @@
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/about.html",
     "items": [
+      "/posts/git-amend-fixup/index.html",
       "/posts/git-remotes-revisited/index.html",
       "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
@@ -60,8 +147,8 @@
       "/posts/git-remotes/index.html",
       "/posts/gitlab-ci-pypi/index.html",
       "/posts/pre-commit-r/index.html",
-      "/posts/sphinx-docs/index.html",
       "/posts/pre-commit-hooks/index.html",
+      "/posts/sphinx-docs/index.html",
       "/posts/python-packaging/index.html",
       "/posts/browser-extensions/index.html",
       "/posts/pre-commit-ci/index.html",
@@ -73,85 +160,5 @@
       "/posts/git-ssh/index.html",
       "/posts/linting/index.html"
     ]
-  },
-  {
-    "listing": "/posts/sphinx-docs/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-remotes-revisited/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-hooks/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/whos_to_blame/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-updates/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/cli-alternatives/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-ci/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/repository-review/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/linting/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/virtualenvwrapper/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pytest-param/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/browser-extensions/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-r/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/r-resources/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/gitlab-ci-pypi/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-ssh/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/running-2022/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/python-packaging/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-remotes/index.html",
-    "items": []
   }
 ]
