@@ -91,6 +91,7 @@ the last commit message). We can undo the last commit using `git reset HEAD~1` a
 added the `CONTRIBUTING.md`
 
 ``` bash
+git reset HEAD~1
 git add -u
 git commit --amend
 ```
