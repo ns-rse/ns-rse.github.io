@@ -123,7 +123,6 @@ git switch -c citation
 echo "cff-version: 1.2.0\ntitle: Pytest Examples\ntype: software" > CITATION.cff
 ```
 
-
 ## Worktrees rather than branches
 
 Worktrees take a different approach to organising branches. They start with a `--bare` clone of the repository which
@@ -261,7 +260,6 @@ CONTRIBUTING.md --- Text
 **NB** The output of `git diff` may depend on the difftool that you have configured, I use and recommend the brilliant
 [`difftastic`](https://difftastic.wilfred.me.uk/) which has easy [integration with
 Git](https://difftastic.wilfred.me.uk/git.html).
-
 
 ### Listing Worktrees
 
