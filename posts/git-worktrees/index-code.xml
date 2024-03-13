@@ -6,15 +6,15 @@
       version="2.0">
 <channel>
 <title>blog.nshephard.dev</title>
-<link>https://blog.nshephard.dev/posts/r-resources/index.html#category=git</link>
-<atom:link href="https://blog.nshephard.dev/posts/r-resources/index-git.xml" rel="self" type="application/rss+xml"/>
+<link>https://blog.nshephard.dev/posts/git-worktrees/index.html#category=code</link>
+<atom:link href="https://blog.nshephard.dev/posts/git-worktrees/index-code.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>
 <image>
-<url>https://live.staticflickr.com/124/322966806_1bb4f40900_h.jpg</url>
+<url>https://live.staticflickr.com/3027/3018839068_ff71bcb5f5_k.jpg</url>
 <title>blog.nshephard.dev</title>
-<link>https://blog.nshephard.dev/posts/r-resources/index.html#category=git</link>
+<link>https://blog.nshephard.dev/posts/git-worktrees/index.html#category=code</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Wed, 13 Mar 2024 22:44:50 GMT</lastBuildDate>
+<lastBuildDate>Wed, 13 Mar 2024 22:45:15 GMT</lastBuildDate>
 </channel>
 </rss>
