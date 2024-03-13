@@ -1,6 +1,6 @@
 ---
 title: "Git - Worktrees"
-date: "2024-03-08"
+date: "2024-03-13"
 categories: [git, worktrees]
 image: https://live.staticflickr.com/3027/3018839068_ff71bcb5f5_k.jpg
 from: markdown+emoji

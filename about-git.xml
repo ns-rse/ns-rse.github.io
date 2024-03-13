@@ -15,143 +15,7 @@
 <link>https://blog.nshephard.dev/about.html#category=git</link>
 </image>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Fri, 08 Mar 2024 00:00:00 GMT</lastBuildDate>
-<item>
-  <title>Git - Making Amends and Fixing things up</title>
-  <dc:creator>Neil Shephard</dc:creator>
-  <link>https://blog.nshephard.dev/posts/git-amend-fixup/index.html</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://git-scm.com" target="_blank">Git</a> is the world’s most popular version control software out there at the moment and if you write code and version control it the chances are you are using it. It’s a complex tool though and there are a bewildering array of options. In this short post we will look at some options for changing commits that have been made.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://blog.nshephard.dev/posts/git-amend-fixup/https:/live.staticflickr.com/65535/53448512934_c045c232c9_k.jpg" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53448512934/in/datetaken/" target="_blank">Crown Shy Trees by Me</a></figcaption><p></p>
-</figure>
-</div>
-<section id="python-examples" class="level2">
-<h2 class="anchored" data-anchor-id="python-examples">Python Examples</h2>
-<p>We’ll use my <a href="https://github.com/ns-rse/pytest-examples" target="_blank">pytest-examples</a> as an example for this work but you can do this in any repository you have going. We’ll clone the repository and make a new branch called <code>amend-fixup-tutorial</code>.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">git</span> clone git@github.com:ns-rse/pytest-examples.git</span>
-<span id="cb1-2"><span class="bu" style="color: null;">cd</span> pytest-examples</span>
-<span id="cb1-3"><span class="fu" style="color: #4758AB;">git</span> switch <span class="at" style="color: #657422;">-c</span> amend-fixup-tutorial</span>
-<span id="cb1-4">  <span class="ex" style="color: null;">Switched</span> to a new branch <span class="st" style="color: #20794D;">'amend-fixup-tutorial'</span></span></code></pre></div>
-</section>
-<section id="the-git-dance" class="level2">
-<h2 class="anchored" data-anchor-id="the-git-dance">The Git Dance</h2>
-<p>A typical Git work flow involves making some changes to one or more files (or adding a new one into the repository). These are staged with <code>git add &lt;files&gt;</code>, or you can use a shortcut <code>git add -u/--update</code> to add all currently tracked files that have been modified if you are not adding anything new, before committing them with a message using <code>git commit -m "&lt;meaningful message about content being added&gt;"</code>.</p>
-<p>Lets add a simple <code>CONTRIBUTING.md</code> file to the repository.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"# Contributing\n\nContributions via pull requests are welcome."</span> <span class="op" style="color: #5E5E5E;">&gt;</span> CONTRIBUTING.md</span>
-<span id="cb2-2"><span class="fu" style="color: #4758AB;">git</span> add CONTRIBUTING.md</span>
-<span id="cb2-3"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Adding CONTRIBUTING.md"</span></span></code></pre></div>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
-<span id="cb3-2">  <span class="ex" style="color: null;">01191a2</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Adding</span> CONTRIBUTING.md</span></code></pre></div>
-<p>This should be familiar to users of <a href="https://git-scm.com" target="_blank">Git</a> whether you use the command line interface (CLI), <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs’</a> amazing Git porcelain <a href="https://magit.vc/" target="_blank">magit</a> or any other tool such as <a href="https://www.gitkraken.com/" target="_blank">GitKraken</a> or the support in you IDE such as <a href="https://posit.co/products/open-source/rstudio/" target="_blank">RStudio</a> or VSCode.</p>
-</section>
-<section id="making-amends" class="level2">
-<h2 class="anchored" data-anchor-id="making-amends">Making Amends</h2>
-<p>Sometimes you will have made a commit and you realise that you want to add more to it or perhaps you forgot to run your test suite and find that on running it your tests fail so you need to make a correction. In this example we want to be more explicit about how to make contributions and let people know they should fork the branch.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"\n Please make a fork of this repository, make your changes and open a Pull Request."</span> <span class="op" style="color: #5E5E5E;">&gt;&gt;</span> CONTRIBUTING.md</span></code></pre></div>
-<p>Now you could make a second commit…</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;">git</span> add <span class="at" style="color: #657422;">-u</span></span>
-<span id="cb5-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Ask for PRs via fork in CONTRIBUTING.md"</span></span></code></pre></div>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
-<span id="cb6-2"><span class="ex" style="color: null;">9f0655b</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Ask</span> for PRs via fork in CONTRIBUTING.md</span>
-<span id="cb6-3"><span class="ex" style="color: null;">01191a2</span> Adding CONTRIBUTING.md</span></code></pre></div>
-<p>…and there is nothing wrong with that. However, Git history can get long and complicated when there are lots of small commits, because these two changes to <code>CONTRIBUTING.md</code> are essentially the same piece of work and if we’d been thinking clearly we would have written about making forks in the first place and made a single commit.</p>
-<p>Fortunately Git can help here as there is the <code>git commit --amend</code> option which adds the staged changes to the last commit and allows you to edit the last commit message (if nothing is currently staged then you will be prompted to edit the last commit message). We can undo the last commit using <code>git reset HEAD~1</code> and instead amend the first commit that added the <code>CONTRIBUTING.md</code></p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="fu" style="color: #4758AB;">git</span> add <span class="at" style="color: #657422;">-u</span></span>
-<span id="cb7-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--amend</span></span></code></pre></div>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
-<span id="cb8-2">  <span class="ex" style="color: null;">4fda15f</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Adding</span> CONTRIBUTING.md</span>
-<span id="cb8-3"><span class="fu" style="color: #4758AB;">cat</span> CONTRIBUTING.md</span>
-<span id="cb8-4"><span class="co" style="color: #5E5E5E;"># Contributing</span></span>
-<span id="cb8-5"></span>
-<span id="cb8-6"><span class="ex" style="color: null;">Contributions</span> via pull requests are welcome.</span>
-<span id="cb8-7"></span>
-<span id="cb8-8"><span class="ex" style="color: null;">Please</span> make a fork of this repository, make your changes and open a Pull Request.</span></code></pre></div>
-<p>We now have one commit which contains the new <code>CONTRIBUTING.md</code> file that contains all the changes we wished to have in the file in the first place and our Git history is slightly more compact.</p>
-</section>
-<section id="fixing-things-up" class="level2">
-<h2 class="anchored" data-anchor-id="fixing-things-up">Fixing things up</h2>
-<p>Amending commits is great providing the commit you want to change is the last commit you made (i.e.&nbsp;<code>HEAD</code>). But sometimes you might wish to correct a commit further back in your history and <code>git commit --amend</code> is of no use here. Git can however help here with the <code>git commit --fixup</code> command which allows you to mark a commit as being a “fix up” of an older commit. These can then be autosquashed via an interactive Git rebase.</p>
-<p>Let’s add a few empty commits to our <code>amend-fixup-tutorial</code> branch to so we can do this.</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--allow-empty</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Empty commit for demonstration purposes"</span></span>
-<span id="cb9-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--allow-empty</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Another empty commit for demonstration purposes"</span></span></code></pre></div>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
-<span id="cb10-2">  <span class="ex" style="color: null;">8061221</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Another</span> empty commit for demonstration purposes</span>
-<span id="cb10-3">  <span class="ex" style="color: null;">65587ce</span> Empty commit for demonstration purposes</span>
-<span id="cb10-4">  <span class="ex" style="color: null;">4fda15f</span> Adding CONTRIBUTING.md</span></code></pre></div>
-<p>And let’s expand our <code>CONTRIBUTING.md</code> file further.</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"\nPlease note this repository uses [pre-commit](https://pre-commit.com) to lint the Python code and Markdown files."</span> <span class="op" style="color: #5E5E5E;">&gt;&gt;</span> CONTRIBUTING.md</span></code></pre></div>
-<p>We want to merge this commit with the first one we made in this tutorial using <code>git commit --fixup</code>. To do this we need to know the hash (<code>4fda15f</code> see output from above <code>git log</code>) or the relative reference of the commit we want which in this case is <code>HEAD~2</code> as it is three commits back from the current <code>HEAD</code> (which is commit <code>0</code>, most indexing in computing starts at <code>0</code> rather than <code>1</code>). Use <em>one</em> for the following <code>git commit --fixup</code> commands (adjusting the hash to yours if you are using that option, you can find this using <code>git log --oneline</code>).</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;">git</span> add <span class="at" style="color: #657422;">-u</span></span>
-<span id="cb12-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--fixup</span> 4fda15f</span>
-<span id="cb12-3"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--fixup</span> HEAD~2</span></code></pre></div>
-<p>We see the commit we have just made starts with <code>fixup!</code> and is then followed by the commit message that it is fixing.</p>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
-<span id="cb13-2">  <span class="ex" style="color: null;">97711a4</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">fixup!</span> Adding CONTRIBUTING.md</span>
-<span id="cb13-3">  <span class="ex" style="color: null;">8061221</span> Another empty commit for demonstration purposes</span>
-<span id="cb13-4">  <span class="ex" style="color: null;">65587ce</span> Empty commit for demonstration purposes</span>
-<span id="cb13-5">  <span class="ex" style="color: null;">4fda15f</span> Adding CONTRIBUTING.md</span></code></pre></div>
-<p>The final step is to perform the automatic squashing via an interactive rebase, again you can either use the hash or the relative reference.</p>
-<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="fu" style="color: #4758AB;">git</span> rebase <span class="at" style="color: #657422;">-i</span> <span class="at" style="color: #657422;">--autosquash</span> 4fda15f</span>
-<span id="cb14-2"><span class="fu" style="color: #4758AB;">git</span> rebase <span class="at" style="color: #657422;">-i</span> <span class="at" style="color: #657422;">--autosquash</span> HEAD~2</span></code></pre></div>
-<p>This will open the default editor and because the <code>--autosquash</code> option has been used it will already have marked the commits that need combining with <code>fixup</code>. All you have to do is save the file and exit and we can check the history and look at the contents of the file.</p>
-<p><strong>NB</strong> If you find that the necessary commit <em>isn’t</em> already marked navigate to that line and delete <code>pick</code>. The lines below the file you have open give instructions on how you can mark commits for different actions, in this case you can replace <code>pick</code> with either <code>f</code> or <code>fixup</code>. Save and exit and the commits are squashed.</p>
-<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
-<span id="cb15-2">  <span class="ex" style="color: null;">0fda21e</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Another</span> empty commit for demonstration purposes</span>
-<span id="cb15-3">  <span class="ex" style="color: null;">65587ce</span> Empty commit for demonstration purposes</span>
-<span id="cb15-4">  <span class="ex" style="color: null;">4fda15f</span> Adding CONTRIBUTING.md</span>
-<span id="cb15-5"><span class="fu" style="color: #4758AB;">cat</span> CONTRIBUTING.md</span>
-<span id="cb15-6">  <span class="co" style="color: #5E5E5E;"># Contributing</span></span>
-<span id="cb15-7"></span>
-<span id="cb15-8">  <span class="ex" style="color: null;">Contributions</span> via pull requests are welcome.</span>
-<span id="cb15-9"></span>
-<span id="cb15-10">  <span class="ex" style="color: null;">Please</span> make a fork of this repository, make your changes and open a Pull Request.</span>
-<span id="cb15-11"></span>
-<span id="cb15-12">  <span class="ex" style="color: null;">Please</span> note this repository uses [pre-commit]<span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">https://pre-commit.com</span><span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">to</span> lint the Python code and Markdown files.</span></code></pre></div>
-<p>And you’re all done! If you were doing this for real on a repository you could now <code>git push</code> or continue your work. As this was just an example we can switch branches back to <code>main</code> and force deletion of the branch we created.</p>
-<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="fu" style="color: #4758AB;">git</span> switch main</span>
-<span id="cb16-2"><span class="fu" style="color: #4758AB;">git</span> branch <span class="at" style="color: #657422;">-D</span> amend-fixup-tutorial</span></code></pre></div>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Git has lots of commands to help you maintain a clean history by using <code>--amend</code> and <code>--fixup</code> flags to <code>git commit</code> and in the later case then performing an interactive <code>git rebase -i</code>. This takes a little discipline to get into the practice of but once in the habit of doing so it greatly improves the readability of the Git history and avoids including commit messages such as <code>Fixing typo</code> / <code>Linting code</code> / <code>Fixing tests</code> / <code>I've gone mad!</code>.</p>
-<p>If all of this sounds completely unfamiliar to you but you would like to learn more about Git I can highly recommend the introductory course developed by <a href="https://www.r-rse.eu/" target="_blank">Dr Anna Krystalli</a> <a href="https://srse-git-github-zero2hero.netlify.app/" target="_blank">Git and GitHub through GitKraken : From Zero to Hero</a>. This course is run regularly by myself and colleagues in <a href="https://rse.shef.ac.uk" target="_blank">Research Software Engineering</a> for post-graduate researchers and staff at the University of Sheffield.</p>
-
-
-
-</section>
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
-  author = {Neil Shephard},
-  title = {Git - {Making} {Amends} and {Fixing} Things Up},
-  date = {2024-03-08},
-  url = {https://blog.nshephard.dev//posts/git-amend-fixup},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2024" class="csl-entry quarto-appendix-citeas">
-Neil Shephard. 2024. <span>“Git - Making Amends and Fixing Things
-Up.”</span> March 8, 2024. <a href="https://blog.nshephard.dev//posts/git-amend-fixup">https://blog.nshephard.dev//posts/git-amend-fixup</a>.
-</div></div></section></div> ]]></description>
-  <category>git</category>
-  <category>amend</category>
-  <category>fixup</category>
-  <guid>https://blog.nshephard.dev/posts/git-amend-fixup/index.html</guid>
-  <pubDate>Fri, 08 Mar 2024 00:00:00 GMT</pubDate>
-  <media:content url="https://live.staticflickr.com/65535/53448512934_c045c232c9_k.jpg" medium="image" type="image/jpeg"/>
-</item>
+<lastBuildDate>Wed, 13 Mar 2024 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Git - Worktrees</title>
   <dc:creator>Neil Shephard</dc:creator>
@@ -433,18 +297,154 @@ No matching items
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
   author = {Neil Shephard},
   title = {Git - {Worktrees}},
-  date = {2024-03-08},
+  date = {2024-03-13},
   url = {https://blog.nshephard.dev//posts/git-worktrees},
   langid = {en}
 }
 </code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2024" class="csl-entry quarto-appendix-citeas">
-Neil Shephard. 2024. <span>“Git - Worktrees.”</span> March 8, 2024. <a href="https://blog.nshephard.dev//posts/git-worktrees">https://blog.nshephard.dev//posts/git-worktrees</a>.
+Neil Shephard. 2024. <span>“Git - Worktrees.”</span> March 13, 2024. <a href="https://blog.nshephard.dev//posts/git-worktrees">https://blog.nshephard.dev//posts/git-worktrees</a>.
 </div></div></section></div> ]]></description>
   <category>git</category>
   <category>worktrees</category>
   <guid>https://blog.nshephard.dev/posts/git-worktrees/index.html</guid>
-  <pubDate>Fri, 08 Mar 2024 00:00:00 GMT</pubDate>
+  <pubDate>Wed, 13 Mar 2024 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/3027/3018839068_ff71bcb5f5_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Git - Making Amends and Fixing things up</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/git-amend-fixup/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://git-scm.com" target="_blank">Git</a> is the world’s most popular version control software out there at the moment and if you write code and version control it the chances are you are using it. It’s a complex tool though and there are a bewildering array of options. In this short post we will look at some options for changing commits that have been made.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.nshephard.dev/posts/git-amend-fixup/https:/live.staticflickr.com/65535/53448512934_c045c232c9_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53448512934/in/datetaken/" target="_blank">Crown Shy Trees by Me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="python-examples" class="level2">
+<h2 class="anchored" data-anchor-id="python-examples">Python Examples</h2>
+<p>We’ll use my <a href="https://github.com/ns-rse/pytest-examples" target="_blank">pytest-examples</a> as an example for this work but you can do this in any repository you have going. We’ll clone the repository and make a new branch called <code>amend-fixup-tutorial</code>.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">git</span> clone git@github.com:ns-rse/pytest-examples.git</span>
+<span id="cb1-2"><span class="bu" style="color: null;">cd</span> pytest-examples</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;">git</span> switch <span class="at" style="color: #657422;">-c</span> amend-fixup-tutorial</span>
+<span id="cb1-4">  <span class="ex" style="color: null;">Switched</span> to a new branch <span class="st" style="color: #20794D;">'amend-fixup-tutorial'</span></span></code></pre></div>
+</section>
+<section id="the-git-dance" class="level2">
+<h2 class="anchored" data-anchor-id="the-git-dance">The Git Dance</h2>
+<p>A typical Git work flow involves making some changes to one or more files (or adding a new one into the repository). These are staged with <code>git add &lt;files&gt;</code>, or you can use a shortcut <code>git add -u/--update</code> to add all currently tracked files that have been modified if you are not adding anything new, before committing them with a message using <code>git commit -m "&lt;meaningful message about content being added&gt;"</code>.</p>
+<p>Lets add a simple <code>CONTRIBUTING.md</code> file to the repository.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"# Contributing\n\nContributions via pull requests are welcome."</span> <span class="op" style="color: #5E5E5E;">&gt;</span> CONTRIBUTING.md</span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;">git</span> add CONTRIBUTING.md</span>
+<span id="cb2-3"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Adding CONTRIBUTING.md"</span></span></code></pre></div>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
+<span id="cb3-2">  <span class="ex" style="color: null;">01191a2</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Adding</span> CONTRIBUTING.md</span></code></pre></div>
+<p>This should be familiar to users of <a href="https://git-scm.com" target="_blank">Git</a> whether you use the command line interface (CLI), <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs’</a> amazing Git porcelain <a href="https://magit.vc/" target="_blank">magit</a> or any other tool such as <a href="https://www.gitkraken.com/" target="_blank">GitKraken</a> or the support in you IDE such as <a href="https://posit.co/products/open-source/rstudio/" target="_blank">RStudio</a> or VSCode.</p>
+</section>
+<section id="making-amends" class="level2">
+<h2 class="anchored" data-anchor-id="making-amends">Making Amends</h2>
+<p>Sometimes you will have made a commit and you realise that you want to add more to it or perhaps you forgot to run your test suite and find that on running it your tests fail so you need to make a correction. In this example we want to be more explicit about how to make contributions and let people know they should fork the branch.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"\n Please make a fork of this repository, make your changes and open a Pull Request."</span> <span class="op" style="color: #5E5E5E;">&gt;&gt;</span> CONTRIBUTING.md</span></code></pre></div>
+<p>Now you could make a second commit…</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;">git</span> add <span class="at" style="color: #657422;">-u</span></span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Ask for PRs via fork in CONTRIBUTING.md"</span></span></code></pre></div>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
+<span id="cb6-2"><span class="ex" style="color: null;">9f0655b</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Ask</span> for PRs via fork in CONTRIBUTING.md</span>
+<span id="cb6-3"><span class="ex" style="color: null;">01191a2</span> Adding CONTRIBUTING.md</span></code></pre></div>
+<p>…and there is nothing wrong with that. However, Git history can get long and complicated when there are lots of small commits, because these two changes to <code>CONTRIBUTING.md</code> are essentially the same piece of work and if we’d been thinking clearly we would have written about making forks in the first place and made a single commit.</p>
+<p>Fortunately Git can help here as there is the <code>git commit --amend</code> option which adds the staged changes to the last commit and allows you to edit the last commit message (if nothing is currently staged then you will be prompted to edit the last commit message). We can undo the last commit using <code>git reset HEAD~1</code> and instead amend the first commit that added the <code>CONTRIBUTING.md</code></p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="fu" style="color: #4758AB;">git</span> add <span class="at" style="color: #657422;">-u</span></span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--amend</span></span></code></pre></div>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
+<span id="cb8-2">  <span class="ex" style="color: null;">4fda15f</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Adding</span> CONTRIBUTING.md</span>
+<span id="cb8-3"><span class="fu" style="color: #4758AB;">cat</span> CONTRIBUTING.md</span>
+<span id="cb8-4"><span class="co" style="color: #5E5E5E;"># Contributing</span></span>
+<span id="cb8-5"></span>
+<span id="cb8-6"><span class="ex" style="color: null;">Contributions</span> via pull requests are welcome.</span>
+<span id="cb8-7"></span>
+<span id="cb8-8"><span class="ex" style="color: null;">Please</span> make a fork of this repository, make your changes and open a Pull Request.</span></code></pre></div>
+<p>We now have one commit which contains the new <code>CONTRIBUTING.md</code> file that contains all the changes we wished to have in the file in the first place and our Git history is slightly more compact.</p>
+</section>
+<section id="fixing-things-up" class="level2">
+<h2 class="anchored" data-anchor-id="fixing-things-up">Fixing things up</h2>
+<p>Amending commits is great providing the commit you want to change is the last commit you made (i.e.&nbsp;<code>HEAD</code>). But sometimes you might wish to correct a commit further back in your history and <code>git commit --amend</code> is of no use here. Git can however help here with the <code>git commit --fixup</code> command which allows you to mark a commit as being a “fix up” of an older commit. These can then be autosquashed via an interactive Git rebase.</p>
+<p>Let’s add a few empty commits to our <code>amend-fixup-tutorial</code> branch to so we can do this.</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--allow-empty</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Empty commit for demonstration purposes"</span></span>
+<span id="cb9-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--allow-empty</span> <span class="at" style="color: #657422;">-m</span> <span class="st" style="color: #20794D;">"Another empty commit for demonstration purposes"</span></span></code></pre></div>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
+<span id="cb10-2">  <span class="ex" style="color: null;">8061221</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Another</span> empty commit for demonstration purposes</span>
+<span id="cb10-3">  <span class="ex" style="color: null;">65587ce</span> Empty commit for demonstration purposes</span>
+<span id="cb10-4">  <span class="ex" style="color: null;">4fda15f</span> Adding CONTRIBUTING.md</span></code></pre></div>
+<p>And let’s expand our <code>CONTRIBUTING.md</code> file further.</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"\nPlease note this repository uses [pre-commit](https://pre-commit.com) to lint the Python code and Markdown files."</span> <span class="op" style="color: #5E5E5E;">&gt;&gt;</span> CONTRIBUTING.md</span></code></pre></div>
+<p>We want to merge this commit with the first one we made in this tutorial using <code>git commit --fixup</code>. To do this we need to know the hash (<code>4fda15f</code> see output from above <code>git log</code>) or the relative reference of the commit we want which in this case is <code>HEAD~2</code> as it is three commits back from the current <code>HEAD</code> (which is commit <code>0</code>, most indexing in computing starts at <code>0</code> rather than <code>1</code>). Use <em>one</em> for the following <code>git commit --fixup</code> commands (adjusting the hash to yours if you are using that option, you can find this using <code>git log --oneline</code>).</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;">git</span> add <span class="at" style="color: #657422;">-u</span></span>
+<span id="cb12-2"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--fixup</span> 4fda15f</span>
+<span id="cb12-3"><span class="fu" style="color: #4758AB;">git</span> commit <span class="at" style="color: #657422;">--fixup</span> HEAD~2</span></code></pre></div>
+<p>We see the commit we have just made starts with <code>fixup!</code> and is then followed by the commit message that it is fixing.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
+<span id="cb13-2">  <span class="ex" style="color: null;">97711a4</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">fixup!</span> Adding CONTRIBUTING.md</span>
+<span id="cb13-3">  <span class="ex" style="color: null;">8061221</span> Another empty commit for demonstration purposes</span>
+<span id="cb13-4">  <span class="ex" style="color: null;">65587ce</span> Empty commit for demonstration purposes</span>
+<span id="cb13-5">  <span class="ex" style="color: null;">4fda15f</span> Adding CONTRIBUTING.md</span></code></pre></div>
+<p>The final step is to perform the automatic squashing via an interactive rebase, again you can either use the hash or the relative reference.</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="fu" style="color: #4758AB;">git</span> rebase <span class="at" style="color: #657422;">-i</span> <span class="at" style="color: #657422;">--autosquash</span> 4fda15f</span>
+<span id="cb14-2"><span class="fu" style="color: #4758AB;">git</span> rebase <span class="at" style="color: #657422;">-i</span> <span class="at" style="color: #657422;">--autosquash</span> HEAD~2</span></code></pre></div>
+<p>This will open the default editor and because the <code>--autosquash</code> option has been used it will already have marked the commits that need combining with <code>fixup</code>. All you have to do is save the file and exit and we can check the history and look at the contents of the file.</p>
+<p><strong>NB</strong> If you find that the necessary commit <em>isn’t</em> already marked navigate to that line and delete <code>pick</code>. The lines below the file you have open give instructions on how you can mark commits for different actions, in this case you can replace <code>pick</code> with either <code>f</code> or <code>fixup</code>. Save and exit and the commits are squashed.</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="fu" style="color: #4758AB;">git</span> log <span class="at" style="color: #657422;">--oneline</span></span>
+<span id="cb15-2">  <span class="ex" style="color: null;">0fda21e</span> <span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">HEAD</span> <span class="at" style="color: #657422;">-</span><span class="op" style="color: #5E5E5E;">&gt;</span> amend-fixup-tutorial<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">Another</span> empty commit for demonstration purposes</span>
+<span id="cb15-3">  <span class="ex" style="color: null;">65587ce</span> Empty commit for demonstration purposes</span>
+<span id="cb15-4">  <span class="ex" style="color: null;">4fda15f</span> Adding CONTRIBUTING.md</span>
+<span id="cb15-5"><span class="fu" style="color: #4758AB;">cat</span> CONTRIBUTING.md</span>
+<span id="cb15-6">  <span class="co" style="color: #5E5E5E;"># Contributing</span></span>
+<span id="cb15-7"></span>
+<span id="cb15-8">  <span class="ex" style="color: null;">Contributions</span> via pull requests are welcome.</span>
+<span id="cb15-9"></span>
+<span id="cb15-10">  <span class="ex" style="color: null;">Please</span> make a fork of this repository, make your changes and open a Pull Request.</span>
+<span id="cb15-11"></span>
+<span id="cb15-12">  <span class="ex" style="color: null;">Please</span> note this repository uses [pre-commit]<span class="er" style="color: #AD0000;">(</span><span class="ex" style="color: null;">https://pre-commit.com</span><span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">to</span> lint the Python code and Markdown files.</span></code></pre></div>
+<p>And you’re all done! If you were doing this for real on a repository you could now <code>git push</code> or continue your work. As this was just an example we can switch branches back to <code>main</code> and force deletion of the branch we created.</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="fu" style="color: #4758AB;">git</span> switch main</span>
+<span id="cb16-2"><span class="fu" style="color: #4758AB;">git</span> branch <span class="at" style="color: #657422;">-D</span> amend-fixup-tutorial</span></code></pre></div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Git has lots of commands to help you maintain a clean history by using <code>--amend</code> and <code>--fixup</code> flags to <code>git commit</code> and in the later case then performing an interactive <code>git rebase -i</code>. This takes a little discipline to get into the practice of but once in the habit of doing so it greatly improves the readability of the Git history and avoids including commit messages such as <code>Fixing typo</code> / <code>Linting code</code> / <code>Fixing tests</code> / <code>I've gone mad!</code>.</p>
+<p>If all of this sounds completely unfamiliar to you but you would like to learn more about Git I can highly recommend the introductory course developed by <a href="https://www.r-rse.eu/" target="_blank">Dr Anna Krystalli</a> <a href="https://srse-git-github-zero2hero.netlify.app/" target="_blank">Git and GitHub through GitKraken : From Zero to Hero</a>. This course is run regularly by myself and colleagues in <a href="https://rse.shef.ac.uk" target="_blank">Research Software Engineering</a> for post-graduate researchers and staff at the University of Sheffield.</p>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
+  author = {Neil Shephard},
+  title = {Git - {Making} {Amends} and {Fixing} Things Up},
+  date = {2024-03-08},
+  url = {https://blog.nshephard.dev//posts/git-amend-fixup},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2024" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2024. <span>“Git - Making Amends and Fixing Things
+Up.”</span> March 8, 2024. <a href="https://blog.nshephard.dev//posts/git-amend-fixup">https://blog.nshephard.dev//posts/git-amend-fixup</a>.
+</div></div></section></div> ]]></description>
+  <category>git</category>
+  <category>amend</category>
+  <category>fixup</category>
+  <guid>https://blog.nshephard.dev/posts/git-amend-fixup/index.html</guid>
+  <pubDate>Fri, 08 Mar 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/53448512934_c045c232c9_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Git Remotes Revisited</title>

@@ -2,102 +2,102 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://blog.nshephard.dev/posts/git-remotes/index.html</loc>
-    <lastmod>2024-03-13T22:44:46.316Z</lastmod>
+    <lastmod>2024-03-13T22:53:23.956Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/pre-commit-r/index.html</loc>
-    <lastmod>2024-03-13T22:44:47.372Z</lastmod>
+    <lastmod>2024-03-13T22:53:24.996Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/pre-commit-updates/index.html</loc>
-    <lastmod>2024-03-13T22:44:47.824Z</lastmod>
+    <lastmod>2024-03-13T22:53:25.448Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/python-packaging/index.html</loc>
-    <lastmod>2024-03-13T22:44:48.648Z</lastmod>
+    <lastmod>2024-03-13T22:53:26.240Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/virtualenvwrapper/index.html</loc>
-    <lastmod>2024-03-13T22:44:49.104Z</lastmod>
+    <lastmod>2024-03-13T22:53:26.696Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/whos_to_blame/index.html</loc>
-    <lastmod>2024-03-13T22:44:49.496Z</lastmod>
+    <lastmod>2024-03-13T22:53:27.084Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/cli-alternatives/index.html</loc>
-    <lastmod>2024-03-13T22:44:49.996Z</lastmod>
+    <lastmod>2024-03-13T22:53:27.588Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/r-resources/index.html</loc>
-    <lastmod>2024-03-13T22:44:50.588Z</lastmod>
+    <lastmod>2024-03-13T22:53:28.168Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/git-ssh/index.html</loc>
-    <lastmod>2024-03-13T22:44:51.060Z</lastmod>
+    <lastmod>2024-03-13T22:53:28.640Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/sphinx-docs/index.html</loc>
-    <lastmod>2024-03-13T22:44:56.540Z</lastmod>
+    <lastmod>2024-03-13T22:53:33.972Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/repository-review/index.html</loc>
-    <lastmod>2024-03-13T22:44:56.936Z</lastmod>
+    <lastmod>2024-03-13T22:53:34.364Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/gitlab-ci-pypi/index.html</loc>
-    <lastmod>2024-03-13T22:44:59.744Z</lastmod>
+    <lastmod>2024-03-13T22:53:37.112Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/pre-commit/index.html</loc>
-    <lastmod>2024-03-13T22:45:02.632Z</lastmod>
+    <lastmod>2024-03-13T22:53:39.860Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/running-2022/index.html</loc>
-    <lastmod>2024-03-13T22:45:14.044Z</lastmod>
+    <lastmod>2024-03-13T22:53:50.876Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/git-amend-fixup/index.html</loc>
-    <lastmod>2024-03-13T22:45:14.584Z</lastmod>
+    <lastmod>2024-03-13T22:53:51.340Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/pre-commit-hooks/index.html</loc>
-    <lastmod>2024-03-13T22:45:15.044Z</lastmod>
+    <lastmod>2024-03-13T22:53:51.780Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/git-worktrees/index.html</loc>
-    <lastmod>2024-03-13T22:45:15.540Z</lastmod>
+    <lastmod>2024-03-13T22:53:52.272Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/pre-commit-ci/index.html</loc>
-    <lastmod>2024-03-13T22:45:16.048Z</lastmod>
+    <lastmod>2024-03-13T22:53:52.772Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/browser-extensions/index.html</loc>
-    <lastmod>2024-03-13T22:45:16.536Z</lastmod>
+    <lastmod>2024-03-13T22:53:53.248Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/linting/index.html</loc>
-    <lastmod>2024-03-13T22:45:17.096Z</lastmod>
+    <lastmod>2024-03-13T22:53:53.808Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/pytest-param/index.html</loc>
-    <lastmod>2024-03-13T22:45:17.640Z</lastmod>
+    <lastmod>2024-03-13T22:53:54.356Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/posts/git-remotes-revisited/index.html</loc>
-    <lastmod>2024-03-13T22:45:18.160Z</lastmod>
+    <lastmod>2024-03-13T22:53:54.852Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/links.html</loc>
-    <lastmod>2024-03-13T22:45:18.760Z</lastmod>
+    <lastmod>2024-03-13T22:53:55.448Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/about.html</loc>
-    <lastmod>2024-03-13T22:45:19.332Z</lastmod>
+    <lastmod>2024-03-13T22:53:56.044Z</lastmod>
   </url>
   <url>
     <loc>https://blog.nshephard.dev/index.html</loc>
-    <lastmod>2024-03-13T22:45:19.996Z</lastmod>
+    <lastmod>2024-03-13T22:53:56.736Z</lastmod>
   </url>
 </urlset>

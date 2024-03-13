@@ -90,8 +90,8 @@
   {
     "listing": "/links.html",
     "items": [
-      "/posts/git-amend-fixup/index.html",
       "/posts/git-worktrees/index.html",
+      "/posts/git-amend-fixup/index.html",
       "/posts/git-remotes-revisited/index.html",
       "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
@@ -117,8 +117,8 @@
   {
     "listing": "/about.html",
     "items": [
-      "/posts/git-amend-fixup/index.html",
       "/posts/git-worktrees/index.html",
+      "/posts/git-amend-fixup/index.html",
       "/posts/git-remotes-revisited/index.html",
       "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
@@ -144,8 +144,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/git-amend-fixup/index.html",
       "/posts/git-worktrees/index.html",
+      "/posts/git-amend-fixup/index.html",
       "/posts/git-remotes-revisited/index.html",
       "/posts/pytest-param/index.html",
       "/posts/virtualenvwrapper/index.html",
