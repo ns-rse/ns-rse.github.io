@@ -348,171 +348,176 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Lets create the <code>contributing</code> branch</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> contributing</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Contributing\n\nContributions to this repository are welcome via Pull Requests."</span> <span class="op">&gt;</span> CONTRIBUTING.md</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>If we want to switch branches without making a commit but save our work in progress as we want to add more to the <code>CONTRIBUTING.md</code> file later we can stash the changes with a message. We then switch to <code>main</code> and create a new branch (<code>citation</code>) for adding a <code>CITATION.cff</code> file.</p>
+<p>If we want to switch branches without making a commit but save our work in progress as we want to add more to the <code>CONTRIBUTING.md</code> file later we can stash the changes with a message. We then switch to <code>main</code> and create a new branch (<code>citation</code>) for and add a <code>CITATION.cff</code> file.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> stash <span class="at">-m</span> <span class="st">"An example stash"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch main</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> citation</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"cff-version: 1.2.0\ntitle: Pytest Examples\ntype: software"</span> <span class="op">&gt;</span> CITATION.cff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"cff-version: 1.2.0\ntitle: Pytest Examples\ntype: software"</span> <span class="op">&gt;</span> CITATION.cff</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add CITATION.cff</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Adding CITATION.cff"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When we are ready to return to our <code>contributing</code> branch we can switch and <code>git pop</code> the work we stashed. By default the last stash is popped, but its possible to view all the stashes and select which you wish to pop and restore to the current branch.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch contributing</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="worktrees-rather-than-branches" class="level2">
 <h2 class="anchored" data-anchor-id="worktrees-rather-than-branches">Worktrees rather than branches</h2>
 <p>Worktrees take a different approach to organising branches. They start with a <code>--bare</code> clone of the repository which implies the <code>--no-checkout</code> flag and means that the files that would normally be found under the <code>&lt;repository&gt;/.git</code> directory are copied but are instead placed in the top level of the directory rather than under <code>.git/</code>. No tracked files are copied as they may conflict with these files. You have all the information Git has about the history of the repository and the different commits and branches but none of the <em>actual</em> files.</p>
 <p><strong>NB</strong> If you don’t explicitly state a target directory to clone to it will be the repository name suffixed with <code>.git</code>, i.e.&nbsp;in this example <code>pytest-examples.git</code>. I recommend sticking with the convention of using the same repository name so will explicitly state it.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> pytest-examples pytest-examples-orig-clone</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--bare</span> git@github.com:ns-rse/pytest-examples.git pytest-examples</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> pytest-examples</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-afhD</span> <span class="at">-L</span> 2</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[4.0K</span> Mar 13 07:45]  .</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 129 Mar 13 07:45]  ./config</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [  73 Mar 13 07:45]  ./description</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [  21 Mar 13 07:45]  ./HEAD</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 07:45]  ./hooks</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 478 Mar 13 07:45]  ./hooks/applypatch-msg.sample</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 896 Mar 13 07:45]  ./hooks/commit-msg.sample</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.6K Mar 13 07:45]  ./hooks/fsmonitor-watchman.sample</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 189 Mar 13 07:45]  ./hooks/post-update.sample</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 424 Mar 13 07:45]  ./hooks/pre-applypatch.sample</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.6K Mar 13 07:45]  ./hooks/pre-commit.sample</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 416 Mar 13 07:45]  ./hooks/pre-merge-commit.sample</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.5K Mar 13 07:45]  ./hooks/prepare-commit-msg.sample</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.3K Mar 13 07:45]  ./hooks/pre-push.sample</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.8K Mar 13 07:45]  ./hooks/pre-rebase.sample</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 544 Mar 13 07:45]  ./hooks/pre-receive.sample</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [2.7K Mar 13 07:45]  ./hooks/push-to-checkout.sample</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [2.3K Mar 13 07:45]  ./hooks/sendemail-validate.sample</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [3.6K Mar 13 07:45]  ./hooks/update.sample</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 07:45]  ./info</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [ 240 Mar 13 07:45]  ./info/exclude</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 07:45]  ./objects</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.0K Mar 13 07:45]  ./objects/info</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [4.0K Mar 13 07:45]  ./objects/pack</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 249 Mar 13 07:45]  ./packed-refs</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> [4.0K Mar 13 07:45]  ./refs</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [4.0K Mar 13 07:45]  ./refs/heads</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> [4.0K Mar 13 07:45]  ./refs/tags</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="ex">9</span> directories, 19 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> pytest-examples pytest-examples-orig-clone</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="at">--bare</span> git@github.com:ns-rse/pytest-examples.git pytest-examples</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> pytest-examples</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-afhD</span> <span class="at">-L</span> 2</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">[4.0K</span> Mar 13 07:45]  .</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 129 Mar 13 07:45]  ./config</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [  73 Mar 13 07:45]  ./description</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [  21 Mar 13 07:45]  ./HEAD</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 07:45]  ./hooks</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 478 Mar 13 07:45]  ./hooks/applypatch-msg.sample</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 896 Mar 13 07:45]  ./hooks/commit-msg.sample</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.6K Mar 13 07:45]  ./hooks/fsmonitor-watchman.sample</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 189 Mar 13 07:45]  ./hooks/post-update.sample</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 424 Mar 13 07:45]  ./hooks/pre-applypatch.sample</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.6K Mar 13 07:45]  ./hooks/pre-commit.sample</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 416 Mar 13 07:45]  ./hooks/pre-merge-commit.sample</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.5K Mar 13 07:45]  ./hooks/prepare-commit-msg.sample</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.3K Mar 13 07:45]  ./hooks/pre-push.sample</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.8K Mar 13 07:45]  ./hooks/pre-rebase.sample</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 544 Mar 13 07:45]  ./hooks/pre-receive.sample</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [2.7K Mar 13 07:45]  ./hooks/push-to-checkout.sample</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [2.3K Mar 13 07:45]  ./hooks/sendemail-validate.sample</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [3.6K Mar 13 07:45]  ./hooks/update.sample</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 07:45]  ./info</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [ 240 Mar 13 07:45]  ./info/exclude</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 07:45]  ./objects</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.0K Mar 13 07:45]  ./objects/info</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [4.0K Mar 13 07:45]  ./objects/pack</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 249 Mar 13 07:45]  ./packed-refs</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> [4.0K Mar 13 07:45]  ./refs</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [4.0K Mar 13 07:45]  ./refs/heads</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> [4.0K Mar 13 07:45]  ./refs/tags</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="ex">9</span> directories, 19 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>What use is that? Well from this point you can instead of using <code>git branch</code> use <code>git worktree add &lt;branch_name&gt;</code> and it will create a <em>directory</em> with the name of the branch which holds all the files in their current state on that branch.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree add main</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Preparing</span> worktree <span class="er">(</span><span class="ex">checking</span> out <span class="st">'main'</span><span class="kw">)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">HEAD</span> is now at 2f7c382 Merge pull request <span class="co">#6 from ns-rse/ns-rse/tidy-print</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-afhD</span> <span class="at">-L</span> 2 main/</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[4.0K</span> Mar 13 08:13]  main</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [  64 Mar 13 08:13]  main/.git</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 08:13]  main/.github</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [4.0K Mar 13 08:13]  main/.github/workflows</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [3.0K Mar 13 08:13]  main/.gitignore</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [1.0K Mar 13 08:13]  main/LICENSE</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 293 Mar 13 08:13]  main/.markdownlint-cli2.yaml</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [1.7K Mar 13 08:13]  main/.pre-commit-config.yaml</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 18K Mar 13 08:13]  main/.pylintrc</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.8K Mar 13 08:13]  main/pyproject.toml</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 08:13]  main/pytest_examples</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.3K Mar 13 08:13]  main/pytest_examples/divide.py</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 179 Mar 13 08:13]  main/pytest_examples/__init__.py</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [ 491 Mar 13 08:13]  main/pytest_examples/shapes.py</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 602 Mar 13 08:13]  main/README.md</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> [4.0K Mar 13 08:13]  main/tests</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [ 681 Mar 13 08:13]  main/tests/conftest.py</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [1.7K Mar 13 08:13]  main/tests/test_divide.py</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> [1.6K Mar 13 08:13]  main/tests/test_shapes.py</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> directories, 14 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree add main</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Preparing</span> worktree <span class="er">(</span><span class="ex">checking</span> out <span class="st">'main'</span><span class="kw">)</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">HEAD</span> is now at 2f7c382 Merge pull request <span class="co">#6 from ns-rse/ns-rse/tidy-print</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-afhD</span> <span class="at">-L</span> 2 main/</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">[4.0K</span> Mar 13 08:13]  main</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [  64 Mar 13 08:13]  main/.git</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 08:13]  main/.github</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [4.0K Mar 13 08:13]  main/.github/workflows</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [3.0K Mar 13 08:13]  main/.gitignore</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [1.0K Mar 13 08:13]  main/LICENSE</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 293 Mar 13 08:13]  main/.markdownlint-cli2.yaml</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [1.7K Mar 13 08:13]  main/.pre-commit-config.yaml</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 18K Mar 13 08:13]  main/.pylintrc</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.8K Mar 13 08:13]  main/pyproject.toml</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 08:13]  main/pytest_examples</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.3K Mar 13 08:13]  main/pytest_examples/divide.py</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [ 179 Mar 13 08:13]  main/pytest_examples/__init__.py</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [ 491 Mar 13 08:13]  main/pytest_examples/shapes.py</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [ 602 Mar 13 08:13]  main/README.md</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> [4.0K Mar 13 08:13]  main/tests</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [ 681 Mar 13 08:13]  main/tests/conftest.py</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [1.7K Mar 13 08:13]  main/tests/test_divide.py</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> [1.6K Mar 13 08:13]  main/tests/test_shapes.py</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span> directories, 14 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Each branch can have a worktree added for it and then when you want to switch between them its is simply a case of <code>cd</code>ing into the worktree (/branch) you wish to work on. You use Git commands within the directory to apply them to that branch and Git keeps track of everything in the usual manner.</p>
 <p>Lets create two worktree’s, the <code>contributing</code> and <code>citation</code> we created above when working with branches.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree add contributing</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree add citation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree add contributing</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree add citation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You are now free to move between worktrees (/branches) and undertake work on each without having to <code>git stash</code> or <code>git commit</code> work in progress. We can add the <code>CONTRIBUTING.md</code> to the <code>contributing</code> worktree then jump to the <code>citation</code> worktree and add the <code>CITATION.cff</code></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> contributing</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Contributing\n\nContributions to this repository are welcome via Pull Requests."</span> <span class="op">&gt;</span> CONTRIBUTING.md</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../citation</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"cff-version: 1.2.0\ntitle: Pytest Examples\ntype: software"</span> <span class="op">&gt;</span> CITATION.cff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> contributing</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"# Contributing\n\nContributions to this repository are welcome via Pull Requests."</span> <span class="op">&gt;</span> CONTRIBUTING.md</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../citation</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"cff-version: 1.2.0\ntitle: Pytest Examples\ntype: software"</span> <span class="op">&gt;</span> CITATION.cff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Neither branches have had the changes committed so Git will not show any differences between them, but we can use <code>diff -qr</code> to compare the directories.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">diff</span> <span class="at">-qr</span> contributing citation</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Only</span> in citation: CITATION.cff</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Only</span> in contributing: CONTRIBUTING.md</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Files</span> contributing/.git and citation/.git differ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">diff</span> <span class="at">-qr</span> contributing citation</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Only</span> in citation: CITATION.cff</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Only</span> in contributing: CONTRIBUTING.md</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Files</span> contributing/.git and citation/.git differ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If we commit the changes to each we can <code>git diff</code> them.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> contributing</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add CONTRIBUTING.md</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Adding basic CONTRIBUTING.md"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../citation</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add CITATION.cff</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Adding basic CITATION.cff"</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff citation contributing</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">CITATION.cff</span> <span class="at">---</span> Text</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> cff-version: 1.2.0</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span> title: Pytest Examples</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span> type: software</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="ex">CONTRIBUTING.md</span> <span class="at">---</span> Text</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> <span class="co"># Contributing</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span> Contributions to this repository are welcome via Pull Requests</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> contributing</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add CONTRIBUTING.md</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Adding basic CONTRIBUTING.md"</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../citation</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add CITATION.cff</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Adding basic CITATION.cff"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff citation contributing</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ex">CITATION.cff</span> <span class="at">---</span> Text</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> cff-version: 1.2.0</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span> title: Pytest Examples</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span> type: software</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="ex">CONTRIBUTING.md</span> <span class="at">---</span> Text</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span> <span class="co"># Contributing</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span> Contributions to this repository are welcome via Pull Requests</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>NB</strong> The output of <code>git diff</code> may depend on the difftool that you have configured, I use and recommend the brilliant <a href="https://difftastic.wilfred.me.uk/" target="_blank"><code>difftastic</code></a> which has easy <a href="https://difftastic.wilfred.me.uk/git.html" target="_blank">integration with Git</a>.</p>
 <section id="listing-worktrees" class="level3">
 <h3 class="anchored" data-anchor-id="listing-worktrees">Listing Worktrees</h3>
 <p>Just as you can <code>git branch --list</code> you can <code>git worktree list</code></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree list</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples</span>               <span class="er">(</span><span class="ex">bare</span><span class="kw">)</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/citation</span>      19ff076 [citation]</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/contributing</span>  ad56b91 [contributing]</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/main</span>          2f7c382 [main]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree list</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples</span>               <span class="er">(</span><span class="ex">bare</span><span class="kw">)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/citation</span>      19ff076 [citation]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/contributing</span>  ad56b91 [contributing]</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/main</span>          2f7c382 [main]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="moving-worktrees" class="level3">
 <h3 class="anchored" data-anchor-id="moving-worktrees">Moving Worktrees</h3>
 <p>You can move worktrees to different directories, these do <em>not</em> even have to be within the bare repository that you cloned as Git keeps track of these in the <code>worktrees/</code> directory which has a folder for each of the worktrees you create and the file <code>gitdir</code> points to the location of that particular worktree.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> pytest-examples   <span class="co"># Move to the bare repository</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-afhD</span> <span class="at">-L</span> 2 worktrees</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[4.0K</span> Mar 13 09:27]  worktrees</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 09:31]  worktrees/citation</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  26 Mar 13 09:31]  worktrees/citation/COMMIT_EDITMSG</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [   6 Mar 13 09:27]  worktrees/citation/commondir</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  55 Mar 13 09:27]  worktrees/citation/gitdir</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  25 Mar 13 09:27]  worktrees/citation/HEAD</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.4K Mar 13 09:31]  worktrees/citation/index</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.0K Mar 13 09:27]  worktrees/citation/logs</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [   0 Mar 13 09:31]  worktrees/citation/MERGE_RR</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  41 Mar 13 09:27]  worktrees/citation/ORIG_HEAD</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [4.0K Mar 13 09:27]  worktrees/citation/refs</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 09:30]  worktrees/contributing</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  29 Mar 13 09:30]  worktrees/contributing/COMMIT_EDITMSG</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [   6 Mar 13 09:27]  worktrees/contributing/commondir</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  59 Mar 13 09:27]  worktrees/contributing/gitdir</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  29 Mar 13 09:27]  worktrees/contributing/HEAD</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.4K Mar 13 09:30]  worktrees/contributing/index</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.0K Mar 13 09:27]  worktrees/contributing/logs</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [   0 Mar 13 09:30]  worktrees/contributing/MERGE_RR</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  41 Mar 13 09:27]  worktrees/contributing/ORIG_HEAD</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [4.0K Mar 13 09:27]  worktrees/contributing/refs</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> [4.0K Mar 13 08:13]  worktrees/main</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [   6 Mar 13 08:13]  worktrees/main/commondir</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [  51 Mar 13 08:13]  worktrees/main/gitdir</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [  21 Mar 13 08:13]  worktrees/main/HEAD</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [1.3K Mar 13 08:13]  worktrees/main/index</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [4.0K Mar 13 08:13]  worktrees/main/logs</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [  41 Mar 13 08:13]  worktrees/main/ORIG_HEAD</span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> [4.0K Mar 13 08:13]  worktrees/main/refs</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> directories, 19 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> pytest-examples   <span class="co"># Move to the bare repository</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> <span class="at">-afhD</span> <span class="at">-L</span> 2 worktrees</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[4.0K</span> Mar 13 09:27]  worktrees</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 09:31]  worktrees/citation</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  26 Mar 13 09:31]  worktrees/citation/COMMIT_EDITMSG</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [   6 Mar 13 09:27]  worktrees/citation/commondir</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  55 Mar 13 09:27]  worktrees/citation/gitdir</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  25 Mar 13 09:27]  worktrees/citation/HEAD</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.4K Mar 13 09:31]  worktrees/citation/index</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.0K Mar 13 09:27]  worktrees/citation/logs</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [   0 Mar 13 09:31]  worktrees/citation/MERGE_RR</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  41 Mar 13 09:27]  worktrees/citation/ORIG_HEAD</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [4.0K Mar 13 09:27]  worktrees/citation/refs</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="ex">├──</span> [4.0K Mar 13 09:30]  worktrees/contributing</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  29 Mar 13 09:30]  worktrees/contributing/COMMIT_EDITMSG</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [   6 Mar 13 09:27]  worktrees/contributing/commondir</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  59 Mar 13 09:27]  worktrees/contributing/gitdir</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  29 Mar 13 09:27]  worktrees/contributing/HEAD</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [1.4K Mar 13 09:30]  worktrees/contributing/index</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [4.0K Mar 13 09:27]  worktrees/contributing/logs</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [   0 Mar 13 09:30]  worktrees/contributing/MERGE_RR</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> ├── [  41 Mar 13 09:27]  worktrees/contributing/ORIG_HEAD</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="ex">│&nbsp;&nbsp;</span> └── [4.0K Mar 13 09:27]  worktrees/contributing/refs</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="ex">└──</span> [4.0K Mar 13 08:13]  worktrees/main</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [   6 Mar 13 08:13]  worktrees/main/commondir</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [  51 Mar 13 08:13]  worktrees/main/gitdir</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [  21 Mar 13 08:13]  worktrees/main/HEAD</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [1.3K Mar 13 08:13]  worktrees/main/index</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [4.0K Mar 13 08:13]  worktrees/main/logs</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    <span class="ex">├──</span> [  41 Mar 13 08:13]  worktrees/main/ORIG_HEAD</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="ex">└──</span> [4.0K Mar 13 08:13]  worktrees/main/refs</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span> directories, 19 files</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If we look at the <code>gitdir</code> file in each <code>worktree</code> sub-directory we see where they point to.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> worktrees/<span class="pp">*</span>/gitdir</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/citation/.git</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/contributing/.git</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/main/.git</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> worktrees/<span class="pp">*</span>/gitdir</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/citation/.git</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/contributing/.git</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/main/.git</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>These mirror the locations reported by <code>git worktree list</code>, albeit with <code>.git</code> appended.</p>
 <p>If you want to move a worktree you can do so, here we move <code>citation</code> to <code>~/tmp</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree move citation ~/tmp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree move citation ~/tmp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="removing-worktrees" class="level3">
 <h3 class="anchored" data-anchor-id="removing-worktrees">Removing worktrees</h3>
 <p>It’s simple to remove a worktree after the changes have been merged or it is no longer needed, make sure to “prune” the tree after having done so.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree remove citation</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree prune</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree list</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples</span>               <span class="er">(</span><span class="ex">bare</span><span class="kw">)</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/contributing</span>  ad56b91 [contributing]</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/main</span>          2f7c382 [main]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree remove citation</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree prune</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> worktree list</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples</span>               <span class="er">(</span><span class="ex">bare</span><span class="kw">)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/contributing</span>  ad56b91 [contributing]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="ex">/mnt/work/git/hub/ns-rse/pytest-examples/main</span>          2f7c382 [main]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="conclusion" class="level2">

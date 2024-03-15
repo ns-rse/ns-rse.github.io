@@ -114,13 +114,24 @@ echo "# Contributing\n\nContributions to this repository are welcome via Pull Re
 
 If we want to switch branches without making a commit but save our work in progress as we want to add more to the
 `CONTRIBUTING.md` file later we can stash the changes with a message. We then switch to `main` and create a new branch
-(`citation`) for adding a `CITATION.cff` file.
+(`citation`) for and add a `CITATION.cff` file.
 
 ```bash
 git stash -m "An example stash"
 git switch main
 git switch -c citation
 echo "cff-version: 1.2.0\ntitle: Pytest Examples\ntype: software" > CITATION.cff
+git add CITATION.cff
+git commit -m "Adding CITATION.cff"
+```
+
+When we are ready to return to our `contributing` branch we can switch and `git pop` the work we stashed. By default the
+last stash is popped, but its possible to view all the stashes and select which you wish to pop and restore to the
+current branch.
+
+```bash
+git switch contributing
+git pop
 ```
 
 ## Worktrees rather than branches
