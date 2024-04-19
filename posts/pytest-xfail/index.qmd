@@ -1,0 +1,101 @@
+---
+title: "Pytest Fail and Skip"
+date: "2024-04-19"
+categories: [python, testing, pytest]
+image: https://live.staticflickr.com/65535/53621640633_c257fcf8b5_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+[Pytest][pytest] is an excellent framework for writing tests in [Python][python]. Sometimes tests don't pass though and
+you might want to mark them as failing or skip them.
+
+![Against the Clouds by Me](https://flickr.com/photos/slackline/53621640633/in/datetaken/)](https://live.staticflickr.com/65535/53621640633_c257fcf8b5_k.jpg)
+
+
+[Pytest][pytest] has a few [decorators][rp_decorators] that allow you to mark tests so that they are either not run, you
+ can either skip them with [`@pytest.mark.skip`][pytest_skip] or [`@pytest.mark.skipif`][pytest_skipif] or you can mark
+ them as failures with [`@pytest.mark.xfail`][pytest_xfail]
+
+We'll use the [pytest-examples][pytest_examples] repository for looking at how these work.
+
+```bash
+git clone git@github.com:ns-rse/pytest-examples.git
+cd pytest-examples
+```
+
+## Skipping
+
+When developing tests you may wish to skip them until you have code in place to test and have devised useful and
+meaningful tests (often the hardest part). If you want to skip a test prefix it with `@pytest.mark.skip()`, you can add
+a `reason="<reason>"` option for your future self and others. If we use the `tests/test_divide.py` from the
+[pytest-examples][pytest_examples] repository we can skip the redundant `test_divide_unparameterised()` function.
+
+```python
+
+@pytest.mark.skip()
+def test_divide_unparameterised() -> None:
+    """Test the divide function."""
+    assert divide(10, 5) == 2
+```
+
+When we run the test we are told it is skipped to keep things fast we run just that test. The command line version is
+shown here where you specify the `pytest <file>::<test_function>` but your IDE may support running individual tests (in
+[Emacs][emacs] you can use [pytest.el][pytest_el]).
+
+```bash
+pytest tests/test_divide::test_divide_unparameterised
+```
+
+## Failing
+
+
+
+## Conditional Skipping/Failing
+
+These fixtures all have an argument `cond` which allows you to use a Boolean (i.e. a statement that evaluates to `True`
+or `False`) to determine whether they are used. Any Python expression that can be evaluated to `True` or `False` can be
+used and for backwards compatibility [strings can still be used][pytest_string_conditions].
+
+## Skipping/Failing Parameterised Tests
+
+In many instances you can [parameterise tests][pytest_param], and you can use the fixtures we've covered against the
+whole test. But what if you want to skip not all of the parameterised tests but only specific ones? This is possible
+because as covered [previously][pytest_param] you can use `pytest.param()` function to define your parameters and give
+them `id="some text"` to help identify them. `pytest.param()` also has a `marks=` option which allows you to add
+`pytest.mark.*` to just that set of parameters and so we can add `pytest.mark.xfail()` or `pytest.mark.skip[if]()` to
+specific sets of parameters.
+
+
+# Links
+
++ [pytest][pytest]
++ [`@pytest.mark.skip`][pytest_skip]
++ [`@pytest.mark.skipif`][pytest_skipif]
++ [Pytest Parameterisation][pytest_param]
+
+## Blog Posts
+
++ [Pytest With Eric | An Ultimate Guide to using Pytest Skip Test and
+  XFail](https://pytest-with-eric.com/pytest-best-practices/pytest-skip-test/)
+
+[emacs]: https://www.gnu.org/software/emacs/
+[pytest]: https://docs.pytest.org/en/latest/
+[pytest_el]: https://github.com/ionrock/pytest-el/tree/8692f965bf4ddf3d755cf1fbf77a7a768e22460e
+[pytest_examples]: https://github.com/ns-rse/pytest-examples
+[pytest_param]: https://blog.nshephard.dev/posts/pytest-param/
+[pytest_string_conditions]: https://docs.pytest.org/en/latest/historical-notes.html#string-conditions
+[pytest_skip]: https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skip
+[pytest_skipif]: https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skipif
+[pytest_xfail]: https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-xfail
+[python]: https://python.org
+[rp_decorators]: https://realpython.com/primer-on-python-decorators/
