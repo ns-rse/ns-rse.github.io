@@ -45,6 +45,8 @@ vignettes/*.pdf
 # Quarto
 /.quarto/
 /_site/
+/_freeze/
+/_extensions/
 
 # Git
 *.rej
