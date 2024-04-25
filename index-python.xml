@@ -10,7 +10,226 @@
 <atom:link href="https://blog.nshephard.dev/index-python.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Mon, 01 Jan 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 25 Apr 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pytest Fail and Skip</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/pytest-xfail/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a> is an excellent framework for writing tests in <a href="https://python.org" target="_blank">Python</a>. Sometimes tests don’t pass though and you might want to mark them as failing or skip them.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.nshephard.dev/posts/pytest-xfail/https:/live.staticflickr.com/65535/53621640633_c257fcf8b5_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/53621640633/in/datetaken/" target="_blank">Against the Clouds by Me</a></figcaption><p></p>
+</figure>
+</div>
+<p><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a> has a few <a href="https://realpython.com/primer-on-python-decorators/" target="_blank">decorators</a> that available to help with tests, you can either skip them with <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skip" target="_blank"><code>@pytest.mark.skip</code></a> or <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skipif" target="_blank"><code>@pytest.mark.skipif</code></a> or you can mark them as failures with <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-xfail" target="_blank"><code>@pytest.mark.xfail</code></a></p>
+<p>We’ll use the <a href="https://github.com/ns-rse/pytest-examples" target="_blank">pytest-examples</a> repository for looking at how these work.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">git</span> clone git@github.com:ns-rse/pytest-examples.git</span>
+<span id="cb1-2"><span class="bu" style="color: null;">cd</span> pytest-examples</span></code></pre></div>
+<section id="why" class="level2">
+<h2 class="anchored" data-anchor-id="why">Why?</h2>
+<p>There are a number of reasons why you may wish to deliberately and <a href="https://pytest-with-eric.com/pytest-best-practices/pytest-skip-test/#Why-Skip-A-Unit-Test" target="_blank">Eric covers them nicely</a>. In brief…</p>
+<ul>
+<li>Incompatible Python or Package Version - some tests don’t pass under a certain version.</li>
+<li>Platform specific issues - some tests fail on a specific platform.</li>
+<li>External dependencies - if you haven’t got round to mocking a service.</li>
+<li>Local dependencies - excluding tests running under Continuous Integration that rely on local dependencies.</li>
+</ul>
+</section>
+<section id="choose-your-partner---skip-to-my-lou" class="level2">
+<h2 class="anchored" data-anchor-id="choose-your-partner---skip-to-my-lou">Choose your Partner - Skip (to my lou)</h2>
+<p>If you want to unconditionally skip a test prefix it with <code>@pytest.mark.skip()</code>, adding a reason can be useful and there is the argument <code>reason="&lt;reason&gt;"</code>to do so, it helps others, including your future self. If we use the <code>tests/test_divide.py</code> from the <a href="https://github.com/ns-rse/pytest-examples" target="_blank">pytest-examples</a> repository we can skip the redundant <code>test_divide_unparameterised()</code> function as its already covered by the parameterised test that follows.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="at" style="color: #657422;">@pytest.mark.skip</span>(reason<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"redundant - covered by test_divide()"</span>)</span>
+<span id="cb2-2"><span class="kw" style="color: #003B4F;">def</span> test_divide_unparameterised() <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb2-3">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb2-4">    <span class="cf" style="color: #003B4F;">assert</span> divide(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>) <span class="op" style="color: #5E5E5E;">==</span> <span class="dv" style="color: #AD0000;">2</span></span></code></pre></div>
+<p>When we run the test we are told it is skipped. To keep things fast we run just that test using the command line version <code>pytest &lt;file&gt;::&lt;test_function&gt;</code> but your IDE may support running individual tests (in <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> you can use <a href="https://github.com/ionrock/pytest-el/tree/8692f965bf4ddf3d755cf1fbf77a7a768e22460e" target="_blank">pytest.el</a> to the same effect).</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;">❱</span> pytest tests/test_divide::test_divide_unparameterised</span>
+<span id="cb3-2"><span class="ex" style="color: null;">=======================================</span> test session starts ============================================</span>
+<span id="cb3-3"><span class="ex" style="color: null;">platform</span> linux <span class="at" style="color: #657422;">--</span> Python 3.11.9, pytest-7.4.4, pluggy-1.5.0</span>
+<span id="cb3-4"><span class="ex" style="color: null;">Matplotlib:</span> 3.8.4</span>
+<span id="cb3-5"><span class="ex" style="color: null;">Freetype:</span> 2.6.1</span>
+<span id="cb3-6"><span class="ex" style="color: null;">rootdir:</span> /mnt/work/git/hub/ns-rse/pytest-examples/main</span>
+<span id="cb3-7"><span class="ex" style="color: null;">configfile:</span> pyproject.toml</span>
+<span id="cb3-8"><span class="ex" style="color: null;">plugins:</span> durations-1.2.0, xdist-3.5.0, pytest_tmp_files-0.0.2, mpl-0.17.0, lazy-fixture-0.6.3, cov-5.0.0</span>
+<span id="cb3-9"><span class="ex" style="color: null;">collected</span> 1 item</span>
+<span id="cb3-10"></span>
+<span id="cb3-11"><span class="ex" style="color: null;">tests/test_divide.py</span> s                                                                            [100%]</span>
+<span id="cb3-12"></span>
+<span id="cb3-13"><span class="ex" style="color: null;">----------</span> coverage: platform linux, python 3.11.9-final-0 <span class="at" style="color: #657422;">-----------</span></span>
+<span id="cb3-14"><span class="ex" style="color: null;">Name</span>                        Stmts   Miss  Cover</span>
+<span id="cb3-15"><span class="ex" style="color: null;">-----------------------------------------------</span></span>
+<span id="cb3-16"><span class="ex" style="color: null;">pytest_examples/divide.py</span>      16      8    50%</span>
+<span id="cb3-17"><span class="ex" style="color: null;">pytest_examples/shapes.py</span>       5      5     0%</span>
+<span id="cb3-18"><span class="ex" style="color: null;">-----------------------------------------------</span></span>
+<span id="cb3-19"><span class="ex" style="color: null;">TOTAL</span>                          21     13    38%</span>
+<span id="cb3-20"></span>
+<span id="cb3-21"><span class="ex" style="color: null;">======================================</span> short test summary info =========================================</span>
+<span id="cb3-22"><span class="ex" style="color: null;">SKIPPED</span> [1] tests/test_divide.py:9: redundant <span class="at" style="color: #657422;">-</span> covered by test_divide<span class="er" style="color: #AD0000;">(</span><span class="kw" style="color: #003B4F;">)</span></span>
+<span id="cb3-23"><span class="ex" style="color: null;">======================================</span> 1 skipped in 0.59s ==============================================</span></code></pre></div>
+</section>
+<section id="choose-your-partner---failing" class="level2">
+<h2 class="anchored" data-anchor-id="choose-your-partner---failing">Choose your Partner - Failing (…)</h2>
+<p>Nothing in the the <a href="https://en.wikipedia.org/wiki/Skip_to_My_Lou" target="_blank">old dance</a> about failing but you can selectively allow tests to fail using the <code>pytest.mark.xfail()</code> fixture. If you know a test is going to fail you can, rather than commenting it out, mark it as such. If we update the test condition so we know it will fail we mark that it will fail as follows.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="at" style="color: #657422;">@pytest.mark.xfail</span>(reason<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"demonstrate expected failure"</span>)</span>
+<span id="cb4-2"><span class="kw" style="color: #003B4F;">def</span> test_divide_unparameterised() <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb4-3">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb4-4">    <span class="cf" style="color: #003B4F;">assert</span> divide(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>) <span class="op" style="color: #5E5E5E;">==</span> <span class="dv" style="color: #AD0000;">3</span></span></code></pre></div>
+<p>And running <code>pytest</code> on this shows the failure</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;">❱</span> pytest tests/test_divide.py::test_divide_unparameterised</span>
+<span id="cb5-2"><span class="ex" style="color: null;">======================================</span> test session starts =============================================</span>
+<span id="cb5-3"><span class="ex" style="color: null;">platform</span> linux <span class="at" style="color: #657422;">--</span> Python 3.11.9, pytest-7.4.4, pluggy-1.5.0</span>
+<span id="cb5-4"><span class="ex" style="color: null;">Matplotlib:</span> 3.8.4</span>
+<span id="cb5-5"><span class="ex" style="color: null;">Freetype:</span> 2.6.1</span>
+<span id="cb5-6"><span class="ex" style="color: null;">rootdir:</span> /mnt/work/git/hub/ns-rse/pytest-examples/main</span>
+<span id="cb5-7"><span class="ex" style="color: null;">configfile:</span> pyproject.toml</span>
+<span id="cb5-8"><span class="ex" style="color: null;">plugins:</span> durations-1.2.0, xdist-3.5.0, pytest_tmp_files-0.0.2, mpl-0.17.0, lazy-fixture-0.6.3, cov-5.0.0</span>
+<span id="cb5-9"><span class="ex" style="color: null;">collected</span> 1 item</span>
+<span id="cb5-10"></span>
+<span id="cb5-11"><span class="ex" style="color: null;">tests/test_divide.py</span> x                                                                            [100%]</span>
+<span id="cb5-12"></span>
+<span id="cb5-13"></span>
+<span id="cb5-14"><span class="ex" style="color: null;">----------</span> coverage: platform linux, python 3.11.9-final-0 <span class="at" style="color: #657422;">-----------</span></span>
+<span id="cb5-15"><span class="ex" style="color: null;">Name</span>                        Stmts   Miss  Cover</span>
+<span id="cb5-16"><span class="ex" style="color: null;">-----------------------------------------------</span></span>
+<span id="cb5-17"><span class="ex" style="color: null;">pytest_examples/divide.py</span>      16      6    62%</span>
+<span id="cb5-18"><span class="ex" style="color: null;">pytest_examples/shapes.py</span>       5      5     0%</span>
+<span id="cb5-19"><span class="ex" style="color: null;">-----------------------------------------------</span></span>
+<span id="cb5-20"><span class="ex" style="color: null;">TOTAL</span>                          21     11    48%</span>
+<span id="cb5-21"></span>
+<span id="cb5-22"><span class="ex" style="color: null;">======================================</span> short test summary info =========================================</span>
+<span id="cb5-23"><span class="ex" style="color: null;">XFAIL</span> tests/test_divide.py::test_divide_unparameterised <span class="at" style="color: #657422;">-</span> demonstrate expected failure</span>
+<span id="cb5-24"><span class="ex" style="color: null;">======================================</span> 1 skipped in 0.59s ==============================================</span></code></pre></div>
+</section>
+<section id="conditional-skippingfailing" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-skippingfailing">Conditional Skipping/Failing</h2>
+<p>The <code>pytest.mark.skipif()</code> and <code>pytest.mark.xfail()</code> fixtures both have the argument <code>condition</code> which allows you to use a Boolean (i.e.&nbsp;a statement that evaluates to <code>True</code> or <code>False</code>) to determine whether they are used. Any Python expression that can be evaluated to <code>True</code> or <code>False</code> can be used and for backwards compatibility <a href="https://docs.pytest.org/en/latest/historical-notes.html#string-conditions" target="_blank">strings can still be used</a>. If <code>condition</code> argument is used in <code>pytest.mark.xfail()</code> then the <code>reason</code> argument must also be given indicating why the test is being skipped/is expected to failed.</p>
+<p>Here we fail the test only if the Python version is 3.10.*. Note the need to <code>import sys</code> and the use of <code>sys.version_info[:2]</code> to extract a tuple of the major and minor Python version).</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;">import</span> sys</span>
+<span id="cb6-2"></span>
+<span id="cb6-3"><span class="at" style="color: #657422;">@pytest.mark.xfail</span>(sys.version_info[:<span class="dv" style="color: #AD0000;">2</span>] <span class="op" style="color: #5E5E5E;">==</span> (<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">10</span>), reason<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"Skip under Python 3.10"</span>))</span>
+<span id="cb6-4"><span class="kw" style="color: #003B4F;">def</span> test_divide_unparameterised() <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb6-5">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb6-6">    <span class="cf" style="color: #003B4F;">assert</span> divide(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>) <span class="op" style="color: #5E5E5E;">==</span> <span class="dv" style="color: #AD0000;">3</span></span></code></pre></div>
+</section>
+<section id="skippingfailing-parameterised-tests" class="level2">
+<h2 class="anchored" data-anchor-id="skippingfailing-parameterised-tests">Skipping/Failing Parameterised Tests</h2>
+<p>In many instances you can <a href="https://blog.nshephard.dev/posts/pytest-param/" target="_blank">parameterise tests</a>, and you can use the fixtures we’ve covered against the whole test. But what if you want to skip not all of the parameterised tests but only specific ones? This is possible because as covered <a href="https://blog.nshephard.dev/posts/pytest-param/" target="_blank">previously</a> you can use <code>pytest.param()</code> function to define your parameters and give them <code>id="some text"</code> to help identify them. <code>pytest.param()</code> also has a <code>marks=</code> option which allows you to add <code>pytest.mark.*</code> to just that set of parameters and so we can add <code>pytest.mark.xfail()</code> or <code>pytest.mark.skip[if]()</code> to specific sets of parameters.</p>
+<p>Instead of placing the fixture before the test so that it applies to all functions, you use the <code>pytest.param()</code> for each set of parameters and add <code>pytest.mark.xfails()</code> (or other variants) as arguments to the <code>marks</code> option.</p>
+<p>Here we mark the test with <code>id</code> of <code>zero division error</code> with <code>marks=pytest.mark.xfail</code> as we know that a division by zero test will fail and so that set of parameters should be skipped.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb7-2">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
+<span id="cb7-3">    [</span>
+<span id="cb7-4">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"ten divided by five"</span>),</span>
+<span id="cb7-5">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"nine divided by three"</span>),</span>
+<span id="cb7-6">        pytest.param(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"five divided by two"</span>),</span>
+<span id="cb7-7">        pytest.param(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">100</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"zero divided by one hundred"</span>),</span>
+<span id="cb7-8">        pytest.param(</span>
+<span id="cb7-9">            <span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"zero division error"</span>, marks<span class="op" style="color: #5E5E5E;">=</span>pytest.mark.xfail(reason<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"Expected to fail"</span>)),</span>
+<span id="cb7-10">    ],</span>
+<span id="cb7-11">)</span>
+<span id="cb7-12"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb7-13">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb7-14">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;">❱</span> pytest tests/test_divide.py::test_divide</span>
+<span id="cb8-2"><span class="ex" style="color: null;">======================================</span> test session starts =============================================</span>
+<span id="cb8-3"></span>
+<span id="cb8-4"><span class="ex" style="color: null;">platform</span> linux <span class="at" style="color: #657422;">--</span> Python 3.11.9, pytest-7.4.4, pluggy-1.5.0</span>
+<span id="cb8-5"><span class="ex" style="color: null;">Matplotlib:</span> 3.8.4</span>
+<span id="cb8-6"><span class="ex" style="color: null;">Freetype:</span> 2.6.1</span>
+<span id="cb8-7"><span class="ex" style="color: null;">rootdir:</span> /mnt/work/git/hub/ns-rse/pytest-examples/main</span>
+<span id="cb8-8"><span class="ex" style="color: null;">configfile:</span> pyproject.toml</span>
+<span id="cb8-9"><span class="ex" style="color: null;">plugins:</span> durations-1.2.0, xdist-3.5.0, pytest_tmp_files-0.0.2, mpl-0.17.0, lazy-fixture-0.6.3, cov-5.0.0</span>
+<span id="cb8-10"><span class="ex" style="color: null;">collected</span> 5 items</span>
+<span id="cb8-11"></span>
+<span id="cb8-12"><span class="ex" style="color: null;">tests/test_divide.py</span> ....x                                                                        [100%]</span>
+<span id="cb8-13"></span>
+<span id="cb8-14"><span class="ex" style="color: null;">----------</span> coverage: platform linux, python 3.11.9-final-0 <span class="at" style="color: #657422;">-----------</span></span>
+<span id="cb8-15"><span class="ex" style="color: null;">Name</span>                        Stmts   Miss  Cover</span>
+<span id="cb8-16"><span class="ex" style="color: null;">-----------------------------------------------</span></span>
+<span id="cb8-17"><span class="ex" style="color: null;">pytest_examples/divide.py</span>      16      3    81%</span>
+<span id="cb8-18"><span class="ex" style="color: null;">pytest_examples/shapes.py</span>       5      5     0%</span>
+<span id="cb8-19"><span class="ex" style="color: null;">-----------------------------------------------</span></span>
+<span id="cb8-20"><span class="ex" style="color: null;">TOTAL</span>                          21      8    62%</span>
+<span id="cb8-21"></span>
+<span id="cb8-22"><span class="ex" style="color: null;">======================================</span> short test summary info =========================================</span>
+<span id="cb8-23"><span class="ex" style="color: null;">XFAIL</span> tests/test_divide.py::test_divide[zero division error] <span class="at" style="color: #657422;">-</span> Expected to fail</span>
+<span id="cb8-24"><span class="ex" style="color: null;">======================================</span> 4 passed, 1 xfailed in 0.37s ====================================</span></code></pre></div>
+<p>The <code>pytest.mark.skipif()</code> and <code>pytest.mark.xfail()</code> functions argument <code>condition</code> is still valid when used here so we can conditionally mark parameterised tests to fail. The <code>cond</code> should evaluate to <code>True</code> or <code>False</code> and a <code>reason</code> argument still needs to be given.</p>
+<p>To exclude the test with <code>id</code> of <code>five divided by two</code> under Python 3.10 we would do the following (again note the need to <code>import sys</code> and its use in the <code>cond</code> positional argument).</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;">import</span> sys</span>
+<span id="cb9-2"></span>
+<span id="cb9-3">...</span>
+<span id="cb9-4"></span>
+<span id="cb9-5"><span class="at" style="color: #657422;">@pytest.mark.parametrize</span>(</span>
+<span id="cb9-6">    (<span class="st" style="color: #20794D;">"a"</span>, <span class="st" style="color: #20794D;">"b"</span>, <span class="st" style="color: #20794D;">"expected"</span>),</span>
+<span id="cb9-7">    [</span>
+<span id="cb9-8">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"ten divided by five"</span>),</span>
+<span id="cb9-9">        pytest.param(<span class="dv" style="color: #AD0000;">9</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"nine divided by three"</span>),</span>
+<span id="cb9-10">        pytest.param(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">2</span>, <span class="fl" style="color: #AD0000;">2.5</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"five divided by two"</span>, marks<span class="op" style="color: #5E5E5E;">=</span>pytest.mark.xfail(sys.version_info[:<span class="dv" style="color: #AD0000;">2</span>] <span class="op" style="color: #5E5E5E;">==</span> (<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">10</span>),</span>
+<span id="cb9-11">                                                                                  reason<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"Skip under Python 3.10"</span>)),</span>
+<span id="cb9-12">        pytest.param(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">100</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"zero divided by one hundred"</span>),</span>
+<span id="cb9-13">        pytest.param(<span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="pp" style="color: #AD0000;">ZeroDivisionError</span>, <span class="bu" style="color: null;">id</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"zero division error"</span>, marks<span class="op" style="color: #5E5E5E;">=</span>pytest.mark.xfail),</span>
+<span id="cb9-14">    ],</span>
+<span id="cb9-15">)</span>
+<span id="cb9-16"><span class="kw" style="color: #003B4F;">def</span> test_divide(a: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, b: <span class="bu" style="color: null;">float</span> <span class="op" style="color: #5E5E5E;">|</span> <span class="bu" style="color: null;">int</span>, expected: <span class="bu" style="color: null;">float</span>) <span class="op" style="color: #5E5E5E;">-&gt;</span> <span class="va" style="color: #111111;">None</span>:</span>
+<span id="cb9-17">    <span class="co" style="color: #5E5E5E;">"""Test the divide function."""</span></span>
+<span id="cb9-18">    <span class="cf" style="color: #003B4F;">assert</span> divide(a, b) <span class="op" style="color: #5E5E5E;">==</span> expected</span></code></pre></div>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a> has features which help support test development and allow specific tests to fail or be skipped completely which helps with both test development and with Continuous Integration where test results can vary depending on platform and package versions.</p>
+<p>This post was stems from a suggestion made by <a href="https://fosstodon.org/@jni" target="_blank"><span class="citation" data-cites="jni">@jni</span><span class="citation" data-cites="jni">@jni</span><span class="citation" data-cites="fosstodon.org">@fosstodon.org</span></a> during some work I have been contributing to the <a href="https://skeleton-analysis.org/" target="_blank">skan</a> package. Thanks to Juan for the prompt/pointer.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://docs.pytest.org/en/latest/" target="_blank">pytest</a></li>
+<li><a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skip" target="_blank"><code>@pytest.mark.skip</code></a></li>
+<li><a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skipif" target="_blank"><code>@pytest.mark.skipif</code></a></li>
+<li><a href="https://blog.nshephard.dev/posts/pytest-param/" target="_blank">Pytest Parameterisation</a></li>
+</ul>
+<section id="blog-posts" class="level3">
+<h3 class="anchored" data-anchor-id="blog-posts">Blog Posts</h3>
+<ul>
+<li><a href="https://pytest-with-eric.com/pytest-best-practices/pytest-skip-test/" target="_blank">Pytest With Eric | An Ultimate Guide to using Pytest Skip Test and XFail</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
+  author = {Neil Shephard},
+  title = {Pytest {Fail} and {Skip}},
+  date = {2024-04-25},
+  url = {https://blog.nshephard.dev//posts/pytest-xfail},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2024" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2024. <span>“Pytest Fail and Skip.”</span> April 25,
+2024. <a href="https://blog.nshephard.dev//posts/pytest-xfail">https://blog.nshephard.dev//posts/pytest-xfail</a>.
+</div></div></section></div> ]]></description>
+  <category>python</category>
+  <category>testing</category>
+  <category>pytest</category>
+  <guid>https://blog.nshephard.dev/posts/pytest-xfail/index.html</guid>
+  <pubDate>Thu, 25 Apr 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/53621640633_c257fcf8b5_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Pytest Parameterisation</title>
   <dc:creator>Neil Shephard</dc:creator>
