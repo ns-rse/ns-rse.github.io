@@ -1,0 +1,273 @@
+---
+title: "Pytest Fail and Skip"
+date: "2024-04-25"
+categories: [python, testing, pytest]
+image: https://live.staticflickr.com/65535/53621640633_c257fcf8b5_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+[Pytest][pytest] is an excellent framework for writing tests in [Python][python]. Sometimes tests don't pass though and
+you might want to mark them as failing or skip them.
+
+![[Against the Clouds by Me](https://flickr.com/photos/slackline/53621640633/in/datetaken/)](https://live.staticflickr.com/65535/53621640633_c257fcf8b5_k.jpg)
+
+[Pytest][pytest] has a few [decorators][rp_decorators] that available to help with tests, you
+ can either skip them with [`@pytest.mark.skip`][pytest_skip] or [`@pytest.mark.skipif`][pytest_skipif] or you can mark
+ them as failures with [`@pytest.mark.xfail`][pytest_xfail]
+
+We'll use the [pytest-examples][pytest_examples] repository for looking at how these work.
+
+```bash
+git clone git@github.com:ns-rse/pytest-examples.git
+cd pytest-examples
+```
+
+## Why?
+
+There are a number of reasons why you may wish to deliberately and [Eric covers them nicely][pytest_why]. In brief...
+
++ Incompatible Python or Package Version - some tests don't pass under a certain version.
++ Platform specific issues - some tests fail on a specific platform.
++ External dependencies - if you haven't got round to mocking a service.
++ Local dependencies - excluding tests running under Continuous Integration that rely on local dependencies.
+
+## Choose your Partner - Skip (to my lou)
+
+If you want to unconditionally skip a test prefix it with `@pytest.mark.skip()`, adding a reason can be useful and there
+is the argument `reason="<reason>"`to do so, it helps others, including your future self. If we use the
+`tests/test_divide.py` from the [pytest-examples][pytest_examples] repository we can skip the redundant
+`test_divide_unparameterised()` function as its already covered by the parameterised test that follows.
+
+```python
+@pytest.mark.skip(reason="redundant - covered by test_divide()")
+def test_divide_unparameterised() -> None:
+    """Test the divide function."""
+    assert divide(10, 5) == 2
+```
+
+When we run the test we are told it is skipped. To keep things fast we run just that test using the command line version
+`pytest <file>::<test_function>` but your IDE may support running individual tests (in [Emacs][emacs] you can use
+[pytest.el][pytest_el] to the same effect).
+
+```bash
+❱ pytest tests/test_divide::test_divide_unparameterised
+======================================= test session starts ============================================
+platform linux -- Python 3.11.9, pytest-7.4.4, pluggy-1.5.0
+Matplotlib: 3.8.4
+Freetype: 2.6.1
+rootdir: /mnt/work/git/hub/ns-rse/pytest-examples/main
+configfile: pyproject.toml
+plugins: durations-1.2.0, xdist-3.5.0, pytest_tmp_files-0.0.2, mpl-0.17.0, lazy-fixture-0.6.3, cov-5.0.0
+collected 1 item
+
+tests/test_divide.py s                                                                            [100%]
+
+---------- coverage: platform linux, python 3.11.9-final-0 -----------
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+pytest_examples/divide.py      16      8    50%
+pytest_examples/shapes.py       5      5     0%
+-----------------------------------------------
+TOTAL                          21     13    38%
+
+====================================== short test summary info =========================================
+SKIPPED [1] tests/test_divide.py:9: redundant - covered by test_divide()
+====================================== 1 skipped in 0.59s ==============================================
+```
+
+## Choose your Partner - Failing (...)
+
+Nothing in the the [old dance][skip_to_my_lou] about failing but you can selectively allow tests to fail using the
+`pytest.mark.xfail()` fixture. If you know a test is going to fail you can, rather than commenting it out, mark it as
+such. If we update the test condition so we know it will fail we mark that it will fail as follows.
+
+```python
+@pytest.mark.xfail(reason="demonstrate expected failure")
+def test_divide_unparameterised() -> None:
+    """Test the divide function."""
+    assert divide(10, 5) == 3
+```
+
+And running `pytest` on this shows the failure
+
+```bash
+❱ pytest tests/test_divide.py::test_divide_unparameterised
+====================================== test session starts =============================================
+platform linux -- Python 3.11.9, pytest-7.4.4, pluggy-1.5.0
+Matplotlib: 3.8.4
+Freetype: 2.6.1
+rootdir: /mnt/work/git/hub/ns-rse/pytest-examples/main
+configfile: pyproject.toml
+plugins: durations-1.2.0, xdist-3.5.0, pytest_tmp_files-0.0.2, mpl-0.17.0, lazy-fixture-0.6.3, cov-5.0.0
+collected 1 item
+
+tests/test_divide.py x                                                                            [100%]
+
+
+---------- coverage: platform linux, python 3.11.9-final-0 -----------
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+pytest_examples/divide.py      16      6    62%
+pytest_examples/shapes.py       5      5     0%
+-----------------------------------------------
+TOTAL                          21     11    48%
+
+====================================== short test summary info =========================================
+XFAIL tests/test_divide.py::test_divide_unparameterised - demonstrate expected failure
+====================================== 1 skipped in 0.59s ==============================================
+```
+
+## Conditional Skipping/Failing
+
+The `pytest.mark.skipif()` and `pytest.mark.xfail()` fixtures both have the argument `condition` which allows you to use
+a Boolean (i.e. a statement that evaluates to `True` or `False`) to determine whether they are used. Any Python
+expression that can be evaluated to `True` or `False` can be used and for backwards compatibility [strings can still be
+used][pytest_string_conditions]. If `condition` argument is used in `pytest.mark.xfail()` then the `reason` argument
+must also be given indicating why the test is being skipped/is expected to failed.
+
+Here we fail the test only if the Python version is 3.10.*. Note the need to `import sys` and the use of
+`sys.version_info[:2]` to extract a tuple of the major and minor Python version).
+
+```python
+import sys
+
+@pytest.mark.xfail(sys.version_info[:2] == (3, 10), reason="Skip under Python 3.10"))
+def test_divide_unparameterised() -> None:
+    """Test the divide function."""
+    assert divide(10, 5) == 3
+```
+
+## Skipping/Failing Parameterised Tests
+
+In many instances you can [parameterise tests][pytest_param], and you can use the fixtures we've covered against the
+whole test. But what if you want to skip not all of the parameterised tests but only specific ones? This is possible
+because as covered [previously][pytest_param] you can use `pytest.param()` function to define your parameters and give
+them `id="some text"` to help identify them. `pytest.param()` also has a `marks=` option which allows you to add
+`pytest.mark.*` to just that set of parameters and so we can add `pytest.mark.xfail()` or `pytest.mark.skip[if]()` to
+specific sets of parameters.
+
+Instead of placing the fixture before the test so that it applies to all functions, you use the `pytest.param()` for
+each set of parameters and add `pytest.mark.xfails()` (or other variants) as arguments to the `marks` option.
+
+Here we mark the test with `id` of `zero division error` with `marks=pytest.mark.xfail` as we know that a division by
+zero test will fail and so that set of parameters should be skipped.
+
+```python
+@pytest.mark.parametrize(
+    ("a", "b", "expected"),
+    [
+        pytest.param(10, 5, 2, id="ten divided by five"),
+        pytest.param(9, 3, 3, id="nine divided by three"),
+        pytest.param(5, 2, 2.5, id="five divided by two"),
+        pytest.param(0, 100, 0, id="zero divided by one hundred"),
+        pytest.param(
+            10, 0, ZeroDivisionError, id="zero division error", marks=pytest.mark.xfail(reason="Expected to fail")),
+    ],
+)
+def test_divide(a: float | int, b: float | int, expected: float) -> None:
+    """Test the divide function."""
+    assert divide(a, b) == expected
+```
+
+```bash
+❱ pytest tests/test_divide.py::test_divide
+====================================== test session starts =============================================
+
+platform linux -- Python 3.11.9, pytest-7.4.4, pluggy-1.5.0
+Matplotlib: 3.8.4
+Freetype: 2.6.1
+rootdir: /mnt/work/git/hub/ns-rse/pytest-examples/main
+configfile: pyproject.toml
+plugins: durations-1.2.0, xdist-3.5.0, pytest_tmp_files-0.0.2, mpl-0.17.0, lazy-fixture-0.6.3, cov-5.0.0
+collected 5 items
+
+tests/test_divide.py ....x                                                                        [100%]
+
+---------- coverage: platform linux, python 3.11.9-final-0 -----------
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+pytest_examples/divide.py      16      3    81%
+pytest_examples/shapes.py       5      5     0%
+-----------------------------------------------
+TOTAL                          21      8    62%
+
+====================================== short test summary info =========================================
+XFAIL tests/test_divide.py::test_divide[zero division error] - Expected to fail
+====================================== 4 passed, 1 xfailed in 0.37s ====================================
+```
+
+The `pytest.mark.skipif()` and `pytest.mark.xfail()` functions argument `condition` is still valid when used here so we
+can conditionally mark parameterised tests to fail. The `cond` should evaluate to `True` or `False` and a `reason`
+argument still needs to be given.
+
+To exclude the test with `id` of `five divided by two` under Python 3.10 we would do the following (again note the need to
+`import sys` and its use in the `cond` positional argument).
+
+```python
+import sys
+
+...
+
+@pytest.mark.parametrize(
+    ("a", "b", "expected"),
+    [
+        pytest.param(10, 5, 2, id="ten divided by five"),
+        pytest.param(9, 3, 3, id="nine divided by three"),
+        pytest.param(5, 2, 2.5, id="five divided by two", marks=pytest.mark.xfail(sys.version_info[:2] == (3, 10),
+                                                                                  reason="Skip under Python 3.10")),
+        pytest.param(0, 100, 0, id="zero divided by one hundred"),
+        pytest.param(10, 0, ZeroDivisionError, id="zero division error", marks=pytest.mark.xfail),
+    ],
+)
+def test_divide(a: float | int, b: float | int, expected: float) -> None:
+    """Test the divide function."""
+    assert divide(a, b) == expected
+
+```
+
+## Summary
+
+[Pytest][pytest] has features which help support test development and allow specific tests to fail or be skipped
+completely which helps with both test development and with Continuous Integration where test results can vary depending
+on platform and package versions.
+
+This post was stems from a suggestion made by [@jni@jni@fosstodon.org][jni] during some work I have been contributing to
+the [skan][skan] package. Thanks to Juan for the prompt/pointer.
+
+## Links
+
++ [pytest][pytest]
++ [`@pytest.mark.skip`][pytest_skip]
++ [`@pytest.mark.skipif`][pytest_skipif]
++ [Pytest Parameterisation][pytest_param]
+
+### Blog Posts
+
++ [Pytest With Eric | An Ultimate Guide to using Pytest Skip Test and
+  XFail](https://pytest-with-eric.com/pytest-best-practices/pytest-skip-test/)
+
+[emacs]: https://www.gnu.org/software/emacs/
+[jni]: https://fosstodon.org/@jni
+[pytest]: https://docs.pytest.org/en/latest/
+[pytest_el]: https://github.com/ionrock/pytest-el/tree/8692f965bf4ddf3d755cf1fbf77a7a768e22460e
+[pytest_examples]: https://github.com/ns-rse/pytest-examples
+[pytest_param]: https://blog.nshephard.dev/posts/pytest-param/
+[pytest_string_conditions]: https://docs.pytest.org/en/latest/historical-notes.html#string-conditions
+[pytest_skip]: https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skip
+[pytest_skipif]: https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skipif
+[pytest_why]: https://pytest-with-eric.com/pytest-best-practices/pytest-skip-test/#Why-Skip-A-Unit-Test
+[pytest_xfail]: https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-xfail
+[python]: https://python.org
+[rp_decorators]: https://realpython.com/primer-on-python-decorators/
+[skan]: https://skeleton-analysis.org/
+[skip_to_my_lou]: https://en.wikipedia.org/wiki/Skip_to_My_Lou
