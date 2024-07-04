@@ -32,7 +32,7 @@
 <p></p><figcaption class="figure-caption"><a href="https://flickr.com/photos/slackline/53621640633/in/datetaken/" target="_blank">Against the Clouds by Me</a></figcaption><p></p>
 </figure>
 </div>
-<p><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a> has a few <a href="https://realpython.com/primer-on-python-decorators/" target="_blank">decorators</a> that available to help with tests, you can either skip them with <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skip" target="_blank"><code>@pytest.mark.skip</code></a> or <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skipif" target="_blank"><code>@pytest.mark.skipif</code></a> or you can mark them as failures with <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-xfail" target="_blank"><code>@pytest.mark.xfail</code></a></p>
+<p><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a> has a few <a href="https://realpython.com/primer-on-python-decorators/" target="_blank">decorators</a> available to help with skipping tests using <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skip" target="_blank"><code>@pytest.mark.skip</code></a> or <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skipif" target="_blank"><code>@pytest.mark.skipif</code></a> or allowing tests to fail with <a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-xfail" target="_blank"><code>@pytest.mark.xfail</code></a></p>
 <p>We’ll use the <a href="https://github.com/ns-rse/pytest-examples" target="_blank">pytest-examples</a> repository for looking at how these work.</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">git</span> clone git@github.com:ns-rse/pytest-examples.git</span>
 <span id="cb1-2"><span class="bu" style="color: null;">cd</span> pytest-examples</span></code></pre></div>
@@ -165,7 +165,7 @@
 <span id="cb8-22"><span class="ex" style="color: null;">======================================</span> short test summary info =========================================</span>
 <span id="cb8-23"><span class="ex" style="color: null;">XFAIL</span> tests/test_divide.py::test_divide[zero division error] <span class="at" style="color: #657422;">-</span> Expected to fail</span>
 <span id="cb8-24"><span class="ex" style="color: null;">======================================</span> 4 passed, 1 xfailed in 0.37s ====================================</span></code></pre></div>
-<p>The <code>pytest.mark.skipif()</code> and <code>pytest.mark.xfail()</code> functions argument <code>condition</code> is still valid when used here so we can conditionally mark parameterised tests to fail. The <code>cond</code> should evaluate to <code>True</code> or <code>False</code> and a <code>reason</code> argument still needs to be given.</p>
+<p>The <code>condition</code>/<code>reason</code> arguments to both <code>pytest.mark.skipif()</code> and <code>pytest.mark.xfail()</code> functions are still valid and can be used to conditionally mark specific sets of parameters to be skipped or indicate if they will fail under certain conditions.</p>
 <p>To exclude the test with <code>id</code> of <code>five divided by two</code> under Python 3.10 we would do the following (again note the need to <code>import sys</code> and its use in the <code>cond</code> positional argument).</p>
 <div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;">import</span> sys</span>
 <span id="cb9-2"></span>
@@ -189,7 +189,7 @@
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
 <p><a href="https://docs.pytest.org/en/latest/" target="_blank">Pytest</a> has features which help support test development and allow specific tests to fail or be skipped completely which helps with both test development and with Continuous Integration where test results can vary depending on platform and package versions.</p>
-<p>This post was stems from a suggestion made by <a href="https://fosstodon.org/@jni" target="_blank"><span class="citation" data-cites="jni">@jni</span><span class="citation" data-cites="jni">@jni</span><span class="citation" data-cites="fosstodon.org">@fosstodon.org</span></a> during some work I have been contributing to the <a href="https://skeleton-analysis.org/" target="_blank">skan</a> package. Thanks to Juan for the prompt/pointer.</p>
+<p>This post stems from a suggestion made by <a href="https://fosstodon.org/@jni" target="_blank"><span class="citation" data-cites="jni">@jni</span><span class="citation" data-cites="jni">@jni</span><span class="citation" data-cites="fosstodon.org">@fosstodon.org</span></a> during some work I have been contributing to the <a href="https://skeleton-analysis.org/" target="_blank">skan</a> package. Thanks to Juan for the prompt/pointer.</p>
 </section>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
@@ -197,6 +197,7 @@
 <li><a href="https://docs.pytest.org/en/latest/" target="_blank">pytest</a></li>
 <li><a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skip" target="_blank"><code>@pytest.mark.skip</code></a></li>
 <li><a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-skipif" target="_blank"><code>@pytest.mark.skipif</code></a></li>
+<li><a href="https://docs.pytest.org/en/latest/reference/reference.html#pytest-mark-xfail" target="_blank"><code>@pytest.mark.xfail</code></a></li>
 <li><a href="https://blog.nshephard.dev/posts/pytest-param/" target="_blank">Pytest Parameterisation</a></li>
 </ul>
 <section id="blog-posts" class="level3">
