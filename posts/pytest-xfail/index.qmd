@@ -31,6 +31,7 @@ We'll use the [pytest-examples][pytest_examples] repository for looking at how t
 git clone git@github.com:ns-rse/pytest-examples.git
 cd pytest-examples
 ```
+
 ## Why?
 
 There are a number of reasons why you may wish to deliberately and [Eric covers them nicely][pytest_why]. In brief...
@@ -90,7 +91,6 @@ Nothing in the the [old dance][skip_to_my_lou] about failing but you can selecti
 `pytest.mark.xfail()` fixture. If you know a test is going to fail you can, rather than commenting it out, mark it as
 such. If we update the test condition so we know it will fail we mark that it will fail as follows.
 
-
 ```python
 @pytest.mark.xfail(reason="demonstrate expected failure")
 def test_divide_unparameterised() -> None:
@@ -135,7 +135,6 @@ expression that can be evaluated to `True` or `False` can be used and for backwa
 used][pytest_string_conditions]. If `condition` argument is used in `pytest.mark.xfail()` then the `reason` argument
 must also be given indicating why the test is being skipped/is expected to failed.
 
-
 Here we fail the test only if the Python version is 3.10.*. Note the need to `import sys` and the use of
 `sys.version_info[:2]` to extract a tuple of the major and minor Python version).
 
@@ -147,7 +146,6 @@ def test_divide_unparameterised() -> None:
     """Test the divide function."""
     assert divide(10, 5) == 3
 ```
-
 
 ## Skipping/Failing Parameterised Tests
 
@@ -215,7 +213,6 @@ certain conditions.
 To exclude the test with `id` of `five divided by two` under Python 3.10 we would do the following (again note the need to
 `import sys` and its use in the `cond` positional argument).
 
-
 ```python
 import sys
 
@@ -238,7 +235,6 @@ def test_divide(a: float | int, b: float | int, expected: float) -> None:
 
 ```
 
-
 ## Summary
 
 [Pytest][pytest] has features which help support test development and allow specific tests to fail or be skipped
@@ -247,7 +243,6 @@ on platform and package versions.
 
 This post stems from a suggestion made by [@jni@jni@fosstodon.org][jni] during some work I have been contributing to the
 [skan][skan] package. Thanks to Juan for the prompt/pointer.
-
 
 ## Links
 
