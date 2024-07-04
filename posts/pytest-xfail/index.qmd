@@ -22,9 +22,8 @@ you might want to mark them as failing or skip them.
 ![[Against the Clouds by Me](https://flickr.com/photos/slackline/53621640633/in/datetaken/)](https://live.staticflickr.com/65535/53621640633_c257fcf8b5_k.jpg)
 
 
-[Pytest][pytest] has a few [decorators][rp_decorators] that available to help with tests, you
- can either skip them with [`@pytest.mark.skip`][pytest_skip] or [`@pytest.mark.skipif`][pytest_skipif] or you can mark
- them as failures with [`@pytest.mark.xfail`][pytest_xfail]
+[Pytest][pytest] has a few [decorators][rp_decorators] available to help with skipping tests using
+[`@pytest.mark.skip`][pytest_skip] or [`@pytest.mark.skipif`][pytest_skipif] or allowing tests to fail with [`@pytest.mark.xfail`][pytest_xfail]
 
 We'll use the [pytest-examples][pytest_examples] repository for looking at how these work.
 
@@ -209,9 +208,9 @@ XFAIL tests/test_divide.py::test_divide[zero division error] - Expected to fail
 ====================================== 4 passed, 1 xfailed in 0.37s ====================================
 ```
 
-The `pytest.mark.skipif()` and `pytest.mark.xfail()` functions argument `condition` is still valid when used here so we
-can conditionally mark parameterised tests to fail. The `cond` should evaluate to `True` or `False` and a `reason`
-argument still needs to be given.
+The `condition`/`reason` arguments to both `pytest.mark.skipif()` and `pytest.mark.xfail()` functions are still valid
+and can be used to conditionally mark specific sets of parameters to be skipped or indicate if they will fail under
+certain conditions.
 
 To exclude the test with `id` of `five divided by two` under Python 3.10 we would do the following (again note the need to
 `import sys` and its use in the `cond` positional argument).
@@ -246,8 +245,8 @@ def test_divide(a: float | int, b: float | int, expected: float) -> None:
 completely which helps with both test development and with Continuous Integration where test results can vary depending
 on platform and package versions.
 
-This post was stems from a suggestion made by [@jni@jni@fosstodon.org][jni] during some work I have been contributing to
-the [skan][skan] package. Thanks to Juan for the prompt/pointer.
+This post stems from a suggestion made by [@jni@jni@fosstodon.org][jni] during some work I have been contributing to the
+[skan][skan] package. Thanks to Juan for the prompt/pointer.
 
 
 ## Links
@@ -255,6 +254,7 @@ the [skan][skan] package. Thanks to Juan for the prompt/pointer.
 + [pytest][pytest]
 + [`@pytest.mark.skip`][pytest_skip]
 + [`@pytest.mark.skipif`][pytest_skipif]
++ [`@pytest.mark.xfail`][pytest_xfail]
 + [Pytest Parameterisation][pytest_param]
 
 ### Blog Posts
