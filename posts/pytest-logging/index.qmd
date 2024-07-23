@@ -1,0 +1,124 @@
+---
+title: "Pytest Logging"
+date: "2024-06-19"
+categories: [python, testing, pytest]
+image: https://live.staticflickr.com/65535/53705228080_515d7aa9a8_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+[Pytest][pytest] is an excellent framework for writing tests in [Python][python]. Sometimes tests don't pass though and
+before you mark them to [fail or be skipped](../pytest-xfail) you might want to investigate why. This post shows how you
+can get useful information out of your tests by changing how `pytest` passes logging options to your package.
+
+![The author relaxing at the [Standing Stones](https://www.flickr.com/photos/slackline/53705228080/) in the Peak
+District](https://live.staticflickr.com/65535/53705228080_515d7aa9a8_k.jpg)
+
+## Logging
+
+[Logging][logging] is a common and useful approach to software development as it allows you to "see" what is going on at
+different stages of code execution. It's a broad and detailed subject and a detailed exposition is beyond the scope of
+this article, but some familiarity with common concepts is required.
+
+### Log Levels
+
+When logging, whether it is through the [standard logging library][logging] or the excellent [loguru][loguru] framework
+there are different log-levels that can be used. These are set in the call to the logger and determine the severity of
+the message and are shown @tbl-log-levels and whether they are shown depends on the log level passed to your program
+on invocation, for example debugging can be enabled with `python -d -m <your programme>` or you may have a configuration
+file that sets the `log-level`. The key thing to know is that are different logging levels, typically `INFO` will be
+used but when things aren't working and you want more detailed output you would switch to using `DEBUG`.
+
+| Level              | Numeric value | What it means / When to use it                                                                                                                                                                                           |
+|:-------------------|:--------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `logging.NOTSET`   | `0`           | When set on a logger, indicates that ancestor loggers are to be consulted to determine the effective level. If that still resolves to NOTSET, then all events are logged. When set on a handler, all events are handled. |
+| `logging.DEBUG`    | `10`          | Detailed information, typically only of interest to a developer trying to diagnose a problem.                                                                                                                            |
+| `logging.INFO`     | `20`          | Confirmation that things are working as expected.                                                                                                                                                                        |
+| `logging.WARNING`  | `30`          | An indication that something unexpected happened, or that a problem might occur in the near future (e.g. ‘disk space low’). The software is still working as expected.                                                   |
+| `logging.ERROR`    | `40`          | Due to a more serious problem, the software has not been able to perform some function.                                                                                                                                  |
+| `logging.CRITICAL` | `50`          | A serious error, indicating that the program itself may be unable to continue running.                                                                                                                                   |
+|                    |               |                                                                                                                                                                                                                          |
+
+: Python log levels. Table is copied from the [standard library
+  documentation](https://docs.python.org/3/library/logging.html#logging-levels) {#tbl-log-levels}
+
+
+## Debugging `pytest`
+
+Your tests are failing but you don't know why. A simple strategy is to add some `print(f"{value=}")` statements directly
+in your test functions to compare the value returned and what it is being compared to.
+
+However, a well written package will be liberally sprinkled with logging statements of various levels (`DEBUG` / `INFO`
+/ `WARNING`) and it is possible to configure `pytest` to show different levels of information.
+
+## Changing the logging level shown by `pytest`
+
+There are several options to set or change the log level from the default of `WARNING`, either at the global `pytest`
+level, package configuration level, or when invoking `pytest` at the command line.
+
+### Global configuration
+
+[Pytest][pytest] uses a per-project configuration file, but it is possible to add options globally by configurating the
+`$PYTEST_ADDOPTS` environment variable^[1]
+
+### Configuring `pytest` log level in `pyproject.toml`
+
+Modern Python packaging use [`pyproject.toml`][pyproject] for configuring the package and within this file you can
+specify configuration options for various components, including `pytest > 6.0`[^2]. Options to configure `pytest` should
+be under a `tool.pytest.ini_options` table.
+
+
+```toml
+[tool.pytest.ini_options]
+minversion = "7.4.4"
+addopts = ["--cov"]
+testpaths = ["tests"]
+xfail_strict = true
+```
+
+You can add options for the command line flags listed above to this section.
+
+
+```toml
+[tool.pytest.ini_options]
+...
+log_cli = true
+log_cli_level = "INFO"
+```
+
+It is also possible to filter out warnings if for example you know that one of your packages has deprecation warnings
+and you don't want to ever see these in your `pytest` output you can add a `filterwarnings` list.
+
+
+```toml
+[tool.pytest.ini_options]
+...
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore::UserWarning"
+]
+```
+
+[emacs]: https://www.gnu.org/software/emacs/
+[logging]: https://docs.python.org/3/library/logging.html
+[loguru]: https://loguru.readthedocs.io/en/stable/overview.html
+[pyproject]: https://peps.python.org/pep-0621/
+[pytest]: https://docs.pytest.org/en/latest/
+[pytest_el]: https://github.com/ionrock/pytest-el/tree/8692f965bf4ddf3d755cf1fbf77a7a768e22460e
+[pytest_examples]: https://github.com/ns-rse/pytest-examples
+[pytest_ini]: https://docs.pytest.org/en/7.1.x/reference/customize.html#pytest-ini
+[python]: https://python.org
+
+[^1]: Other environment variables Pytest uses are `PYTEST_PLUGINS`, `PYTEST_DISABLE_PLUGIN_AUTOLOAD` and `PYTEST_DEBUG`,
+    see `pytest --help` for more information.
+[^2]: Traditionally these would have been written in the projects [`pytest.ini`][pytest_ini] and such a file would`    still take precedence over configuration options in `pyproject.toml`.`
