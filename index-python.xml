@@ -10,7 +10,111 @@
 <atom:link href="https://blog.nshephard.dev/index-python.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>
 <generator>quarto-1.3.14</generator>
-<lastBuildDate>Thu, 25 Apr 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 31 Jul 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>virtualenvwrapper hooks</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/virtualenv-hooks/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>I’ve written <a href="https://blog.nshephard.dev/posts/virtualenvwrapper/" target="_blank">previously</a> about <a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank"><code>virtualenvwrapper</code></a> which I use to manage my Python Virtual Environments and mentioned the possibility of using hooks but didn’t go into detail.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://blog.nshephard.dev/posts/virtualenv-hooks/https:/live.staticflickr.com/65535/53878835844_88658e86cb_k.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption"><a href="https://www.flickr.com/photos/slackline/53878835844/" target="_blank">South Coast of Portugal by Me</a></figcaption><p></p>
+</figure>
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Just like the various hooks available in Git, <a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank"><code>virtualenvwrapper</code></a> also supports <a href="https://virtualenvwrapper.readthedocs.io/en/latest/scripts.html#per-user-customization" target="_blank">hooks</a> that allow scripts to be run in response to various events. These reside under your <code>$VIRTUALENVWRAPPER_HOOK_DIR</code> which by default is the same as your <code>$WORKON_HOME</code> directory and in a typical standard installation will be <code>~/.virtualenvs</code>.</p>
+<p>The available scripts that are recognised are…</p>
+<ul>
+<li><code>get_env_details</code></li>
+<li><code>initialize</code></li>
+<li><code>premkvirtualenv</code></li>
+<li><code>postmkvirtualenv</code></li>
+<li><code>precpvirtualenv</code></li>
+<li><code>postcpvirtualenv</code></li>
+<li><code>preactivate</code></li>
+<li><code>postactivate</code></li>
+</ul>
+<p>Each of these is a simple shell script and will start with the scripting language to use e.g.&nbsp;<code>#!/usr/bin/bash</code> or <code>#!/usr/bin/zsh</code> depending on your shell. You can then script the actions you wish to take when the script is executed.</p>
+</section>
+<section id="install-minimal-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="install-minimal-requirements">Install minimal requirements</h2>
+<p>I’m a big fan of <a href="https://dotfiles.github.io" target="_blank">dotfiles</a><sup>1</sup>, mine are <a href="https://gitlab.com/nshephard/dotfiles/" target="_blank">hosted on GitLab</a>, it’s a repository of my configuration files and scripts that I use regularly across multiple computers. Because I’m lazy I wrote a couple of <code>requirements.txt</code> files for installing packages in my virtual environments.</p>
+<ul>
+<li><a href="https://gitlab.com/nshephard/dotfiles/-/blob/master/python/requirements.txt?ref_type=heads" target="_blank"><code>requirements.txt</code></a> : holds everything I might ever want to use in Python.</li>
+<li><a href="https://gitlab.com/nshephard/dotfiles/-/blob/master/python/requirements.txt?ref_type=heads" target="_blank"><code>python-lsp-requirements.txt</code></a> : Install packages for setting up a Python Language Server (which I use from Emacs).</li>
+<li><a href="https://gitlab.com/nshephard/dotfiles/-/blob/master/python/venv_minimal_requirements.txt?ref_type=heads" target="_blank"><code>venv_minimal_requirements.txt</code></a> : a minimal set of the most common Python packages I am likely to want when creating a new virtual environment.</li>
+</ul>
+<p>Because I have my <code>dotfiles</code> cloned to the same location on every computer (<code>~/dotfiles</code>) I added the following to the <code>~/.virtualenvs/postmkvirtualenv</code> <sup>2</sup> which will install all of the packages listed in <code>~/dotfiles/python/venv_minimal_requirements.txt</code> whenever a create a new virtual environment, whether that is with <code>mkvritualenv</code> or <code>mktmpenv</code>.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">pip</span> install <span class="at" style="color: #657422;">--no-cache-dir</span> <span class="at" style="color: #657422;">-r</span> ~/dotfiles/python/venv_minimal_requirements.txt</span></code></pre></div>
+<p>This ensured the latest versions of each packages listed in <code>~/dotfiles/python/venv_minimal_requirements.txt</code> were downloaded and installed as the <code>--no-cache-dir</code> prevents using cached versions of packages.</p>
+</section>
+<section id="a-smarter-script" class="level2">
+<h2 class="anchored" data-anchor-id="a-smarter-script">A smarter script</h2>
+<p>This served me well for a time, but occasionally I found I <em>didn’t</em> want to install <em>any</em> packages in a new virtual environment (most often when testing new branches using <code>mktmpenv</code>) and I’d have to remember to comment out the line in the hook file (<code>~/.virtualenvs/postmkvirtualenv</code>) before creating the environment. Typically though I’d forget to do this and would have to halt installation of required packages, deactivate the environment, <em>then</em> comment it out and create a new environment.</p>
+<p>This quickly became irksome.</p>
+<p>But <code>~/.virtualenvs/postmkvirtualenv</code> is just a script and so we can use a bit of scripting knowledge to make it interactive and ask the user if they want to install the packages listed in <code>venv_minimal_requirements.txt</code>. I found a really useful answer on StackOverflow in the <a href="https://stackoverflow.com/a/226724/1444043" target="_blank">How do I prompt for yes/no/cancel input in a Linux shell script</a> that showed several different ways to prompt the user for a response as to whether they want to do something.</p>
+<p>I therefore updated my <a href="https://gitlab.com/nshephard/dotfiles/-/blob/master/python/postmkvirtualenv?ref_type=heads" target="_blank"><code>~/.virtualenvs/postmkvirtualenv</code></a> to the following which prompts for a numeric response, <code>1</code> for <code>Yes</code> and <code>2</code> for <code>No</code> and takes the appropriate action, installing using my original invocation of <code>pip</code> if I want to install packages and enter <code>1</code> or installing nothing if I enter <code>2</code>.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;">#!/usr/bin/zsh</span></span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;"># This hook is sourced after a new virtualenv is activated.</span></span>
+<span id="cb2-3"></span>
+<span id="cb2-4"></span>
+<span id="cb2-5"><span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"Do you wish to install minimal requirements (from venv_minimal_requirements.txt)? "</span></span>
+<span id="cb2-6"><span class="cf" style="color: #003B4F;">select</span> yn <span class="kw" style="color: #003B4F;">in</span> <span class="st" style="color: #20794D;">"Yes"</span> <span class="st" style="color: #20794D;">"No"</span><span class="kw" style="color: #003B4F;">;</span> <span class="cf" style="color: #003B4F;">do</span></span>
+<span id="cb2-7">  <span class="cf" style="color: #003B4F;">case</span> <span class="va" style="color: #111111;">$yn</span> <span class="kw" style="color: #003B4F;">in</span></span>
+<span id="cb2-8">    <span class="ss" style="color: #20794D;">Yes</span> <span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">pip</span> install <span class="at" style="color: #657422;">--no-cache-dir</span> <span class="at" style="color: #657422;">-r</span> ~/dotfiles/python/venv_minimal_requirements.txt<span class="kw" style="color: #003B4F;">;</span> <span class="cf" style="color: #003B4F;">break;;</span></span>
+<span id="cb2-9">    <span class="ss" style="color: #20794D;">No</span> <span class="kw" style="color: #003B4F;">)</span> <span class="bu" style="color: null;">echo</span> <span class="st" style="color: #20794D;">"No packages installed. install packages with 'pip'.\n"</span><span class="kw" style="color: #003B4F;">;</span> <span class="cf" style="color: #003B4F;">break;;</span></span>
+<span id="cb2-10">  <span class="cf" style="color: #003B4F;">esac</span></span>
+<span id="cb2-11"><span class="cf" style="color: #003B4F;">done</span></span></code></pre></div>
+<p><strong>NB</strong> You may want to tweak the opening shebang if you use the Bash shell.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>A little bit of shell scripting knowledge can be really powerful when used in conjunction with “hooks”. This is true of <a href="https://virtualenvwrapper.readthedocs.io/en/latest/" target="_blank"><code>virtualenvwrapper</code></a> as well as of Git and the <a href="https://blog.nshephard.dev/posts/pre-commit-hooks/" target="_blank">pre-commit</a> framework.</p>
+
+
+
+</section>
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>There is a wealth of information on what you can do with your <code>dotfiles</code> but that is an article in itself and I’m yet to write it. A useful set of different aliases you could use can be found <a href="https://dotfiles.io/about/#introduction" target="_blank">here</a>↩︎</p></li>
+<li id="fn2"><p>Actually I create the script in <a href="https://gitlab.com/nshephard/dotfiles/-/blob/master/python/postmkvirtualenv?ref_type=heads" target="_blank"><code>~/dotfiles/python/postmkvirtualenv</code></a> and made a symbolic link at <code>~/.virtualenv/postmkvirtualenv</code> that points to it so that whenever I update or improve this script it is updated across my computers.↩︎</p></li>
+</ol>
+</section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">https://creativecommons.org/licenses/by/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
+  author = {Neil Shephard},
+  title = {Virtualenvwrapper Hooks},
+  date = {2024-07-31},
+  url = {https://blog.nshephard.dev//posts/virtualenv-hooks},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2024" class="csl-entry quarto-appendix-citeas">
+Neil Shephard. 2024. <span>“Virtualenvwrapper Hooks.”</span> July 31,
+2024. <a href="https://blog.nshephard.dev//posts/virtualenv-hooks">https://blog.nshephard.dev//posts/virtualenv-hooks</a>.
+</div></div></section></div> ]]></description>
+  <category>python</category>
+  <category>virtual environments</category>
+  <category>bash</category>
+  <category>dotfiles</category>
+  <guid>https://blog.nshephard.dev/posts/virtualenv-hooks/index.html</guid>
+  <pubDate>Wed, 31 Jul 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/53878835844_88658e86cb_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Pytest Fail and Skip</title>
   <dc:creator>Neil Shephard</dc:creator>
