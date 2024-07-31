@@ -21,7 +21,6 @@ you might want to mark them as failing or skip them.
 
 ![[Against the Clouds by Me](https://flickr.com/photos/slackline/53621640633/in/datetaken/)](https://live.staticflickr.com/65535/53621640633_c257fcf8b5_k.jpg)
 
-
 [Pytest][pytest] has a few [decorators][rp_decorators] available to help with skipping tests using
 [`@pytest.mark.skip`][pytest_skip] or [`@pytest.mark.skipif`][pytest_skipif] or allowing tests to fail with [`@pytest.mark.xfail`][pytest_xfail]
 

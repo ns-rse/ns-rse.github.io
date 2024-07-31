@@ -23,7 +23,6 @@ detail.
 ![[South Coast of Portugal by
 Me](https://www.flickr.com/photos/slackline/53878835844/)](https://live.staticflickr.com/65535/53878835844_88658e86cb_k.jpg)
 
-
 ## Introduction
 
 Just like the various hooks available in Git, [`virtualenvwrapper`][venv_docs] also supports [hooks][venv_scripts] that
@@ -109,7 +108,6 @@ done
 A little bit of shell scripting knowledge can be really powerful when used in conjunction with "hooks". This is true of
 [`virtualenvwrapper`][venv_docs] as well as of Git and the
 [pre-commit](https://blog.nshephard.dev/posts/pre-commit-hooks/) framework.
-
 
 [^1]: There is a wealth of information on what you can do with your `dotfiles` but that is an article in itself and I'm
     yet to write it. A useful set of different aliases you could use can be found [here][dotfiles_aliases]
