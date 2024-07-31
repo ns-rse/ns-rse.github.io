@@ -1,0 +1,124 @@
+---
+title: "virtualenvwrapper hooks"
+date: "2024-07-31"
+categories: [python, virtual environments, bash, dotfiles]
+image: https://live.staticflickr.com/65535/53878835844_88658e86cb_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+I've written [previously](https://blog.nshephard.dev/posts/virtualenvwrapper/) about [`virtualenvwrapper`][venv_docs]
+which I use to manage my Python Virtual Environments and mentioned the possibility of using hooks but didn't go into
+detail.
+
+![[South Coast of Portugal by
+Me](https://www.flickr.com/photos/slackline/53878835844/)](https://live.staticflickr.com/65535/53878835844_88658e86cb_k.jpg)
+
+## Introduction
+
+Just like the various hooks available in Git, [`virtualenvwrapper`][venv_docs] also supports [hooks][venv_scripts] that
+allow scripts to be run in response to various events. These reside under your `$VIRTUALENVWRAPPER_HOOK_DIR` which by
+default is the same as your `$WORKON_HOME` directory and in a typical standard installation will be `~/.virtualenvs`.
+
+The available scripts that are recognised are...
+
++ `get_env_details`
++ `initialize`
++ `premkvirtualenv`
++ `postmkvirtualenv`
++ `precpvirtualenv`
++ `postcpvirtualenv`
++ `preactivate`
++ `postactivate`
+
+Each of these is a simple shell script and will start with the scripting language to use e.g. `#!/usr/bin/bash` or
+`#!/usr/bin/zsh` depending on your shell. You can then script the actions you wish to take when the script is executed.
+
+## Install minimal requirements
+
+I'm a big fan of [dotfiles][dotfiles][^1], mine are [hosted on GitLab][my_dotfiles], it's a repository of my
+configuration files and scripts that I use regularly across multiple computers.  Because I'm lazy I wrote a couple of
+`requirements.txt` files for installing packages in my virtual environments.
+
++ [`requirements.txt`](https://gitlab.com/nshephard/dotfiles/-/blob/master/python/requirements.txt?ref_type=heads) :
+  holds everything I might ever want to use in Python.
++ [`python-lsp-requirements.txt`](https://gitlab.com/nshephard/dotfiles/-/blob/master/python/requirements.txt?ref_type=heads) :
+  Install packages for setting up a Python Language Server (which I use from Emacs).
++ [`venv_minimal_requirements.txt`](https://gitlab.com/nshephard/dotfiles/-/blob/master/python/venv_minimal_requirements.txt?ref_type=heads) :
+  a minimal set of the most common Python packages I am likely to want when creating a new virtual environment.
+
+Because I have my `dotfiles` cloned to the same location on every computer (`~/dotfiles`) I added the following to the
+`~/.virtualenvs/postmkvirtualenv` [^2] which will install all of the packages listed in
+`~/dotfiles/python/venv_minimal_requirements.txt` whenever a create a new virtual environment, whether that is with
+`mkvritualenv` or `mktmpenv`.
+
+```bash
+pip install --no-cache-dir -r ~/dotfiles/python/venv_minimal_requirements.txt
+```
+
+This ensured the latest versions of each packages listed in `~/dotfiles/python/venv_minimal_requirements.txt` were
+downloaded and installed as the `--no-cache-dir` prevents using cached versions of packages.
+
+## A smarter script
+
+This served me well for a time, but occasionally I found I _didn't_ want to install _any_ packages in a new virtual
+environment (most often when testing new branches using `mktmpenv`) and I'd have to remember to comment out the line in
+the hook file (`~/.virtualenvs/postmkvirtualenv`) before creating the environment. Typically though I'd forget to do
+this and would have to halt installation of required packages, deactivate the environment, _then_ comment it out and
+create a new environment.
+
+This quickly became irksome.
+
+But `~/.virtualenvs/postmkvirtualenv` is just a script and so we can use a bit of scripting knowledge to make it
+interactive and ask the user if they want to install the packages listed in `venv_minimal_requirements.txt`. I found a
+really useful answer on StackOverflow in the [How do I prompt for yes/no/cancel input in a Linux shell script][so_bash]
+that showed several different ways to prompt the user for a response as to whether they want to do something.
+
+I therefore updated my [`~/.virtualenvs/postmkvirtualenv`][postmkvirtualenv] to the following which prompts for a
+numeric response, `1` for `Yes` and `2` for `No` and takes the appropriate action, installing using my original
+invocation of `pip` if I want to install packages and enter `1` or installing nothing if I enter `2`.
+
+```bash
+#!/usr/bin/zsh
+# This hook is sourced after a new virtualenv is activated.
+
+
+echo "Do you wish to install minimal requirements (from venv_minimal_requirements.txt)? "
+select yn in "Yes" "No"; do
+  case $yn in
+    Yes ) pip install --no-cache-dir -r ~/dotfiles/python/venv_minimal_requirements.txt; break;;
+    No ) echo "No packages installed. install packages with 'pip'.\n"; break;;
+  esac
+done
+```
+
+**NB** You may want to tweak the opening shebang if you use the Bash shell.
+
+## Conclusion
+
+A little bit of shell scripting knowledge can be really powerful when used in conjunction with "hooks". This is true of
+[`virtualenvwrapper`][venv_docs] as well as of Git and the
+[pre-commit](https://blog.nshephard.dev/posts/pre-commit-hooks/) framework.
+
+[^1]: There is a wealth of information on what you can do with your `dotfiles` but that is an article in itself and I'm
+    yet to write it. A useful set of different aliases you could use can be found [here][dotfiles_aliases]
+[^2]: Actually I create the script in [`~/dotfiles/python/postmkvirtualenv`][postmkvirtualenv] and made a symbolic link
+    at `~/.virtualenv/postmkvirtualenv` that points to it so that whenever I update or improve this script it is updated
+    across my computers.
+
+[dotfiles]: https://dotfiles.github.io
+[dotfiles_aliases]: https://dotfiles.io/about/#introduction
+[my_dotfiles]: https://gitlab.com/nshephard/dotfiles/
+[postmkvirtualenv]: https://gitlab.com/nshephard/dotfiles/-/blob/master/python/postmkvirtualenv?ref_type=heads
+[so_bash]: https://stackoverflow.com/a/226724/1444043
+[venv_docs]: https://virtualenvwrapper.readthedocs.io/en/latest/
+[venv_scripts]: https://virtualenvwrapper.readthedocs.io/en/latest/scripts.html#per-user-customization
