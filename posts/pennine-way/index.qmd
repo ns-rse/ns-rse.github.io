@@ -65,13 +65,13 @@ would have to read backwards as it covered the route from South to North over 20
 
 ## Tracking
 
-I use [OpenTracks][ot] to privately record [GPX][gpx] tracks of my hiking, running and cycling as it stores them only on
-the device on which they are recorded, although you can of course copy them elsewhere and use them as you like. I did
-this each day I hiked recording almost complete traces for the whole trip. I had one short drop out and missed
-restarting after having a meal but after that often left it running whilst stopped for lunch or dinner sto avoid
+I use [OpenTracks][openttracks] to privately record [GPX][gpx] tracks of my hiking, running and cycling as it stores
+them only on the device on which they are recorded, although you can of course copy them elsewhere and use them as you
+like. I did this each day I hiked recording almost complete traces for the whole trip. I had one short drop out and
+missed restarting after having a meal but after that often left it running whilst stopped for lunch or dinner sto avoid
 forgetting to restart.
 
-I uploaded each track to an instance of [FitTrackee][ft] that I host myself which provded a neat way of reviewing the
+I uploaded each track to an instance of [FitTrackee][ft] that I host myself which provided a neat way of reviewing the
 statistics for each days hiking which I have exported and saved to CSV and used in the tables and figures of this
 write-up.
 
@@ -276,7 +276,7 @@ way I set myself up for the night and set about rehydrating one of the meals I h
 I'd not really given it much thought as they were [small/far away][fatherted] but the fact I'd had to clear the area of
 cow shit to pitch my tent should have rung a bell in my head. It hadn't, but the loud snort of an approaching bell did
 so I grabbed my pouch of rehydrating food and put the wall between the bull and myself. It had wandered up with a couple
-of calfs who started sniffing around my stove which I'd left out and I gently shooed them away from the safety of the
+of calves who started sniffing around my stove which I'd left out and I gently shooed them away from the safety of the
 wall. Fortunately the bull was taking more of an interest in a female the other side of the fence. After a stand-off of
 about five minutes they all lost interest in me (or perhaps the lack of food which I'd eaten) and wandered off which was
 my opportunity to quickly take the tent down and move onto a safer spot, recalling the devestation cows had wrecked on
@@ -301,7 +301,7 @@ walk-in to the crag extremely short.
 Being up and walking early is lovely, its quiet and there aren't many people about so it was nice avoiding whatever
 crowds were to arrive later in the day. There were a few like minded people about, one lady commenting the exact same
 thing, another walking from Cawfields to Sycamore Gap who had waved from across a gap. The countryside is really quite a
-friendly place, expecially for those out on their own.
+friendly place, especially for those out on their own.
 
 [Toilets][cawfields] at Cawfields Lake were very welcome and there was also fresh water available which was useful for
 the coming day. Hadrians Wall petters out here and crosses some farmland where I met a couple of guys heading North on
@@ -369,7 +369,7 @@ up on the moor.
 After winding my way up the hill side the beautiful [Gregs Hut][gregshut] came into view and I poked my head in to have
 a look around before continuing. Will definitely have to come back and spend at least one night here in the future.
 
-A short steep section led to the plateu of Cross Fell with its excellent stone shelter from the wind and another trig
+A short steep section led to the plateau of Cross Fell with its excellent stone shelter from the wind and another trig
 point. There was a party of three with a couple of dogs who had hiked up from Dufton for the day when I arrived and we
 chatted briefly. I had a beer before snapping a panorama and heading off and over Great Dun Fell with its listening
 station on the summit like a golf ball poised to be driven south over the A66. The path then headed down into Dufton
@@ -504,7 +504,25 @@ On arrival at the [Tan Hill Inn][tanhillinn] I popped in to ask if it would be o
 the wind and sun whilst I had lunch and duly did so before settling down to an expensive pint and scampi and chips which
 was good but probably a bit over-priced too in my opinion. No time for a second pint (the queue at the bar precluded
 this) so I packed up the now dry tent and set off on a good track towards East Stronsdale, gradually losing
-height. Upper [East Gill Force][eastgillforce]
+height. Upper [East Gill Force][eastgillforce] was passed and The Way then headed up an interestingly paved path up
+Kisdon hill before skirting around over jumbled limestone blocks. At this point a heavy shower passed over and as it was
+late in the day I had the delight of a rainbow over Black Hill. Dropping down into [Thwaite][thwaite] there were more
+black clouds looming over Dam Hill and Great Shunner Fell so I decided to not push on to Hawes that evening and instead
+stop in the campsite I'd seen in the valley. Not before having a beer though so I popped into an empty [Kearton
+House][keartonhouse] only to be told that they weren't open and the only reason the door was unlocked was because the
+solicitors had just visited.  I was advsed I might be able to get a beer at Usha Campsite where I was heading as they
+had a small shop so I walked the kilometre or so down the road only to find I was too late in the day as the shop, and
+recenption in general, had closed an hour and a half earlier.
+
+Pitched the tent in a field in the lee of a wall and large tree after carefully looking for dead branches that might
+come down in high wind and deciding it was relatively unlikely to happen. A quick shower then boiled some water to make
+dinner. There were a number of Duke of Edinbrough participants who were hiking around the area and I chatted to a few
+of the as I ate my rehydrated meal in the warmth and comfort of the facilities. They were bemoaning having to hike 20km
+or so, but to be fair they were having to carry all of their food, unlike mysel who was making good use of all of the
+eateries I was passing.
+
+Pretty tired so had an early night, but not before a few more showers passed through which helped me feel vindicated in
+my decision not to push on to Hawes that evening.
 
 
 ### Day 8 - Thwaite to Horton in Ribblesdale
@@ -565,7 +583,7 @@ their the rest of their trip over-nighting on Kinder and then heading to Hathers
 
 Clear blue skies and warm sun helped me set a decent pace as I headed down to the dam of Torside Researvoir and crossed
 over to the steep climb up onto the Bleaklow plateau. Half-way up the steep section whilst snapping pictures with the
-Sony for some bizzare reason it stopped taking pictures, it would focus and do everything except actually take and save
+Sony for some bizarre reason it stopped taking pictures, it would focus and do everything except actually take and save
 the picture. I wasted about 15-20 minutes trying to sort it before deciding it would have to wait and besides I had a
 12-month warranty on it courtesy of Harrison Cameras excellent second-hand policy, so continued up the remaining section
 of the trail that runs round the edge of Torside Clough. As I crossed over the clough at the top I had another go at
@@ -636,12 +654,13 @@ I appear to still have sore feet a week after completing the The Way, a bit of r
 [gregshut]: http://www.gregshut.org.uk/
 [highcupnick]: https://www.openstreetmap.org/way/843700933
 [iq84]: https://www.goodreads.com/book/show/61170765-iq84
+[keartonhouse]: https://www.keartoncountryhotel.co.uk/
 [kielder]: https://www.visitkielder.com/
 [ky]: https://www.openstreetmap.org/node/387568208
 [middleton]: https://www.openstreetmap.org/query?lat=54.618065&lon=-2.082456
 [numbtoes]: https://thetrek.co/numb-toes-after-finishing-your-thru-hike-heres-why/
 [osm]: https://www.openstreetmap.org/
-[ot]: https://opentracksapp.com/
+[opentracks]: https://opentracksapp.com/
 [ozzys]: https://newozzyspizza.co.uk/
 [paraestheias]: https://journals.sagepub.com/doi/full/10.1580/1080-6032(2003)14%5b161:BP%5d2.0.CO;2
 [psw]: https://wiki.openhumans.org/wiki/Personal_Science_Wiki
@@ -659,6 +678,7 @@ I appear to still have sore feet a week after completing the The Way, a bit of r
 [thenook]: https://www.thenookfarmshop.com/about
 [thirlwallcastle]: https://www.openstreetmap.org/way/337980792
 [thirlwallview]: https://www.openstreetmap.org/way/337970338
+[thwaite]: https://www.openstreetmap.org/node/477368214
 [tynedalerailway]: https://www.south-tynedale-railway.org.uk/
 [ushagap]: https://www.openstreetmap.org/relation/15697080
 [ushagapcamping]: https://ushagap.co.uk/campsite/
