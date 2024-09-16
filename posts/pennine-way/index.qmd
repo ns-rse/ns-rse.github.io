@@ -65,7 +65,7 @@ would have to read backwards as it covered the route from South to North over 20
 
 ## Tracking
 
-I use [OpenTracks][openttracks] to privately record [GPX][gpx] tracks of my hiking, running and cycling as it stores
+I use [OpenTracks][opentracks] to privately record [GPX][gpx] tracks of my hiking, running and cycling as it stores
 them only on the device on which they are recorded, although you can of course copy them elsewhere and use them as you
 like. I did this each day I hiked recording almost complete traces for the whole trip. I had one short drop out and
 missed restarting after having a meal but after that often left it running whilst stopped for lunch or dinner sto avoid
@@ -75,14 +75,14 @@ I uploaded each track to an instance of [FitTrackee][ft] that I host myself whic
 statistics for each days hiking which I have exported and saved to CSV and used in the tables and figures of this
 write-up.
 
-Details and more information about these and other Open Source tools for self-research that protect the users privacy
-from the pernicious intrusions made by Big Tech can be found on the [Personal Science Wiki][psw].
+Details and more information about these and other Open Source tools for self-research that **protect the users privacy
+from the pernicious intrusions made by Big Tech** can be found on the [Personal Science Wiki][psw].
 
 ## Pictures
 
-I carried my phone, a Motorla GT100 and a Sony RX100 Mk IV with me along the route. I take a _lot_ of pictures, most are
-crap but some are half decent and I've included in this post the better ones or those that accompany the story well. You
-can find the full set of pictures on my [Pennine Way Flickr album][flickr_pw].
+I carried my phone, a [Motorola GT100][motog100] and a [Sony RX100 Mk IV][sonyrx100] with me along the route. I take a
+_lot_ of pictures, most are crap but some are half decent and I've included in this post the better ones or those that
+accompany the story well. You can find the full set of pictures on my [Pennine Way Flickr album][flickr_pw].
 
 ## Day by Day
 
@@ -145,18 +145,19 @@ Flickr](https://www.flickr.com/photos/slackline/53922320792/in/datetaken/)](http
 Beer drunk I said farewell, shouldered my pack and started the GPS tracker, setting off up the lane in the heat of the
 afternoon. Not ideal conditions for hiking but I had a schedule to follow.
 
-![[Above Kirk Yetholm | Flickr](https://www.flickr.com/photos/slackline/53957116986/in/datetaken/)](https://live.staticflickr.com/65535/53957116986_2f287b5fb9_k.jpg)
+![[Above Kirk Yetholm](https://www.flickr.com/photos/slackline/53957116986/in/datetaken/)](https://live.staticflickr.com/65535/53957116986_2f287b5fb9_k.jpg)
 
-![[Follow The Path | Pretty good advice for route finding most of the way |
-Flickr](https://www.flickr.com/photos/slackline/53957365433/in/datetaken/)](https://live.staticflickr.com/65535/53957365433_2875252fee_k.jpg)
+![[Follow The
+Path](https://www.flickr.com/photos/slackline/53957365433/in/datetaken/)](https://live.staticflickr.com/65535/53957365433_2875252fee_k.jpg)
 
 There are two options to this section of The
 Way, a high option going over various hills and low option for when weather is foul. I didn't have that excuse and had
 been planning on stopping for the night at the [Auchope Refuge Hut][auchope] which was on the high route so up the hills
 I went. These undulated but the path was good and I made good time arriving at the hut in around three hours.
 
-![[Auchope Refuge |
-Flickr](https://www.flickr.com/photos/slackline/53957365283/in/datetaken/)](https://live.staticflickr.com/65535/53957365283_8955e170d8_k.jpg)
+![[College Burn](https://flic.kr/p/2qd1k1Z)](https://live.staticflickr.com/65535/53957116901_b04800cb4f_k.jpg)
+
+![[Auchope Refuge](https://www.flickr.com/photos/slackline/53957365283/in/datetaken/)](https://live.staticflickr.com/65535/53957365283_8955e170d8_k.jpg)
 
 With a few more hours of daylight left I decided to push on and find somewhere else to wild camp as my legs weren't
 tired and I had plenty of time, even though this involved a steep climb from Auchope Rigg up most of Cairn Hill. I
@@ -182,12 +183,11 @@ to the rain for a while I got up at 05:30 and after eating some more pate and br
 and sandals, packed the tent up and set off in the clouds for Windy Gyle which lived up to its name.
 
 ![[Wet Weather Walking
-Gear](https://flic.kr/p/2qab5cr)](https://live.staticflickr.com/65535/53925068679_7ea777192d_3k.jpg)
+Gear](https://flic.kr/p/2qab5cr)](https://live.staticflickr.com/65535/53925068679_e2197a2b53_k.jpg)
 
-There is a large
-pile of stones on the summit which is an ancient monument which should not be distubed, not much to look at because of
-the low cloud so I continued the descent, which roughly follows the bordere between Scotland and England, glad of my
-choice of sandals and shorts because it was very boggy in places.
+There is a large pile of stones on the summit which is an ancient monument which should not be distubed, not much to
+look at because of the low cloud so I continued the descent, which roughly follows the bordere between Scotland and
+England, glad of my choice of sandals and shorts because it was very boggy in places.
 
 
 I came across [Yearning Saddle Refuge Hut][yearning]
@@ -195,15 +195,16 @@ and took the opportunity to get out of the wind and rain and eat one of the blue
 pieces of food had been left for people who might need them along with lots of reminders to take your rubbish with you,
 which I had already done bringing my empty beer bottle with me.
 
-![[Yearning Saddle Mountain Refuge](https://flic.kr/p/2qa9gsy)](https://live.staticflickr.com/65535/53924716336_776e063cf6_3k.jpg)
-![[Yearning Saddle Lamb Hill](https://flic.kr/p/2qab59a)](https://live.staticflickr.com/65535/53925068489_0ac26f3953_3k.jpg)
+![[Yearning Saddle Mountain
+Refuge](https://flic.kr/p/2qa9gsy)](https://live.staticflickr.com/65535/53924716336_6ee76a5499_k.jpg)
 
+![[Yearning Saddle Lamb Hill](https://flic.kr/p/2qab59a)](https://live.staticflickr.com/65535/53925068489_a9a0b7e178_k.jpg)
 
 Navigation was straight-forward as the trail was well marked with regular way markers and sign-posts although there was
 a split with an "alternative" route sign-posted. I opted to stick with the original which followed a "permissive
 by-way".
 
-![[A brief lull in the rain](https://flic.kr/p/2qabAZ9)](https://live.staticflickr.com/65535/53925172250_04906ec148_3k.jpg)
+![[A brief lull in the rain](https://flic.kr/p/2qabAZ9)](https://live.staticflickr.com/65535/53925172250_e19878b18d_k.jpg)
 
 Passed a couple of herds of feral goats and met a guy heading north who was on day 46 of hiking from Lands End
 to John O'Groats which was pretty impressive. He said that he'd broken a walking pole yesterday and would have to make a
@@ -220,7 +221,7 @@ four heading north were next and then a couple who were finishing off their jour
 days previously. They were very friendly and reeled off many of the highlights I would pass, warning that it would
 likely be windy on Cross Fell.
 
-![[1990](https://flic.kr/p/2qa9goW)](https://live.staticflickr.com/65535/53924716126_43f5bdd36b_3k.jpg)
+![[1990](https://flic.kr/p/2qa9goW)](https://live.staticflickr.com/65535/53924716126_71752ebf0e_k.jpg)
 
 I arrived at the [Forest View Inn][fvi] where I had booked to camp for the night around 13:00 having covered the ~25 km
 in around six hours but they didn't open for check-in until 16:00. Fortuantely the conservatory was accsessible and
@@ -235,7 +236,7 @@ got fed up with desk jobs in Manchester. Oli had previously lived in Sheffield o
 in his time, but was more of a runner these days. He'd attempted both the North and Southern [Spine Race][spinerace]
 Challenger twice and completed each once.
 
-![[Forest View Inn](https://flic.kr/p/2qd2Csn)](https://live.staticflickr.com/65535/53957370673_74fedc4b85_3k.jpg)
+![[Forest View Inn](https://flic.kr/p/2qd2Csn)](https://live.staticflickr.com/65535/53957370673_ecd366f775_k.jpg)
 
 I took the first of several beers that evening and pitched my tent in the back garden, spreading my wet things out over
 a picnic bench to dry in the sun, ignoring the fact there was a drying room which is great but fresh air is much more
@@ -266,7 +267,7 @@ took another shower and was packed and off by 06:50. Ducked into [St Francis' Ch
 who had spent the night in there. He was hiking around [Kielder Forest][kielder] stopping wherever he fancied.
 
 ![[St Francis' Church,
-Bryness](https://flic.kr/p/2qd1mw4)](https://live.staticflickr.com/65535/53957121951_cb296fa632_3k.jpg)
+Bryness](https://flic.kr/p/2qd1mw4)](https://live.staticflickr.com/65535/53957121951_ef6a5625cc_k.jpg)
 
 
 Wishing him a good time I got back on track and The Way then followed good solid forestry trails through pine forests
@@ -279,21 +280,21 @@ The moorland wasn't too bad, mainly as it was mostly paved so the few boggy bits
 I thought were some carnivorous plants but was in too much of a hurry to go back and photograph them to check which I
 regret now as I didn't see any more.
 
-![[Sturdy Post](https://flic.kr/p/2qaxGZa)](https://live.staticflickr.com/65535/53929289787_187e17f563_3k.jpg)
+![[Sturdy Post](https://flic.kr/p/2qaxGZa)](https://live.staticflickr.com/65535/53929289787_dfb9e48d2d_k.jpg)
 
 Didn't pass many people until I was near Bellingham, this was to become something of a theme due to my early starts, but
 met a few people heading North along The Way. One guy complemented me on how fast I had been coming down the hill (the
 angle helped!) and a very jolly Welsh lady wanted to snap a picture with me to add to her collection she was posting to
 Farcebook. There was another solo hiker who had come all the way from Edale who looked fit and happy.
 
-![[Coming or Going](https://flic.kr/p/2qd2CEX)](https://live.staticflickr.com/65535/53957371403_35a66b6d6b_3k.jpg)
+![[Coming or Going](https://flic.kr/p/2qd2CEX)](https://live.staticflickr.com/65535/53957371403_022b38f726_k.jpg)
 
 I reached Bellingham around 13:30 having covered 26km in just over five hours and opted for pizza and beer at [The
 Cheviot Hotel][cheviothotel] which was delicious and grabbed some beers for later in the day before setting off on The
 Way again.
 
 ![[Lunchtime Beer in
-Bellingham](https://flic.kr/p/2qaED1N)](https://live.staticflickr.com/65535/53930642210_a4777e12f2_3k.jpg)
+Bellingham](https://flic.kr/p/2qaED1N)](https://live.staticflickr.com/65535/53930642210_fc4eed9643_k.jpg)
 
 I felt good and noticed I'd had a voice in my head telling me to "_engage the core powerhouse_", "_activate
 the glutes when stepping forward_" and "_keep the shoulders back and stomach in_" which was Sam Webster, my [pilates
@@ -309,14 +310,14 @@ The Way crossed some moorland and in a shallow valley and in the middle was a wa
 looked ideal as the walls provided good shelter from the wind which was still hitting me head on from the South, but on
 reflection I decided not to stop here because if the wind dropped it would have been midge hell.
 
-![[Good Spot to Camp](https://flic.kr/p/2qaE7Gf)](https://live.staticflickr.com/65535/53930540214_1cf16925ec_3k.jpg)
+![[Good Spot to Camp](https://flic.kr/p/2qaE7Gf)](https://live.staticflickr.com/65535/53930540214_e65b88dc0c_k.jpg)
 
 I continued until I
 reached [Cragend by Greenlee Moss][cragend] which gave a brilliant view across the lake as the sun was setting. There
 was a convenient stone wall which provided shelter from the wind and after clearing some cow and sheep shit out of the
 way I set myself up for the night and set about rehydrating one of the meals I had with me.
 
-![[Stone Wall for shelter](https://flic.kr/p/2qaCvzv)](https://live.staticflickr.com/65535/53930226971_204fd78cf3_3k.jpg)
+![[Stone Wall for shelter](https://flic.kr/p/2qaCvzv)](https://live.staticflickr.com/65535/53930226971_da58bb7633_k.jpg)
 
 I'd not really given it much thought as they were [small/far away][fatherted] but the fact I'd had to clear the area of
 cow shit to pitch my tent should have rung a bell in my head. It hadn't, but the loud snort of an approaching bell did
@@ -327,7 +328,7 @@ about five minutes they all lost interest in me (or perhaps the lack of food whi
 my opportunity to quickly take the tent down and move onto a safer spot, recalling the devestation cows had wrecked on
 some neighbours tents whilst I was in Peru 2012.
 
-![[Company](https://flic.kr/p/2qaEfLM)](https://live.staticflickr.com/65535/53930567389_d81a62c9bc_3k.jpg)
+![[Company](https://flic.kr/p/2qaEfLM)](https://live.staticflickr.com/65535/53930567389_f74bd6a69a_k.jpg)
 
 
 It was starting to get dark as I headed over to [Rapishaw Gap][rapishaw] on Hadrians Wall and heading towards Milking
@@ -345,24 +346,36 @@ I was tired after around 50 km of hiking so crawled into the tent and fell aslee
 
 Woke early and stuck my head out of the tent to a beautiful sunrise along the line of the wall.
 
-![[Sunrise on Hadrians Wall](https://flic.kr/p/2qd1nf8)](https://live.staticflickr.com/65535/53957124391_2513134848_3k.jpg)
+![[Worth Getting Out of
+Bed](https://flic.kr/p/2qd1nga)](https://live.staticflickr.com/65535/53957124451_10fbf2b565_k.jpg)
+
+![[Sunrise on Hadrians Wall](https://flic.kr/p/2qd1nf8)](https://live.staticflickr.com/65535/53957124391_6863916db3_k.jpg)
 
 
-Didn't hang around too
-long, collapsed the tent and packed everything away fairly quickly to avoid getting in trouble for camping on (next to)
-an ancient monument. I don't eat breakfast so off we went on the undulations of Hadrians Wall. Quickly reached the
+Didn't hang around too long, collapsed the tent and packed everything away fairly quickly to avoid getting in trouble
+for camping on (next to) an ancient monument. I don't eat breakfast so off we went on the undulations of Hadrians Wall.
+
+![[Home for a week](https://flic.kr/p/2qd2De2)](https://live.staticflickr.com/65535/53957373263_27f0635f45_3k.jpg)
+
+Quickly reached the
 famous [Sycamore Gap][sycamoregap] passing a couple of climbers who were also camping/bivvying on the wall to make the
 walk-in to the crag extremely short.
+
+![[Sycamore Gap](https://flic.kr/p/2qaDLgQ)](https://live.staticflickr.com/65535/53930471518_3943379891_3k.jpg)
 
 Being up and walking early is lovely, its quiet and there aren't many people about so it was nice avoiding whatever
 crowds were to arrive later in the day. There were a few like minded people about, one lady commenting the exact same
 thing, another walking from Cawfields to Sycamore Gap who had waved from across a gap. The countryside is really quite a
 friendly place, especially for those out on their own.
 
+![[Steel Rigg](https://flic.kr/p/2qaDFzd)](https://live.staticflickr.com/65535/53930455706_e5bb52d3c8_3k.jpg)
+
 [Toilets][cawfields] at Cawfields Lake were very welcome and there was also fresh water available which was useful for
 the coming day. Hadrians Wall petters out here and crosses some farmland where I met a couple of guys heading North on
 The Way and encouraged them onwards as they didn't have too far to go compared to how far they come, which reminded me
 how much further I still had to go.
+
+![[Milecastle, Cawfields, Hadrians Wall](https://flic.kr/p/2qaz3cX)](https://live.staticflickr.com/65535/53929549557_905faaa9e6_k.jpg)
 
 Passing through [Walltown Quarry][walltownquarry] which has been beautifully transformed into a small nature reserve I
 stopped in the shop and grabbed a can of Sprite to drink to keep my energy up as I had decided not to detour into
@@ -373,16 +386,29 @@ for hikers of The Way to re-supply. I didn't have any change so only took pictur
 shops were to crop up a number of times along The Way and it was lovely to see how generous and helpful people could be
 towards strangers.
 
+![[Juniper Cottage, Greenhead](https://flic.kr/p/2qaEVXr)](https://live.staticflickr.com/65535/53930699203_d7964a2ec8_k.jpg)
+
 I survived a game of [Frogger][frogger] on the A69 but was mildly alarmed by the sign on the gate which warned of
 biological hazards, although they only seemed to apply to those who undertaking work on telephone masts! The next few
 kilometers were fairly mundane going gently uphill through grazed fields and low lying moorland. After a couple of hours
 though and not having had any food I was starting to get tired, my feet were hurting and my pace slowed. It became hard
-work going up hill and for the first time in four days I wasn't really enjoying myself. I hoped there would be somewhere
-to get a snack in Slaggyford but alas not but as I was planning to get to Garigill for the night and had to pass through
-Alston so figured I'd be able to eat on the way through. Looking at the map I decided that I wasn't going to do what
-appeared to be a fairly mundane loop out across a hillside and instead head along the road into Alston.
+work going up hill and for the first time in four days I wasn't really enjoying myself. I stopped to cool my feet in a
+stream which helped a bit but then had more mundane terrain skirting the edge of arable land that led me up the valley.
 
-Just after leaving the road the smell of chips frying wafted up the road from [The Nook][thenook] and I knew instantly
+![[Live Shooting & Bio-Security
+Area](https://flic.kr/p/2qaFpcn)](https://live.staticflickr.com/65535/53930790839_c51294e1d2_k.jpg)
+
+![[Cooling the feet](https://flic.kr/p/2qazcrZ)](https://live.staticflickr.com/65535/53929580647_e5ea532f4f_k.jpg)
+
+
+I hoped there would be somewhere to get a snack in Slaggyford but alas not but as I was planning to get to Garigill for
+the night and had to pass through Alston so figured I'd be able to eat on the way through. Looking at the map I decided
+that I wasn't going to do what appeared to be a fairly mundane loop out across a hillside and instead head along the
+road into Alston.
+
+![[Slaggyford Viaduct](https://flic.kr/p/2qaDMCv)](https://live.staticflickr.com/65535/53930476081_2bcd221ea8_k.jpg)
+
+Just after joining the road the smell of chips frying wafted up the road from [The Nook][thenook] and I knew instantly
 where I would be eating. They had burger night on so I ordered a delicious chicken burger which came with a healthy
 portion of chipps and quaffed a couple of cans of lemon Fanta. Feeling tired I asked staff if there was anywhere to camp
 in Alston, they didn't think so but asked another customer who was local who confirmed this but advised to "_just camp
@@ -391,7 +417,10 @@ their advice shouldered the pack and crossed the adjacent field to reach a track
 Railway][tynedalerailway] which was a nice compact and flat trail into Alston and took me from Northumberland into
 Cumberland.
 
-Feelin invigorated by the food I stopped in the Alston House Hotel for a pint and after grabbing some supplies
+![[Cumberland |
+Northumberland](https://flic.kr/p/2qaG6CJ)](https://live.staticflickr.com/65535/53930926870_fcf891eb34_k.jpg)
+
+Feeling invigorated by the food I stopped in the Alston House Hotel for a pint and after grabbing some supplies
 (viz. beer, sweets and lunch for the next day) set off up hill to my original target for the day, Garigill. I'd read
 about a diversion because the [Dryburn Bridge was closed due to flood damage][dryburn] which took me a long an
 alternative trail on the north side of the river which didn't look as though it had seen much traffic and involved
@@ -410,6 +439,10 @@ target for throwing plastic bottles and cans at. I didn't bother rising to the b
 music stopped around 23:00 and I heard some arguing (alcohol and families often result in high emotions) but at least
 the shower of plastic bottles and cans had stopped and I soon drifted off to sleep.
 
+![[Wedding Reception in
+Garigill](https://flic.kr/p/2qaz7kr)](https://live.staticflickr.com/65535/53929563447_5083e5d67e_k.jpg)
+
+
 ### Day 5 - Garigill to High Cup Nick
 
 Slept until about 06:30 as I had a relatively short day planned going up and over Cross Fell, down into Dufton and on to
@@ -417,24 +450,51 @@ Slept until about 06:30 as I had a relatively short day planned going up and ove
 chatted to a lady who was tidying up after last nights reception. Turns out it was the bride who hadn't been able to
 sleep knowing that she had to tidy up so she'd got up early to get started with the job.
 
+![[Garigill](https://flic.kr/p/2qaG5Bk)](https://live.staticflickr.com/65535/53930923425_f16d6c6e3c_k.jpg)
+
 I had a shower, after clearing up what broken glass from the night before that I could see on the floor and managed to
 avoid cutting my feet which would have been bad for hiking. Dropped some cash in the honesty box (aka letter box) packed
-up and set off heading up Cross Fell. The path was a good compact track, no doubt for the grouse shooting that went on
-up on the moor.
+up and set off heading up Cross Fell. Poked my head inside the church and resisted the temptation to ring the bell.
 
-After winding my way up the hill side the beautiful [Gregs Hut][gregshut] came into view and I poked my head in to have
-a look around before continuing. Will definitely have to come back and spend at least one night here in the future.
+![[You Can Ring my Bell](https://flic.kr/p/2qaFuhc)](https://live.staticflickr.com/65535/53930807939_bf5b6a4edc_k.jpg)
+
+![[Dufton 15 miles](https://flic.kr/p/2qaF1xZ)](https://live.staticflickr.com/65535/53930714663_52bc568579_k.jpg)
+
+The path was a good compact track, no doubt for the grouse shooting. After winding my way up the hill side the beautiful
+[Gregs Hut][gregshut] came into view and I poked my head in to have a look around before continuing. Will definitely
+have to come back and spend at least one night here in the future.
+
+![[Greg's Hut](https://flic.kr/p/2qaGHZ2)](https://live.staticflickr.com/65535/53931049151_ceec7c3b14_k.jpg)
 
 A short steep section led to the plateau of Cross Fell with its excellent stone shelter from the wind and another trig
 point. There was a party of three with a couple of dogs who had hiked up from Dufton for the day when I arrived and we
 chatted briefly. I had a beer before snapping a panorama and heading off and over Great Dun Fell with its listening
-station on the summit like a golf ball poised to be driven south over the A66. The path then headed down into Dufton
-where I had been planning on eating at the [The Stag Inn][staginn]. Arriving just after 16:00 I had to wait
+station on the summit like a golf ball poised to be driven south over the A66.
+
+![[Cross Fell Summit](https://flic.kr/p/2qaHYqB)](https://live.staticflickr.com/65535/53931292843_7e61a9b8dd_k.jpg)
+
+![[Cross Fell Panorama](https://flic.kr/p/2qaGHXJ)](https://live.staticflickr.com/65535/53931049076_48198165aa_k.jpg)
+
+![[Listening for...](https://flic.kr/p/2qdw9Ax)](https://live.staticflickr.com/65535/53962935203_6a26f1b2e4_k.jpg)
+
+![[Uphill Slog](https://flic.kr/p/2qdwxFr)](https://live.staticflickr.com/65535/53963012859_943d60b45e_k.jpg)
+
+The path then headed across another fell before down into Dufton. I met a guy who was heading North on The Way with a
+very large rucksack and an umbrella dangling from the bottom. I'd considered taking an umbrella myself to keep the worst
+of heavy rain off the top of me but decided against it as most rain in the UK comes in sideways.
+
+![[Floating Flag Stones](htps://flic.kr/p/2qduSk6)](https://live.staticflickr.com/65535/53962685371_4c9cfa59f1_k.jpg)
+
+![[Down to Dufton](https://flic.kr/p/2qduSmd)](https://live.staticflickr.com/65535/53962685436_0c7678d16d_k.jpg)
+
+I had been planning on eating at the [The Stag Inn][staginn]. Arriving just after 16:00 I had to wait
 until 17:00 until food was served and was told I couldn't look at the menu in advance as there was a party of eight
 booked in and they were taking priority so I would have to order after them. In the end the party (two families) turned
 up late and by 17:15 hadn't decided what they wanted to eat so I was allowed to order ahead of them (as had a number of
 other people who were eating but hadn't been waiting as long as I had). Not the friendliest of service I came across but
 the food was ok.
+
+![[The Stagg Inn, Dufton](https://flic.kr/p/2qaC4XE)](https://live.staticflickr.com/65535/53930140792_db3bdc118a_k.jpg)
 
 It was getting late and in my rush to set off and get to [High Cup Nick][highcupnick] I set off without my walking
 poles. I didn't get far before realising this so dashed back to the pub to grab them and set off at a decent pace to
@@ -450,6 +510,8 @@ I snapped a few pictures in the fading light then setup my tent for the night an
 ![[High Cup Nick(Panoramic)
 Flickr](https://www.flickr.com/photos/slackline/53956798007/)](https://live.staticflickr.com/65535/53956798007_433927f79e_k.jpg)
 
+![[Wild Camping above High Cup Nick](https://flic.kr/p/2qbcLTM)](https://live.staticflickr.com/65535/53936717187_dcf0514d59_k.jpg)
+
 ### Day 6 - High Cup Nick to Middleton in Teesdale
 
 Wet, misty and windy this morning, I'd made the right decision heading up the previous night to see [High Cup
@@ -457,13 +519,21 @@ Nick][highcupnick] in all its glory as I couldn't see much of it this morning. P
 looking forward to a short day of 28km almost exclusively downhill along the edge of the Maize Beck then the River Tees
 to Middleton in Teeside.
 
-![[Wrapped Up |
-Flickr](https://www.flickr.com/photos/slackline/53937872463/in/datetaken/)](https://live.staticflickr.com/65535/53937872463_64695633d4_k.jpg)
+![[Wrapped Up ](https://flic.kr/p/2qbiGjk)](https://live.staticflickr.com/65535/53937872463_64695633d4_k.jpg)
+
+![[Maize Beck](https://flic.kr/p/2qdwzs7)](https://live.staticflickr.com/65535/53963018814_63f6119cb0_k.jpg)
 
 Crossed a bridge that had been erected in memory of Ken Wilson and followed a good compact
 track downhill passing through Birksdale Farm and shortly after coming on to the fantastic view of the
 confluence of Maize Beack and River Tees. The trail swings by underneath the dam of [Cow Green Reservoir][cowgreen] and
 down the side of [Cauldron Snout][caulrdonsnout] which was in full flow and very impressive.
+
+![[Maize Beck and Cauldron
+Snout](https://flic.kr/p/2qduTSK)](https://live.staticflickr.com/65535/53962690571_fd7f210898_k.jpg)
+
+![[Cauldron Snout](https://flic.kr/p/2qdxfzw)](https://live.staticflickr.com/65535/53963150440_ac923f7b50_k.jpg)
+
+![[River Tees](https://flic.kr/p/2qbcLNX)](https://live.staticflickr.com/65535/53936716907_20ae9cd704_k.jpg)
 
 The Way then follows the River Tees all the way to Middleton on Tees side. Heading down this section I met a lady
 heading North along The Way, the first solo female hiker I'd met. She had set off early and was keen to reach Dufton
@@ -476,13 +546,28 @@ Waterfall][highforce] which was quite spectacular. Snapped a few shots from abov
 from the South to get some shots, waiting to get into position as there were a lot of people about, including a
 school/youth group.
 
+![[Top of High Force](https://flic.kr/p/2qduU1a)](https://live.staticflickr.com/65535/53962691001_e306dee75f_k.jpg)
+
+![[Going Down](https://flic.kr/p/2qdxfzX)](https://live.staticflickr.com/65535/53963150465_aa8747d940_k.jpg)
+
+![[High Force](https://flic.kr/p/2qdwzoK)](https://live.staticflickr.com/65535/53963018619_65dd8cb739_k.jpg)
+
 Plodding along down hill the sound of the water bubbling over waterfalls was too tempting and I opted to cool my feet
 off in the cold water. It was delightful and I wish I had done it earlier. If you can stand it for long enough it
 rejunivates the feet, taking down swelling (the longer you stay in the more swelling goes down) and is just a delightful
 contrast to pounding the floor.
 
+![[Veins in the Rock](https://flic.kr/p/2qdxfsC)](https://live.staticflickr.com/65535/53963150040_3d770e793a_k.jpg)
+
+![[Jump!](https://flic.kr/p/2qdwzgq)](https://live.staticflickr.com/65535/53963018194_3a13a053c0_k.jpg)
+
 [Low Force][lowforce] came very soon after with the [something suspension bridge][] which strongly advised not to have
-more than one person on it at any given time which I and others duly respected. A little further along the trail I met a
+more than one person on it at any given time which I and others duly respected.
+
+
+![[Low Force](https://flic.kr/p/2qdqkrb)](https://live.staticflickr.com/65535/53961800992_6c03e5f5b4_k.jpg)
+
+A little further along the trail I met a
 couple out for a short walk who asked if I was walking the Pennine Way (the big rucksack and poles are a bit of a
 giveaway) we chatted and it transpired they were from Sheffield and occasionally drank in [The Brothers
 Arms][brothersarms] had just passed a pair who were also hiking from North to South who were also from Sheffield and who
@@ -512,8 +597,9 @@ head into town to grab a pizza for dinner that evening from Ozzy's which was del
 favouring his own food).
 
 Alex was a software engineer with a degree in computer science but was also learning about horticulture, initially to
-grow produce but more recently had got interested in ornamental plants. We popped back to The Forresters after pizza for
-another pint and to charge devices before heading back to the campsite for the night.
+grow produce but more recently had got interested in ornamental plants. We popped back into town for pizza at Ozzy's
+which was delicious and then along to The Forresters afterwards for another pint and to charge devices before heading
+back to the campsite for the night.
 
 ### Day 7 - Middleton in Teesdale to Thwaite
 
@@ -525,7 +611,13 @@ I'd made an organisational error and didn't get snacks (i.e. sweets to chomp on 
 night after pizza and beers with Alex so after packing everything up I hiked into town to grab some more Haribo Starmix
 before setting off on The Way in light drizzle. Gentle arable land rolled past with a couple of tuck shops passed on the
 way, one of which had Irn-Bru cans for sale which I took advantage of for an energy boost later on. [Grassholme
-Reservoir][grassholme] was quickly passed. Coming over Beck Head there was a barn owl circling around the field, it
+Reservoir][grassholme] was quickly passed.
+
+![[Tuck Shop](https://flic.kr/p/2qbj7yD)](https://live.staticflickr.com/65535/53937954029_ddfb10b140_k.jpg)
+
+![[Shell of a House](https://flic.kr/p/2qdyjPy)](https://live.staticflickr.com/65535/53963359822_3ec7884875_k.jpg)
+
+Coming over Beck Head there was a barn owl circling around the field, it
 seemed to be struggling to gain height and escape in the strong wind that was blowing as it circled the area multiple
 times. I thought I glimpsed someone walking ahead of me in the same direction with a red bag but lost sight of them
 quickly even though I should have had a clear view of them as I dropped down into the valley with [Blackton
@@ -542,6 +634,10 @@ the last week and  even the villages I passed through. Just south of the A66 was
 Bridge][godsbridge]" a natural limestone bridge over the River Greta. There wasn't much water flowing but it was very
 cool. If I hadn't been in such a rush I might have investigated more, but I still had a long way to go to get to Hawes.
 
+![[A66 Underpass](https://flic.kr/p/2qdEzqx)](https://live.staticflickr.com/65535/53964579619_0c22d853fc_k.jpg)
+
+![[God's Bridge](https://flic.kr/p/2qbhqbP)](https://live.staticflickr.com/65535/53937623091_c497fe5671_k.jpg)
+
 Following the track up from River Greta I met a father and son who were on day six or seven heading North on The Way. We
 had a brief chat and they asked how I was getting on in sandals and shorts which I'd opted for that day as it had been
 raining when I set off and I knew I had the bog that leads up to Tan Hill to contend with. I was quite happy walking in
@@ -550,33 +646,60 @@ sandals and felt they worked well.
 The Way then followed a good shooting track for a few kilometers up the slope towards Tan Hill but eventually petered
 out. As I left the trail I met two older ladies who were also following The Way North but had taken the sensible option
 of having their kit sherpa'd ahead each day so they had the luxury of walking with lighter day sacks. Not a bad idea at
-all I thought as I checked how heavy my pack felt. There were a series of good wooden sign-posts with white painted tops
+all I thought as I checked how heavy my pack felt.
+
+![[Shooting Track](https://flic.kr/p/2qbiJ8a)](https://live.staticflickr.com/65535/53937878543_eb11378f99_k.jpg)
+
+![[Tan Hill](https://flic.kr/p/2qdFdAf)](https://live.staticflickr.com/65535/53964704650_408b771472_k.jpg)
+
+
+There were a series of good wooden sign-posts with white painted tops
 that marked the way through the bog to Tan Hill summit and the highest pub in England. Near the top I saw a couple in
 the middle of the moor and bog disagreeing about which way to go as they tried to get back on the path. As I met them it
 was clear they weren't british and I advised them to follow the marker posts and ignore the smaller plastic ones which I
 think they had mistakenly started following and had taken them off-track as these were markers for grouse feeders.
 
+![[Caution Deep Hole](https://flic.kr/p/2qbhrqc)](https://live.staticflickr.com/65535/53937627231_fa4dd386e7_k.jpg)
+
 On arrival at the [Tan Hill Inn][tanhillinn] I popped in to ask if it would be ok to pitch my tent so it could dry in
 the wind and sun whilst I had lunch and duly did so before settling down to an expensive pint and scampi and chips which
-was good but probably a bit over-priced too in my opinion. No time for a second pint (the queue at the bar precluded
-this) so I packed up the now dry tent and set off on a good track towards East Stronsdale, gradually losing
-height. Upper [East Gill Force][eastgillforce] was passed and The Way then headed up an interestingly paved path up
-Kisdon hill before skirting around over jumbled limestone blocks. Traversing Kisdon Hill gave some stunning views into
+was good but probably a bit over-priced too in my opinion.
+
+![[Drying the Tent](https://flic.kr/p/2qgqXBd)](https://live.staticflickr.com/65535/53995872166_e26484d05e_k.jpg)
+
+No time for a second pint (the queue at the bar precluded this) so I packed up the now dry tent and set off on a good
+track towards East Stronsdale, gradually losing height. Upper [East Gill Force][eastgillforce] was passed and The Way
+then headed up an interestingly paved path up Kisdon hill before skirting around over jumbled limestone blocks.
+
+![[Upper East Gill Force](https://flic.kr/p/2qbhrr4)](https://live.staticflickr.com/65535/53937627281_0feff82acc_k.jpg)
+
+![[Old Mining Tracks](https://flic.kr/p/2qbj8Pe)](https://live.staticflickr.com/65535/53937958239_804fb2d3f3_k.jpg)
+
+Traversing Kisdon Hill gave some stunning views into
 [Swaledale][swaledale], unfortunately at this point a heavy shower passed over but as it was late in the day I had the
-delight of a rainbow over Black Hill. Dropping down into [Thwaite][thwaite] there were more black clouds looming over
-Dam Hill and Great Shunner Fell so I decided to not push on to Hawes that evening and instead stop in the campsite I'd
-seen in the valley. Not before having a beer though so I popped into an empty [Kearton House][keartonhouse] only to be
-told that they weren't open and the only reason the door was unlocked was because the solicitors had just visited.  I
-was advsed I might be able to get a beer at Usha Campsite where I was heading as they had a small shop so I walked the
-kilometre or so down the road only to find I was too late in the day as the shop, and reception in general, had closed
-an hour and a half earlier.
+delight of a rainbow over Black Hill.
+
+![[Rainbow over Black Hill](https://flic.kr/p/2qbiHXF)](https://live.staticflickr.com/65535/53937877993_b2f532961e_k.jpg)
+
+![[Above Muker](https://flic.kr/p/2qbhrk2)](https://live.staticflickr.com/65535/53937626931_c121841904_k.jpg)
+
+Dropping down into [Thwaite][thwaite] there were more black clouds looming over Dam Hill and Great Shunner Fell so I
+decided to not push on to Hawes that evening and instead stop in the campsite I'd seen in the valley. Not before having
+a beer though so I popped into an empty [Kearton House][keartonhouse] only to be told that they weren't open and the
+only reason the door was unlocked was because the solicitors had just visited.  I was advsed I might be able to get a
+beer at [Usha Campsite][ushagapcampsite] where I was heading as they had a small shop so I walked the kilometre or so
+down the road only to find I was too late in the day as the shop, and reception in general, had closed an hour and a
+half earlier.
 
 Pitched the tent in a field in the lee of a wall and large tree after carefully looking for dead branches that might
-come down in high wind and deciding it was relatively unlikely to happen. A quick shower then boiled some water to make
-dinner. There were a number of Duke of Edinbrough participants who were hiking around the area and I chatted to a few
-of the as I ate my rehydrated meal in the warmth and comfort of the facilities. They were bemoaning having to hike 20km
-or so, but to be fair they were having to carry all of their food, unlike mysel who was making good use of all of the
-eateries I was passing.
+come down in high wind and deciding it was relatively unlikely to happen.
+
+![[Usha Gap Campsite](https://flic.kr/p/2qbjLKK)](https://live.staticflickr.com/65535/53938082505_931c7cc01f_k.jpg)
+
+A quick shower then boiled some water to make dinner. There were a number of Duke of Edinbrough participants who were
+hiking around the area and I chatted to a few of the as I ate my rehydrated meal in the warmth and comfort of the
+facilities. They were bemoaning having to hike 20km or so, but to be fair they were having to carry all of their food,
+unlike mysel who was making good use of all of the eateries I was passing.
 
 Pretty tired so had an early night, but not before a few more showers passed through which helped me feel vindicated in
 my decision not to push on to Hawes that evening.
@@ -588,15 +711,25 @@ Up early (there is a theme here!) and packing the tent away I left before most o
 up. Reception wasn't open so I went to post my £10 through the letter box just as a lady was sorting reception for the
 day. She was very grateful and wished me luck on my days hiking.
 
+![[Sunrise from Usha Gap
+Campsite](https://flic.kr/p/2qdEaPo)](https://live.staticflickr.com/65535/53964500208_4add2bd5e8_k.jpg)
+
 I found a path along Muker Beck back to Thwaite which was a lot more pleasant the following the road I'd come down the
 previous evening and had soon passed through Thwaite and started heading up Dam Hill on a good compact farm track. This
-turned to flagstones as the path joined the open moorland and I had a good target to reach of a prominent cairn. I find
-setting myself short targets of reaching feature X or the other side of the valley in a certain number of minutes a good
-motivational way to keep moving quickly. Within no time I found I'd reached the cairn and paused to snap some pictures
-looking back down [Swaledale][swaledale] before continuing over Great Shunner Fell. There were great views to the North
-West but some ominous grey clouds were looming on the horizon so I didn't hang around too long admiring the view,
-instead dropping down quickly to reach Hawes for lunch. This section was longer than I expected and only server to
-reassure me I'd made the right decision the previous night not to tackle it in the fading light.
+turned to flagstones as the path joined the open moorland and I had a good target to reach of a prominent cairn.
+
+![[Sunlit Swaledale](https://flic.kr/p/2qdEA5Z)](https://live.staticflickr.com/65535/53964581849_1c6675de39_k.jpg)
+
+I find setting myself short targets of reaching feature X or the other side of the valley in a certain number of minutes
+a good motivational way to keep moving quickly. Within no time I found I'd reached the cairn and paused to snap some
+pictures looking back down [Swaledale][swaledale] before continuing over Great Shunner Fell.
+
+![[From Dam Hill Cairn](https://flic.kr/p/2qbja5F)](https://live.staticflickr.com/65535/53937962499_62ab462420_k.jpg)
+
+There were great views to the North West but some ominous grey clouds were looming on the horizon so I didn't hang
+around too long admiring the view, instead dropping down quickly to reach [Hawes][haes] for lunch. This section was
+longer than I expected and only served to reassure me I'd made the right decision the previous night not to tackle it in
+the fading light.
 
 Passing through [Hardraw][hardraw] I was tempted to duck into The Green Dragon for a pint but mindful of the grey skies I
 kept on going to [Hawes][hawes] instead where there were more options for lunch. In hindsight I wish I had stopped as it
@@ -605,19 +738,35 @@ pay to access it which would likely have put me off.
 
 A shower passed as I made my way to [Hawes][hawes] which is a lovely village in [Wensleydale][wensleydale]. None of the
 pubs opened until mid-day so instead I opted for lunch in [The Wensleydale Pantry][wensleydalepantry] which turned out
-to be an excellent choice as I had a delicious Thai vegetable Penang curry. Replenished I grabbed some sweets and a can
-of beer and set off out the west of the village pausing outside of St Margaret's Church to put on waterproof trousers as
-it had started to drizzle. This was just a passing shower and I soon stopped to remove the trousers as I was
+to be an excellent choice as I had a delicious Thai vegetable Penang curry.
+
+![[Hawes](https://flic.kr/p/2qbja4i)](https://live.staticflickr.com/65535/53937962419_6549fcc92f_k.jpg)
+
+![[Spoilt for Choice](https://flic.kr/p/2qbcPHQ)](https://live.staticflickr.com/65535/53936726702_de2a29b4b3_k.jpg)
+
+Replenished I grabbed some sweets and a can of beer and set off out the west of the village pausing outside of St
+Margaret's Church to put on waterproof trousers as it had started to drizzle.
+
+![[St Margaret, Hawes](https://flic.kr/p/2qbt53w)](https://live.staticflickr.com/65535/53939701562_6565b3ac51_k.jpg)
+
+
+This was just a passing shower and I soon stopped to remove the trousers as I was
 sweating. Onwards and upwards passing near the summit of Ten End (584m) I joined the Cam Road with excellent views over
 the valley to the west. By now it had started drizzling again but the wall by the side of Cam Road provided some shelter
 (the rain was coming in from the side rather than above) and I didn't think much of it as I passed by Dodd Fell Hill
 (668m). As I started dropping down into Ribblesdale though I realised I was quite wet now and the rain showed no signs
 of letting up. There was no point in putting waterproofs on now though so I plodded on downhill.
 
+![[I'm going uphill again](https://flic.kr/p/2qbyZAE)](https://live.staticflickr.com/65535/53940857278_2a435c2c4a_k.jpg)
+
 There was a random caravan just off of Cam High Road and as I continued a cyclist passed me coming up the road. We said
 hello but he looked like he was in a hurry and carried on. I noticed his cycling shorts had a big hole in them on the
 right thigh suggesting he'd come off earlier in the day. I left Cam High Road following Cam Road, crossing Cam Beck and
-Calf Holes, skirting farmland. I was thoroughly soaked by now and finding it pretty miserable for the second time of the
+Calf Holes, skirting farmland.
+
+![[Here comes the rain](https://flic.kr/p/2qbyZfj)](https://live.staticflickr.com/65535/53940856098_af71036c16_k.jpg)
+
+I was thoroughly soaked by now and finding it pretty miserable for the second time of the
 hike and resolved to find somewhere dry to stay for the night in [Horton in Ribblesdale][horton]. Eventually I arrived
 in town and immediately sort shelter in [The Crown][hortoncrown] where there were a couple of guys who had just
 completed the [Yorkshire Three Peaks][yorkshirethreepeaks] and were waiting for the friends to join them. After
@@ -671,6 +820,8 @@ rest. We both slowly packed up our kit which was still slightly damp and he sens
 for a picture. We wished each other good luck and he and jumped on his bike and set off, rejoining the Pennine Bridleway
 heading ultimately to Cape Wrath.
 
+![[Daniil](https://flic.kr/p/2qbxGBu)](https://live.staticflickr.com/65535/53940605026_0bc85fbf30_k.jpg)
+
 I was packed and ready to head out into the wind and rain shortly after and with nothing to keep me hanging around brace
 myself for the onslaught and headed out. Not sure there was much that could have prepared me for the battering the wind
 and rain gave me as I headed up [Pen y Ghent][penyghent], it was brutal! The rain was heavy and coming in horizontal as
@@ -679,31 +830,59 @@ seemed wise, they were in shorts and pretty basic trainers. The higher I got the
 a guy who said he'd been out wild camping for the night (nutter!). On the final path up to the summit plateau the wind
 really kicked in though and I was very grateful of having my walking poles to help stabilise me. Even then I was still
 struggling to walk in a straight line and remain upright! The plateau itself provided some respite as the wind wasn't
-hitting the side of the hill and being driven upwards and there was a shelter (viz. wall) near the summit trig point. A
-couple who had come up the way I was due to descend arrived and said it was pretty windy and wet on the path. There was
-no point hanging around so I got on with descending out of the horrendous wind. The rocks were wet, as predicted several
-days ago, but weren't that bad to negotiate (hands were employed for safety). The loss of altitude was accompanied by
-some easing off of the wind, but not by much. As I skirted round Cow Hill though the weather seemed to ease a bit, with
-both the rain and wind dying down a bit and the cloud base lifting a little. I unfortunately had to head up and over
-[Fountains Fell (668m)][fountainsfell] so up I went again. The weather was definitely improving as it wasn't anywhere
-near as windy or wet as [Pen y Ghent][penyghent] had been although the views remained non-existent.
+hitting the side of the hill and being driven upwards and there was a shelter (viz. wall) near the summit trig point.
+
+![[Pen-y-Ghent Summit](https://flic.kr/p/2qc7qxG)](https://live.staticflickr.com/65535/53946989678_04da8a0df6_k.jpg)
+
+A couple who had come up the way I was due to descend arrived and said it was pretty windy and wet on the path. There
+was  no point hanging around so I got on with descending out of the horrendous wind. The rocks were wet, as predicted
+several days ago, but weren't that bad to negotiate (hands were employed for safety). The loss of altitude was
+accompanied by some easing off of the wind, but not by much. As I skirted round Cow Hill though the weather seemed to
+ease a bit, with both the rain and wind dying down a bit and the cloud base lifting a little. I unfortunately had to
+head up and over [Fountains Fell (668m)][fountainsfell] so up I went again. The weather was definitely improving as it
+wasn't anywhere near as windy or wet as [Pen y Ghent][penyghent] had been although the views remained non-existent.
+
+![[Fountains Fell](https://flic.kr/p/2qc8sDq)](https://live.staticflickr.com/65535/53947191850_cc04b893ff_k.jpg)
+
 
 Soon I was dropping down and passing through farmland and making my way to skirt the long way round [Malham
 Tarn][malhamtarn] where the wind was whipping across and making quite a few waves. Somewhere to return to in the future
-as it was very picturesque (like so many other places on the hike!). The sun was out in force by now so I stripped down
+as it was very picturesque (like so many other places on the hike!).
+
+
+![[Malham Tarn](https://flic.kr/p/2qeDdk2)](https://live.staticflickr.com/65535/53975630039_dcb556ee4b_k.jpg)
+
+![[The River from Malham Tarn](https://flic.kr/p/2qex3dy)](https://live.staticflickr.com/65535/53974425352_d54a247c14_k.jpg)
+
+The sun was out in force by now so I stripped down
 to shorts and hung my waterproofs from my arm to dry in the wind which worked pretty quickly as I could pack them away
 before starting the descent to [Malham Cove][malhamcove]. I passed a couple of young ladies out for a walk as I
 descended from Malham Moor and skirted under Watlowes. They seemed impressed by my progress and said they would have to
 try hiking The Way which I thoroughly recommended they do. The limestone pavement above [Malham Cove][malhamcove] was
-impressive and had attracted those fit enough to climb the stairs up from the bottom of the Cove. I was getting hungry
-by now so after a few pictures I descended the steps, picking up a Red Bull can along the way and passed many people out
-for the day as I made a beeline for [The Lester Arms][lesterarms] where I had a mushroom and black bean burger with
-wedges and beer battered onion rings. Chatted to a few others who were having a drink and explained how useful I found
-walking poles to a couple, as the lady had had operations on her knees which were weak as a consequence.
+impressive and had attracted those fit enough to climb the stairs up from the bottom of the Cove.
+
+![[Above Malham Cove](https://flic.kr/p/2qeDdmj)](https://live.staticflickr.com/65535/53975630114_9062004599_k.jpg)
+
+![[Malham Cove](https://flic.kr/p/2qeCMYR)](https://live.staticflickr.com/65535/53975548133_c1c2db78d7_k.jpg)
+
+I was getting hungry by now so after a few pictures I descended the steps, picking up an empty Red Bull can along the
+way, and passed many people out for the day as I made a beeline for [The Lester Arms][lesterarms] where I had a mushroom
+and black bean burger with wedges and beer battered onion rings. Chatted to a few others who were having a drink and
+explained how useful I found walking poles to a couple, as the lady had had operations on her knees which were weak as a
+consequence.
+
+![[Lunch at The Lister Arms,
+Malham](https://flic.kr/p/2qcdRHT)](https://live.staticflickr.com/65535/53948245041_8f2744aad6_k.jpg)
 
 Satiated and watered I set off for Gargrave, tracking the [River Aire][aire] as it wound its way down the dale. This
 took me most of the way, but I parted company and was taken over a couple of hills via some fields with cows in which
-weren't bothered by my presence. I very soon came to Gargrave and headed to the Co-op to get a few beers for the evening
+weren't bothered by my presence.
+
+![[Malham Cove from afar](https://flic.kr/p/2qex2VE)](https://live.staticflickr.com/65535/53974424372_6fe86e3c4f_k.jpg)
+
+![[Goooogley Eyes](https://flic.kr/p/2qc9gPe)](https://live.staticflickr.com/65535/53947350527_d893ccce69_k.jpg)
+
+Soon I arrived at Gargrave and headed to the Co-op to get a few beers for the evening
 before back-tracking to [Eshton Road Caravan Park][eshton] where a lovely old gentleman pointed me to a small enclosed
 field to camp for the night. A beer whilst pitching the tent close to the wall so it was sheltered from the storm thatw
 as forecast to come through overnight and my appetite was whet so I headed back into town to eat at [The Frying
@@ -711,8 +890,12 @@ Yorkshireman][fryingyorkshireman] which was excellent both in terms of food and 
 delicious food and a boot shaped glass for the beer. If you're ever in Gargrave and need to eat head here you won't be
 disappointed. Back to the tent for another beer (cheaper than the pub!) and an early night.
 
+![[The Frying Yorkshireman](https://flic.kr/p/2qcgcZQ)](https://live.staticflickr.com/65535/53948703470_cd52992eb8_k.jpg)
+
 Chatted to a friendly guy on the campsite who I'd seen eating fish and chips opposite the chippy whilst I snapped
 pictures of the antiquated pharmacy and then got an early night.
+
+![[Gargrave Pharmacy](https://flic.kr/p/2qeDMcq)](https://live.staticflickr.com/65535/53975740610_88c92fb179_k.jpg)
 
 ### Day 10 - Gargrave to Colden
 
@@ -739,6 +922,8 @@ through a few country lanes where I encountered a tree that had been felled by t
 down for a minute or so as I negotiated the branches and soon I found myself walking along a section of the canal where
 I came across a cool two-storey bridge.
 
+![[Tree Down](https://flic.kr/p/2qcdSsJ)](https://live.staticflickr.com/65535/53948247526_172637363a_k.jpg)
+
 In [Thornton in Craven][thornton] I asked a gentleman who was rescuing his bin where the nearest shop was. Unfortunately
 there weren't any shops in Thornton, the nearest was [Earby][earby] which was off-route, but I needed some food for the
 day so crossed a couple of fields, noticing that the Colne and Broughton/Skipton Road was closed due to another tree
@@ -746,9 +931,13 @@ that had come down and there was a queue of lorries backing up into Earby as the
 narrow lanes. [Earby][earby] had the usual Co-op and supplies for the day were purchased along with a "Yorkshire Slice"
 from a local bakery where I instantly regretted not buying my lunch from there instead of the Co-op.
 
+![[Yorkshire Dales](https://flic.kr/p/2qc9gBA)](https://live.staticflickr.com/65535/53947349852_e3c414a8b3_k.jpg)
+
 I soon rejoined The Way and headed up to Pinhaw Beacon where there was a memorial to those who had died in the COVID19
 Pandemic written to a Shakespeare sonnet. I was saddened to see some idiots had vandalised the tribute to the NHS at the
 end. Some people have no idea how fortunate they are to have free, world leading, health-care in this country.
+
+![[Coronavirus Sonnet](https://flic.kr/p/2qcfxzC)](https://live.staticflickr.com/65535/53948574234_408d2c7cca_k.jpg)
 
 After dropping down into Lothersdale and out again I met a guy who was walking from Dover to Cape Wrath and was
 currently on day 20. He was a talker and regaled going through London rather than round it camping near some football
@@ -758,21 +947,34 @@ as I still had a long way to go.
 I'd hoped there would be a pub near The Way in Ikornshaw but alas no so up Green Hill I went. As I reached the edge of
 the moors there appeared to be a collection of extreme sheds dotted along the edge. Perhaps these were for game keepers
 but there were a lot of them. There was a guy working outside of one and he took the time to calm his dog as I passed
-but I didn't think to ask him what the sheds were for or why there were so many. The moorland opened up and I met a lady
-who was out for a run, we had a brief chat about how nice a day it was and she mentioned she had just passed another
-person who was hiking the Pennine Way and heading South, this was a surprise and I decided to quicken my pace and see if
-I could catch them up. On the top of the moor I met two ladies who were heading north independently, the second was
-suffering from a very sore knee which she suspected was due to the weight of her pack and not being sufficiently fit. I
-advised getting some poles if possible to help and carried on, dropping down and passing Ponden Reservoir then up and
-over to Within Heights where an abandoned farm was a possible an inspiration for Emily Bronte's _Wuthering Heights_, a
-book I've never read and likely never will. Good flagstones led to Walshaw Dean Reservoirs which were skirted round and
-Lower Gorple Reservoir passed quickly. Traversing the moor of Standing Stone Hill was straight forward and I soon
-dropped down into [Colden][colden] where I easily found the [The New Delight Inn][newdelight] with the [Hebden Bridge
-Camping][hebdencamping] adjacent. I wandered into the busy pub which had a lovely community vibe, lots of people milling
-around chatting and was asked if I was looking to camp for the night (I can't think what gave that away!) and quickly
-directed to a lady sat with friends who happily took my £20 note and gave me a warm £10 she had extracted from her
-bra. The setup was simple as there was a small field next to the car park, flat at the bottom with toilets outside the
-pub and one person already camped there.
+but I didn't think to ask him what the sheds were for or why there were so many.
+
+The moorland opened up and I met a lady who was out for a run, we had a brief chat about how nice a day it was and she
+mentioned she had just passed another person who was hiking the Pennine Way and heading South, this was a surprise and I
+decided to quicken my pace and see if I could catch them up. On the top of the moor I met two ladies who were heading
+north independently, the second was suffering from a very sore knee which she suspected was due to the weight of her
+pack. I advised getting some poles if possible to help and carried on.
+
+
+![[Shooting Cabin](https://flic.kr/p/2qcff5b)](https://live.staticflickr.com/65535/53948515338_135950d543_k.jpg)
+
+I dropped down and passing Ponden Reservoir then up and over to Within Heights where an
+abandoned farm was a possible an inspiration for Emily Bronte's _Wuthering Heights_, a book I've never read and likely
+never will.
+
+
+Good flagstones led to Walshaw Dean Reservoirs which were skirted round and Lower Gorple Reservoir passed
+quickly.
+
+![[Walshaw Dean Lower
+Reservoir](https://flic.kr/p/2qcdUEp)](https://live.staticflickr.com/65535/53948254931_398ec8ecf3_k.jpg)
+
+Traversing the moor of Standing Stone Hill was straight forward and I soon dropped down into [Colden][colden]
+where I easily found the [The New Delight Inn][newdelight] with the [Hebden Bridge Camping][hebdencamping] adjacent. I
+wandered into the busy pub which had a lovely community vibe, lots of people milling around chatting and was asked if I
+was looking to camp for the night (I can't think what gave that away!) and quickly directed to a lady sat with friends
+who happily took my £20 note and gave me a warm £10 she had extracted from her bra. The setup was simple as there was a
+small field next to the car park, flat at the bottom with toilets outside the pub and one person already camped there.
 
 Heading over I dumped the pack and said hello to the other camper who happened to be the person the runner had met
 earlier in the day. His name was Mike and he was busy enjoying his dinner and avoiding the midges. We had a brief chat
@@ -783,6 +985,8 @@ Bridge that delivered. Connected to the WiFi I placed my order and settled down 
 past few days as I'd fallen behind. I was unfortunately quite tired, the light wasn't great and I didn't have my glasses
 which I find I'm needing more frequently these days, but I got some notes written before the pizza arrived which was
 delicious.
+
+![[Takeaway Pizza Delivered](https://flic.kr/p/2qc9iN4)](https://live.staticflickr.com/65535/53947357187_e28afeaf6a_k.jpg)
 
 I had a big day planned as I wanted to pass Standing Edge where there wasn't much accommodation, and push through to
 Crowden in a single big day which would leave me with "just" Bleaklow and Kinder to pass to get to Edale and so suitably
@@ -796,14 +1000,29 @@ done so over the past few days. Tent away and I hit the trail again, heading dow
 Water. I wasn't paying attention though and made a minor navigational error missing the turning and only realised 500m
 down the hill in the woods adding an unnecessary kilometre to the days hiking and having to turn around and head back up
 hill to find The Way which followed a very narrow, overgrown path between dry stone walls of fields before dropping
-steeply down into Calder Valley. I had been thinking about getting some food here but as I approached the River Calder I
+steeply down into Calder Valley.
+
+![[Stoodley Pike from afar](https://flic.kr/p/2qeBEFK)](https://live.staticflickr.com/65535/53975328481_96ddea727c_k.jpg)
+
+
+I had been thinking about getting some food here but as I approached the River Calder I
 saw a heron in the middle of the river and completely forgot to look for food as I snapped as many pictures as I could
-before it flew off. Happy to have got some half decent shots, given the lack of zoom on my camera, I started the long
+before it flew off.
+
+![[Heron](https://flic.kr/p/2qeDSkG)](https://live.staticflickr.com/65535/53975757910_3f0e94942a_k.jpg)
+
+
+Happy to have got some half decent shots, given the lack of zoom on my camera, I started the long
 slog out of the valley to [Stoodley Pike][stoodleypike]. This section had looked steep but the path followed farm tracks
-and wound its way through woods and some fields before the final steep section onto the edge of the moor. Before this
-last steep bit I paused to sort out my clothing as it looked like it was about to start raining and spied what I thought
-was Mike passing [Stoodley Pike][stoodleypike]. Its an impressive monument and I took the time to climb the 39 steps
-that take you to the balcony and snap some overcast shots in each of the ordinal directions.
+and wound its way through woods and some fields before the final steep section onto the edge of the moor.
+
+![[Land Rover](https://flic.kr/p/2qeDSi7)](https://live.staticflickr.com/65535/53975757760_4417634b08_k.jpg)
+
+Before this last steep bit I paused to sort out my clothing as it looked like it was about to start raining and spied
+what I thought was Mike passing [Stoodley Pike][stoodleypike]. Its an impressive monument and I took the time to climb
+the 39 steps that take you to the balcony and snap some overcast shots in each of the ordinal directions.
+
+![[Stoodley Pike](https://flic.kr/p/2qex7HF)](https://live.staticflickr.com/65535/53974440497_d373599f17_k.jpg)
 
 Continuing along The Way I met a group out for an early hike approaching from the opposite direction and followed the
 flagstones across the moor to Warland Reservoir which was looking a bit empty. I was gaining on Mike now and was able to
@@ -1002,6 +1221,7 @@ in some manner at some point in your life.
 [garthquarry]: https://www.28dayslater.co.uk/threads/force-garth-quarry-middleton-in-teesdale-april-2015.96048/
 [gbduro24]: https://www.theracingcollective.com/gbduro.html#results
 [godsbridge]: https://designatedsites.naturalengland.org.uk/SiteDetail.aspx?SiteCode=S1001347
+[gpx]: https://en.wikipedia.org/wiki/GPS_Exchange_Format
 [grassholme]: https://www.openstreetmap.org/way/4322169
 [gregshut]: http://www.gregshut.org.uk/
 [hardraw]: https://en.wikipedia.org/wiki/Hardraw
@@ -1026,6 +1246,7 @@ in some manner at some point in your life.
 [malhamtarn]: https://en.wikipedia.org/wiki/Malham_Tarn
 [malhamcove]: https://en.wikipedia.org/wiki/Malham_Cove
 [middleton]: https://www.openstreetmap.org/query?lat=54.618065&lon=-2.082456
+[motog100]: https://www.gsmarena.com/motorola_moto_g100-10791.php
 [nagshead]: https://www.the-old-nags-head.co.uk/
 [newdelight]: https://www.newdelightinn.co.uk/
 [numbtoes]: https://thetrek.co/numb-toes-after-finishing-your-thru-hike-heres-why/
@@ -1037,6 +1258,7 @@ in some manner at some point in your life.
 [psw]: https://wiki.openhumans.org/wiki/Personal_Science_Wiki
 [pw]: https://www.nationaltrail.co.uk/en_GB/trails/pennine-way/
 [rapishaw]: https://www.openstreetmap.org/#map=17/55.011858/-2.344015
+[sonyrx100]: https://www.sony.co.uk/electronics/cyber-shot-compact-cameras/dsc-rx100m4
 [snt]: https://scottishnationaltrail.org.uk/
 [spinerace]: https://www.thespinerace.com/
 [staginn]: https://thestagdufton.co.uk/
