@@ -16,26 +16,7 @@ execute:
   warning: false
 ---
 
-<!-- ```{r} -->
-<!-- #| eval: false -->
-<!-- #| echo: false -->
-<!-- library(gtsummary) -->
-<!-- library(leaflet) -->
-<!-- library(rgdal) -->
-<!-- ## https://rstudio-pubs-static.s3.amazonaws.com/328775_2c54adb6ac734563b88c14bce515b012.html -->
-<!-- ## https://digital-geography.com/gpx-overview-r-function-create-overview-gpx-files-using-leaflet-rgooglemaps/ -->
-<!-- ``` -->
 
-```{python}
-#| eval: false
-#| echo: false
-import folium
-import numpy as np
-import pandas as pd
-
-## https://rstudio-pubs-static.s3.amazonaws.com/328775_2c54adb6ac734563b88c14bce515b012.html
-## https://digital-geography.com/gpx-overview-r-function-create-overview-gpx-files-using-leaflet-rgooglemaps/
-```
 
 This summer I decided to hike the iconic [Pennine Way][pw] a 431 kilometre (261 miles) national trail stretching between
 [Kirk Yetholm][ky] in the North and [Edale][edale] in the South. Traditionally the route is hiked from South to North
@@ -43,8 +24,13 @@ but as I live in Sheffield and have hiked around Kinder, Bleaklow and Blackhill 
 even if I didn't complete the route I would get to see places I wasn't familiar with and it was also cheaper to buy an
 advance rail ticket than have to purchase one on the day of return as I had no idea how long it would take.
 
+NB - In order to provide some relevance to the computing theme of this blog I include examples of how to plot GPX points
+in both [R][r] using the [leaflet R package][rleaflet] and [python][python]  using the [folium package][folium] make
+using the [leaflet][leaflet] JavaScript framework very simple.
+
 ![[Not Pennine Way](https://www.flickr.com/photos/slackline/53930940490/) by
 Me](https://live.staticflickr.com/65535/53930940490_d331111f4f_k.jpg)
+
 
 ## Planning
 
@@ -78,11 +64,266 @@ write-up.
 Details and more information about these and other Open Source tools for self-research that **protect the users privacy
 from the pernicious intrusions made by Big Tech** can be found on the [Personal Science Wiki][psw].
 
+
 ## Pictures
 
 I carried my phone, a [Motorola GT100][motog100] and a [Sony RX100 Mk IV][sonyrx100] with me along the route. I take a
 _lot_ of pictures, most are crap but some are half decent and I've included in this post the better ones or those that
 accompany the story well. You can find the full set of pictures on my [Pennine Way Flickr album][flickr_pw].
+
+
+## Using GPX Tracks
+
+I've opted to provide solutions to plotting GPX tracks in both [R][r] and [Python][python] since I use both in my day to
+day work. Each code chunk outputs a map and the code can be viewed if you want to learn how to create maps using either
+language.
+
+
+This requires...
+
+1. Finding files with the `.gpx` extension.
+2. Loading each file GPX file.
+3. Extracting the GPS points (latitude and longitude), speed, elevation and date/time.
+4. Plotting the points on a [Leaflet][leaflet] map.
+
+To simplify this process I define functions to carry out the task (rather than copying and pasting the code for each
+day). Both [R][r] and [Python][python] have libraries for working with the [Leaflet][leaflet] library. Currently I've
+got slightly further with the Python library than the R but I intend to update that and will write a separate blog post
+on mapping with each of the libraries. Things to do on the maps...
+
+- Consistent zoom level on both.
+- Correctly colouring points by `speed` or `elevation` in R.
+- Start and End markers.
+- Add pop-ups on hovering over any point to show the metrics (lat/lon, date/time, speed, elevation, accuracy).
+- Plot the whole journey as one.
+
+::: {.panel-tabset}
+
+## R
+
+The R library is named after the Javascript library, i.e. [leaflet][leafletr]
+
+
+```{r}
+#| label: r-load-gpx
+#| code-fold: false
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+## https://rstudio.github.io/leaflet/
+## https://www.r-bloggers.com/2022/10/r-and-gpx-how-to-read-and-visualize-gpx-files-in-r/
+## https://mastodon.social/@yabellini@fosstodon.org/113181640784237866
+library(htmlwidgets)
+library(leaflet)
+library(gpx)
+## List GPX files
+gpx_files <- list.files(pattern = "\\.gpx$", recursive = TRUE)
+## Remove the 'pennine_way' gpx as we will concatenate the others
+gpx_files <- head(gpx_files, -1)
+## Strip the common path and extract the date
+dates <- stringr::str_split(gpx_files, "/", simplify = TRUE)[,2]
+dates <- stringr::str_split(dates, "_", simplify = TRUE)[,1]
+
+gps <- lapply(gpx_files, gpx::read_gpx)
+names(gps) <- dates
+#gps <- lapply(gps, function(df) df[[1]]$tracks)
+
+#' Convert GPS points to data frame
+#'
+#' @params
+#'
+#' gps list GPS track read by gpx::read_gpx().
+#' columns list Column names.
+#'
+#' @returns Data Frame of GPS points.
+gps_to_df <- function(gps, columns = c("elevation", "time", "lat", "lng", "speed", "accuracy", "segment_id")) {
+    df <- as.data.frame(gps$tracks[[1]])
+    colnames(df) <- columns
+    df <- df |>
+          dplyr::mutate(speed = as.numeric(speed),
+                        elevation = as.numeric(elevation),
+                        accuracy = as.numeric(accuracy),
+                        lat = as.numeric(lat),
+                        lng = as.numeric(lng),
+                        accuracy = as.numeric(accuracy),
+                        time = lubridate::as_datetime(time),
+          )
+    df
+}
+gps_df <- lapply(gps, gps_to_df)
+names(gps_df) <- dates
+
+#' Plot a gps dataframe
+#'
+#' @params
+#'
+#' gps_df list List of GPS Dataframes.
+#' date str Date of track to plot
+#' color str Variable to colour points as, default 'speed' but 'elevation' also possible
+#'
+#' @returns Leaflet map
+plot_day <- function(gps_df, date, color = "speed") {
+    ## Palette not working...yet!
+    ## pal <- leaflet::colorNumeric(palette = c("green", "red"),
+    ##                             domain = gps_df[date][[color]])
+    leaflet::leaflet() |>
+        leaflet::addTiles() |>
+        leaflet::addPolylines(data = gps_df[date][[1]],
+                              lat = ~lat,
+                              lng = ~lng,
+                              ## color = ~pal(color)
+                              )
+}
+
+```
+
+
+## Python
+
+The [gpxplotter][gpxplotter] package provides wrappers around [folium][folium] for plotting GPX traces, but I opted to
+do this manually so I could learn more about Folium (I used to use it in a previous job, just need to remember what I
+used to do!).
+
+
+```{python}
+#| label: python-load-gpx
+#| code-fold: false
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+# https://towardsdatascience.com/build-interactive-gps-activity-maps-from-gpx-files-using-folium-cf9eebba1fe7
+from pathlib import Path
+import pandas as pd
+import folium
+import gpxpy
+gpx_files = sorted(Path(".").glob("**/*.gpx"))
+
+def gpx_to_df(filename: Path | str) -> pd.DataFrame:
+    """
+    Load a GPX track and extract data.
+
+    Parameters
+    ----------
+    filename: Path | str
+        Path to a .gpx file.
+
+    Returns
+    -------
+    pd.DataFrame
+    """
+    gpx = gpxpy.parse(filename.open())
+    gpx_segments = list(gpx.tracks[0].segments)
+    data = []
+    for segment in gpx_segments:
+        for point_id, point in enumerate(segment.points):
+            data.append([point.latitude,
+                         point.longitude,
+                         point.elevation,
+                         point.time,
+                         segment.get_speed(point_id)
+                       ])
+    columns = ["latitude", "longitude", "elevation", "time", "speed"]
+    return pd.DataFrame(data, columns = columns)
+
+def tidy_speed(df: pd.DataFrame, speed: str = "speed", threshold: float = 3.5) -> pd.DataFrame:
+    """
+    Remove extreme speed values from a GPS dataframe.
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        Pandas DataFrame of GPS points.
+    speed: str
+        Variable holding speed, default is 'speed' and shouldn't need changing.
+    threshold: float
+        Threshold for defining extreme speed
+
+    Returns
+    -------
+    pd.DataFrame
+        Pandas Dataframe with values of 'speed' > 'threshold' set to 'threshold'.
+    """
+    df.loc[df[speed] > threshold, speed] = threshold
+    return df
+
+def extract_lat_lon(gps_df: pd.DataFrame, lat: str = "latitude", lon: str = "longitude") -> list[tuple]:
+    """
+    Extract latitude and longitude from GPX data frame.
+
+    Parameters
+    ----------
+    gps_df: pd.DataFrame
+        Pandas Dataframe with latitude and longitude columns.
+    lat: str
+        Name of latitude column.
+    lon: str
+        Name of longitude column.
+
+    Returns
+    -------
+    list[tuple]
+        Returns a list of tuples each of which is the latitude and longitude.
+    """
+    _array = gps_df[[lat, lon]].to_numpy()
+    return [tuple(point) for point in _array]
+
+def plot_gpx_df(gps_df: list[tuple],
+                lat: str = "latitude",
+                lon: str = "longitude",
+                colors: str = "speed",
+                colormap: str = "viridis",
+                speed_threshold: float = 3.5,
+                default_tile: str = "openstreetmap") -> folium.Map:
+    """
+    Plot gps points on a map.
+
+    Parameters
+    ----------
+    gps_df: list[tuple]
+        A list of tuples of GPS points
+    lat: str
+        Name of latitude column.
+    lon: str
+        Name of longitude column.
+    colors: str
+        What to plot the colour of the line as, options are 'elevation' and 'speed' (default).
+    colormap: str
+        Colormap to use when plotting points.
+    speed_threshold: float
+        Speed threshold for defining and resetting extreme values, default is '3.5'.
+    default_tile: str
+        Default map tile to use
+    """
+    if speed_threshold > 0.0:
+        gps_df = tidy_speed(gps_df, threshold=speed_threshold)
+    map = folium.Map(location=[gps_df[lat].mean(),
+                               gps_df[lon].mean()],
+                     tiles = None)
+
+    folium.TileLayer("openstreetmap", name = "OpenStreetMap").add_to(map)
+    folium.TileLayer("http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg",
+                     attr="terrain-bcg",
+                     name="Terrain Map").add_to(map)
+    # Add layer control (not working)
+    # folium.LayerControl(collapsed = True).add_to(map)
+    points = extract_lat_lon(gps_df, lat, lon)
+    folium.ColorLine(points, weight=4, colors=gps_df[colors]).add_to(map)
+    # Calculate bounding box (not working)
+    # south_west = gps_df[[lat, lon]].min().values.tolist()
+    # north_east = gps_df[[lat, lon]].min().values.tolist()
+    # map.fit_bounds([south_west, north_east])
+    return map
+
+## Get a list of all GPX points
+gpx = {Path(_file.stem).stem.split("_")[0]: gpx_to_df(_file) for _file in gpx_files }
+
+```
+
+
+:::
+
 
 ## Day by Day
 
@@ -91,14 +332,14 @@ accompany the story well. You can find the full set of pictures on my [Pennine W
 Having packed over the previous few days I weighed the rucksack with 2 litres of water attached, 17.4kg.
 
 This was a walking holiday so I waved goodbye to my wife and daughter around 07:30 feeling fresh and walked to the train
-station to catch the 08:22 train to Berwick-Upon-Tweed. Being Sheffield this involved a hill and it wasn't too bad
-carrying the extra weight of the rucksack.
+station to catch the 08:22 train to Berwick-Upon-Tweed. Being Sheffield this involved a hill but it wasn't too bad
+carrying the extra weight of the rucksack. I had poles but hadn't put them to good use just yet.
 
 The train journey was uneventful, but gave me time to sit and read a book on the Kobo I bought with me. I had bought the
 Kobo for hiking in the Julian Alps of Slovenia the previous year as I didn't want to carry multiple books. Having
-recently started reading Johann Harri's [_Stolen Focus : Why You Can't Pay Attention_][stolenfocus] I expected to get through it
-and had some fiction to read as well (Haruki Murakami's [_IQ84_][iq84]). The countryside passed by as did the first couple
-of chapters and before long I was getting off at Berwick-Upon-Tweed.
+recently started reading Johann Harri's [_Stolen Focus : Why You Can't Pay Attention_][stolenfocus] I expected to get
+through it and had some fiction to read as well (Haruki Murakami's [_IQ84_][iq84]). The countryside passed by as did the
+first couple of chapters and before long I was getting off at Berwick-Upon-Tweed.
 
 I'd checked the schedule and had a short wait before the bus to Kelso arrived. There was a gentleman trying to
 straighten one of two buckled wheels on his bike outside the station. Its quite hard to buckle wheels and I figured he'd
@@ -175,6 +416,33 @@ planned and had no problems hiking up the hills with the weight of my pack.
 
 ![[Clennell Street |
 Flickr](https://www.flickr.com/photos/slackline/53923626465/in/datetaken/)](https://live.staticflickr.com/65535/53923626465_6a76fe5f8a_k.jpg)
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-14
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-14")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-14
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-14"], colors="speed")
+```
+:::
 
 ### Day 2 - Clennell Street to Bryness
 
@@ -259,6 +527,33 @@ Dinner was communal and very sociable and revolved heavily around the ludicrious
 running ultra-marathons. I had another beer after dinner but headed to bed early around 21:00 shortly after the sun had
 set but not before picking up a vegetable pasty and paying for my beer and food.
 
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-15
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-15")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-15
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-15"], colors="speed")
+```
+:::
+
 
 ### Day 3 - Bryness to Hadrians Wall
 
@@ -273,7 +568,7 @@ Bryness](https://flic.kr/p/2qd1mw4)](https://live.staticflickr.com/65535/5395712
 Wishing him a good time I got back on track and The Way then followed good solid forestry trails through pine forests
 for about 15-16km before breaking out onto moorland which I reached in about three hours.
 
-![[Forest Giants](https://flic.kr/p/2qd2CGa)](https://live.staticflickr.com/65535/53957371473_a39ead7a13_3k.jpg)_
+![[Forest Giants](https://flic.kr/p/2qd2CGa)](https://live.staticflickr.com/65535/53957371473_a39ead7a13_3k.jpg)
 
 
 The moorland wasn't too bad, mainly as it was mostly paved so the few boggy bits weren't a problem. I stepped over what
@@ -342,6 +637,33 @@ but had lost track of time watching the sunset but didn't have too far to go to 
 
 I was tired after around 50 km of hiking so crawled into the tent and fell asleep quickly.
 
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-16
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-16")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-16
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-16"], colors="speed")
+```
+:::
+
 ### Day 4 - Hadrians Wall to Garigill
 
 Woke early and stuck my head out of the tent to a beautiful sunrise along the line of the wall.
@@ -372,8 +694,8 @@ friendly place, especially for those out on their own.
 
 [Toilets][cawfields] at Cawfields Lake were very welcome and there was also fresh water available which was useful for
 the coming day. Hadrians Wall petters out here and crosses some farmland where I met a couple of guys heading North on
-The Way and encouraged them onwards as they didn't have too far to go compared to how far they come, which reminded me
-how much further I still had to go.
+The Way and encouraged them onwards as they didn't have too far to go compared to how far they had already come, which
+served to remind me how much further I still had to go!
 
 ![[Milecastle, Cawfields, Hadrians Wall](https://flic.kr/p/2qaz3cX)](https://live.staticflickr.com/65535/53929549557_905faaa9e6_k.jpg)
 
@@ -442,6 +764,33 @@ the shower of plastic bottles and cans had stopped and I soon drifted off to sle
 ![[Wedding Reception in
 Garigill](https://flic.kr/p/2qaz7kr)](https://live.staticflickr.com/65535/53929563447_5083e5d67e_k.jpg)
 
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-17
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-17")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-17
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-17"], colors="speed")
+```
+:::
+
 
 ### Day 5 - Garigill to High Cup Nick
 
@@ -471,6 +820,8 @@ point. There was a party of three with a couple of dogs who had hiked up from Du
 chatted briefly. I had a beer before snapping a panorama and heading off and over Great Dun Fell with its listening
 station on the summit like a golf ball poised to be driven south over the A66.
 
+![[From Cross Fell](https://flic.kr/p/2qh9wcW)](https://live.staticflickr.com/65535/54003981420_2e8f1fde83_3k.jpg)
+
 ![[Cross Fell Summit](https://flic.kr/p/2qaHYqB)](https://live.staticflickr.com/65535/53931292843_7e61a9b8dd_k.jpg)
 
 ![[Cross Fell Panorama](https://flic.kr/p/2qaGHXJ)](https://live.staticflickr.com/65535/53931049076_48198165aa_k.jpg)
@@ -496,9 +847,9 @@ the food was ok.
 
 ![[The Stagg Inn, Dufton](https://flic.kr/p/2qaC4XE)](https://live.staticflickr.com/65535/53930140792_db3bdc118a_k.jpg)
 
-It was getting late and in my rush to set off and get to [High Cup Nick][highcupnick] I set off without my walking
-poles. I didn't get far before realising this so dashed back to the pub to grab them and set off at a decent pace to
-climb back up the hill, passing a pair who had walked from Middleton in Teesdale that day heading North along The
+It was getting late and in my rush to set off and get to [High Cup Nick][highcupnick] I left without my walking
+poles. I didn't get far before realising this so dashed back to the pub to grab them and started again at a decent pace
+to climb back up the hill, passing a pair who had walked from Middleton in Teesdale that day heading North along The
 Way. The 6km and ~300m of ascent (most of which are in the first 2-3km) were accomplished quickly (just over an hour)
 and I found myself coming onto the rim of the amazing [High Cup Nick][highcupnick], a valley with a dolerite rim with
 limestone above and below the layer of dolerite. As I neared the head I kept my eyes open for a flat spot to camp, not
@@ -507,10 +858,37 @@ have worried, the wind barely stopped the whole trip!).
 
 I snapped a few pictures in the fading light then setup my tent for the night and went to sleep almost instantly.
 
-![[High Cup Nick(Panoramic)
-Flickr](https://www.flickr.com/photos/slackline/53956798007/)](https://live.staticflickr.com/65535/53956798007_433927f79e_k.jpg)
+![[High Cup
+Nick(Panoramic)](https://www.flickr.com/photos/slackline/53956798007/)](https://live.staticflickr.com/65535/53956798007_433927f79e_k.jpg)
 
 ![[Wild Camping above High Cup Nick](https://flic.kr/p/2qbcLTM)](https://live.staticflickr.com/65535/53936717187_dcf0514d59_k.jpg)
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-18
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-18")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-18
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-18"], colors="speed")
+```
+:::
 
 ### Day 6 - High Cup Nick to Middleton in Teesdale
 
@@ -526,7 +904,7 @@ to Middleton in Teeside.
 Crossed a bridge that had been erected in memory of Ken Wilson and followed a good compact
 track downhill passing through Birksdale Farm and shortly after coming on to the fantastic view of the
 confluence of Maize Beack and River Tees. The trail swings by underneath the dam of [Cow Green Reservoir][cowgreen] and
-down the side of [Cauldron Snout][caulrdonsnout] which was in full flow and very impressive.
+down the side of [Cauldron Snout][cauldronsnout] which was in full flow and very impressive.
 
 ![[Maize Beck and Cauldron
 Snout](https://flic.kr/p/2qduTSK)](https://live.staticflickr.com/65535/53962690571_fd7f210898_k.jpg)
@@ -561,7 +939,7 @@ contrast to pounding the floor.
 
 ![[Jump!](https://flic.kr/p/2qdwzgq)](https://live.staticflickr.com/65535/53963018194_3a13a053c0_k.jpg)
 
-[Low Force][lowforce] came very soon after with the [something suspension bridge][] which strongly advised not to have
+[Low Force][lowforce] came very soon after with the [Wynch Bridge][wynchbridge] which strongly advised not to have
 more than one person on it at any given time which I and others duly respected.
 
 
@@ -600,6 +978,33 @@ Alex was a software engineer with a degree in computer science but was also lear
 grow produce but more recently had got interested in ornamental plants. We popped back into town for pizza at Ozzy's
 which was delicious and then along to The Forresters afterwards for another pint and to charge devices before heading
 back to the campsite for the night.
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-19
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-19")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-19
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-19"], colors="speed")
+```
+:::
 
 ### Day 7 - Middleton in Teesdale to Thwaite
 
@@ -704,6 +1109,33 @@ unlike mysel who was making good use of all of the eateries I was passing.
 Pretty tired so had an early night, but not before a few more showers passed through which helped me feel vindicated in
 my decision not to push on to Hawes that evening.
 
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-20
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-20")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-20
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-20"], colors="speed")
+```
+:::
+
 
 ### Day 8 - Thwaite to Horton in Ribblesdale
 
@@ -726,10 +1158,14 @@ pictures looking back down [Swaledale][swaledale] before continuing over Great S
 
 ![[From Dam Hill Cairn](https://flic.kr/p/2qbja5F)](https://live.staticflickr.com/65535/53937962499_62ab462420_k.jpg)
 
+![[Swaledale from Great Shunner Fell](https://flic.kr/p/2qh2Hgq)](https://live.staticflickr.com/65535/54002652842_d625748318_3k.jpg)
+
 There were great views to the North West but some ominous grey clouds were looming on the horizon so I didn't hang
-around too long admiring the view, instead dropping down quickly to reach [Hawes][haes] for lunch. This section was
+around too long admiring the view, instead dropping down quickly to reach [Hawes][hawes] for lunch. This section was
 longer than I expected and only served to reassure me I'd made the right decision the previous night not to tackle it in
 the fading light.
+
+![[Lots of Moorland](https://flic.kr/p/2qbcPMx)](https://live.staticflickr.com/65535/53936726917_7a940e9efc_k.jpg)
 
 Passing through [Hardraw][hardraw] I was tempted to duck into The Green Dragon for a pint but mindful of the grey skies I
 kept on going to [Hawes][hawes] instead where there were more options for lunch. In hindsight I wish I had stopped as it
@@ -810,6 +1246,32 @@ He was a really nice guy, engaged to be married to a Welsh lady and enthusiastic
 though and planned to get up early, although he said he was going to set his alarm for 04:00 and make an early start
 which didn't bother me as I could doze a bit afterwards.
 
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-21
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-21")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-21
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-21"], colors="speed")
+```
+:::
 
 ### Day 9 - Horton in Ribblesdale to Gargrave
 
@@ -896,6 +1358,33 @@ Chatted to a friendly guy on the campsite who I'd seen eating fish and chips opp
 pictures of the antiquated pharmacy and then got an early night.
 
 ![[Gargrave Pharmacy](https://flic.kr/p/2qeDMcq)](https://live.staticflickr.com/65535/53975740610_88c92fb179_k.jpg)
+
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-22
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-22")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-22
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-22"], colors="speed")
+```
+:::
 
 ### Day 10 - Gargrave to Colden
 
@@ -993,6 +1482,33 @@ Crowden in a single big day which would leave me with "just" Bleaklow and Kinder
 satiated I headed to bed early. Thankfully the kids playing outside the pub whilst their parents drank and chatted
 didn't use my tent for target practice this time.
 
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-23
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-23")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-23
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-23"], colors="speed")
+```
+:::
+
 ### Day 11 - Colden to Crowden
 
 Up early, again, but not as early as Mike who said hello as he set off, he thought I might catch him up though, having
@@ -1024,13 +1540,24 @@ the 39 steps that take you to the balcony and snap some overcast shots in each o
 
 ![[Stoodley Pike](https://flic.kr/p/2qex7HF)](https://live.staticflickr.com/65535/53974440497_d373599f17_k.jpg)
 
+![[From Stoodley Pike](https://flic.kr/p/2qeDS6U)](https://live.staticflickr.com/65535/53975757110_3b09c6ec4c_k.jpg)
+
 Continuing along The Way I met a group out for an early hike approaching from the opposite direction and followed the
-flagstones across the moor to Warland Reservoir which was looking a bit empty. I was gaining on Mike now and was able to
+flagstones across the moor to Warland Reservoir which was looking a bit empty.
+
+![[Warland Reservoir](https://flic.kr/p/2qcfzLw)](https://live.staticflickr.com/65535/53948581594_889ff855d1_k.jpg)
+
+I was gaining on Mike now and was able to
 go quickly as the track was flat and my legs were strong from the past ten days of hiking. Blackstone Edge Reservoir and
 [The White House][whitehouse] came into view and were quickly passed and as I started to head up to [Blackstone
 Edge][blackstoneedge] I caught up with Mike who had paused to check his navigation and we walked and chatted as we went
 up to the edge. He said I should carry on as I was faster but after checking out the largest buttress for routes I was
 happy to walk and chat with him which made a change from the last ten days of being with my own thoughts.
+
+![[The White House](https://flic.kr/p/2qeDhqG)](https://live.staticflickr.com/65535/53975643824_ec84d7d922_k.jpg)
+
+![[Blackstone Edge Trig Point](https://flic.kr/p/2qeBEgB)](https://live.staticflickr.com/65535/53975327081_9ce362f567_k.jpg)
+
 
 Mike was easy to chat to, he is retired but worked on oil rigs off the coast of Norfolk after responding to an advert
 in a paper for mechanically minded people to transfer into the area. He'd worked his way up through the different
@@ -1047,18 +1574,34 @@ road the possibility of lunch loomed in the form of a small cafe in a container 
 unfortunately they were closed. We were both sadden to see there appeared to be some people living in tents around this
 layby and the rise in homelessness is another poor reflection on the previous governments performance.
 
-We soon reached the road near Standedege and Marsden where I had abandoned a previous attempt to walk the Pennine Way
-from South to North a number of years ago and stopped on a convenient rock for lunch. Mike had a wrap and some cheese
-whilst I broke out my stove and reheated my penultimate dehydrated meal for lunch. The stove is super efficient and I
-was soon tucking into the hotpot mash which was tasty but as always with these meals there is a tiny bit that never gets
-the water it needs. Mike set off before me and 15 minutes later I'd packed everything away and hit the path again
-myself.
+![[Crossing the M62](https://flic.kr/p/2qcgf32)](https://live.staticflickr.com/65535/53948710325_dcc78c376b_k.jpg)
+
+![[The Most Easterly Point in the County of Lancashire](https://flic.kr/p/2qcgf1D)](https://live.staticflickr.com/65535/53948710245_1347a0bb6c_k.jpg)
+
+
+![[Mike](https://flic.kr/p/2qcfeVd)](https://live.staticflickr.com/65535/53948514818_d7a0e237dc_k.jpg)
+
+
+A couple of kilometeres and we reached Standedege above Marsden where I had abandoned a previous attempt to walk the
+Pennine Way from South to North a number of years ago and stopped on a convenient rock for lunch. Mike had a wrap and
+some cheese whilst I broke out my stove and reheated my penultimate dehydrated meal for lunch. The stove is super
+efficient and I was soon tucking into the hotpot mash which was tasty but as always with these meals there is a tiny bit
+that never gets the water it needs. Mike set off before me and 15 minutes later I'd packed everything away and hit the
+path again myself.
 
 I noticed the Great Western Inn had a number of caravans outside it and this must have been the pub that someone had
 told me was a cheap campsite to stay at, but I was pushing on to Crowden so I had a relatively easy day into Edale on my
 last day. This first section to was nice going over moorland, passing between Black Moss and Swellands reservoir before
 dropping down and crossing Wessenden Brook and passing along the side of Wessenden and Wessenden Head reservoir. I
 noticed a small waterfall on the opposite side of the brook.
+
+![[Standedge](https://flic.kr/p/2qex756)](https://live.staticflickr.com/65535/53974438317_39d95d3920_k.jpg)
+
+
+![[Wessenden Brook](https://flic.kr/p/2qex7ab)](https://live.staticflickr.com/65535/53974438612_e8cf6f1d6b_k.jpg)
+
+![[Middle Wessenden](https://flic.kr/p/2qeCRG7)](https://live.staticflickr.com/65535/53975560618_71e07fe4b6_k.jpg)
+
 
 As I reached the top of Wessenden Head there was a Canadian couple who were trying to work out which way the Pennine Way
 went so I pointed them in the right direction. I was then asked by a lady with a large group of other "Instagrammers"
@@ -1075,6 +1618,13 @@ down to Crowden, but I soon passed through the garden of [Crowden Outdoor Educat
 friends from the [Peak Climbing Club][pcc] worked. Had it been a weekday I would have stopped to say hello but it was
 early evening on a Saturday so he wasn't around.
 
+![[Black Hill Trig Point](https://flic.kr/p/2qcdUxv)](https://live.staticflickr.com/65535/53948254531_e48ee89c10_k.jpg)
+
+![[From Laddow](https://flic.kr/p/2qeCRsp)](https://live.staticflickr.com/65535/53975559823_d7473aab9e_k.jpg)
+
+![[Bleaklow in Sun](https://flic.kr/p/2qeCRt6)](https://live.staticflickr.com/65535/53975559863_acead6f054_k.jpg)
+
+
 Checked in at [Crowden campsite][crowdencampsite], the most expensive of the trip at £13, and said hello to Mike who had
 just finished pitching his tent and to a father and son who had hiked over from Marsden and had been hoping to wild camp
 on Black Hill or above Laddow before continuing to Kinder Scout for the night and then onto Hathersage. They were trying
@@ -1085,6 +1635,32 @@ Mike and I decided to order some takeaways as it was our last night on the trail
 had a burger with chips. The food arrived as it got dark and we chatted over dinner before an early night as we were
 both tired from the long day and had Bleaklow and Kinder the following day.
 
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-24
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-24")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-24
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-24"], colors="speed")
+```
+:::
 
 ### Day 12 - Crowden to Edale
 
@@ -1095,8 +1671,17 @@ caring as I was heading home today and could dry it once there. I said goodbye t
 previous days efforts and thanked him for his company the previous day. Wished the father and son pair good luck on
 their the rest of their trip over-nighting on Kinder and then heading to Hathersage and their planned Arctic trip.
 
+
 Clear blue skies and warm sun helped me set a decent pace as I headed down to the dam of Torside Researvoir and crossed
-over to the steep climb up onto the Bleaklow plateau. Half-way up the steep section whilst snapping pictures with the
+over to the steep climb up onto the Bleaklow plateau.
+
+![[Torside Reservoir](https://flic.kr/p/2qc9iE8)](https://live.staticflickr.com/65535/53947356727_daa871cbd4_k.jpg)
+
+![[To Bleaklow Head](https://flic.kr/p/2qcfzCv)](https://live.staticflickr.com/65535/53948581129_ed5cd8f435_k.jpg)
+
+![[Torside Reservoir](https://flic.kr/p/2qgcot9)](https://live.staticflickr.com/65535/53993224230_9da0cd0309_k.jpg)
+
+Half-way up the steep section whilst snapping pictures with the
 Sony for some bizarre reason it stopped taking pictures, it would focus and do everything except actually take and save
 the picture. I wasted about 15-20 minutes trying to sort it before deciding it would have to wait and besides I had a
 12-month warranty on it courtesy of Harrison Cameras excellent second-hand policy, so continued up the remaining section
@@ -1104,23 +1689,46 @@ of the trail that runs round the edge of Torside Clough. As I crossed over the c
 fixing the camera and resetting all settings seemed to sort it out. Will have to keep an eye on this though and consider
 returning it if the problem recurs.
 
-Bleaklow Head was easy to find, but the wind had picked up a bit and it was starting to feel chilly when exposed. I had
+Bleaklow Head was easy to find, but the wind had picked up a bit and it was starting to feel chilly when exposed.
+
+
+![[Bleaklow Head](https://flic.kr/p/2qg5Dtv)](https://live.staticflickr.com/65535/53991908927_4766c12c0b_k.jpg)
+
+I had
 forgotten what a pain it was navigating through the groughs on Bleaklow, compounded by the fact it had rained recently
 and/or overnight so many had running water in them and navigating round them slowed me down a bit, but soon the number
 of people I was passing, most going to look at the remains of the plane crash, increased and I soon reached the head of
-the Alport River. Having walked from here to Kinder a few weeks previously when training I knew exactly where to go. Not
+the Alport River.
+
+![[Alport River Head](https://flic.kr/p/2qgbPnt)](https://live.staticflickr.com/65535/53993112889_cbb242606d_k.jpg)
+
+Having walked from here to Kinder a few weeks previously when training I knew exactly where to go. Not
 that its hard, a massive path and paving slabs lead you to the crossing of the A57. A few kilometres of paving slab
 followed before swinging south and heading up the North tip of Kinder Scout. It was pretty windy on the edge of the
 plateau but there were plenty of people about, presumably going to see the inverted waterfall phenomenon which occurs
 when the wind is high as the water falling off of [Kinder Downfall][kinderdownfall] gets blown back up in an endless
 cycle, although being the end of summer it wasn't as impressive as it can be in autumn.
 
+![[Kinder North](https://flic.kr/p/2qgada8)](https://live.staticflickr.com/65535/53992799321_76ad1a55ca_k.jpg)
+
+![[Kinder Reservoir](https://flic.kr/p/2qgad7C)](https://live.staticflickr.com/65535/53992799176_c9700eb929_k.jpg)
+
 Grateful of the poles I traversed the edge of the plateau passing behind the Upfall and heading South towards Edale
 Rocks and Jacobs Ladder. Lots of people were out on the hills which is great to see but something of a shock given how
 quiet it had been along most of The Way. I had my eye on the clock to make sure I got to Edale before 15:00 so didn't
 hang around and apart from offering a bit of advice to people who looked lost and talking to a couple who had been
 keeping pace and talking loudly about how to stay fit (they were impressed with having walked +400km in 12 days) I kept
-moving and got to Barber Booth. I'd forgotten The Way has one very small bit of uphill to return to Edale here but it
+moving and got to Barber Booth.
+
+![[Jacobs Ladder](https://flic.kr/p/2qgbp3a)](https://live.staticflickr.com/65535/53993031033_fc7850119c_k.jpg)
+
+![[Edale 1 1/4 miles](https://flic.kr/p/2qcfeQ3)](https://live.staticflickr.com/65535/53948514518_3b931a4635_k.jpg)
+
+![[Great Ridge Edale Valley](https://flic.kr/p/2qcfeMx)](https://live.staticflickr.com/65535/53948514373_e4f508bee9_k.jpg)
+
+![[The last Stretch](https://flic.kr/p/2qc9izP)](https://live.staticflickr.com/65535/53947356477_e6db90f92b_k.jpg)
+
+I'd forgotten The Way has one very small bit of uphill to return to Edale here but it
 passed quickly and I was soon bouncing down through the last field to take the track that goes along a small brook into
 Edale. With no fanfare I exited the path and was done, I had reached [The Nags Head][nagshead], the time was 14:51 so I
 had walked there from [Kirk Yetholm][ky] in pretty much 12 days of hiking and was delighted, if a little tired.
@@ -1134,6 +1742,8 @@ which there was, much smaller than the one at [Kirk Yetholm][ky] but I recorded 
 water) outside to chat to the guys from Mountain Rescue and check train times.
 
 ![[They got the sign wrong](https://flic.kr/p/2qgcohx)](https://live.staticflickr.com/65535/53993223615_db168c1299_3k.jpg)
+
+![[Propping up The Nags Head](https://flic.kr/p/2qgcoub)](https://live.staticflickr.com/65535/53993224290_c07223472e_k.jpg)
 
 
 Hydrated I wandered down to the train station to catch the 15:33 train which was typically delayed and did some
@@ -1149,6 +1759,33 @@ daughter asked if I was going to actually come in. I felt bad when I did as my d
 banner for me to break through with "_Welcome Home Daddy_" in rainbow letters. She had apparently been peeking out the
 window keeping an eye out for me.
 
+::: {.panel-tabset}
+
+## R
+
+```{r}
+#| label: r-gpx-2024-08-25
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_day(gps_df, "2024-08-25")
+```
+
+## Python
+
+```{python}
+#| label: python-gpx-2024-08-25
+#| code-fold: true
+#| code-link: true
+#| code-tools: true
+#| eval: true
+#| echo: true
+plot_gpx_df(gps_df=gpx["2024-08-25"], colors="speed")
+```
+:::
+
 ## Reflections
 
 The Pennine Way passes through a lot of rugged, remote and beautiful countryside and I would highly recommend hiking it
@@ -1160,13 +1797,14 @@ in some manner at some point in your life.
   spare pair.
 - Grass is the best thing for walking on, rubble the worst.
 - There are lots of really nice friendly people in the countryside. Get out of the town or city you live in and go and
-  meet them and take the spirit back to the city. Rather than keeping your head down say hello to the people you pass.
-- [Backpacking-induced Paresthesias][paraestheias] (see also [here][numbtoes]) is weird and lasted for at least three
+  meet them and take the spirit back to the city.
+- Always say hello to the people you pass.
+- [Backpacking-induced Paresthesias][paraestheias] (see also [here][numbtoes]) is weird and lasted for at least four
   weeks.
 - Rain isn't that bad really, but combined with wind can be somewhat tiring.
-- Head winds are annoying.
+- Head winds are annoying, particularly if strong.
 - Walking poles are amazing for reducing stress on your knees and allowing you to go faster for longer.
-- You don't have to go a long way to meet your neighbours.
+- You don't have to go a long way to meet your neighbours!
 
 ## Summary Table
 
@@ -1186,10 +1824,11 @@ in some manner at some point in your life.
 | 12    | 2024-08-25 Sun | Crowden               | Edale                 | 28.535        | 1323.47    | 1305.07     | 6:58:46          | 0:20:43        | 7:19:29            | 4.09              | 6.62             |
 | Total |                |                       |                       | 448.413       | 18929.85   | 18925.95    |                  |                |                    | 4.0283333         | 7.05             |
 
+
 [aire]: https://en.wikipedia.org/wiki/River_Aire
 [auchope]:https://northumberlandcottage.holiday/auchope-refuge-hut/
 [bedrock]: https://bedrocksandals.com/collections/all-sandals
-[blackon]: https://www.openstreetmap.org/way/34788665#map=15/54.56131/-2.09294
+[blackton]: https://en.wikipedia.org/wiki/Blackton_Reservoir
 [blackstoneedge]: https://www.ukclimbing.com/logbook/crags/blackstone_edge-1356/
 [border]: https://www.borderhotel.co.uk/
 [brothersarms]: https://www1.camra.org.uk/pubs/brothers-arms-sheffield-south-147577
@@ -1200,6 +1839,7 @@ in some manner at some point in your life.
 [cheviothotel]: https://curioustaverns.uk/home/the-cheviot-bellingham
 [coec]: https://www.crowdenoec.org.uk
 [colden]: https://en.wikipedia.org/wiki/Colden,_West_Yorkshire
+[cowgreen]: https://en.wikipedia.org/wiki/Cow_Green_Reservoir
 [cragend]: https://www.openstreetmap.org/#map=17/55.024025/-2.344809
 [crowdencampsite]: https://www.campingandcaravanningclub.co.uk/campsites/uk/glossop/crowden/crowden-camping-and-caravanning-club-site/
 [daleview]: https://daleviewcaravanpark.com/
@@ -1212,6 +1852,7 @@ in some manner at some point in your life.
 [eshton]: https://www.ukcampsite.co.uk/sites/details.asp?revid=4187
 [fatherted]: https://www.youtube.com/watch?v=vh5kZ4uIUC0
 [flickr_pw]: https://www.flickr.com/photos/slackline/albums/72177720319516582/
+[folium]: https://python-visualization.github.io/folium/latest/getting_started.html
 [forresters]: https://www.forrestersmiddleton.co.uk/en-GB
 [fountainsfell]: https://en.wikipedia.org/wiki/Fountains_Fell
 [frogger]: https://en.wikipedia.org/wiki/Frogger
@@ -1222,6 +1863,7 @@ in some manner at some point in your life.
 [gbduro24]: https://www.theracingcollective.com/gbduro.html#results
 [godsbridge]: https://designatedsites.naturalengland.org.uk/SiteDetail.aspx?SiteCode=S1001347
 [gpx]: https://en.wikipedia.org/wiki/GPS_Exchange_Format
+[gpxplotter]: https://gpxplotter.readthedocs.io/en/latest/
 [grassholme]: https://www.openstreetmap.org/way/4322169
 [gregshut]: http://www.gregshut.org.uk/
 [hardraw]: https://en.wikipedia.org/wiki/Hardraw
@@ -1240,6 +1882,8 @@ in some manner at some point in your life.
 [kungsleden]: https://www.swedishtouristassociation.com/areas/kungsleden/
 [ky]: https://en.wikipedia.org/wiki/Kirk_Yetholm
 [laddow]: https://www.ukclimbing.com/logbook/crags/laddow-132/
+[leaflet]: https://leafletjs.com/
+[leafletr]: https://rstudio.github.io/leaflet/
 [lesterarms]: https://listerarms.co.uk/
 [lilian]: https://www.metoffice.gov.uk/about-us/news-and-media/media-centre/weather-and-climate-news/2024/storm-lilian-named
 [lowforce]: https://en.wikipedia.org/wiki/Low_Force
@@ -1255,9 +1899,14 @@ in some manner at some point in your life.
 [ozzys]: https://newozzyspizza.co.uk/
 [paraestheias]: https://journals.sagepub.com/doi/full/10.1580/1080-6032(2003)14%5b161:BP%5d2.0.CO;2
 [pcc]: https://www.peakclimbingclub.co.uk
+[penyghent]: https://en.wikipedia.org/wiki/Pen-y-ghent
 [psw]: https://wiki.openhumans.org/wiki/Personal_Science_Wiki
 [pw]: https://www.nationaltrail.co.uk/en_GB/trails/pennine-way/
+[python]: https://www.python.org/
+[r]: https://www.r-project.org/
 [rapishaw]: https://www.openstreetmap.org/#map=17/55.011858/-2.344015
+[rleaflet]: https://rstudio.github.io/leaflet/
+[settle]: https://en.wikipedia.org/wiki/Settle,_North_Yorkshire
 [sonyrx100]: https://www.sony.co.uk/electronics/cyber-shot-compact-cameras/dsc-rx100m4
 [snt]: https://scottishnationaltrail.org.uk/
 [spinerace]: https://www.thespinerace.com/
@@ -1278,11 +1927,75 @@ in some manner at some point in your life.
 [thwaite]: https://en.wikipedia.org/wiki/Thwaite
 [tynedalerailway]: https://www.south-tynedale-railway.org.uk/
 [ushagap]: https://www.openstreetmap.org/relation/15697080
-[ushagapcamping]: https://ushagap.co.uk/campsite/
+[ushagapcampsite]: https://ushagap.co.uk/campsite/
 [walltownquarry]: https://www.openstreetmap.org/node/1024847171
 [wensleydale]: https://en.wikipedia.org/wiki/Wensleydale
 [wensleydalepantry]: https://www.tripadvisor.co.uk/Restaurant_Review-g504001-d2413205-Reviews-The_Wensleydale_Pantry-Hawes_Yorkshire_Dales_National_Park_North_Yorkshire_Englan.html
 [whitehouse]: https://thewhitehousepub.co.uk/
+[wynchbridge]: https://www.nationaltransporttrust.org.uk/heritage-sites/heritage-detail/wynch-bridge
 [yearning]: https://www.openstreetmap.org/way/97635754
 [yorkshirethreepeaks]: https://www.yorkshiredales.org.uk/things-to-do/get-outdoors/yorkshire-three-peaks/
 [zephyros]: https://www.terra-nova.co.uk/products/zephyros-compact-1/
+
+<!-- The first, most basic thing to do is create a map showing a couple of points. -->
+
+<!-- ::: {.panel-tabset} -->
+
+<!-- ## R -->
+<!-- ```{r} -->
+<!-- #| label: r-leaflet -->
+<!-- #| code-fold: true -->
+<!-- #| code-link: true -->
+<!-- #| code-tools: true -->
+<!-- #| eval: false -->
+<!-- #| echo: true -->
+<!-- library(gtsummary) -->
+<!-- library(htmlwidgets) -->
+<!-- library(leaflet) -->
+<!-- ## library(rgdal) -->
+<!-- ## https://rstudio-pubs-static.s3.amazonaws.com/328775_2c54adb6ac734563b88c14bce515b012.html -->
+<!-- ## https://digital-geography.com/gpx-overview-r-function-create-overview-gpx-files-using-leaflet-rgooglemaps/ -->
+<!-- lat = c(55.546935, 53.370478) -->
+<!-- lng = c(-2.275763, -1.816950) -->
+<!-- gps = data.frame(lat, lng) -->
+<!-- gps_names = c("Kirk Yetholm", "Edale") -->
+<!-- row.names(gps) = gps_names -->
+<!-- leaflet() |> -->
+<!--   addTiles() |> -->
+<!--   addMarkers(lat = gps["Kirk Yetholm", "lat"], lng = gps["Kirk Yetholm", "lng"], popup = "Start of the Pennine Way") |> -->
+<!--   addMarkers(lat = gps["Edale", "lat"], lng = gps["Edale", "lng"], popup = "End of the Pennine Way") -->
+
+<!-- ``` -->
+
+
+<!-- ## Python -->
+
+<!-- ```{python} -->
+<!-- #| label: python-leaflet -->
+<!-- #| code-fold: true -->
+<!-- #| code-link: true -->
+<!-- #| code-tools: true -->
+<!-- #| eval: false -->
+<!-- #| echo: true -->
+<!-- import folium -->
+<!-- import numpy as np -->
+<!-- import pandas as pd -->
+<!-- gps = {"Kirk Yetholm": (55.546935,-2.275763), -->
+<!--        "Edale": (53.370478, -1.816950)} -->
+<!-- m = folium.Map(location=(gps["Kirk Yetholm"])) -->
+<!-- folium.Marker( -->
+<!--     location=gps["Kirk Yetholm"], -->
+<!--     tooltip="Start of the Pennine Way", -->
+<!--     popup="Start of the Pennine Way", -->
+<!--     icon=folium.Icon(color="green") -->
+<!-- ).add_to(m) -->
+<!-- folium.Marker( -->
+<!--     location=gps["Edale"], -->
+<!--     tooltip="End of the Pennine Way", -->
+<!--     popup="End of the Pennine Way", -->
+<!--     icon=folium.Icon(color="red") -->
+<!-- ).add_to(m) -->
+<!-- m -->
+<!-- ``` -->
+
+<!-- ::: -->
