@@ -31,7 +31,6 @@ using the [leaflet][leaflet] JavaScript framework very simple.
 ![[Not Pennine Way](https://www.flickr.com/photos/slackline/53930940490/) by
 Me](https://live.staticflickr.com/65535/53930940490_d331111f4f_k.jpg)
 
-
 ## Planning
 
 A number of years ago I attempted to hike the Pennine Way from Edale and having set off from Edale and reached Crowden
@@ -64,20 +63,17 @@ write-up.
 Details and more information about these and other Open Source tools for self-research that **protect the users privacy
 from the pernicious intrusions made by Big Tech** can be found on the [Personal Science Wiki][psw].
 
-
 ## Pictures
 
 I carried my phone, a [Motorola GT100][motog100] and a [Sony RX100 Mk IV][sonyrx100] with me along the route. I take a
 _lot_ of pictures, most are crap but some are half decent and I've included in this post the better ones or those that
 accompany the story well. You can find the full set of pictures on my [Pennine Way Flickr album][flickr_pw].
 
-
 ## Using GPX Tracks
 
 I've opted to provide solutions to plotting GPX tracks in both [R][r] and [Python][python] since I use both in my day to
 day work. Each code chunk outputs a map and the code can be viewed if you want to learn how to create maps using either
 language.
-
 
 This requires...
 
@@ -102,7 +98,6 @@ on mapping with each of the libraries. Things to do on the maps...
 ## R
 
 The R library is named after the Javascript library, i.e. [leaflet][leafletr]
-
 
 ```{r}
 #| label: r-load-gpx
@@ -178,13 +173,11 @@ plot_day <- function(gps_df, date, color = "speed") {
 
 ```
 
-
 ## Python
 
 The [gpxplotter][gpxplotter] package provides wrappers around [folium][folium] for plotting GPX traces, but I opted to
 do this manually so I could learn more about Folium (I used to use it in a previous job, just need to remember what I
 used to do!).
-
 
 ```{python}
 #| label: python-load-gpx
@@ -321,9 +314,7 @@ gpx = {Path(_file.stem).stem.split("_")[0]: gpx_to_df(_file) for _file in gpx_fi
 
 ```
 
-
 :::
-
 
 ## Day by Day
 
@@ -381,7 +372,6 @@ the end of The Way.
 Flickr](https://www.flickr.com/photos/slackline/53922320792/in/datetaken/)](https://live.staticflickr.com/65535/53922320792_0dbf0ca511_k.jpg)
 
 ### Day 1 - 2024-08-14 Kirk Yetholm to Clennell Street
-
 
 Beer drunk I said farewell, shouldered my pack and started the GPS tracker, setting off up the lane in the heat of the
 afternoon. Not ideal conditions for hiking but I had a schedule to follow.
@@ -442,6 +432,7 @@ plot_day(gps_df, "2024-08-14")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-14"], colors="speed")
 ```
+
 :::
 
 ### Day 2 - Clennell Street to Bryness
@@ -456,7 +447,6 @@ Gear](https://flic.kr/p/2qab5cr)](https://live.staticflickr.com/65535/5392506867
 There is a large pile of stones on the summit which is an ancient monument which should not be distubed, not much to
 look at because of the low cloud so I continued the descent, which roughly follows the bordere between Scotland and
 England, glad of my choice of sandals and shorts because it was very boggy in places.
-
 
 I came across [Yearning Saddle Refuge Hut][yearning]
 and took the opportunity to get out of the wind and rain and eat one of the blueberry snack bars I'd carried. A few
@@ -552,8 +542,8 @@ plot_day(gps_df, "2024-08-15")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-15"], colors="speed")
 ```
-:::
 
+:::
 
 ### Day 3 - Bryness to Hadrians Wall
 
@@ -564,12 +554,10 @@ who had spent the night in there. He was hiking around [Kielder Forest][kielder]
 ![[St Francis' Church,
 Bryness](https://flic.kr/p/2qd1mw4)](https://live.staticflickr.com/65535/53957121951_ef6a5625cc_k.jpg)
 
-
 Wishing him a good time I got back on track and The Way then followed good solid forestry trails through pine forests
 for about 15-16km before breaking out onto moorland which I reached in about three hours.
 
 ![[Forest Giants](https://flic.kr/p/2qd2CGa)](https://live.staticflickr.com/65535/53957371473_a39ead7a13_3k.jpg)
-
 
 The moorland wasn't too bad, mainly as it was mostly paved so the few boggy bits weren't a problem. I stepped over what
 I thought were some carnivorous plants but was in too much of a hurry to go back and photograph them to check which I
@@ -625,7 +613,6 @@ some neighbours tents whilst I was in Peru 2012.
 
 ![[Company](https://flic.kr/p/2qaEfLM)](https://live.staticflickr.com/65535/53930567389_f74bd6a69a_k.jpg)
 
-
 It was starting to get dark as I headed over to [Rapishaw Gap][rapishaw] on Hadrians Wall and heading towards Milking
 gap I started scoping for a flat place to pitch my tent, regretting not going up the other side of Rapishaw Gap where
 there looked like a nice sheltered spot, but I didn't have to go far until I found a spot and re-pitched my tent. As I
@@ -633,7 +620,6 @@ was finishing off I was startled by a guy passing by who said it looked like a n
 but had lost track of time watching the sunset but didn't have too far to go to get back.
 
 ![[A night on Hadrians Wall](https://flic.kr/p/2qaxSgG)](https://live.staticflickr.com/65535/53929321022_df58b11acb_3k.jpg)
-
 
 I was tired after around 50 km of hiking so crawled into the tent and fell asleep quickly.
 
@@ -662,6 +648,7 @@ plot_day(gps_df, "2024-08-16")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-16"], colors="speed")
 ```
+
 :::
 
 ### Day 4 - Hadrians Wall to Garigill
@@ -672,7 +659,6 @@ Woke early and stuck my head out of the tent to a beautiful sunrise along the li
 Bed](https://flic.kr/p/2qd1nga)](https://live.staticflickr.com/65535/53957124451_10fbf2b565_k.jpg)
 
 ![[Sunrise on Hadrians Wall](https://flic.kr/p/2qd1nf8)](https://live.staticflickr.com/65535/53957124391_6863916db3_k.jpg)
-
 
 Didn't hang around too long, collapsed the tent and packed everything away fairly quickly to avoid getting in trouble
 for camping on (next to) an ancient monument. I don't eat breakfast so off we went on the undulations of Hadrians Wall.
@@ -721,7 +707,6 @@ stream which helped a bit but then had more mundane terrain skirting the edge of
 Area](https://flic.kr/p/2qaFpcn)](https://live.staticflickr.com/65535/53930790839_c51294e1d2_k.jpg)
 
 ![[Cooling the feet](https://flic.kr/p/2qazcrZ)](https://live.staticflickr.com/65535/53929580647_e5ea532f4f_k.jpg)
-
 
 I hoped there would be somewhere to get a snack in Slaggyford but alas not but as I was planning to get to Garigill for
 the night and had to pass through Alston so figured I'd be able to eat on the way through. Looking at the map I decided
@@ -789,8 +774,8 @@ plot_day(gps_df, "2024-08-17")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-17"], colors="speed")
 ```
-:::
 
+:::
 
 ### Day 5 - Garigill to High Cup Nick
 
@@ -888,6 +873,7 @@ plot_day(gps_df, "2024-08-18")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-18"], colors="speed")
 ```
+
 :::
 
 ### Day 6 - High Cup Nick to Middleton in Teesdale
@@ -897,7 +883,7 @@ Nick][highcupnick] in all its glory as I couldn't see much of it this morning. P
 looking forward to a short day of 28km almost exclusively downhill along the edge of the Maize Beck then the River Tees
 to Middleton in Teeside.
 
-![[Wrapped Up ](https://flic.kr/p/2qbiGjk)](https://live.staticflickr.com/65535/53937872463_64695633d4_k.jpg)
+![[Wrapped Up](https://flic.kr/p/2qbiGjk)](https://live.staticflickr.com/65535/53937872463_64695633d4_k.jpg)
 
 ![[Maize Beck](https://flic.kr/p/2qdwzs7)](https://live.staticflickr.com/65535/53963018814_63f6119cb0_k.jpg)
 
@@ -941,7 +927,6 @@ contrast to pounding the floor.
 
 [Low Force][lowforce] came very soon after with the [Wynch Bridge][wynchbridge] which strongly advised not to have
 more than one person on it at any given time which I and others duly respected.
-
 
 ![[Low Force](https://flic.kr/p/2qdqkrb)](https://live.staticflickr.com/65535/53961800992_6c03e5f5b4_k.jpg)
 
@@ -1004,6 +989,7 @@ plot_day(gps_df, "2024-08-19")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-19"], colors="speed")
 ```
+
 :::
 
 ### Day 7 - Middleton in Teesdale to Thwaite
@@ -1056,7 +1042,6 @@ all I thought as I checked how heavy my pack felt.
 ![[Shooting Track](https://flic.kr/p/2qbiJ8a)](https://live.staticflickr.com/65535/53937878543_eb11378f99_k.jpg)
 
 ![[Tan Hill](https://flic.kr/p/2qdFdAf)](https://live.staticflickr.com/65535/53964704650_408b771472_k.jpg)
-
 
 There were a series of good wooden sign-posts with white painted tops
 that marked the way through the bog to Tan Hill summit and the highest pub in England. Near the top I saw a couple in
@@ -1134,8 +1119,8 @@ plot_day(gps_df, "2024-08-20")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-20"], colors="speed")
 ```
-:::
 
+:::
 
 ### Day 8 - Thwaite to Horton in Ribblesdale
 
@@ -1184,7 +1169,6 @@ Replenished I grabbed some sweets and a can of beer and set off out the west of 
 Margaret's Church to put on waterproof trousers as it had started to drizzle.
 
 ![[St Margaret, Hawes](https://flic.kr/p/2qbt53w)](https://live.staticflickr.com/65535/53939701562_6565b3ac51_k.jpg)
-
 
 This was just a passing shower and I soon stopped to remove the trousers as I was
 sweating. Onwards and upwards passing near the summit of Ten End (584m) I joined the Cam Road with excellent views over
@@ -1271,6 +1255,7 @@ plot_day(gps_df, "2024-08-21")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-21"], colors="speed")
 ```
+
 :::
 
 ### Day 9 - Horton in Ribblesdale to Gargrave
@@ -1306,11 +1291,9 @@ wasn't anywhere near as windy or wet as [Pen y Ghent][penyghent] had been althou
 
 ![[Fountains Fell](https://flic.kr/p/2qc8sDq)](https://live.staticflickr.com/65535/53947191850_cc04b893ff_k.jpg)
 
-
 Soon I was dropping down and passing through farmland and making my way to skirt the long way round [Malham
 Tarn][malhamtarn] where the wind was whipping across and making quite a few waves. Somewhere to return to in the future
 as it was very picturesque (like so many other places on the hike!).
-
 
 ![[Malham Tarn](https://flic.kr/p/2qeDdk2)](https://live.staticflickr.com/65535/53975630039_dcb556ee4b_k.jpg)
 
@@ -1384,6 +1367,7 @@ plot_day(gps_df, "2024-08-22")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-22"], colors="speed")
 ```
+
 :::
 
 ### Day 10 - Gargrave to Colden
@@ -1444,13 +1428,11 @@ decided to quicken my pace and see if I could catch them up. On the top of the m
 north independently, the second was suffering from a very sore knee which she suspected was due to the weight of her
 pack. I advised getting some poles if possible to help and carried on.
 
-
 ![[Shooting Cabin](https://flic.kr/p/2qcff5b)](https://live.staticflickr.com/65535/53948515338_135950d543_k.jpg)
 
 I dropped down and passing Ponden Reservoir then up and over to Within Heights where an
 abandoned farm was a possible an inspiration for Emily Bronte's _Wuthering Heights_, a book I've never read and likely
 never will.
-
 
 Good flagstones led to Walshaw Dean Reservoirs which were skirted round and Lower Gorple Reservoir passed
 quickly.
@@ -1507,6 +1489,7 @@ plot_day(gps_df, "2024-08-23")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-23"], colors="speed")
 ```
+
 :::
 
 ### Day 11 - Colden to Crowden
@@ -1520,13 +1503,11 @@ steeply down into Calder Valley.
 
 ![[Stoodley Pike from afar](https://flic.kr/p/2qeBEFK)](https://live.staticflickr.com/65535/53975328481_96ddea727c_k.jpg)
 
-
 I had been thinking about getting some food here but as I approached the River Calder I
 saw a heron in the middle of the river and completely forgot to look for food as I snapped as many pictures as I could
 before it flew off.
 
 ![[Heron](https://flic.kr/p/2qeDSkG)](https://live.staticflickr.com/65535/53975757910_3f0e94942a_k.jpg)
-
 
 Happy to have got some half decent shots, given the lack of zoom on my camera, I started the long
 slog out of the valley to [Stoodley Pike][stoodleypike]. This section had looked steep but the path followed farm tracks
@@ -1558,7 +1539,6 @@ happy to walk and chat with him which made a change from the last ten days of be
 
 ![[Blackstone Edge Trig Point](https://flic.kr/p/2qeBEgB)](https://live.staticflickr.com/65535/53975327081_9ce362f567_k.jpg)
 
-
 Mike was easy to chat to, he is retired but worked on oil rigs off the coast of Norfolk after responding to an advert
 in a paper for mechanically minded people to transfer into the area. He'd worked his way up through the different
 levels, for a time having his own company and had lived in the US for a period with a lady he was with for a while. On
@@ -1578,9 +1558,7 @@ layby and the rise in homelessness is another poor reflection on the previous go
 
 ![[The Most Easterly Point in the County of Lancashire](https://flic.kr/p/2qcgf1D)](https://live.staticflickr.com/65535/53948710245_1347a0bb6c_k.jpg)
 
-
 ![[Mike](https://flic.kr/p/2qcfeVd)](https://live.staticflickr.com/65535/53948514818_d7a0e237dc_k.jpg)
-
 
 A couple of kilometeres and we reached Standedege above Marsden where I had abandoned a previous attempt to walk the
 Pennine Way from South to North a number of years ago and stopped on a convenient rock for lunch. Mike had a wrap and
@@ -1597,11 +1575,9 @@ noticed a small waterfall on the opposite side of the brook.
 
 ![[Standedge](https://flic.kr/p/2qex756)](https://live.staticflickr.com/65535/53974438317_39d95d3920_k.jpg)
 
-
 ![[Wessenden Brook](https://flic.kr/p/2qex7ab)](https://live.staticflickr.com/65535/53974438612_e8cf6f1d6b_k.jpg)
 
 ![[Middle Wessenden](https://flic.kr/p/2qeCRG7)](https://live.staticflickr.com/65535/53975560618_71e07fe4b6_k.jpg)
-
 
 As I reached the top of Wessenden Head there was a Canadian couple who were trying to work out which way the Pennine Way
 went so I pointed them in the right direction. I was then asked by a lady with a large group of other "Instagrammers"
@@ -1623,7 +1599,6 @@ early evening on a Saturday so he wasn't around.
 ![[From Laddow](https://flic.kr/p/2qeCRsp)](https://live.staticflickr.com/65535/53975559823_d7473aab9e_k.jpg)
 
 ![[Bleaklow in Sun](https://flic.kr/p/2qeCRt6)](https://live.staticflickr.com/65535/53975559863_acead6f054_k.jpg)
-
 
 Checked in at [Crowden campsite][crowdencampsite], the most expensive of the trip at £13, and said hello to Mike who had
 just finished pitching his tent and to a father and son who had hiked over from Marsden and had been hoping to wild camp
@@ -1660,6 +1635,7 @@ plot_day(gps_df, "2024-08-24")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-24"], colors="speed")
 ```
+
 :::
 
 ### Day 12 - Crowden to Edale
@@ -1670,7 +1646,6 @@ as there are no shops or pubs between Crowden and Edale. I packed the tent up da
 caring as I was heading home today and could dry it once there. I said goodbye to Mike who was in no rush after the
 previous days efforts and thanked him for his company the previous day. Wished the father and son pair good luck on
 their the rest of their trip over-nighting on Kinder and then heading to Hathersage and their planned Arctic trip.
-
 
 Clear blue skies and warm sun helped me set a decent pace as I headed down to the dam of Torside Researvoir and crossed
 over to the steep climb up onto the Bleaklow plateau.
@@ -1690,7 +1665,6 @@ fixing the camera and resetting all settings seemed to sort it out. Will have to
 returning it if the problem recurs.
 
 Bleaklow Head was easy to find, but the wind had picked up a bit and it was starting to feel chilly when exposed.
-
 
 ![[Bleaklow Head](https://flic.kr/p/2qg5Dtv)](https://live.staticflickr.com/65535/53991908927_4766c12c0b_k.jpg)
 
@@ -1745,7 +1719,6 @@ water) outside to chat to the guys from Mountain Rescue and check train times.
 
 ![[Propping up The Nags Head](https://flic.kr/p/2qgcoub)](https://live.staticflickr.com/65535/53993224290_c07223472e_k.jpg)
 
-
 Hydrated I wandered down to the train station to catch the 15:33 train which was typically delayed and did some
 stretching of my tired legs and was rudely reminded of why I enjoy being in quiet places because some drunk idiot
 started making fun of me for doing "yoga". Train arrived late and whisked me back to Sheffield and I was grateful of the
@@ -1784,6 +1757,7 @@ plot_day(gps_df, "2024-08-25")
 #| echo: true
 plot_gpx_df(gps_df=gpx["2024-08-25"], colors="speed")
 ```
+
 :::
 
 ## Reflections
@@ -1824,10 +1798,8 @@ in some manner at some point in your life.
 | 12    | 2024-08-25 Sun | Crowden               | Edale                 | 28.535        | 1323.47    | 1305.07     | 6:58:46          | 0:20:43        | 7:19:29            | 4.09              | 6.62             |
 | Total |                |                       |                       | 448.413       | 18929.85   | 18925.95    |                  |                |                    | 4.0283333         | 7.05             |
 
-
 [aire]: https://en.wikipedia.org/wiki/River_Aire
 [auchope]:https://northumberlandcottage.holiday/auchope-refuge-hut/
-[bedrock]: https://bedrocksandals.com/collections/all-sandals
 [blackton]: https://en.wikipedia.org/wiki/Blackton_Reservoir
 [blackstoneedge]: https://www.ukclimbing.com/logbook/crags/blackstone_edge-1356/
 [border]: https://www.borderhotel.co.uk/
@@ -1926,7 +1898,6 @@ in some manner at some point in your life.
 [thornton]: https://en.wikipedia.org/wiki/Thornton_in_Craven
 [thwaite]: https://en.wikipedia.org/wiki/Thwaite
 [tynedalerailway]: https://www.south-tynedale-railway.org.uk/
-[ushagap]: https://www.openstreetmap.org/relation/15697080
 [ushagapcampsite]: https://ushagap.co.uk/campsite/
 [walltownquarry]: https://www.openstreetmap.org/node/1024847171
 [wensleydale]: https://en.wikipedia.org/wiki/Wensleydale
@@ -1966,7 +1937,6 @@ in some manner at some point in your life.
 <!--   addMarkers(lat = gps["Edale", "lat"], lng = gps["Edale", "lng"], popup = "End of the Pennine Way") -->
 
 <!-- ``` -->
-
 
 <!-- ## Python -->
 
