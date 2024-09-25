@@ -51,10 +51,10 @@ configuration files and scripts that I use regularly across multiple computers. 
 
 + [`requirements.txt`](https://gitlab.com/nshephard/dotfiles/-/blob/master/python/requirements.txt?ref_type=heads) :
   holds everything I might ever want to use in Python.
-+ [`python-lsp-requirements.txt`](https://gitlab.com/nshephard/dotfiles/-/blob/master/python/requirements.txt?ref_type=heads) :
-  Install packages for setting up a Python Language Server (which I use from Emacs).
-+ [`venv_minimal_requirements.txt`](https://gitlab.com/nshephard/dotfiles/-/blob/master/python/venv_minimal_requirements.txt?ref_type=heads) :
-  a minimal set of the most common Python packages I am likely to want when creating a new virtual environment.
++ [`python-lsp-requirements.txt`](https://gitlab.com/nshephard/dotfiles/-/blob/master/python/requirements.txt?ref_type=heads)
+   : Install packages for setting up a Python Language Server (which I use from Emacs).
++ [`venv_minimal_requirements.txt`](https://gitlab.com/nshephard/dotfiles/-/blob/master/python/venv_minimal_requirements.txt?ref_type=heads)
+   : a minimal set of the most common Python packages I am likely to want when creating a new virtual environment.
 
 Because I have my `dotfiles` cloned to the same location on every computer (`~/dotfiles`) I added the following to the
 `~/.virtualenvs/postmkvirtualenv` [^2] which will install all of the packages listed in
