@@ -17,7 +17,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install libcurl4-openssl-dev
+          sudo apt-get install libcurl4-openssl-dev libproj-dev libgdal-dev
+
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2.1.6
         with:
