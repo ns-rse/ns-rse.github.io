@@ -14,10 +14,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 4
-
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -56,3 +52,7 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
