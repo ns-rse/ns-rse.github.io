@@ -1,4 +1,5 @@
 folium
+gpxpy
 jupyter
 numpy
 pandas
