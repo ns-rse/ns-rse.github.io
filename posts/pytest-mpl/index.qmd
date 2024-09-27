@@ -1,0 +1,193 @@
+---
+title: "Pytest Parameterisation"
+date: "2024-09-24"
+categories: [python, testing, pytest, matplotlib, pytest-mpl]
+image: https://live.staticflickr.com/65535/53258274023_f628d3291a_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+[Pytest][pytest] is an excellent framework for writing tests in [Python][python]. Sometimes your code will generate
+images using [Matplotlib][mpl] or related libraries based around it such as [Seaborn][seaborn] or [plotnine][plotnine]
+and ideally your [pytest][pytest] suite should check that your functions generate the images you expect. There is an
+excellent [pytest plugin][pytestplugin] to help with this [pytest-mpl][pytest-mpl] and this post covers how to use it
+and a _very_ useful feature to help you investigate differences in images when your tests of images fail.
+
+
+## Installation
+
+Setup a new virtual environment, here I use [virtualenvwrapper][virtualenvwrapper] to create a temporary virtual
+environment (which will be deleted on deactivation) and install the [`pytest-mpl`] package (it pulls in `matplotlib`,
+`pytest` and a bunch of other dependencies).
+
+```
+mktmpenv
+pip install pytest-mpl
+```
+
+## Plotting Function
+
+We need a simple example to write tests for. As with previous posts I've made the code available in the
+[pytest-examples][pytest-examples] repository where I've written a function under `pytestexample/mpl_example.py` to plot
+a scatter plot of two random variables.
+
+``` {.python}
+#| label: python-test
+#| code-fold: false
+#| code-link: true
+#| code-tools: true
+#| eval: false
+#| echo: true"""Example code for pytest-mpl exposition."""
+
+import numpy as np
+import numpy.typing as npt
+import matplotlib.pyplot as plt
+
+
+def scatter(
+    n_obs: int,
+    figsize: tuple[int, int],
+    title: str | None = None,
+    cmap: str = "green",
+    seed: int = 3513387,
+) -> tuple:
+    """Generate a scatter plot of two random variables.
+
+    This example is taken from the `Scatter Histogram Example
+    <https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_hist.html>`_.
+
+    Parameters
+    ----------
+    n_obs : int
+        Number of random observations to generate.
+    figsize : tuple[int, int]
+        Shape to plot.
+    cmap : str
+        Colour to use for plotting.
+    seed : int
+        Seed for pseudo-random number generation.
+
+    Returns
+    -------
+    tuple(fig, ax)
+
+    """
+    # Generate two random sets of numbers
+    x = np.random.randn(n_obs)
+    y = np.random.randn(n_obs)
+    # Create the figure
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot()
+    ax.scatter(x, y)
+
+    return (fig, ax)
+
+```
+
+We now need a test to check that for a given set of inputs the same output is always returned. Following the naming
+conventions used by [pytest][pytest] we create this at `tests/test_example.py`. Whilst Matplotlib provides its own
+[`image_comparison`][mpl-image-comparison] decorator from Matplotlib itself which requires at a bare minimum the
+`baseline_image` I'm going to skim over its usage and instead discuss use of the [`pytest-mpl`][pytest-mpl] extensionas it offers a few extra features which are really neat. Instead of using the `@image_comparsion()` decorator we can add
+the `pytest-mpl` package to the optional `test` dependencies in `pyproject.toml`
+
+```toml
+[project.optional-dependencies]
+tests = [
+  "py",
+  "pytest",
+  "pytest-cov",
+  "pytest-mpl",
+  "pytest-tmp-files",
+]
+```
+
+This means we can use the `@pytest.mark.mpl_image_compare()` decorator to mark a test as having Matplotlib output
+against which tests are compared. We need to set the `baseline_dir` which is where the images against which tests will
+be compared are stored. We then call our function, in this case `mpl_example.scatter()` with different sets of
+parameters (courtesy of [pytest parameterisation][pytest-param]).
+
+The test itself must `return fig` of the desired plot so that it can be compared to the reference image each time the
+test is run.
+
+``` {.python}
+#| label: python-test
+#| code-fold: false
+#| code-link: true
+#| code-tools: true
+#| eval: false
+#| echo: trueimport pytest
+"""Tests of the mpl_example module."""
+
+import pytest
+
+from pytest_examples import mpl_example
+
+
+@pytest.mark.mpl_image_compare(baseline_dir="resources/img")
+@pytest.mark.parametrize(
+    ("n_obs", "figsize", "title", "cmap", "seed"),
+    [
+        pytest.param(300, (6, 6), None, "green", 3513387, id="300 points; 6x6; no title; green"),
+        pytest.param(3000, (6, 6), "Lots of points!", "green", 3513387, id="3000 points; 6x6; Lots of points; blue"),
+    ],
+)
+def test_scatter_hist(n_obs: int, figsize: tuple[int, int], title: str, cmap: str, seed: int) -> None:
+    """Test of the scatter_hist() function."""
+    fig, ax = mpl_example.scatter(n_obs, figsize, title, cmap, seed)
+    return fig
+
+```
+
+Once you have decorated your test you need to generate the images against which subsequent tests are to be compared
+to. This is done using the `--mpl-generate-path=` flag and providing an appropriate argument. The path is relative to
+the `tests/` directory and should match what you supply to the `baseline_dir` argument of the decorator. You will have
+to create the directory first though and I typically use `tests/resources/img`. After creating the reference images you
+will want to add them to Git so they are available whenever the rests run.
+
+```bash
+mkdir -p tests/resources/img
+pytest --mpl-generate-path=tests/resources/img
+git add tests/resources/img/*
+git commit -m "tests: Adding reference images for Matplotlib based tests."
+
+```
+
+Each time you run your test suite the output of calling the test is compared to the reference images that reside under
+`tests/resources/img` (or whatever directory you specified).
+
+## `--mpl-generate-summary`
+
+Sometimes your tests might fail, but when the tests that fail are images not matching there is a _really_ neat option
+to `pytest-mpl` that helps determine where the problem may lie. This is the
+`--mpl-generate-summary={html,json,basic-html}` option. If you use the `html` option to this flag/argument then a
+summary in HTML of the tests that use the `@pytest.mark.mpl_image_compare()` decorator is generated and can be viewed in
+a browser to make it relatively easy to view what has changed.
+
+To demonstrate this we change the value of one of `seed` for one of the parameters from `3513387` to something else. By
+default the report is created under `/tmp/` but the `--mpl-results-path` you can specify a location relative to where
+the tests are being run from. For example you could create the `mpl-test` directory and have results saved there.
+
+```sh
+mkdir mpl-test
+echo "mpl-test/" >> .gitignore
+git add .gitignore && git commit -m "chore: ignore mpl-test directory"
+pytest --mpl-generate-summary=html --mpl-results-path=mpl-test tests/test_mpl_example.py
+```
+
+
+
+[mpl]: https://matplotlib.org/
+[mpl-image-comparison]: https://matplotlib.org/devdocs/devel/testing.html#writing-an-image-comparison-test
+[pytest]: https://docs.pytest.org/en/latest/
+[pytest-mpl]: https://pytest-mpl.readthedocs.io/en/stable/
+[pytest-param]: https://blog.nshephard.dev/posts/pytest-param/
+[python]: https://python.org
