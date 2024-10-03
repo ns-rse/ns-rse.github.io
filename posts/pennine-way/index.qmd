@@ -16,7 +16,7 @@ execute:
   warning: false
 ---
 
-
+<!-- markdownlint-disable MD024 -->
 
 This summer I decided to hike the iconic [Pennine Way][pw] a 431 kilometre (261 miles) national trail stretching between
 [Kirk Yetholm][ky] in the North and [Edale][edale] in the South. Traditionally the route is hiked from South to North
@@ -1329,8 +1329,8 @@ weren't bothered by my presence.
 
 Soon I arrived at Gargrave and headed to the Co-op to get a few beers for the evening
 before back-tracking to [Eshton Road Caravan Park][eshton] where a lovely old gentleman pointed me to a small enclosed
-field to camp for the night. A beer whilst pitching the tent close to the wall so it was sheltered from the storm thatw
-as forecast to come through overnight and my appetite was whet so I headed back into town to eat at [The Frying
+field to camp for the night. A beer whilst pitching the tent close to the wall so it was sheltered from the storm that
+was forecast to come through overnight before heading back into town to eat at [The Frying
 Yorkshireman][fryingyorkshireman] which was excellent both in terms of food and service. Very friendly, big portions of
 delicious food and a boot shaped glass for the beer. If you're ever in Gargrave and need to eat head here you won't be
 disappointed. Back to the tent for another beer (cheaper than the pub!) and an early night.
@@ -1933,7 +1933,9 @@ in some manner at some point in your life.
 <!-- row.names(gps) = gps_names -->
 <!-- leaflet() |> -->
 <!--   addTiles() |> -->
-<!--   addMarkers(lat = gps["Kirk Yetholm", "lat"], lng = gps["Kirk Yetholm", "lng"], popup = "Start of the Pennine Way") |> -->
+<!--   addMarkers(lat = gps["Kirk Yetholm", "lat"], -->
+<!--              lng = gps["Kirk Yetholm", "lng"], -->
+<!--              popup = "Start of the Pennine Way") |> -->
 <!--   addMarkers(lat = gps["Edale", "lat"], lng = gps["Edale", "lng"], popup = "End of the Pennine Way") -->
 
 <!-- ``` -->
