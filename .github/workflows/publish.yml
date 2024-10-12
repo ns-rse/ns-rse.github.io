@@ -12,16 +12,17 @@ jobs:
       contents: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install libcurl4-openssl-dev
+          sudo apt-get install libcurl4-openssl-dev libproj-dev libgdal-dev
+
       - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2.0.3
+        uses: quarto-dev/quarto-actions/setup@v2.1.6
         with:
-          version: 1.3.14
+          version: 1.6.11
 
       - name: Install Quarto Extensions
         run: |
@@ -30,16 +31,21 @@ jobs:
           quarto install --no-prompt extension davidwilby/openlinksinnewpage
 
       - name: Install Python and Dependencies
-        uses: actions/setup-python@v4.3.0
+        uses: actions/setup-python@v5.2.0
         with:
-          python-version: '3.10'
+          python-version: '3.12'
           cache: 'pip'
+
+      - name: Restore virtualenv or install dependencies
+        uses: syphar/restore-virtualenv@v1
+
       - run: pip install -r requirements.txt
+        if: steps.restore-virtualenv.outputs.cache-hit != 'true'
 
       - name: Install R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: '4.2.0'
+          r-version: '4.4.1'
 
       - name: Install R Dependencies
         uses: r-lib/actions/setup-renv@v2
@@ -47,8 +53,12 @@ jobs:
           cache-version: 1
 
       - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2.0.3
+        uses: quarto-dev/quarto-actions/publish@v2.1.6
         with:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
