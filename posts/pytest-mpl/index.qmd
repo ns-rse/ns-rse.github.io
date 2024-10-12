@@ -54,11 +54,12 @@ a scatter-plot of two random variables along with a few common options.
 
 ``` {.python}
 #| label: python-test
-#| code-fold: false
+#| code-fold: true
 #| code-link: true
 #| code-tools: true
 #| eval: false
-#| echo: true"""Example code for pytest-mpl exposition."""
+#| echo: true
+"""Example code for pytest-mpl exposition."""
 
 import numpy as np
 import numpy.typing as npt
@@ -416,8 +417,11 @@ the failures and differences in your browser convenient.
 
 [mpl]: https://matplotlib.org/
 [mpl-image-comparison]: https://matplotlib.org/devdocs/devel/testing.html#writing-an-image-comparison-test
+[plotnine]: https://plotnine.org
 [pytest]: https://docs.pytest.org/en/latest/
 [pytestplugin]: https://docs.pytest.org/en/stable/reference/plugin_list.html
+[pytest-examples]: https://github.com/ns-rse/pytest-examples
 [pytest-mpl]: https://pytest-mpl.readthedocs.io/en/stable/
 [pytest-param]: https://blog.nshephard.dev/posts/pytest-param/
 [python]: https://python.org
+[seaborn]: https://seaborn.pydata.org
