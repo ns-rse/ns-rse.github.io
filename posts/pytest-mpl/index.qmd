@@ -127,8 +127,8 @@ tests = [
 
 We use the `@pytest.mark.mpl_image_compare()` decorator to mark a test as having Matplotlib output to indicate that we
 want to compare images. We need to set the `baseline_dir` which is where the images against which tests will be compared
-are stored here it is set to `baseline`. We then call our function, in this case `mpl_example.scatter()` with different
-sets of parameters (courtesy of [pytest parameterisation][pytest-param]).
+are stored here it is set to `baseline` which is relative to the position of the file. We then call our function, in
+this case `mpl_example.scatter()` with different sets of parameters (courtesy of [pytest parameterisation][pytest-param]).
 
 The test itself must `return fig` of the desired plot so that it can be compared to the reference image each time the
 test is run.
@@ -138,13 +138,7 @@ We also use the [pytest.mark.parametrize()](https://blog.nshephard.dev/posts/pyt
 scenarios.
 :::
 
-``` {.python}
-#| label: python-test
-#| code-fold: false
-#| code-link: true
-#| code-tools: true
-#| eval: false
-#| echo: trueimport pytest
+```{.python}
 """Tests of the mpl_example module."""
 
 import pytest
@@ -179,6 +173,22 @@ mkdir -p tests/resources/img
 pytest --mpl-generate-path=tests/baseline `tests/test_mpl_example.py::test_scatter_hist`
 
 ```
+
+::: {.callout-note}
+There is subtle difference between the `baseline_dir` parameter specified in the fixture itself (`baseline`) and the
+argument given to `--mpl-generate-path=` (`tests/baseline`).
+
+This is because `pytest` searches for all files beginning with `test_` in the directory `tests` and when running
+`pytest` you do so from the directory level above where `tests` resides which is typically the root of your
+package. Because the test files reside _within_ the `tests/` directory the relative path to the directory the parameter
+`baseline_dir` argument must omit this leading directory.
+
+```bash
+├── ./tests
+    ├── ./tests/baseline
+    └── ./tests/test_mpl_example.py
+```
+:::
 
 The tests are skipped "_since generating image._"
 
@@ -334,13 +344,14 @@ If you do use `--mpl-results-path` to specify a nested directory within your rep
 exclude it from being included in version control though so add the path to `.gitignore`.
 :::
 
-Lets run the tests, which we know will fail with the `--mpl-generate-summary=html` option enabled (and not using
-`--mpl-results-path`) .
-
 ::: {.callout-note}
 Remember we have added the `--mpl` flag to the general `tool.pytest.ini_options` in `pyproject.toml` to ensure
 `pytest-mpl` extension is enabled and run.
 :::
+
+Lets run the tests, which we know will fail, with the `--mpl-generate-summary=html` option enabled (and not using
+`--mpl-results-path`) .
+
 
 ```bash
 pytest --mpl-generate-summary=html tests/test_mpl_example.py
@@ -412,7 +423,7 @@ the failures and differences in your browser convenient.
 - You have to generate reference images against which the tests are run.
 - You should add the `--mpl` option to the `tools.pytest.ini_options` section of your `pyproject.toml` under `addopts`
   to ensure the extension is used whenever tests are run, be that locally or in Continuous Integration.
-- If you find tests are failing you can generate a web-page summarising the passes and failures using the
+- If you find tests are failing you can easily generate a web-page summarising the passes and failures using the
   `--mpl-generate-summary=html` flag when invoking `pytest` to get an HTML summary that is easy to navigate.
 
 [mpl]: https://matplotlib.org/
