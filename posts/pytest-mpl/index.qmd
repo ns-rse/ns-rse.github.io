@@ -188,6 +188,7 @@ package. Because the test files reside _within_ the `tests/` directory the relat
     ├── ./tests/baseline
     └── ./tests/test_mpl_example.py
 ```
+
 :::
 
 The tests are skipped "_since generating image._"
@@ -351,7 +352,6 @@ Remember we have added the `--mpl` flag to the general `tool.pytest.ini_options`
 
 Lets run the tests, which we know will fail, with the `--mpl-generate-summary=html` option enabled (and not using
 `--mpl-results-path`) .
-
 
 ```bash
 pytest --mpl-generate-summary=html tests/test_mpl_example.py
