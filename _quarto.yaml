@@ -18,8 +18,8 @@ website:
       - icon: github
         href: https://github.com/ns-rse
         rel: me
-      - icon: twitter
-        href: https://twitter.com/nshephardRSE
+      # - icon: twitter
+      #   href: https://twitter.com/nshephardRSE
       - icon: rss
         href: index.xml
         rel: me
