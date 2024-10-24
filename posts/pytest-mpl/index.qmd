@@ -72,10 +72,9 @@ def scatter(
     title: str | None = None,
     seed: int = 3513387,
 ) -> tuple:
-    """Generate a scatter plot of two random variables.
+    """
+    Generate a scatter plot of two random variables.
 
-    This example is taken from the `Scatter Histogram Example
-    <https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_hist.html>`_.
 
     Parameters
     ----------
@@ -170,7 +169,7 @@ colons (`::`).
 
 ```bash
 mkdir -p tests/resources/img
-pytest --mpl-generate-path=tests/baseline `tests/test_mpl_example.py::test_scatter_hist`
+pytest --mpl-generate-path=tests/baseline `tests/test_mpl_example.py::test_scatter`
 
 ```
 
@@ -230,7 +229,6 @@ The generated images reside within the `tests/baseline/` directory and as the `b
 to go. We can re-run the tests with the `--mpl` flag to check they pass.
 
 ```bash
-mv baseline tests/baseline
 pytest --mpl tests/test_mpl_example::test_scatter
 ```
 
