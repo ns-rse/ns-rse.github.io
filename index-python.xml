@@ -128,80 +128,77 @@ background-color: null;
 font-style: inherit;">tuple</span>:</span>
 <span id="cb3-20">    <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">"""Generate a scatter plot of two random variables.</span></span>
-<span id="cb3-21"></span>
-<span id="cb3-22"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">"""</span></span>
+<span id="cb3-21"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">    This example is taken from the `Scatter Histogram Example</span></span>
-<span id="cb3-23"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">    &lt;https://matplotlib.org/stable/gallery/lines_bars_and_markers/scatter_hist.html&gt;`_.</span></span>
-<span id="cb3-24"></span>
-<span id="cb3-25"><span class="co" style="color: #5E5E5E;
+font-style: inherit;">    Generate a scatter plot of two random variables.</span></span>
+<span id="cb3-22"></span>
+<span id="cb3-23"></span>
+<span id="cb3-24"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    Parameters</span></span>
-<span id="cb3-26"><span class="co" style="color: #5E5E5E;
+<span id="cb3-25"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    ----------</span></span>
-<span id="cb3-27"><span class="co" style="color: #5E5E5E;
+<span id="cb3-26"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    n_obs : int</span></span>
-<span id="cb3-28"><span class="co" style="color: #5E5E5E;
+<span id="cb3-27"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">        Number of random observations to generate.</span></span>
-<span id="cb3-29"><span class="co" style="color: #5E5E5E;
+<span id="cb3-28"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    figsize : tuple[int, int]</span></span>
-<span id="cb3-30"><span class="co" style="color: #5E5E5E;
+<span id="cb3-29"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">        Shape to plot.</span></span>
-<span id="cb3-31"><span class="co" style="color: #5E5E5E;
+<span id="cb3-30"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    seed : int</span></span>
-<span id="cb3-32"><span class="co" style="color: #5E5E5E;
+<span id="cb3-31"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">        Seed for pseudo-random number generation.</span></span>
-<span id="cb3-33"></span>
-<span id="cb3-34"><span class="co" style="color: #5E5E5E;
+<span id="cb3-32"></span>
+<span id="cb3-33"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    Returns</span></span>
-<span id="cb3-35"><span class="co" style="color: #5E5E5E;
+<span id="cb3-34"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    -------</span></span>
-<span id="cb3-36"><span class="co" style="color: #5E5E5E;
+<span id="cb3-35"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    tuple(fig, ax)</span></span>
-<span id="cb3-37"></span>
-<span id="cb3-38"><span class="co" style="color: #5E5E5E;
+<span id="cb3-36"></span>
+<span id="cb3-37"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    """</span></span>
-<span id="cb3-39">    <span class="co" style="color: #5E5E5E;
+<span id="cb3-38">    <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Generate two random sets of numbers</span></span>
-<span id="cb3-40">    rng <span class="op" style="color: #5E5E5E;
+<span id="cb3-39">    rng <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.random.default_rng(seed)</span>
-<span id="cb3-41">    x <span class="op" style="color: #5E5E5E;
+<span id="cb3-40">    x <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.random.randn(n_obs)</span>
-<span id="cb3-42">    y <span class="op" style="color: #5E5E5E;
+<span id="cb3-41">    y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.random.randn(n_obs)</span>
-<span id="cb3-43">    <span class="co" style="color: #5E5E5E;
+<span id="cb3-42">    <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Create the figure</span></span>
-<span id="cb3-44">    fig <span class="op" style="color: #5E5E5E;
+<span id="cb3-43">    fig <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.figure(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>figsize)</span>
-<span id="cb3-45">    ax <span class="op" style="color: #5E5E5E;
+<span id="cb3-44">    ax <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> fig.add_subplot()</span>
-<span id="cb3-46">    ax.scatter(x, y)</span>
-<span id="cb3-47">    plt.title(title)</span>
-<span id="cb3-48"></span>
-<span id="cb3-49">    <span class="cf" style="color: #003B4F;
+<span id="cb3-45">    ax.scatter(x, y)</span>
+<span id="cb3-46">    plt.title(title)</span>
+<span id="cb3-47"></span>
+<span id="cb3-48">    <span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">return</span> (fig, ax)</span></code></pre></div>
@@ -381,7 +378,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">`</span><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">tests/test_mpl_example.py::test_scatter_hist</span><span class="kw" style="color: #003B4F;
+font-style: inherit;">tests/test_mpl_example.py::test_scatter</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">`</span></span></code></pre></div>
@@ -500,10 +497,7 @@ font-style: inherit;">========================</span> 2 skipped in 2.46s =======
 <p>We can look at the generated images, nothing fancy just some random dots.</p>
 <p><img src="https://blog.nshephard.dev/posts/pytest-mpl/img/test_scatter_hist_300_points_baseline.png" style="height:50.0%" alt="First test image of 300 points"> <img src="https://blog.nshephard.dev/posts/pytest-mpl/img/test_scatter_hist_3000_points_baseline.png" style="height:50.0%" alt="Second test image of 3000 points"></p>
 <p>The generated images reside within the <code>tests/baseline/</code> directory and as the <code>baseline_dir=baseline</code> argument to the <code>@pytest.mark.mpl_image_compare()</code> is <em>relative</em> to the location of the test file itself which is in <code>test</code> we are good to go. We can re-run the tests with the <code>--mpl</code> flag to check they pass.</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">mv</span> baseline tests/baseline</span>
-<span id="cb9-2"><span class="ex" style="color: null;
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pytest</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -4200,7 +4194,7 @@ This is my package, there are many packages like it but this one is mine.</code>
 <section id="including-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="including-markdown">Including Markdown</h3>
 <p>I already know <a href="https://www.markdownguide.org/" target="_blank">Markdown</a> fairly well and would rather use that to write documents (as I do with thisblog). Fortunately Sphinx can incorporate documentation written in <a href="https://github.com/ryanfox/sphinx-markdown-tables" target="_blank">Markdown</a> using the <a href="https://myst-parser.readthedocs.io/en/latest/" target="_blank"><code>myst_parser</code></a> package. Simply include it in the <code>extensions</code>.</p>
-<div id="df3fdd55" class="cell" data-execution_count="1">
+<div id="ab7c8061" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4210,7 +4204,7 @@ font-style: inherit;">"myst_parser"</span>,</span>
 <span id="cb3-3">]</span></code></pre></div>
 </div>
 <p>By default it works with extensions of <code>.md</code> but if there are other flavours you wish to include (e.g.&nbsp;<code>.Rmd</code> for RMarkdown or <code>.qmd</code> for Quarto) you add them to the <code>source_suffix</code> in <code>docs/conf.py</code></p>
-<div id="315edcbf" class="cell" data-execution_count="2">
+<div id="0621d38a" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">source_suffix <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {<span class="st" style="color: #20794D;
@@ -4292,7 +4286,7 @@ gitGraph
 <h3 class="anchored" data-anchor-id="sphinx-autoapi"><code>sphinx-autoapi</code></h3>
 <p>However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/" target="_blank">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
 <p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html" target="_blank">configuring</a> at a bare minimum which directories to generate documentation from. i</p>
-<div id="598ea3b1" class="cell" data-execution_count="3">
+<div id="4d381c2f" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4322,7 +4316,7 @@ font-style: inherit;">"../mypackage"</span>]</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="sphinx-autosummary">Sphinx Autosummary</h3>
 <p>In addition the <a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html" target="_blank">sphinx_ext_autosummary</a> automates summarising the API docstrings.</p>
 <p>Add the package as a dependency to the <code>extensions</code>…</p>
-<div id="a3087415" class="cell" data-execution_count="4">
+<div id="d839d17d" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4352,7 +4346,7 @@ font-style: inherit;">"sphinx.ext.autosummary"</span></span>
 <h2 class="anchored" data-anchor-id="multiple-versions">Multiple Versions</h2>
 <p>Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision documentation for each version that is available. Fortunately the Sphinx extension <a href="https://holzhaus.github.io/sphinx-multiversion/master/" target="_blank">sphinx-multiversion</a> makes this relatively painless.</p>
 <p>You need to include it in the list of <code>extensions</code> of <code>docs/conf.py</code></p>
-<div id="6f5e9886" class="cell" data-execution_count="5">
+<div id="6620c0a4" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4366,7 +4360,7 @@ font-style: inherit;">"sphinx_multiversion"</span>,</span>
 <section id="sidebar" class="level4">
 <h4 class="anchored" data-anchor-id="sidebar">Sidebar</h4>
 <p>For versions to not just be built but available you need to include a section on your site that allows selecting which version of the documentation to view. Sidebars are included via HTML templates and you need to configure the path to this directory and the name of the HTML file within it. The following options in the <code>conf.py</code> configure the <code>_templates</code> directory and within it the <code>versioning.html</code> file.</p>
-<div id="0e31bed2" class="cell" data-execution_count="6">
+<div id="53144e26" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">templates_path <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4397,7 +4391,7 @@ font-style: inherit;">"versioning.html"</span>,}</span></code></pre></div>
 <section id="tagsbranches" class="level4">
 <h4 class="anchored" data-anchor-id="tagsbranches">Tags/Branches</h4>
 <p>If no options are set then <code>sphinx-multiversion</code> will build documentation for <em>all</em> branhces, which is probably undesirable. Typically you want to restrict this to the released versions which are identified by <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging" target="_blank">git tags</a> and perhaps your <code>main</code>/<code>master</code> branch. If you prefix your tags with <code>v</code> and you want to build the documentation for the <code>HEAD</code> of your <code>main</code> (or <code>master</code>) branch then you should set options as shown below for <code>sphinx-multiversion</code>. I like to be able to test documentation builds and so I have a section that allows me to include a given branch.</p>
-<div id="843b06ca" class="cell" data-execution_count="7">
+<div id="7a83f307" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">smv_tag_whitelist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
@@ -4460,7 +4454,7 @@ font-style: inherit;">"</span></span></code></pre></div>
 <section id="themes" class="level2">
 <h2 class="anchored" data-anchor-id="themes">Themes</h2>
 <p>There are a number of different themes available for including in your package. Which is used is defined by the <code>html_theme</code> variable in <code>docs/conf.py</code>. I like the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank"><code>pydata-sphinx-theme</code></a> that is used by <a href="https://pandas.pydata.org" target="_blank">Pandas</a>/<a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank">Matplotlib</a>.</p>
-<div id="c2d60c8c" class="cell" data-execution_count="8">
+<div id="62d17a34" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">html_theme <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -4471,7 +4465,7 @@ font-style: inherit;">"pydata_sphinx_theme"</span></span></code></pre></div>
 <section id="package-dependencies" class="level2">
 <h2 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h2>
 <p>Since the documentation is part of your package it is important to include all of the dependencies that are required for building the documentation dependencies of your package so they can be easily installed and are available to Sphinx (since Sphinx will try loading anything listed in your <code>docs/conf.py</code>). These days you should really be using <code>pyproject.toml</code> to configure and manage your package, if you are unfamiliar with the packaging process see my post on <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a>.</p>
-<div id="fcb3bc6d" class="cell" data-execution_count="9">
+<div id="45837fd1" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">[project.optional<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>dependencies]</span>
