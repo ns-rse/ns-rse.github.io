@@ -342,13 +342,13 @@ This is my package, there are many packages like it but this one is mine.</code>
 <section id="including-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="including-markdown">Including Markdown</h3>
 <p>I already know <a href="https://www.markdownguide.org/" target="_blank">Markdown</a> fairly well and would rather use that to write documents (as I do with thisblog). Fortunately Sphinx can incorporate documentation written in <a href="https://github.com/ryanfox/sphinx-markdown-tables" target="_blank">Markdown</a> using the <a href="https://myst-parser.readthedocs.io/en/latest/" target="_blank"><code>myst_parser</code></a> package. Simply include it in the <code>extensions</code>.</p>
-<div id="835d3073" class="cell" data-execution_count="1">
+<div id="2e43dcf8" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>extensions <span class="op">=</span> [</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"myst_parser"</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>By default it works with extensions of <code>.md</code> but if there are other flavours you wish to include (e.g.&nbsp;<code>.Rmd</code> for RMarkdown or <code>.qmd</code> for Quarto) you add them to the <code>source_suffix</code> in <code>docs/conf.py</code></p>
-<div id="80bf8444" class="cell" data-execution_count="2">
+<div id="06181dce" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>source_suffix <span class="op">=</span> {<span class="st">".rst"</span>: <span class="st">"restructuredtext"</span>, <span class="st">".md"</span>: <span class="st">"markdown"</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In your <code>index.rst</code> you can then list the Markdown filenames, without extensions. For example if you have an <code>installation.md</code> and <code>configuration.md</code> place them in the same directory as <code>index.rst</code> (the root <code>docs/</code>) directory and have in your <code>index.rst</code> have…</p>
@@ -420,7 +420,7 @@ gitGraph
 <h3 class="anchored" data-anchor-id="sphinx-autoapi"><code>sphinx-autoapi</code></h3>
 <p>However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/" target="_blank">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
 <p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html" target="_blank">configuring</a> at a bare minimum which directories to generate documentation from. i</p>
-<div id="22aa82e5" class="cell" data-execution_count="3">
+<div id="1d0da2ef" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>extensions <span class="op">=</span> [</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"autoapi.extension"</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>]</span>
@@ -436,7 +436,7 @@ gitGraph
 <h3 class="anchored" data-anchor-id="sphinx-autosummary">Sphinx Autosummary</h3>
 <p>In addition the <a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html" target="_blank">sphinx_ext_autosummary</a> automates summarising the API docstrings.</p>
 <p>Add the package as a dependency to the <code>extensions</code>…</p>
-<div id="96535505" class="cell" data-execution_count="4">
+<div id="36bad0ca" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>extensions <span class="op">=</span> [</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sphinx.ext.autosummary"</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -462,7 +462,7 @@ gitGraph
 <h2 class="anchored" data-anchor-id="multiple-versions">Multiple Versions</h2>
 <p>Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision documentation for each version that is available. Fortunately the Sphinx extension <a href="https://holzhaus.github.io/sphinx-multiversion/master/" target="_blank">sphinx-multiversion</a> makes this relatively painless.</p>
 <p>You need to include it in the list of <code>extensions</code> of <code>docs/conf.py</code></p>
-<div id="d226ea57" class="cell" data-execution_count="5">
+<div id="89e0f52a" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>extensions <span class="op">=</span> [</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sphinx_multiversion"</span>,</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -472,7 +472,7 @@ gitGraph
 <section id="sidebar" class="level4">
 <h4 class="anchored" data-anchor-id="sidebar">Sidebar</h4>
 <p>For versions to not just be built but available you need to include a section on your site that allows selecting which version of the documentation to view. Sidebars are included via HTML templates and you need to configure the path to this directory and the name of the HTML file within it. The following options in the <code>conf.py</code> configure the <code>_templates</code> directory and within it the <code>versioning.html</code> file.</p>
-<div id="c86c28cb" class="cell" data-execution_count="6">
+<div id="86a605f7" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>templates_path <span class="op">=</span> [</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"_templates"</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>]</span>
@@ -493,7 +493,7 @@ gitGraph
 <section id="tagsbranches" class="level4">
 <h4 class="anchored" data-anchor-id="tagsbranches">Tags/Branches</h4>
 <p>If no options are set then <code>sphinx-multiversion</code> will build documentation for <em>all</em> branhces, which is probably undesirable. Typically you want to restrict this to the released versions which are identified by <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging" target="_blank">git tags</a> and perhaps your <code>main</code>/<code>master</code> branch. If you prefix your tags with <code>v</code> and you want to build the documentation for the <code>HEAD</code> of your <code>main</code> (or <code>master</code>) branch then you should set options as shown below for <code>sphinx-multiversion</code>. I like to be able to test documentation builds and so I have a section that allows me to include a given branch.</p>
-<div id="c4200baf" class="cell" data-execution_count="7">
+<div id="2b48d744" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>smv_tag_whitelist <span class="op">=</span> <span class="vs">r"^v\d+.*$"</span>  <span class="co"># Tags beginning with v#</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>smv_branch_whitelist <span class="op">=</span> <span class="vs">r"^main$"</span>  <span class="co"># main branch</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If testing changes locally comment out the above and the smv_branch_whitelist below instead. Replace the branch name</span></span>
@@ -514,14 +514,14 @@ gitGraph
 <section id="themes" class="level2">
 <h2 class="anchored" data-anchor-id="themes">Themes</h2>
 <p>There are a number of different themes available for including in your package. Which is used is defined by the <code>html_theme</code> variable in <code>docs/conf.py</code>. I like the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank"><code>pydata-sphinx-theme</code></a> that is used by <a href="https://pandas.pydata.org" target="_blank">Pandas</a>/<a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank">Matplotlib</a>.</p>
-<div id="755bcf3d" class="cell" data-execution_count="8">
+<div id="f88b070a" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>html_theme <span class="op">=</span> <span class="st">"pydata_sphinx_theme"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="package-dependencies" class="level2">
 <h2 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h2>
 <p>Since the documentation is part of your package it is important to include all of the dependencies that are required for building the documentation dependencies of your package so they can be easily installed and are available to Sphinx (since Sphinx will try loading anything listed in your <code>docs/conf.py</code>). These days you should really be using <code>pyproject.toml</code> to configure and manage your package, if you are unfamiliar with the packaging process see my post on <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a>.</p>
-<div id="d6834eee" class="cell" data-execution_count="9">
+<div id="2278e0ef" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>[project.optional<span class="op">-</span>dependencies]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> [</span>
