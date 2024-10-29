@@ -20,7 +20,7 @@ jobs:
           sudo apt-get install libcurl4-openssl-dev libproj-dev libgdal-dev
 
       - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2.1.6
+        uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: 1.6.11
 
@@ -53,11 +53,20 @@ jobs:
           cache-version: 1
 
       - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2.1.6
+        uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add CNAME file to gh-pages branch
+        run: |
+          git switch gh-pages
+          git pull
+          echo 'dev.nshephard.blog' > CNAME
+          git add CNAME
+          git commit -m "Adding CNAME"
+          git push
 
       - name: Setup tmate session
         if: ${{ failure() }}
