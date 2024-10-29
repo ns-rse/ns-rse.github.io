@@ -64,7 +64,7 @@ jobs:
           rm renv/activate.R
           git switch gh-pages
           git pull
-          echo 'blog.nshephard.dev > CNAME
+          echo 'blog.nshephard.dev' > CNAME
           git add CNAME
           git commit -m "Adding CNAME"
           git push
