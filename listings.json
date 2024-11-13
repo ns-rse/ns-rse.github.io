@@ -16,44 +16,49 @@
     "items": []
   },
   {
-    "listing": "/posts/pytest-param/index.html",
+    "listing": "/posts/quarto-cname/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pytest-xfail/index.html",
+    "listing": "/posts/git-worktrees/index.html",
     "items": []
   },
   {
-    "listing": "/posts/browser-extensions/index.html",
+    "listing": "/posts/whos_to_blame/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pennine-way/index.html",
+    "listing": "/posts/linting/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pre-commit-ci/index.html",
+    "listing": "/posts/git-remotes-revisited/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pre-commit-hooks/index.html",
+    "listing": "/posts/running-2022/index.html",
     "items": []
   },
   {
-    "listing": "/posts/python-packaging/index.html",
+    "listing": "/posts/pytest-mpl/index.html",
     "items": []
   },
   {
-    "listing": "/posts/cli-alternatives/index.html",
+    "listing": "/posts/virtualenvwrapper/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pre-commit-r/index.html",
+    "listing": "/posts/repository-review/index.html",
     "items": []
   },
   {
-    "listing": "/index.html",
+    "listing": "/posts/git-ssh/index.html",
+    "items": []
+  },
+  {
+    "listing": "/about.html",
     "items": [
+      "/posts/quarto-cname/index.html",
       "/posts/pytest-mpl/index.html",
       "/posts/pennine-way/index.html",
       "/posts/virtualenv-hooks/index.html",
@@ -85,6 +90,7 @@
   {
     "listing": "/links.html",
     "items": [
+      "/posts/quarto-cname/index.html",
       "/posts/pytest-mpl/index.html",
       "/posts/pennine-way/index.html",
       "/posts/virtualenv-hooks/index.html",
@@ -114,8 +120,9 @@
     ]
   },
   {
-    "listing": "/about.html",
+    "listing": "/index.html",
     "items": [
+      "/posts/quarto-cname/index.html",
       "/posts/pytest-mpl/index.html",
       "/posts/pennine-way/index.html",
       "/posts/virtualenv-hooks/index.html",
@@ -145,39 +152,39 @@
     ]
   },
   {
-    "listing": "/posts/git-ssh/index.html",
+    "listing": "/posts/pre-commit-r/index.html",
     "items": []
   },
   {
-    "listing": "/posts/repository-review/index.html",
+    "listing": "/posts/cli-alternatives/index.html",
     "items": []
   },
   {
-    "listing": "/posts/virtualenvwrapper/index.html",
+    "listing": "/posts/python-packaging/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pytest-mpl/index.html",
+    "listing": "/posts/pre-commit-hooks/index.html",
     "items": []
   },
   {
-    "listing": "/posts/running-2022/index.html",
+    "listing": "/posts/pre-commit-ci/index.html",
     "items": []
   },
   {
-    "listing": "/posts/git-remotes-revisited/index.html",
+    "listing": "/posts/pennine-way/index.html",
     "items": []
   },
   {
-    "listing": "/posts/linting/index.html",
+    "listing": "/posts/browser-extensions/index.html",
     "items": []
   },
   {
-    "listing": "/posts/whos_to_blame/index.html",
+    "listing": "/posts/pytest-xfail/index.html",
     "items": []
   },
   {
-    "listing": "/posts/git-worktrees/index.html",
+    "listing": "/posts/pytest-param/index.html",
     "items": []
   },
   {

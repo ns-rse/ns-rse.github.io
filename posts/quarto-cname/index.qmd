@@ -1,0 +1,156 @@
+---
+title: "Quarto Custom domain on GitHub Pages"
+date: "2024-11-14"
+categories: [quarto, github, website, domain]
+image: https://live.staticflickr.com/65535/54121847365_b57db38358_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+This blog is published using the excellent [Quarto][quarto] framework to [GitHub Pages][ghpages] which offers free
+website hosting. However, astute readers familiar with this sort of setup will have noticed that the domain is no the
+usual `[github-user].github.io` and instead it resolves to `blog.nshephard.dev`. This post explains how to achieve that
+as it took me a little bit of work to sort out properly.
+
+![[The Bernia Ridge by
+Me](https://www.flickr.com/photos/slackline/54121847365/)](https://live.staticflickr.com/65535/54121847365_b57db38358_k.jpg)
+
+## Why?
+
+I found that despite setting a custom domain in the GitHub pages Settings (_Settings > Pages > Custom domain_) each time
+I published the site (e.g. on a new blog post) the `CNAME` file disappeared from the `gh-pages` branch and the domain
+didn't resolve. I searched but couldn't find a solution to this so raised an
+[issue](https://github.com/quarto-dev/quarto-actions/issues/118) to include it in the `quarto-actions`.
+
+In the meantime I added a custom step to the `publish.yaml` to add the `CNAME` file to the `gh-pages` branch after
+`Render and Publish` which worked, but I was subsequently pointed to a cleaner existing way of achieving the same
+result.
+
+## What isn't covered
+
+This post doesn't cover...
+
+- How to setup a blog/website using Quarto.
+- How to write Quarto Markdown.
+- How to publish a blog or website using Quarto, they have [excellent documentation][quarto-publish]
+- Setting a `CNAME` with your DNS registrar.
+
+On this last point, how you set your `CNAME` to redirect your custom domain to that of the GitHub Pages is dependent on
+the domain registrar service you use. I use [OVH][ovh].
+
+## What is covered
+
+- How to add a `CNAME` file to the `gh-pages` branch that is produced by the [`quarto-dev/quarto-actions/publish` GitHub
+  Action][quarto-publish] so that the pages resolve to a custom domain.
+
+## The Problem
+
+If you use plain [GitHub Pages][ghpages] then you can set a custom `CNAME` by going to _Settings > Pages > Custom
+Domain_ and entering the address there. However, as [documented][custom-cname] (see item 4) this doesn't work if you use
+a custom GitHub Action to publish your website, which is the case when you use the [`quarto-dev/quarto-actions/publish`
+GitHub Action][quarto-publish] to publish using Quarto.
+
+Why? Because each time the action runs it regenerates the content of the `gh-pages` branch on the runner and pushes it
+to your repository and _doesn't_ include a custom `CNAME` file.
+
+## Solution 1
+
+The solution I initially hit upon was to add an extra step to my `.github/workflows/publish.yaml` that...
+
+1. Checks out the `gh-pages` branch.
+2. Creates the `CNAME` file with the domain I use.
+3. Adds this to the `gh-pages` branch.
+4. Pushes back up-stream.
+
+You should already have added a [publish action][publish-action] to your repository which runs the
+[`quarto-dev/quarto-actions/publish` GitHub Action][quarto-publish]. This runs `quarto publish $TARGET` where `$TARGET`
+is set by the chosen output configured in the `target` argument. In this example `gh-pages`
+
+```yaml
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+After this you should add the following, substituting `blog.nshephard.dev` for your own domain.
+
+```yaml
+      - name: Add CNAME file to gh-pages branch
+        run: |
+          rm renv/activate.R
+          git switch gh-pages
+          git pull
+          echo 'blog.nshephard.dev > CNAME
+          git add CNAME
+          git commit -m "Adding CNAME"
+          git push
+```
+
+This...
+
+1. Removes the lingering `renv/activate.R` which prevents switching branches.
+2. Switches branches to `gh-pages`.
+3. `git pull` to get the just published version of the branch.
+4. Creates the `CNAME` file with the domain you specify.
+5. Adds (stages) the `CNAME` file to the `gh-pages` branch.
+6. Commits the change.
+7. Pushes the commit to `origin` (i.e. the `gh-pages` branch on GitHub)
+
+This worked as the `CNAME` file is added each time the workflow runs but, unsurprisingly, there is a simpler solution.
+
+## Solution 2 - The correct way of doing this
+
+Turns out the [answer](https://github.com/quarto-dev/quarto-actions/issues/118#issuecomment-2445375569) provided by
+`@cscheid` is, unsurprisingly, much simpler.
+
+You need to add `CNAME` in the `_quarto.yaml` so that it is included in the project.
+
+``` yaml
+project:
+  type: website
+  resources:
+    ...
+    - "CNAME"
+```
+
+You _also_ have to create and add the `CNAME` file with your domain to the repository.
+
+``` bash
+echo 'blog.nshephard.dev` > CNAME
+git add CNAME
+git commit -m "Adding CNAME to repository"
+git push
+```
+
+Then, because its included in the resources, the file will carry through/persist when the publishing action runs to
+create the `gh-pages` branch.
+
+## Related
+
+This feature was introduced in [Quarto 1.2](https://quarto.org/docs/download/changelog/1.2/index.html#publishing) and
+others have encountered [problems](https://stackoverflow.com/questions/79172839/quarto-publish-resets-cname) with the
+file being deleted on first running `quarto publish gh-pages` (if you're having problems perhaps worth keeping an eye on
+that thread).
+
+There is a [draft Pull Request](https://github.com/quarto-dev/quarto-web/pull/1091/files) to add it to the
+documentation its not been merged which is perhaps why I couldn't find how to do this in the documentation (see also
+discussion in [this issue](https://github.com/quarto-dev/quarto-cli/issues/4941)).
+
+[custom-cname]: https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain
+[ghpages]: https://pages.github.com/
+[ovh]: https://www.ovhcloud.com/en-gb/
+[publish-action]: https://github.com/quarto-dev/quarto-actions
+[quarto]: https://quarto.org/
+[quarto-publish]: https://github.com/quarto-dev/quarto-actions

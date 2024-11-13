@@ -15,7 +15,258 @@
 <link>https://blog.nshephard.dev/links.html#category=github</link>
 </image>
 <generator>quarto-1.6.11</generator>
-<lastBuildDate>Sat, 17 Feb 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 14 Nov 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Quarto Custom domain on GitHub Pages</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/quarto-cname/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>This blog is published using the excellent <a href="https://quarto.org/" target="_blank">Quarto</a> framework to <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> which offers free website hosting. However, astute readers familiar with this sort of setup will have noticed that the domain is no the usual <code>[github-user].github.io</code> and instead it resolves to <code>blog.nshephard.dev</code>. This post explains how to achieve that as it took me a little bit of work to sort out properly.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://live.staticflickr.com/65535/54121847365_b57db38358_k.jpg" class="img-fluid figure-img"></p>
+<figcaption><a href="https://www.flickr.com/photos/slackline/54121847365/" target="_blank">The Bernia Ridge by Me</a></figcaption>
+</figure>
+</div>
+<section id="why" class="level2">
+<h2 class="anchored" data-anchor-id="why">Why?</h2>
+<p>I found that despite setting a custom domain in the GitHub pages Settings (<em>Settings &gt; Pages &gt; Custom domain</em>) each time I published the site (e.g.&nbsp;on a new blog post) the <code>CNAME</code> file disappeared from the <code>gh-pages</code> branch and the domain didn’t resolve. I searched but couldn’t find a solution to this so raised an <a href="https://github.com/quarto-dev/quarto-actions/issues/118" target="_blank">issue</a> to include it in the <code>quarto-actions</code>.</p>
+<p>In the meantime I added a custom step to the <code>publish.yaml</code> to add the <code>CNAME</code> file to the <code>gh-pages</code> branch after <code>Render and Publish</code> which worked, but I was subsequently pointed to a cleaner existing way of achieving the same result.</p>
+</section>
+<section id="what-isnt-covered" class="level2">
+<h2 class="anchored" data-anchor-id="what-isnt-covered">What isn’t covered</h2>
+<p>This post doesn’t cover…</p>
+<ul>
+<li>How to setup a blog/website using Quarto.</li>
+<li>How to write Quarto Markdown.</li>
+<li>How to publish a blog or website using Quarto, they have <a href="https://github.com/quarto-dev/quarto-actions" target="_blank">excellent documentation</a></li>
+<li>Setting a <code>CNAME</code> with your DNS registrar.</li>
+</ul>
+<p>On this last point, how you set your <code>CNAME</code> to redirect your custom domain to that of the GitHub Pages is dependent on the domain registrar service you use. I use <a href="https://www.ovhcloud.com/en-gb/" target="_blank">OVH</a>.</p>
+</section>
+<section id="what-is-covered" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-covered">What is covered</h2>
+<ul>
+<li>How to add a <code>CNAME</code> file to the <code>gh-pages</code> branch that is produced by the <a href="https://github.com/quarto-dev/quarto-actions" target="_blank"><code>quarto-dev/quarto-actions/publish</code> GitHub Action</a> so that the pages resolve to a custom domain.</li>
+</ul>
+</section>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<p>If you use plain <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> then you can set a custom <code>CNAME</code> by going to <em>Settings &gt; Pages &gt; Custom Domain</em> and entering the address there. However, as <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain" target="_blank">documented</a> (see item 4) this doesn’t work if you use a custom GitHub Action to publish your website, which is the case when you use the <a href="https://github.com/quarto-dev/quarto-actions" target="_blank"><code>quarto-dev/quarto-actions/publish</code> GitHub Action</a> to publish using Quarto.</p>
+<p>Why? Because each time the action runs it regenerates the content of the <code>gh-pages</code> branch on the runner and pushes it to your repository and <em>doesn’t</em> include a custom <code>CNAME</code> file.</p>
+</section>
+<section id="solution-1" class="level2">
+<h2 class="anchored" data-anchor-id="solution-1">Solution 1</h2>
+<p>The solution I initially hit upon was to add an extra step to my <code>.github/workflows/publish.yaml</code> that…</p>
+<ol type="1">
+<li>Checks out the <code>gh-pages</code> branch.</li>
+<li>Creates the <code>CNAME</code> file with the domain I use.</li>
+<li>Adds this to the <code>gh-pages</code> branch.</li>
+<li>Pushes back up-stream.</li>
+</ol>
+<p>You should already have added a <a href="https://github.com/quarto-dev/quarto-actions" target="_blank">publish action</a> to your repository which runs the <a href="https://github.com/quarto-dev/quarto-actions" target="_blank"><code>quarto-dev/quarto-actions/publish</code> GitHub Action</a>. This runs <code>quarto publish $TARGET</code> where <code>$TARGET</code> is set by the chosen output configured in the <code>target</code> argument. In this example <code>gh-pages</code></p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Render and Publish</span></span>
+<span id="cb1-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> quarto-dev/quarto-actions/publish@v2</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">with</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">target</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> gh-pages</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">env</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb1-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">          </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">GITHUB_TOKEN</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> ${{ secrets.GITHUB_TOKEN }}</span></span></code></pre></div>
+<p>After this you should add the following, substituting <code>blog.nshephard.dev</code> for your own domain.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Add CNAME file to gh-pages branch</span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">        run</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">: </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">|</span></span>
+<span id="cb2-3">          rm renv/activate.R</span>
+<span id="cb2-4">          git switch gh-pages</span>
+<span id="cb2-5">          git pull</span>
+<span id="cb2-6">          echo 'blog.nshephard.dev &gt; CNAME</span>
+<span id="cb2-7">          git add CNAME</span>
+<span id="cb2-8">          git commit -m "Adding CNAME"</span>
+<span id="cb2-9">          git push</span></code></pre></div>
+<p>This…</p>
+<ol type="1">
+<li>Removes the lingering <code>renv/activate.R</code> which prevents switching branches.</li>
+<li>Switches branches to <code>gh-pages</code>.</li>
+<li><code>git pull</code> to get the just published version of the branch.</li>
+<li>Creates the <code>CNAME</code> file with the domain you specify.</li>
+<li>Adds (stages) the <code>CNAME</code> file to the <code>gh-pages</code> branch.</li>
+<li>Commits the change.</li>
+<li>Pushes the commit to <code>origin</code> (i.e.&nbsp;the <code>gh-pages</code> branch on GitHub)</li>
+</ol>
+<p>This worked as the <code>CNAME</code> file is added each time the workflow runs but, unsurprisingly, there is a simpler solution.</p>
+</section>
+<section id="solution-2---the-correct-way-of-doing-this" class="level2">
+<h2 class="anchored" data-anchor-id="solution-2---the-correct-way-of-doing-this">Solution 2 - The correct way of doing this</h2>
+<p>Turns out the <a href="https://github.com/quarto-dev/quarto-actions/issues/118#issuecomment-2445375569" target="_blank">answer</a> provided by <code>@cscheid</code> is, unsurprisingly, much simpler.</p>
+<p>You need to add <code>CNAME</code> in the <code>_quarto.yaml</code> so that it is included in the project.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">project</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb3-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">type</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> website</span></span>
+<span id="cb3-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">resources</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb3-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    ...</span></span>
+<span id="cb3-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"CNAME"</span></span></code></pre></div>
+<p>You <em>also</em> have to create and add the <code>CNAME</code> file with your domain to the repository.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'blog.nshephard.dev` &gt; CNAME</span></span>
+<span id="cb4-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">git add CNAME</span></span>
+<span id="cb4-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">git commit -m "Adding CNAME to repository"</span></span>
+<span id="cb4-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">git push</span></span></code></pre></div>
+<p>Then, because its included in the resources, the file will carry through/persist when the publishing action runs to create the <code>gh-pages</code> branch.</p>
+</section>
+<section id="related" class="level2">
+<h2 class="anchored" data-anchor-id="related">Related</h2>
+<p>This feature was introduced in <a href="https://quarto.org/docs/download/changelog/1.2/index.html#publishing" target="_blank">Quarto 1.2</a> and others have encountered <a href="https://stackoverflow.com/questions/79172839/quarto-publish-resets-cname" target="_blank">problems</a> with the file being deleted on first running <code>quarto publish gh-pages</code> (if you’re having problems perhaps worth keeping an eye on that thread).</p>
+<p>There is a <a href="https://github.com/quarto-dev/quarto-web/pull/1091/files" target="_blank">draft Pull Request</a> to add it to the documentation its not been merged which is perhaps why I couldn’t find how to do this in the documentation (see also discussion in <a href="https://github.com/quarto-dev/quarto-cli/issues/4941" target="_blank">this issue</a>).</p>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
+  author = {Shephard, Neil},
+  title = {Quarto {Custom} Domain on {GitHub} {Pages}},
+  date = {2024-11-14},
+  url = {https://blog.nshephard.dev/posts/quarto-cname/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2024" class="csl-entry quarto-appendix-citeas">
+Shephard, Neil. 2024. <span>“Quarto Custom Domain on GitHub
+Pages.”</span> November 14, 2024. <a href="https://blog.nshephard.dev/posts/quarto-cname/">https://blog.nshephard.dev/posts/quarto-cname/</a>.
+</div></div></section></div> ]]></description>
+  <category>quarto</category>
+  <category>github</category>
+  <category>website</category>
+  <category>domain</category>
+  <guid>https://blog.nshephard.dev/posts/quarto-cname/</guid>
+  <pubDate>Thu, 14 Nov 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/54121847365_b57db38358_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Git Remotes Revisited</title>
   <dc:creator>Neil Shephard</dc:creator>
