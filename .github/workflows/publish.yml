@@ -59,16 +59,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Add CNAME file to gh-pages branch
-        run: |
-          rm renv/activate.R
-          git switch gh-pages
-          git pull
-          echo 'blog.nshephard.dev' > CNAME
-          git add CNAME
-          git commit -m "Adding CNAME"
-          git push
-
       - name: Setup tmate session
         if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3
