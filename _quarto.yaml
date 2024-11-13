@@ -7,6 +7,7 @@ project:
     - "*.qmd"
     - "*.sh"
     - "*.yaml"
+    - "CNAME"
 website:
   title: "blog.nshephard.dev"
   site-url: https://blog.nshephard.dev/
