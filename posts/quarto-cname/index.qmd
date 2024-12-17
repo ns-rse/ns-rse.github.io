@@ -129,13 +129,13 @@ You _also_ have to create and add the `CNAME` file with your domain to the repos
 
 ``` bash
 echo 'blog.nshephard.dev` > CNAME
-git add CNAME
+git add CNAME _quarto.yaml
 git commit -m "Adding CNAME to repository"
 git push
 ```
 
-Then, because its included in the resources, the file will carry through/persist when the publishing action runs to
-create the `gh-pages` branch.
+Then, because it's included in the resources, the file will carry through/persist when the publishing action runs to
+create the `gh-pages` branch with each new update and run on GitHub Actions :magic:.
 
 ## Related
 
