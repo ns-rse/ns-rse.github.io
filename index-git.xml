@@ -5113,244 +5113,6 @@ Updating.”</span> November 15, 2022. <a href="https://blog.nshephard.dev/posts
   <media:content url="https://live.staticflickr.com/65535/52358442614_416d014454_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
-  <title>Git : Custom SSH credentials for git repositories</title>
-  <dc:creator>Neil Shephard</dc:creator>
-  <link>https://blog.nshephard.dev/posts/git-ssh/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>How to configure individual Git repositories to use specific SSH keys. This is useful if you have more than one account on a forge, for example a personal and work account.</p>
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>Typically when pushing and pulling changes to a forge such as <a href="https://github.com" target="_blank">GitHub</a>, <a href="https://gitlab.com" target="_blank">GitLab</a> or <a href="https://codeberg.org" target="_blank">Codeberg</a> you use an SSH (<em>S</em>ecure <em>SH</em>ell) key to authenticate that you have permission to access the repository.</p>
-</section>
-<section id="ssh-keys" class="level2">
-<h2 class="anchored" data-anchor-id="ssh-keys">SSH Keys</h2>
-<section id="concept" class="level3">
-<h3 class="anchored" data-anchor-id="concept">Concept</h3>
-<p>SSH keys are, in conjunction with “keychains”, used to save you having to enter a password each time you connect from one computer to another. They are generated on your computer and consist of two parts, a private key which remains on your computer and a public key which you place on remote computers you wish to connect to. There is a password associated with your key which is required to “unlock” your private key on your computer. Only an unlocked private key will match with a public key. Think of the public key as the lock on your front door, and the private key the key you carry on your traditional, physical, keychain/keyring. Only when the two match will things be unlocked, although you have to unlock your private key when you want to use it just as you have to get your keys out of your pocket (although “keychains” help with this).</p>
-</section>
-<section id="generation" class="level3">
-<h3 class="anchored" data-anchor-id="generation">Generation</h3>
-<p>There are different algorithms for generating SSH key pairs. DSA is no longer considered secure and RSA keys should have at least 2048-bits if not 4096-bits. A good choice these days is to use an elliptic curve based key such as ed25519 as they are shorter and faster. For more on why you should use this key see the article <a href="https://blog.g3rt.nl/upgrade-your-ssh-keys.html" target="_blank">Upgrade your SSH keys!</a>.</p>
-<p>To generate a key use the following command entering a secure (i.e.&nbsp;<a href="xkcd.com/936/" target="_blank">long</a>) password.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ssh-keygen</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-o</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-a</span> 100 <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-t</span> ed25519</span></code></pre></div>
-<p>You will be prompted for a filename to save your keys to, so you should know where to find them (the default is <code>~/.ssh/id_ed25519[.pub]</code>). You have a private key <code>~/.ssh/id_ed25519</code> and a public <code>~/.ssh/id_ed25519.pub</code> and we will use this to set up authentication on your Git Forge.</p>
-</section>
-<section id="forge-configuration" class="level3">
-<h3 class="anchored" data-anchor-id="forge-configuration">Forge Configuration</h3>
-<p>Under your account settings on your chosen Git Forge navigate to <em>Settings &gt; SSH and GPG Keys</em> and select <em>Add New Key</em> on (<a href="https://github.com/settings/keys" target="_blank">GitHub</a>). On GitLab navigate to <em>Preferences &gt; SSH Keys</em> <a href="https://gitlab.com/-/profile/keys" target="_blank">GitLab</a>), this page allows you to add a new key.</p>
-<p>You need to copy and paste your public key into the <code>Key</code> box on these pages and give it a name (typically the hostname of your computer is a good choice). To view your public key simply use <code>cat</code> and copy and paste it. You can optionally choose to set an expiration date for your key which is good practice but means you have to generate new keys in the future.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">cat</span> ~/.ssh/id_ed25519.pub</span></code></pre></div>
-</section>
-</section>
-<section id="git-global-ssh-configuration" class="level2">
-<h2 class="anchored" data-anchor-id="git-global-ssh-configuration">Git Global SSH Configuration</h2>
-<p>Typically your global configuration for which key to use is set in <code>~/.ssh/config</code> with an entry similar to the below.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">Host</span> github.com</span>
-<span id="cb3-2">     <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">User</span> git</span>
-<span id="cb3-3">     <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">Port</span> 22</span>
-<span id="cb3-4">     <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">PreferredAuthentications</span> publickey</span>
-<span id="cb3-5">     <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">IdentityFile</span> ~/.ssh/id_ed25519</span></code></pre></div>
-<p>Here it uses the User name <code>git</code> on port <code>22</code>. The preferred authentication method is using a <code>publickey</code> and the private key used is stored locally at <code>~/.ssh/id_ed25519</code>.</p>
-<p>When asked to connect to a forge using SSH (e.g.&nbsp;<code>git pull</code> or <code>git push</code>) will look through the <code>~/.ssh/config</code> file to see if there is a configuration section that matches the target and if so use the configuration defined there-in. You will then be prompted for your SSH private key password.</p>
-<section id="what-are-keychains" class="level3">
-<h3 class="anchored" data-anchor-id="what-are-keychains">What are Keychains?</h3>
-<p>You may be wondering how an SSH key makes your life easier, you are still prompted to enter a password when trying to interact with a Git Forge, or use it in a more traditional manner to connect over SSH to another server. This is where the magic of a “keychain” steps in to make your life easier, you still have to enter a password but only once to add your SSH key to the “keychain”. Typically keychains are front-ends for interacting with and managing <a href="https://www.ssh.com/academy/ssh/agent" target="_blank">SSH agent</a>. The name is apt since you add your SSH key to the keychain once, typically on log-in, and are asked for your password to unlock it and then stores it in the SSH agent. Then each time SSH requires an SSH key it retrieves it from the keychain rather than prompting you for a password.</p>
-<p>There are many different implementations of keychain such as the <a href="https://www.funtoo.org/Funtoo:Keychain" target="_blank">Funtoo Keychain Project</a>, <a href="https://wiki.gnome.org/Apps/Seahorse" target="_blank">Seahorse</a> the GNOME GUI management tool,</p>
-</section>
-</section>
-<section id="git-per-repository-configuration" class="level2">
-<h2 class="anchored" data-anchor-id="git-per-repository-configuration">Git Per Repository Configuration</h2>
-<p>We now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be desirable if you have two accounts on the same forge e.g.&nbsp;both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you can configure each repository to use a specific key (<a href="https://superuser.com/a/912281" target="_blank">source</a>). At the command line…</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">cd</span> a/git/repository</span>
-<span id="cb4-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git</span> config core.sshCommand <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ssh -i ~/.ssh/work_ed25519 -F /dev/null"</span></span>
-<span id="cb4-3"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git</span> config <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">--local</span> user.name <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Username"</span></span>
-<span id="cb4-4"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git</span> config <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">--local</span> user.email <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"repos@username.com"</span></span></code></pre></div>
-<p>This adds the following to the repositories configuration which is stored under <code>.git/config</code> and you can of course enter this directly to the configuration file yourself.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[core]</span></span>
-<span id="cb5-2">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-F</span> /dev/null</span>
-<span id="cb5-3"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[user]</span></span>
-<span id="cb5-4">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">name</span> = Username</span>
-<span id="cb5-5">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">email</span> = repos@username.com</span></code></pre></div>
-<p>What is this doing? Well it’s instructing Git to run ssh using the private key file (with the <code>-i</code> flag to specify the <code>identity_file</code>) that is located at <code>~/.ssh/work_ed25519</code>. Providing you have…</p>
-<ol type="a">
-<li>Already uploaded the public key (<code>work_ed25519.pub</code>) to your GitHub account.</li>
-<li>Stored this key in a Keychain as described above.</li>
-</ol>
-<p>…you shouldn’t be prompted for a password.</p>
-<p>You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote <code>origin</code> (typically a forge such as GitHub, GitLab, Codeberg or so forth). If however you have multiple projects you wish to setup with an alternative SSH key configuration it can be tedious to configure each repository. Thankfully Git &gt;= 2.13 introduced <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank">Conditional includes</a> to the configuration.</p>
-</section>
-<section id="conditional-includes" class="level2">
-<h2 class="anchored" data-anchor-id="conditional-includes">Conditional Includes</h2>
-<p>You global configuration is stored in <code>~/.gitconfig</code> and defines key variables such <code>user</code> and <code>name</code>, the default <code>editor</code> and many other options, including a customised <code>sshCommand</code> as was added above to a local <code>.git/config</code> file.</p>
-<p>Git 2.13 introduced the aforementioned <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank">Conditional includes</a> which works “_by setting a <code>includeIf.&lt;condition&gt;.path</code> variable to the name of the file to be included.”. For our current case-use the <code>&lt;condition&gt;</code> we are interested in is whether the <code>path</code>, which is interpreted as a pattern, is a <code>gitdir</code> then we include what follows.</p>
-<p>For example, we place all of our work related Git repositories under the <code>~/work/</code> directory and wish to use <code>~/.ssh/work_ed25519</code> for these and keep all of our personal repositories elsewhere and wish to use our main <code>~/.ssh/id_ed25519</code> key for those.</p>
-<p>Out <code>~/.gitconfig</code> should look like</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[user]</span></span>
-<span id="cb6-2">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">name</span> = Your Name</span>
-<span id="cb6-3">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">email</span> = your.personal@email.com</span>
-<span id="cb6-4"></span>
-<span id="cb6-5"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[includeIf</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"gitdir:~/work/"</span>]    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Directory paths ending in '/** has the globbing wildcard '**' added by default.</span></span>
-<span id="cb6-6">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">path</span> = ~/work/.gitconfig_work</span>
-<span id="cb6-7"></span>
-<span id="cb6-8"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[core]</span></span>
-<span id="cb6-9">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-i</span> ~/.ssh/id_ed25519 <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-F</span> /dev/null</span></code></pre></div>
-<p>Then our <code>~/work/.gitconfig_work</code> can contain the alternative values we wish to use for all repositories under the <code>~/work/</code> directory.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[user]</span></span>
-<span id="cb7-2">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">name</span> = Your Name</span>
-<span id="cb7-3">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">email</span> = your.work@email.com</span>
-<span id="cb7-4"></span>
-<span id="cb7-5"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[core]</span></span>
-<span id="cb7-6">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-F</span> /dev/null</span></code></pre></div>
-</section>
-<section id="commit-verification-with-ssh" class="level2">
-<h2 class="anchored" data-anchor-id="commit-verification-with-ssh">Commit verification with SSH</h2>
-<p>Verification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys is a recently supported feature on GitHub (see blog <a href="https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/" target="_blank">SSH commit verification now supported</a>) I felt it worth mentioning.</p>
-</section>
-<section id="links" class="level2">
-<h2 class="anchored" data-anchor-id="links">Links</h2>
-<section id="ssh" class="level3">
-<h3 class="anchored" data-anchor-id="ssh">SSH</h3>
-<ul>
-<li><a href="https://www.ssh.com/academy/ssh" target="_blank">SSH Academy</a></li>
-<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_1" target="_blank">OpenSSH Key Management, Part 1</a></li>
-<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_2" target="_blank">OpenSSH Key Management, Part 2</a></li>
-<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_3" target="_blank">OpenSSH Key Management, Part 3</a></li>
-</ul>
-</section>
-<section id="forges" class="level3">
-<h3 class="anchored" data-anchor-id="forges">Forges</h3>
-<ul>
-<li><a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh" target="_blank">GitHub | Connect with SSH</a></li>
-<li><a href="https://docs.gitlab.com/ee/user/ssh.html" target="_blank">GitLab | Use SSH keys to communicate with GitLab</a></li>
-<li><a href="https://docs.codeberg.org/security/ssh-key/" target="_blank">Codeberg | Adding an SSH key to your account</a></li>
-</ul>
-
-
-
-</section>
-</section>
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
-  author = {Shephard, Neil},
-  title = {Git : {Custom} {SSH} Credentials for Git Repositories},
-  date = {2022-08-28},
-  url = {https://blog.nshephard.dev/posts/git-ssh/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
-Shephard, Neil. 2022. <span>“Git : Custom SSH Credentials for Git
-Repositories.”</span> August 28, 2022. <a href="https://blog.nshephard.dev/posts/git-ssh/">https://blog.nshephard.dev/posts/git-ssh/</a>.
-</div></div></section></div> ]]></description>
-  <category>ssh</category>
-  <category>git</category>
-  <category>github</category>
-  <category>gitlab</category>
-  <category>keychain</category>
-  <guid>https://blog.nshephard.dev/posts/git-ssh/</guid>
-  <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://live.staticflickr.com/65535/48816178863_85ee1fe7f1_k.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
   <title>Pre-Commit : Protecting your future self</title>
   <dc:creator>Neil Shephard</dc:creator>
   <link>https://blog.nshephard.dev/posts/pre-commit/</link>
@@ -6038,6 +5800,244 @@ Self.”</span> August 28, 2022. <a href="https://blog.nshephard.dev/posts/pre-c
   <guid>https://blog.nshephard.dev/posts/pre-commit/</guid>
   <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Git : Custom SSH credentials for git repositories</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/git-ssh/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>How to configure individual Git repositories to use specific SSH keys. This is useful if you have more than one account on a forge, for example a personal and work account.</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>Typically when pushing and pulling changes to a forge such as <a href="https://github.com" target="_blank">GitHub</a>, <a href="https://gitlab.com" target="_blank">GitLab</a> or <a href="https://codeberg.org" target="_blank">Codeberg</a> you use an SSH (<em>S</em>ecure <em>SH</em>ell) key to authenticate that you have permission to access the repository.</p>
+</section>
+<section id="ssh-keys" class="level2">
+<h2 class="anchored" data-anchor-id="ssh-keys">SSH Keys</h2>
+<section id="concept" class="level3">
+<h3 class="anchored" data-anchor-id="concept">Concept</h3>
+<p>SSH keys are, in conjunction with “keychains”, used to save you having to enter a password each time you connect from one computer to another. They are generated on your computer and consist of two parts, a private key which remains on your computer and a public key which you place on remote computers you wish to connect to. There is a password associated with your key which is required to “unlock” your private key on your computer. Only an unlocked private key will match with a public key. Think of the public key as the lock on your front door, and the private key the key you carry on your traditional, physical, keychain/keyring. Only when the two match will things be unlocked, although you have to unlock your private key when you want to use it just as you have to get your keys out of your pocket (although “keychains” help with this).</p>
+</section>
+<section id="generation" class="level3">
+<h3 class="anchored" data-anchor-id="generation">Generation</h3>
+<p>There are different algorithms for generating SSH key pairs. DSA is no longer considered secure and RSA keys should have at least 2048-bits if not 4096-bits. A good choice these days is to use an elliptic curve based key such as ed25519 as they are shorter and faster. For more on why you should use this key see the article <a href="https://blog.g3rt.nl/upgrade-your-ssh-keys.html" target="_blank">Upgrade your SSH keys!</a>.</p>
+<p>To generate a key use the following command entering a secure (i.e.&nbsp;<a href="xkcd.com/936/" target="_blank">long</a>) password.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ssh-keygen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-a</span> 100 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-t</span> ed25519</span></code></pre></div>
+<p>You will be prompted for a filename to save your keys to, so you should know where to find them (the default is <code>~/.ssh/id_ed25519[.pub]</code>). You have a private key <code>~/.ssh/id_ed25519</code> and a public <code>~/.ssh/id_ed25519.pub</code> and we will use this to set up authentication on your Git Forge.</p>
+</section>
+<section id="forge-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="forge-configuration">Forge Configuration</h3>
+<p>Under your account settings on your chosen Git Forge navigate to <em>Settings &gt; SSH and GPG Keys</em> and select <em>Add New Key</em> on (<a href="https://github.com/settings/keys" target="_blank">GitHub</a>). On GitLab navigate to <em>Preferences &gt; SSH Keys</em> <a href="https://gitlab.com/-/profile/keys" target="_blank">GitLab</a>), this page allows you to add a new key.</p>
+<p>You need to copy and paste your public key into the <code>Key</code> box on these pages and give it a name (typically the hostname of your computer is a good choice). To view your public key simply use <code>cat</code> and copy and paste it. You can optionally choose to set an expiration date for your key which is good practice but means you have to generate new keys in the future.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cat</span> ~/.ssh/id_ed25519.pub</span></code></pre></div>
+</section>
+</section>
+<section id="git-global-ssh-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="git-global-ssh-configuration">Git Global SSH Configuration</h2>
+<p>Typically your global configuration for which key to use is set in <code>~/.ssh/config</code> with an entry similar to the below.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Host</span> github.com</span>
+<span id="cb3-2">     <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">User</span> git</span>
+<span id="cb3-3">     <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Port</span> 22</span>
+<span id="cb3-4">     <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">PreferredAuthentications</span> publickey</span>
+<span id="cb3-5">     <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">IdentityFile</span> ~/.ssh/id_ed25519</span></code></pre></div>
+<p>Here it uses the User name <code>git</code> on port <code>22</code>. The preferred authentication method is using a <code>publickey</code> and the private key used is stored locally at <code>~/.ssh/id_ed25519</code>.</p>
+<p>When asked to connect to a forge using SSH (e.g.&nbsp;<code>git pull</code> or <code>git push</code>) will look through the <code>~/.ssh/config</code> file to see if there is a configuration section that matches the target and if so use the configuration defined there-in. You will then be prompted for your SSH private key password.</p>
+<section id="what-are-keychains" class="level3">
+<h3 class="anchored" data-anchor-id="what-are-keychains">What are Keychains?</h3>
+<p>You may be wondering how an SSH key makes your life easier, you are still prompted to enter a password when trying to interact with a Git Forge, or use it in a more traditional manner to connect over SSH to another server. This is where the magic of a “keychain” steps in to make your life easier, you still have to enter a password but only once to add your SSH key to the “keychain”. Typically keychains are front-ends for interacting with and managing <a href="https://www.ssh.com/academy/ssh/agent" target="_blank">SSH agent</a>. The name is apt since you add your SSH key to the keychain once, typically on log-in, and are asked for your password to unlock it and then stores it in the SSH agent. Then each time SSH requires an SSH key it retrieves it from the keychain rather than prompting you for a password.</p>
+<p>There are many different implementations of keychain such as the <a href="https://www.funtoo.org/Funtoo:Keychain" target="_blank">Funtoo Keychain Project</a>, <a href="https://wiki.gnome.org/Apps/Seahorse" target="_blank">Seahorse</a> the GNOME GUI management tool,</p>
+</section>
+</section>
+<section id="git-per-repository-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="git-per-repository-configuration">Git Per Repository Configuration</h2>
+<p>We now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be desirable if you have two accounts on the same forge e.g.&nbsp;both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you can configure each repository to use a specific key (<a href="https://superuser.com/a/912281" target="_blank">source</a>). At the command line…</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> a/git/repository</span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config core.sshCommand <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ssh -i ~/.ssh/work_ed25519 -F /dev/null"</span></span>
+<span id="cb4-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--local</span> user.name <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Username"</span></span>
+<span id="cb4-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--local</span> user.email <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"repos@username.com"</span></span></code></pre></div>
+<p>This adds the following to the repositories configuration which is stored under <code>.git/config</code> and you can of course enter this directly to the configuration file yourself.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[core]</span></span>
+<span id="cb5-2">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> /dev/null</span>
+<span id="cb5-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[user]</span></span>
+<span id="cb5-4">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name</span> = Username</span>
+<span id="cb5-5">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">email</span> = repos@username.com</span></code></pre></div>
+<p>What is this doing? Well it’s instructing Git to run ssh using the private key file (with the <code>-i</code> flag to specify the <code>identity_file</code>) that is located at <code>~/.ssh/work_ed25519</code>. Providing you have…</p>
+<ol type="a">
+<li>Already uploaded the public key (<code>work_ed25519.pub</code>) to your GitHub account.</li>
+<li>Stored this key in a Keychain as described above.</li>
+</ol>
+<p>…you shouldn’t be prompted for a password.</p>
+<p>You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote <code>origin</code> (typically a forge such as GitHub, GitLab, Codeberg or so forth). If however you have multiple projects you wish to setup with an alternative SSH key configuration it can be tedious to configure each repository. Thankfully Git &gt;= 2.13 introduced <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank">Conditional includes</a> to the configuration.</p>
+</section>
+<section id="conditional-includes" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-includes">Conditional Includes</h2>
+<p>You global configuration is stored in <code>~/.gitconfig</code> and defines key variables such <code>user</code> and <code>name</code>, the default <code>editor</code> and many other options, including a customised <code>sshCommand</code> as was added above to a local <code>.git/config</code> file.</p>
+<p>Git 2.13 introduced the aforementioned <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank">Conditional includes</a> which works “_by setting a <code>includeIf.&lt;condition&gt;.path</code> variable to the name of the file to be included.”. For our current case-use the <code>&lt;condition&gt;</code> we are interested in is whether the <code>path</code>, which is interpreted as a pattern, is a <code>gitdir</code> then we include what follows.</p>
+<p>For example, we place all of our work related Git repositories under the <code>~/work/</code> directory and wish to use <code>~/.ssh/work_ed25519</code> for these and keep all of our personal repositories elsewhere and wish to use our main <code>~/.ssh/id_ed25519</code> key for those.</p>
+<p>Out <code>~/.gitconfig</code> should look like</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[user]</span></span>
+<span id="cb6-2">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name</span> = Your Name</span>
+<span id="cb6-3">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">email</span> = your.personal@email.com</span>
+<span id="cb6-4"></span>
+<span id="cb6-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[includeIf</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gitdir:~/work/"</span>]    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Directory paths ending in '/** has the globbing wildcard '**' added by default.</span></span>
+<span id="cb6-6">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">path</span> = ~/work/.gitconfig_work</span>
+<span id="cb6-7"></span>
+<span id="cb6-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[core]</span></span>
+<span id="cb6-9">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> ~/.ssh/id_ed25519 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> /dev/null</span></code></pre></div>
+<p>Then our <code>~/work/.gitconfig_work</code> can contain the alternative values we wish to use for all repositories under the <code>~/work/</code> directory.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[user]</span></span>
+<span id="cb7-2">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name</span> = Your Name</span>
+<span id="cb7-3">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">email</span> = your.work@email.com</span>
+<span id="cb7-4"></span>
+<span id="cb7-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[core]</span></span>
+<span id="cb7-6">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> /dev/null</span></code></pre></div>
+</section>
+<section id="commit-verification-with-ssh" class="level2">
+<h2 class="anchored" data-anchor-id="commit-verification-with-ssh">Commit verification with SSH</h2>
+<p>Verification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys is a recently supported feature on GitHub (see blog <a href="https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/" target="_blank">SSH commit verification now supported</a>) I felt it worth mentioning.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="ssh" class="level3">
+<h3 class="anchored" data-anchor-id="ssh">SSH</h3>
+<ul>
+<li><a href="https://www.ssh.com/academy/ssh" target="_blank">SSH Academy</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_1" target="_blank">OpenSSH Key Management, Part 1</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_2" target="_blank">OpenSSH Key Management, Part 2</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_3" target="_blank">OpenSSH Key Management, Part 3</a></li>
+</ul>
+</section>
+<section id="forges" class="level3">
+<h3 class="anchored" data-anchor-id="forges">Forges</h3>
+<ul>
+<li><a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh" target="_blank">GitHub | Connect with SSH</a></li>
+<li><a href="https://docs.gitlab.com/ee/user/ssh.html" target="_blank">GitLab | Use SSH keys to communicate with GitLab</a></li>
+<li><a href="https://docs.codeberg.org/security/ssh-key/" target="_blank">Codeberg | Adding an SSH key to your account</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
+  author = {Shephard, Neil},
+  title = {Git : {Custom} {SSH} Credentials for Git Repositories},
+  date = {2022-08-28},
+  url = {https://blog.nshephard.dev/posts/git-ssh/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
+Shephard, Neil. 2022. <span>“Git : Custom SSH Credentials for Git
+Repositories.”</span> August 28, 2022. <a href="https://blog.nshephard.dev/posts/git-ssh/">https://blog.nshephard.dev/posts/git-ssh/</a>.
+</div></div></section></div> ]]></description>
+  <category>ssh</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <category>keychain</category>
+  <guid>https://blog.nshephard.dev/posts/git-ssh/</guid>
+  <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/48816178863_85ee1fe7f1_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
