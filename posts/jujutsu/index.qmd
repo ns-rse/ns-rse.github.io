@@ -2,7 +2,7 @@
 title: "Version Control with Jujutsu"
 date: "2025-02-08"
 categories: [jujutsu, git, version control]
-image: https://live.staticflickr.com/65535/54121847365_b57db38358_k.jpg
+image: https://live.staticflickr.com/65535/54119567525_4e969d081a_k.jpg
 from: markdown+emoji
 toc: true
 toc-depth: 4
