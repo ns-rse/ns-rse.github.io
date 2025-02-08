@@ -12,52 +12,53 @@
     "items": []
   },
   {
-    "listing": "/posts/virtualenvwrapper/index.html",
+    "listing": "/posts/gitlab-ci-pypi/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pre-commit-r/index.html",
+    "listing": "/posts/sphinx-docs/index.html",
     "items": []
   },
   {
-    "listing": "/posts/cli-alternatives/index.html",
+    "listing": "/posts/pytest-mpl/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pre-commit-ci/index.html",
+    "listing": "/posts/git-amend-fixup/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pennine-way/index.html",
+    "listing": "/posts/pytest-param/index.html",
     "items": []
   },
   {
-    "listing": "/posts/git-ssh/index.html",
+    "listing": "/posts/pre-commit-updates/index.html",
     "items": []
   },
   {
-    "listing": "/posts/virtualenv-hooks/index.html",
+    "listing": "/posts/browser-extensions/index.html",
     "items": []
   },
   {
-    "listing": "/posts/running-2022/index.html",
+    "listing": "/posts/python-packaging/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pre-commit/index.html",
+    "listing": "/posts/whos_to_blame/index.html",
     "items": []
   },
   {
-    "listing": "/posts/git-worktrees/index.html",
+    "listing": "/posts/git-remotes-revisited/index.html",
     "items": []
   },
   {
-    "listing": "/posts/linting/index.html",
+    "listing": "/posts/git-remotes/index.html",
     "items": []
   },
   {
-    "listing": "/links.html",
+    "listing": "/index.html",
     "items": [
+      "/posts/jujutsu/index.html",
       "/posts/quarto-cname/index.html",
       "/posts/pytest-mpl/index.html",
       "/posts/pennine-way/index.html",
@@ -90,6 +91,7 @@
   {
     "listing": "/about.html",
     "items": [
+      "/posts/jujutsu/index.html",
       "/posts/quarto-cname/index.html",
       "/posts/pytest-mpl/index.html",
       "/posts/pennine-way/index.html",
@@ -120,8 +122,9 @@
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/links.html",
     "items": [
+      "/posts/jujutsu/index.html",
       "/posts/quarto-cname/index.html",
       "/posts/pytest-mpl/index.html",
       "/posts/pennine-way/index.html",
@@ -152,47 +155,51 @@
     ]
   },
   {
-    "listing": "/posts/git-remotes/index.html",
+    "listing": "/posts/linting/index.html",
     "items": []
   },
   {
-    "listing": "/posts/git-remotes-revisited/index.html",
+    "listing": "/posts/git-worktrees/index.html",
     "items": []
   },
   {
-    "listing": "/posts/whos_to_blame/index.html",
+    "listing": "/posts/pre-commit/index.html",
     "items": []
   },
   {
-    "listing": "/posts/python-packaging/index.html",
+    "listing": "/posts/running-2022/index.html",
     "items": []
   },
   {
-    "listing": "/posts/browser-extensions/index.html",
+    "listing": "/posts/virtualenv-hooks/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pre-commit-updates/index.html",
+    "listing": "/posts/git-ssh/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pytest-param/index.html",
+    "listing": "/posts/pennine-way/index.html",
     "items": []
   },
   {
-    "listing": "/posts/git-amend-fixup/index.html",
+    "listing": "/posts/pre-commit-ci/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pytest-mpl/index.html",
+    "listing": "/posts/cli-alternatives/index.html",
     "items": []
   },
   {
-    "listing": "/posts/sphinx-docs/index.html",
+    "listing": "/posts/pre-commit-r/index.html",
     "items": []
   },
   {
-    "listing": "/posts/gitlab-ci-pypi/index.html",
+    "listing": "/posts/virtualenvwrapper/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/jujutsu/index.html",
     "items": []
   },
   {

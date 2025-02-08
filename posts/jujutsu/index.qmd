@@ -1,0 +1,746 @@
+---
+title: "Version Control with Jujutsu"
+date: "2025-02-08"
+categories: [jujutsu, git, version control]
+image: https://live.staticflickr.com/65535/54121847365_b57db38358_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+I'd bread about and heard a good things about [Jujutsu][jj], a new Version Control System developed by Martin von
+Zweigbergk at Google, although it is not an official Google product and is Open Source Software licensed under the
+Apache 2.0 license. It has its own internal/native backend but also supports using [Git][git] in the background to
+undertake all tasks. As such it can be used as a drop-in replacement for [Git][git]. A big difference from the familiar
+Git model is that the working copy is automatically committed. If you check out a commit this introduces a new
+working-copy commit where changes are recorded (no more `detached HEAD` state!). I recently purchased a refurbished
+ThinkPad T490s and decided to give [NixOS][nixos] a whirl so what better opportunity to try Jujutsu than to
+use it to version control my `/etc/nixos` directory.
+
+This post covers my experience of getting started with Jujutsu.
+
+## Installation
+
+Whilst notionally installing and using it on NixOS I use both [Gentoo][gentoo] and [Arch][arch] Linux so have installed
+it on those systems too.
+
+### Gentoo
+
+`jj` is available in the [Gentoo Overlays](https://overlays.gentoo.org/) `guru`.
+
+```sh
+eselect repository enable guru
+eix-sync
+emerge -av dev-vcs/jj
+```
+
+### NixOS
+
+`jj` is also available for [NixOS][nixos]. You can use [flake][flake] or [HomeManager][homemanager], I opted for
+the former and added the following to `/etc/nixos/flake.nix`. Just add the following to `/etc/nixos/configuration.nix`
+to install the most recent release system wide.
+
+```sh
+environment.systemPackages = with pkgs{
+...
+jujutsu
+...
+};
+```
+
+Then either `nixos-rebuild test` to install and test the installation (you should now have `jj` in your command line)
+and if happy `nixos-rebuild switch` to make the change permanent and available on the next boot.
+
+### Arch Linux
+
+Stable version is included in [packages](https://aur.archlinux.org/packages/jj), although you can keep track of
+development using the [AUR ~jj-git~](https://aur.archlinux.org/packages/jj-git) package.
+
+```sh
+pacman -Syu jj
+```
+
+### Shell Integration
+
+There is integration with both [Bash][bash] and [ZSH][zsh] as well as [other
+shells](https://jj-vcs.github.io/jj/latest/install-and-setup/#command-line-completion).
+
+#### Bash
+
+```sh
+source <(jj util completion bash)
+```
+
+#### ZSH
+
+```sh
+autoload -U compinit
+compinit
+source <(jj util completion zsh)
+```
+
+### Initial Configuration
+
+As with Git you need to add your `user.name` and `user.email` to the configuration.
+
+```sh
+jj config set --user user.name "Your Name"
+jj config set --user user.email "your@email.address"
+
+We can check the configuration…
+
+```sh
+jj config list
+ui.editor = "/usr/bin/nano"
+ui.pager = "less"
+user.email = "nshephard@protonmail.com"
+user.name = "Neil Shephard"
+```
+
+This looks ok but I found that `/usr/bin/nano` is *wrong* for a NixOS system….
+
+```sh
+which nano
+/run/current-system-sw/bin/nano
+```
+
+..so updated that along with a switch from `less` to `most` for paging.
+
+```sh
+jj config set --user ui.editor "/run/current-system/sw/bin/nano"
+config set --user ui.pager "/run/current-system/sw/bin/most"
+```
+
+## Usage
+
+I wanted to keep `/etc/nixos` under version control using `jj` and as advised in [Steve's Jujutsu
+Tutorial][steves-jj-tutorial] opted to use the Git backend.
+
+```sh
+cd /etc/nixos
+jj git init
+jj st
+    Working copy changes:
+    A agenix.nix
+    A audio.nix
+    A bluetooth.nix
+    A configuration.nix
+    A configuration.nix~
+    A flake.lock
+    A flake.nix
+    A flake.nix~
+    A hardware-configuration.nix
+    A home.nix
+    A home.nix~
+    A luks.nix
+    A secrets/secrets.nix
+    A secrets/slack-vpn.age
+    A xfce.nix
+    A xfce.nix~
+    Working copy : vpqtltus 35cc03d2 (no description set)
+    Parent commit: zzzzzzzz 00000000 (empty) (no description set)
+```
+
+First things first, I'd already edited some files using Emacs and didn't want the temporary files it leaves behind
+included.  According to the [documentation](https://jj-vcs.github.io/jj/latest/working-copy/#ignored-files) there is no
+`.jjignore` yet so we use `.gitignore` instead listing our files and patterns there.
+
+```sh
+*~
+\#*
+```
+
+…but the files are already being tracked because they were present when the repository was initialised. We therefore
+need to untrack them with…
+
+```sh
+jj file untrack
+```
+
+This failed because `~` is used in the syntax for [jj filesets](https://jj-vcs.github.io/jj/latest/filesets/) which is a
+method of defining patterns of files. I tried a few things but in the end couldn't suss it out in the five minutes so
+took the brute force option of `rm -rf .jj` and initialising the repository anew. We can look at the status with `jj st`
+and it will use our configured pager (which I've set to `most`) to show the changes.
+
+```sh
+jj st
+Working copy changes:
+A .gitignore
+A agenix.nix
+A audio.nix
+A bluetooth.nix
+A configuration.nix
+A flake.lock
+A flake.nix
+A hardware-configuration.nix
+A home.nix
+A luks.nix
+A secrets/secrets.nix
+A secrets/slack-vpn.age
+A xfce.nix
+Working copy : nxzzlvzo 43e6338e (no description set)
+Parent commit: zzzzzzzz 00000000 (empty) (no description set)
+```
+
+We can see the changes (i.e. all new files) are already noted as being under the working copy. We can also use `jj
+describe` to look at the changes and add a description. If we use the `-m "A message"` flag and value we can add a
+message and it will replace the `no description set` shown by `jj st`. With `jj describe` the information is opened up
+in an editor, and if a message has already been set it will be shown at the top. Note that lines beginning with `JJ`
+will be removed (i.e. they are comment lines). On adding a message or changing it the commit ID changes, the change ID
+remains the same but the commit ID changes over time allowing us to refer to individual commits rather than a whole
+change set.
+
+```sh
+jj describe -m "Initial commit with jj :)"
+Working copy now at: nxzzlvzo d2d192ec Initial commit with jj :)
+Parent commit      : zzzzzzzz 00000000 (empty) (no description set)
+```
+
+### New commits
+
+We're ready to make some changes, but unlike Git we can make our commit *first* rather than after having made the
+changes. We do this with `jj new`
+
+```sh
+jj new
+Working copy now at: mkrknnyv d20e2368 (empty) (no description set)
+Parent commit      : nxzzlvzo d2d192ec Initial commit with jj :)
+```
+
+We can now modify a file, in this case I tidied up `/etc/nixos/configuration.nix` and put all `network.*` options within
+a `network = {...};` block and similar aggregated all `nix.*` options into a `nix = {...};` block.
+
+```sh
+jj st
+Working copy changes:
+M configuration.nix
+Working copy : mkrknnyv 31f1c759 (no description set)
+Parent commit: nxzzlvzo d2d192ec Initial commit with jj :)
+```
+
+We can see the full commit history with `jj log` (no surprisese there!)
+
+```sh
+@  mkrknnyv nshephard@protonmail.com 2024-12-21 16:20:53 31f1c759
+│  (no description set)
+○  nxzzlvzo nshephard@protonmail.com 2024-12-21 15:48:47 d2d192ec
+│  Initial commit with jj :)
+◆  zzzzzzzz root() 00000000
+```
+
+It's interesting to note that the bold/highlighting of the start of commit hashes gives you an indication of the unique
+component of that hash (but you'll have to take my word for that as I've not bothered to copy that over to the blog!).
+
+It is important to note that there is no need to explicitly make a commit, the work done/changes are already part of the
+current commit.  When you are ready to start the next piece of work you `jj new` (optionally with `-m "<message>"`) to
+start a new piece of work.
+
+This naturally leads to the question of how to undo work that you have done  With `jj` you can move back to commits
+using `jj edit @-` or referring to the commit directly with `jj edit <hash>` and then use
+
+```sh
+jj edit @-
+jj abandon <hash_of_latest_commit>
+```
+
+## Diffing
+
+You can view differences with `jj diff` and it will show the differences between the current "`HEAD`" and the previous
+commit. I use `difftastic` (see Configuration section below) so have colourized output which isn't shown below.
+
+```diff
+    home.nix --- Nix
+    152 152       urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
+    153 153       urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
+    154 154     };
+    ... 155     # initExtra = ''
+    ... 156     #   if command -v keychain > /dev/null 2>&1; then eval $(keychain --eval --nogui ${keyFilename} --quiet); fi
+    ... 157     # '';
+    155 158   };
+    156 159
+    157 160   programs.emacs = {
+
+    configuration.nix --- 1/2 --- Nix
+    177   # Some programs need SUID wrappers, can be configured further or are      177   # Some programs need SUID wrappers, can be configured further or are
+    178   # started in user sessions.                                               178   # started in user sessions.
+    179   # programs.mtr.enable = true;                                             179   # programs.mtr.enable = true;
+    180   programs.gnupg.agent = {                                                  180   programs = {
+    ...                                                                             181     gnupg.agent = {
+    181     enable = true;                                                          182       enable = true;
+    ...                                                                             183       # enableSSHSupport = true;
+    ...                                                                             184     };
+    182     enableSSHSupport = true;                                                185     ssh.startAgent = true;
+    183   };                                                                        186   };
+    184                                                                             187
+    185   # List services that you want to enable:                                  188   # List services that you want to enable:
+    186   services = {                                                              189   services = {
+
+    configuration.nix --- 2/2 --- Nix
+    210 213     fprintd = {
+    211 214       enable = true;
+    212 215     };
+    ... 216     # yubikey
+    ... 217     yubikey-agent = {
+    ... 218       enable = true;
+    ... 219     };
+    213 220   };
+    214 221   # Open ports in the firewall.
+    215 222   # networking.firewall.allowedTCPPorts = [ ... ];
+```
+
+If you want to look at differences between two specific commits you can use the `--from` and `--to` options (the former
+likely being more useful than the later).
+
+## Remotes
+
+I wanted to back my work up remotely and have a few options the ubiquitous [GitHub][github], [GitLab][gitlab], or my
+self-hosted [Forgejo][forgejo]. I opted for the later which is hosted on the VPS I pay for with [OVH][ovh].
+
+```sh
+jj git remote add origin <git@forgejo.nshephard.dev>:nshephard/crow.git
+```
+
+However trying to push failed with a rather cryptic and unhelpful message.
+
+```sh
+jj git push
+Changes to push to origin:
+  Add bookmark trunk to bfce9c9ab2aa
+Error: failed to connect to forgejo.nshephard.dev: Invalid argument; class=Os (2)
+```
+
+I use a non-standard port for SSH on my server (i.e. not `22` ). The "trick" here was to use the `scp` like syntax to
+specifying the `url` under the `remote` in the `git` configuration which resides in `.jj/repo/store/git/config`
+
+```sh
+[remote "origin"]
+    url = ssh://git@forgejo.nshephard.dev:2222/~/nshephard/crow.git
+```
+
+Success, I can reach the remote, but it fails to authenticate.
+
+```conf
+jj git push
+Changes to push to origin:
+  Add bookmark trunk to bfce9c9ab2aa
+Error: failed to authenticate SSH session: Unable to extract public key from private key file: Wrong passphrase or invalid/unrecognized private key file format; class=Ssh (23)
+Hint: Jujutsu uses libssh2, which doesn't respect ~/.ssh/config. Does `ssh -F /dev/null` to the host work?
+```
+
+Checking my `~/.ssh/config` and my [Forgejo][forgejo] configuration and I realised that I have it configured to run as
+user `forgejo`.
+
+```conf
+[remote "origin"]
+    url = ssh://forgejo@forgejo.nshephard.dev:2222/nshephard/crow.git
+```
+
+## Bookmarks (aka branches)
+
+These are mainly for compatibility with Git, `jj` actually prefers to use anonymous rather than named branches
+(sometimes called a "branchless" workflow). You create a bookmark at a given point and it stays there until you move
+it. This is kind of weird compared to Git where commits are stacked on top of each other to make branches and you are
+always checked out on the `HEAD` commit at the top or otherwise in a "detached" status.
+
+Create a bookmark with…
+
+```sh
+jj bookmark create <name>
+```
+
+If you want to move a bookmark after its creation you can do so…
+
+```sh
+jj bookmark move <bookmark_name> --to <revision>
+```
+
+Note that the default `--to` is `@` so `jj bookrmark move <bookmark_name>` will move it to your current location,
+whether that is the tip or not.
+
+## Merging Branches
+
+I found when it came to pushing to my [Forgejo][forgejo] instance where I had created
+the repository I had to first `jj git pull` to get the initial commit there and then setup remote tracking.
+
+```sh
+jj git push
+    Warning: Non-tracking remote bookmark trunk@origin exists
+    Hint: Run `jj bookmark track trunk@origin` to import the remote bookmark.
+    Nothing changed.
+
+jj git fetch
+    bookmark: trunk@origin [new] untracked
+
+jj bookmark track trunk@origin
+
+    jj log
+    ◆  myqxkksp nshephard@noreply.forgejo.nshephard.dev 2024-12-21 15:47:13 trunk@origin 12c4747e
+    │  Initial commit
+    │ @  tossulss nshephard@protonmail.com 2024-12-23 07:28:16 trunk bfce9c9a
+    │ │  Add pcscd to services for GnuPG pinentry
+    │ ○  olrmoynt nshephard@protonmail.com 2024-12-22 23:03:58 dcd199d9
+    │ │  Adding tree to systemPackages
+    │ ○  wpttsonz nshephard@protonmail.com 2024-12-22 22:39:32 ca5be2ed
+    │ │  ZSH home.nix configuration
+    │ ○  twrvtqty nshephard@protonmail.com 2024-12-22 12:27:39 bb4c6bca
+    │ │  system: emacs daemon for user
+    │ ○  xuzumvqs nshephard@protonmail.com 2024-12-21 22:56:16 ee5dd297
+    │ │  Add btop and htop to system.Packages
+    │ ○  zrxyptxn nshephard@protonmail.com 2024-12-21 22:47:29 75fbf987
+    │ │  Minor tweaks to mark ends of blocks in xfce.nix
+    │ ○  zkowzsvy nshephard@protonmail.com 2024-12-21 20:41:10 c20e2a66
+    │ │  Adding difftastic
+    │ ○  mkrknnyv nshephard@protonmail.com 2024-12-21 16:31:47 18b4e7b1
+    │ │  Tidying up nix and network sections
+    │ ○  nxzzlvzo nshephard@protonmail.com 2024-12-21 15:48:47 d2d192ec
+    ├─╯  Initial commit with jj :)
+    ◆  zzzzzzzz root() 00000000
+    #+end_
+```
+
+At this point the two "branches" (`trunk@origin` and the local `trunk`) have diverged and are in conflict, preventing me
+from pushing
+
+jj git push
+    Warning: Bookmark trunk is conflicted
+    Hint: Run `jj bookmark list` to inspect, and use `jj bookmark set` to fix it up.
+    Nothing changed.
+
+There is an old command in Jujutsu to `jj merge` but, as the help informs you, it has been deprecated in favour of `jj
+new`. This isn't too dissimilar to Git though since "merges" are just commits that bring two branches together. The
+syntax for this is `jj new [OPTIONS] [REVISIONS]`, by default the `REVISIONS` is simply `@` the current "`HEAD`", but
+specifying more than one will merge the two together. You can of course include `-m "Message about merging"`. Taking the
+above output from `jj log` I can make a merge with the following (the minimal hashes are highlighted in the terminal but
+not above and here the `to my` refers to merging to the latest commit).
+
+```sh
+jj new -m "merge: local work with remote init" to my
+Working copy now at: oupkqwzo da0ebd37 (conflict) (empty) merge: local work with remote init
+Parent commit      : tossulss bfce9c9a trunk?? | Add pcscd to services for GnuPG pinentry
+Parent commit      : myqxkksp 12c4747e trunk?? trunk@origin | Initial commit
+Added 2 files, modified 1 files, removed 0 files
+There are unresolved conflicts at these paths:
+.gitignore    2-sided conflict
+```
+
+### Conflicts
+
+The manual covers [conflict](https://jj-vcs.github.io/jj/latest/conflicts/) resolution and its worth reading that. That I
+encountered merge conflicts isn't entirely unexpected I had created `.gitignore` both locally and on the remote so
+bringing them together the is natural. Lets look at this…
+
+```sh
+cat .gitignore
+
+<<<<<<< Conflict 1 of 1
+%%%%%%% Changes from base to side #1
++## Emacs temporary files
++*~
++\#*
++++++++ Contents of side #2
+# ---> Nix
+# Ignore build outputs from performing a nix-build or `nix build` command
+result
+result-*
+
+>>>>>>> Conflict 1 of 1 ends
+```
+
+This is fairly similar to Git merge conflicts, but I like the `side 1~/~side 2` notation (you get the same in Git by
+default but its occluded and you have to read up to understand that first bit delimited by '\<\<\<\<\<\<\<\<' is from
+the current branch and the other bit is from the branch that is being merged).
+
+I know I want both of these included in `.gitignore` so I make the changes, removing all the conflict markup and save
+the file. This tidies up the current commit, there is no need to make another commit to take a snapshot of those changes
+as there is in Git. However the bookmarks are still in conflict so we need to set that to the correct commit.
+
+```sh
+jj st
+
+Working copy changes:
+M .gitignore
+Working copy : oupkqwzo f10df751 merge: local work with remote init
+Parent commit: tossulss bfce9c9a trunk?? | Add pcscd to services for GnuPG pinentry
+Parent commit: myqxkksp 12c4747e trunk?? trunk@origin | Initial commit
+These bookmarks have conflicts:
+trunk
+Use `jj bookmark list` to see details. Use `jj bookmark set <name> -r <rev>` to resolve.
+
+jj bookmark set trunk -r ou
+
+jj st
+
+Working copy changes:
+M .gitignore
+Working copy : oupkqwzo f10df751 trunk* | merge: local work with remo
+Parent commit: tossulss bfce9c9a Add pcscd to services for GnuPG pine
+Parent commit: myqxkksp 12c4747e trunk@origin | Initial commit
+
+jj log
+
+    @    oupkqwzo nshephard@protonmail.com 2024-12-23 11:51:49 trunk* f10df751
+    ├─╮  merge: local work with remote init
+    │ ◆  myqxkksp nshephard@noreply.forgejo.nshephard.dev 2024-12-21 15:47:13 trunk@origin 12c4747e
+    │ │  Initial commit
+    ○ │  tossulss nshephard@protonmail.com 2024-12-23 07:28:16 bfce9c9a
+    │ │  Add pcscd to services for GnuPG pinentry
+    ○ │  olrmoynt nshephard@protonmail.com 2024-12-22 23:03:58 dcd199d9
+    │ │  Adding tree to systemPackages
+    ○ │  wpttsonz nshephard@protonmail.com 2024-12-22 22:39:32 ca5be2ed
+    │ │  ZSH home.nix configuration
+    ○ │  twrvtqty nshephard@protonmail.com 2024-12-22 12:27:39 bb4c6bca
+    │ │  system: emacs daemon for user
+    ○ │  xuzumvqs nshephard@protonmail.com 2024-12-21 22:56:16 ee5dd297
+    │ │  Add btop and htop to system.Packages
+    ○ │  zrxyptxn nshephard@protonmail.com 2024-12-21 22:47:29 75fbf987
+    │ │  Minor tweaks to mark ends of blocks in xfce.nix
+    ○ │  zkowzsvy nshephard@protonmail.com 2024-12-21 20:41:10 c20e2a66
+    │ │  Adding difftastic
+    ○ │  mkrknnyv nshephard@protonmail.com 2024-12-21 16:31:47 18b4e7b1
+    │ │  Tidying up nix and network sections
+    ○ │  nxzzlvzo nshephard@protonmail.com 2024-12-21 15:48:47 d2d192ec
+    ├─╯  Initial commit with jj :)
+    ◆  zzzzzzzz root() 00000000
+```
+
+We've merged out branches but `trunk@origin` is behind that merge we can bring that up-to-date by pushing
+
+```sh
+jj git push
+
+Changes to push to origin:
+  Move forward bookmark trunk from 12c4747edb21 to f10df751ab04
+Warning: The working-copy commit in workspace 'default' became immutable, so a new commit has been created on top of it.
+Working copy now at: tuwxwnqw 4e3890c1 (empty) (no description set)
+Parent commit      : oupkqwzo f10df751 trunk | merge: local work with remote init
+
+jj log
+
+    @  tuwxwnqw nshephard@protonmail.com 2024-12-23 11:58:36 4e3890c1
+    │  (empty) (no description set)
+    ◆  oupkqwzo nshephard@protonmail.com 2024-12-23 11:51:49 trunk f10df751
+    │  merge: local work with remote init
+    ~
+```
+
+Not sure where the rest of the commit history is but it is showing up on the ForgeJo repository [commit
+history](https://forgejo.nshephard.dev/nshephard/crow/commits/branch/trunk).  I'll return to that later.
+
+## Revisions and Revsets
+
+A revision set or "revset" is a range of commits and `jj` has its own language for describing refsets.
+
+### Symbols
+
+We've already encountered `@` which points to our current working copy that we have checked out (sometimes "`HEAD`" but
+could be elsewhere in history).
+
+### Operators
+
+The tutorial notes the following common operators.
+
+- `x & y`: changes that are in both `x` and `y`.
+- `x | y`: changes that are in either `x` or `y`.
+- `::x` Ancestors of `x`.
+- `x::` Descendants of `x`.
+
+We found that we couldn't review the history of the current checked out commit (`@`) any more but lets see if we can use
+this new knowledge to find view the log history. We want to look at all ancestors so we can use `::t` to view the
+ancestors of the most recent, empty, commit.
+
+****NB**** It might be worth adding a description with `jj describe` before undertaking work, remember that the changes
+in the working directory are always part of the current commit.
+
+```sh
+jj log -r ::t
+@  tuwxwnqw nshephard@protonmail.com 2024-12-23 11:58:36 4e3890c1
+│  (empty) (no description set)
+◆    oupkqwzo nshephard@protonmail.com 2024-12-23 11:51:49 trunk f10df751
+├─╮  merge: local work with remote init
+│ ◆  myqxkksp nshephard@noreply.forgejo.nshephard.dev 2024-12-21 15:47:13 12c4747e
+│ │  Initial commit
+◆ │  tossulss nshephard@protonmail.com 2024-12-23 07:28:16 bfce9c9a
+│ │  Add pcscd to services for GnuPG pinentry
+◆ │  olrmoynt nshephard@protonmail.com 2024-12-22 23:03:58 dcd199d9
+│ │  Adding tree to systemPackages
+◆ │  wpttsonz nshephard@protonmail.com 2024-12-22 22:39:32 ca5be2ed
+│ │  ZSH home.nix configuration
+◆ │  twrvtqty nshephard@protonmail.com 2024-12-22 12:27:39 bb4c6bca
+│ │  system: emacs daemon for user
+◆ │  xuzumvqs nshephard@protonmail.com 2024-12-21 22:56:16 ee5dd297
+│ │  Add btop and htop to system.Packages
+◆ │  zrxyptxn nshephard@protonmail.com 2024-12-21 22:47:29 75fbf987
+│ │  Minor tweaks to mark ends of blocks in xfce.nix
+◆ │  zkowzsvy nshephard@protonmail.com 2024-12-21 20:41:10 c20e2a66
+│ │  Adding difftastic
+◆ │  mkrknnyv nshephard@protonmail.com 2024-12-21 16:31:47 18b4e7b1
+│ │  Tidying up nix and network sections
+◆ │  nxzzlvzo nshephard@protonmail.com 2024-12-21 15:48:47 d2d192ec
+├─╯  Initial commit with jj :)
+◆  zzzzzzzz root() 00000000
+```
+
+### Functions
+
+The revset language also includes a number of functions that help filter log messages such as `author()`,
+`description()`, `ancestors(x, depth)` (an extended version of `::x`) and `parents()`.
+
+I'm not going to dig too deep into these at the moment as I have limited use for them right now but see the [Figuring
+out where our changes are with revsets - Steve's Jujutsu
+Tutorial](https://steveklabnik.github.io/jujutsu-tutorial/branching-merging-and-conflicts/revsets.html) and the [Revset
+language](https://jj-vcs.github.io/jj/latest/revsets/) of the official documentation.
+
+## Configuration
+
+You can edit the [configuration](https://jj-vcs.github.io/jj/latest/config/) either at the `--user` or `--repo` level
+with `jj config edit --[user|repo]` (to find the path of the users configuration file use `jj config path --user`,
+repository configuration is in `.jj/repo/config.toml`). These are [TOML](id:80ebb47c-7c3e-4aa4-93c4-bb15f0ee7a01) files.
+
+I enabled color using the brilliant [difftastic][difft]
+
+```conf
+[user]
+    name = "Neil Shephard"
+    email = "nshephard@protonmail.com"
+
+[ui]
+    editor = "/run/current-system/sw/bin/nano"
+    pager = "/run/current-system/sw/bin/most"
+    color = "always"
+    ## Use Difftastic by default
+    diff.tool = ["difft", "--color=always", "$left", "$right"]
+```
+
+…there are a lot more configuration options available (see [configuration](https://jj-vcs.github.io/jj/latest/config/)
+documentation for full details).
+
+## Workflow
+
+Two popular workflows are described in the
+[tutorial](https://steveklabnik.github.io/jujutsu-tutorial/real-world-workflows/), the [Squash
+Workflow](https://steveklabnik.github.io/jujutsu-tutorial/real-world-workflows/the-squash-workflow.html) and the [Edit
+Workflow](https://steveklabnik.github.io/jujutsu-tutorial/real-world-workflows/the-edit-workflow.html).
+
+### Squash Workflow
+
+This is kind of link `git commit --amend` where changes are added to the existing `HEAD` commit of the branch. The `jj`
+workflow has at it's head (denoted by `@` in the `jj log` output) the "unstaged" changes and `jj squash` adds them to
+the previous commit, which is typically created *before* making any changes with a description of the intended work (you
+could do this with `git commit -a --allow-empty -m "bug: I'm going to squash a bug!"` ) and then repeatedly `git commit
+--amend` as we complete the work. With `jj` squash workflow though it encourages making smaller more atomic commits and
+reduces the amount of "/fixing an error/typo" commits by those averse to using `--amend`. By default all files are
+included but you can specify just those files you want to include by listing them.
+
+Jujutsu also allows interactive selection of lines to edit via the `-i` flag. A terminal interface opens and it is
+possible to select which lines to include prior to making the commit. After having selected all the changes simply hit
+\`c\` to confirm them.
+
+If you decide you don't want to keep the work you can `jj abandon` the work in progress and it reverts all changes. In
+fact `jj squash` offers much of the functionality of `git rebase -i`.
+
+### Edit Workflow
+
+Continuing from the previous example we make some more changes, but rather than using `new`, because there is already an
+empty change there as we squashed the existing changes into the previous commit leaving `@` empty, we use `jj describe
+-m "message"` to add a message to the empty commit that we are *not* going to squash. Now make the changes and when
+ready to start a new piece of work you can use `jj new -m ""`.
+
+#### Editing older commits
+
+In Git this can be done either by adding a `git commit --fixup` or using `git rebase -i` tp interactively squash
+commits. In `jj` though we can use `jj new -B @ -m "a new message"` and what this does is add a new commit before the
+`~@` commit (other references can be used if you want to modify a commit further back in the commit history). You get for
+free a rebase of descendant commits, of course conflicts can arise but this command *will* always complete without
+resolving the conflicts (yet!).
+
+The "`HEAD`" of the "branch" has been moved to this commit and changes can be made and saved (they're already included
+as there is no staging in Jujutsu). When done you can return to the "`HEAD`" using `jj edit <minimal_hash>` or the
+convenience shortcut `jj next --edit` which moves `@` to the "child" commit and allows editing.
+
+You can edit earlier commits with `jj edit @-` for the previous commit or `jj edit <commit>`
+
+## IDE/Interfaces
+
+Being an Emacs user I naturally wanted to use Jujutsu via Emacs and was hoping for a
+[Magit][magit] equivalent. Being considerably newer there isn't anything quite as
+powerful as Magit just yet but there is work in progress in the form of [jujutsushi - A emacs interface to
+jujutsu](https://git.sr.ht/~puercopop/jujutsushi) and [jujutsu.el: An Emacs interface for
+jujutsu](https://github.com/bennyandresen/jujutsu.el) (although the former's author has stated they have deprioritized
+development in light of the later, see [here](https://www.reddit.com/r/emacs/comments/1hbmpub/comment/m1inz3i/)).
+
+The [wiki](https://github.com/jj-vcs/jj/wiki/) is a useful resource on IDE integration
+
+## Conclusion
+
+After a few weeks or so tinkering with Jujutsu/~jj~ I've found there are a number of features that differ from my Git
+experience to date. Having a mental model of Version Control is important for these to make sense.  Obviously I need to
+spend longer working with the system to have a deeper understanding and appreciation of how it works and a better
+comparison to Git, but first impressions are good, although switching full scale would mean abandoning the amazing
+[Magit][magit] which is one of the best [Emacs][emacs] packages going, but there are some Emacs packages for working
+with Jujutsu in the pipeline.
+
+- All changes are "staged".
+- Branch names are redundant but are available (as "bookmarks") for compatibility with Git and these need updating to
+  the most recent commit.
+- Moving around commits seems more intuitive and there is no warning about the dangers of being in a "detached HEAD"
+  state.
+- As a consequence it's easy to update changes that should have been in older commits.
+- When this happens rebasing descendent commits is free, even if conflicts arise, they are still committed. They will
+  need resolving eventually but you can do this once on the commit you wish to rather than repeatedly and having to rely
+  on [`git rerere`](https://git-scm.com/book/en/v2/Git-Tools-Rerere)
+
+I'd highly recommend reading some other people's blogs on Jujutsu for a more technical understanding and broader
+view. In particular I liked the post [Jujutsu VCS Introduction and Patterns | Kuba
+Martin](https://kubamartin.com/posts/introduction-to-the-jujutsu-vcs/).
+
+## Links
+
+- [Jujutsu Documentation](https://martinvonz.github.io/jj/latest/)
+- [martinvonz/jj: A Git-compatible VCS that is both simple and
+  powerful](https://github.com/martinvonz/jj#command-line-completion)
+
+### Tutorials
+
+- [Steve's Jujutsu Tutorial](https://steveklabnik.github.io/jujutsu-tutorial/introduction/introduction.html)
+
+### Emacs Packages
+
+- [jujutsushi - A emacs interface to jujutsu](https://git.sr.ht/~puercopop/jujutsushi)
+- [jujutsu.el: An Emacs interface for jujutsu, inspired by magit and humbly not attempting to match it in
+  scope.](https://github.com/bennyandresen/jujutsu.el)
+- [vc-jj.el](https://codeberg.org/vifon/vc-jj.el)
+
+### Blogs
+
+- [jj init — Sympolymathesy, by Chris Krycho](https://v5.chriskrycho.com/essays/jj-init/)
+- [Jujutsu Strategies :: Reasonably Polymorphic](https://reasonablypolymorphic.com/blog/jj-strategy/index.html)
+- [A Better Merge Workflow with Jujutsu \| ofcrse by Benjamin Tan](https://ofcr.se/jujutsu-merge-workflow)
+- [Jujutsu (jj), a git compatible VCS - Tony Finn](https://tonyfinn.com/blog/jj/)
+- [Jujutsu is great for the wrong reason](https://www.felesatra.moe/blog/2024/12/23/jj-is-great-for-the-wrong-reason)
+- [Jujutsu VCS Introduction and Patterns | Kuba Martin](https://kubamartin.com/posts/introduction-to-the-jujutsu-vcs/)
+
+[arch]: https://archlinux.org
+[bash]: https://www.gnu.org/software/bash/
+[difft]: https://difftastic.wilfred.me.uk/
+[emacs]: https://www.gnu.org/software/emacs/
+[flake]: https://wiki.nixos.org/wiki/Flakes
+[forgejo]: https://forgejo.org/
+[gentoo]: https://gentoo.org/
+[git]: https://git-scm.com/
+[github]: https://github.com/
+[gitlab]: https://gitlab.com/
+[homemanager]: https://wiki.nixos.org/wiki/Home_Manager
+[jj]: https://martinvonz.github.io/jj/latest/
+[magit]: https://magit.vc/
+[nixos]: https://nixos.org
+[ovh]: https://ovh.co.uk
+[steves-jj-tutorial]: https://steveklabnik.github.io/jujutsu-tutorial/introduction/introduction.html
+[zsh]: https://www.zsh.org/

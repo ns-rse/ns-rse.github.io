@@ -15,7 +15,1564 @@
 <link>https://blog.nshephard.dev/links.html#category=git</link>
 </image>
 <generator>quarto-1.6.11</generator>
-<lastBuildDate>Wed, 13 Mar 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 08 Feb 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Version Control with Jujutsu</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/jujutsu/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I’d bread about and heard a good things about <a href="https://martinvonz.github.io/jj/latest/" target="_blank">Jujutsu</a>, a new Version Control System developed by Martin von Zweigbergk at Google, although it is not an official Google product and is Open Source Software licensed under the Apache 2.0 license. It has its own internal/native backend but also supports using <a href="https://git-scm.com/" target="_blank">Git</a> in the background to undertake all tasks. As such it can be used as a drop-in replacement for <a href="https://git-scm.com/" target="_blank">Git</a>. A big difference from the familiar Git model is that the working copy is automatically committed. If you check out a commit this introduces a new working-copy commit where changes are recorded (no more <code>detached HEAD</code> state!). I recently purchased a refurbished ThinkPad T490s and decided to give <a href="https://nixos.org" target="_blank">NixOS</a> a whirl so what better opportunity to try Jujutsu than to use it to version control my <code>/etc/nixos</code> directory.</p>
+<p>This post covers my experience of getting started with Jujutsu.</p>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>Whilst notionally installing and using it on NixOS I use both <a href="https://gentoo.org/" target="_blank">Gentoo</a> and <a href="https://archlinux.org" target="_blank">Arch</a> Linux so have installed it on those systems too.</p>
+<section id="gentoo" class="level3">
+<h3 class="anchored" data-anchor-id="gentoo">Gentoo</h3>
+<p><code>jj</code> is available in the <a href="https://overlays.gentoo.org/" target="_blank">Gentoo Overlays</a> <code>guru</code>.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">eselect</span> repository enable guru</span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">eix-sync</span></span>
+<span id="cb1-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">emerge</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-av</span> dev-vcs/jj</span></code></pre></div>
+</section>
+<section id="nixos" class="level3">
+<h3 class="anchored" data-anchor-id="nixos">NixOS</h3>
+<p><code>jj</code> is also available for <a href="https://nixos.org" target="_blank">NixOS</a>. You can use <a href="https://wiki.nixos.org/wiki/Flakes" target="_blank">flake</a> or <a href="https://wiki.nixos.org/wiki/Home_Manager" target="_blank">HomeManager</a>, I opted for the former and added the following to <code>/etc/nixos/flake.nix</code>. Just add the following to <code>/etc/nixos/configuration.nix</code> to install the most recent release system wide.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">environment.systemPackages</span> = with pkgs{</span>
+<span id="cb2-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">...</span></span>
+<span id="cb2-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jujutsu</span></span>
+<span id="cb2-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">...</span></span>
+<span id="cb2-5"><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>Then either <code>nixos-rebuild test</code> to install and test the installation (you should now have <code>jj</code> in your command line) and if happy <code>nixos-rebuild switch</code> to make the change permanent and available on the next boot.</p>
+</section>
+<section id="arch-linux" class="level3">
+<h3 class="anchored" data-anchor-id="arch-linux">Arch Linux</h3>
+<p>Stable version is included in <a href="https://aur.archlinux.org/packages/jj" target="_blank">packages</a>, although you can keep track of development using the <a href="https://aur.archlinux.org/packages/jj-git" target="_blank">AUR <sub>jj-git</sub></a> package.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pacman</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-Syu</span> jj</span></code></pre></div>
+</section>
+<section id="shell-integration" class="level3">
+<h3 class="anchored" data-anchor-id="shell-integration">Shell Integration</h3>
+<p>There is integration with both <a href="https://www.gnu.org/software/bash/" target="_blank">Bash</a> and <a href="https://www.zsh.org/" target="_blank">ZSH</a> as well as <a href="https://jj-vcs.github.io/jj/latest/install-and-setup/#command-line-completion" target="_blank">other shells</a>.</p>
+<section id="bash" class="level4">
+<h4 class="anchored" data-anchor-id="bash">Bash</h4>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">source</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> util completion bash<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</section>
+<section id="zsh" class="level4">
+<h4 class="anchored" data-anchor-id="zsh">ZSH</h4>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">autoload</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-U</span> compinit</span>
+<span id="cb5-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">compinit</span></span>
+<span id="cb5-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">source</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> util completion zsh<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</section>
+</section>
+<section id="initial-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="initial-configuration">Initial Configuration</h3>
+<p>As with Git you need to add your <code>user.name</code> and <code>user.email</code> to the configuration.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> config set <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--user</span> user.name <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Your Name"</span></span>
+<span id="cb6-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> config set <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--user</span> user.email <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"your@email.address"</span></span>
+<span id="cb6-3"></span>
+<span id="cb6-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">We</span> can check the configuration…</span>
+<span id="cb6-5"></span>
+<span id="cb6-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">```</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sh</span></span>
+<span id="cb6-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> config list</span>
+<span id="cb6-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">ui.editor</span> = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/usr/bin/nano"</span></span>
+<span id="cb6-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">ui.pager</span> = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"less"</span></span>
+<span id="cb6-10"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">user.email</span> = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"nshephard@protonmail.com"</span></span>
+<span id="cb6-11"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">user.name</span> = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Neil Shephard"</span></span></code></pre></div>
+<p>This looks ok but I found that <code>/usr/bin/nano</code> is <em>wrong</em> for a NixOS system….</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">which</span> nano</span>
+<span id="cb7-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">/run/current-system-sw/bin/nano</span></span></code></pre></div>
+<p>..so updated that along with a switch from <code>less</code> to <code>most</code> for paging.</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> config set <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--user</span> ui.editor <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/run/current-system/sw/bin/nano"</span></span>
+<span id="cb8-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">config</span> set <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--user</span> ui.pager <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/run/current-system/sw/bin/most"</span></span></code></pre></div>
+</section>
+</section>
+<section id="usage" class="level2">
+<h2 class="anchored" data-anchor-id="usage">Usage</h2>
+<p>I wanted to keep <code>/etc/nixos</code> under version control using <code>jj</code> and as advised in <a href="https://steveklabnik.github.io/jujutsu-tutorial/introduction/introduction.html" target="_blank">Steve’s Jujutsu Tutorial</a> opted to use the Git backend.</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> /etc/nixos</span>
+<span id="cb9-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> git init</span>
+<span id="cb9-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> st</span>
+<span id="cb9-4">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy changes:</span>
+<span id="cb9-5">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> agenix.nix</span>
+<span id="cb9-6">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> audio.nix</span>
+<span id="cb9-7">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> bluetooth.nix</span>
+<span id="cb9-8">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> configuration.nix</span>
+<span id="cb9-9">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> configuration.nix~</span>
+<span id="cb9-10">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> flake.lock</span>
+<span id="cb9-11">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> flake.nix</span>
+<span id="cb9-12">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> flake.nix~</span>
+<span id="cb9-13">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> hardware-configuration.nix</span>
+<span id="cb9-14">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> home.nix</span>
+<span id="cb9-15">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> home.nix~</span>
+<span id="cb9-16">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> luks.nix</span>
+<span id="cb9-17">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> secrets/secrets.nix</span>
+<span id="cb9-18">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> secrets/slack-vpn.age</span>
+<span id="cb9-19">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> xfce.nix</span>
+<span id="cb9-20">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> xfce.nix~</span>
+<span id="cb9-21">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy : vpqtltus 35cc03d2 <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span>
+<span id="cb9-22">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit: zzzzzzzz 00000000 <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">empty</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span></code></pre></div>
+<p>First things first, I’d already edited some files using Emacs and didn’t want the temporary files it leaves behind included. According to the <a href="https://jj-vcs.github.io/jj/latest/working-copy/#ignored-files" target="_blank">documentation</a> there is no <code>.jjignore</code> yet so we use <code>.gitignore</code> instead listing our files and patterns there.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">*~</span></span>
+<span id="cb10-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">\#*</span></span></code></pre></div>
+<p>…but the files are already being tracked because they were present when the repository was initialised. We therefore need to untrack them with…</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> file untrack</span></code></pre></div>
+<p>This failed because <code>~</code> is used in the syntax for <a href="https://jj-vcs.github.io/jj/latest/filesets/" target="_blank">jj filesets</a> which is a method of defining patterns of files. I tried a few things but in the end couldn’t suss it out in the five minutes so took the brute force option of <code>rm -rf .jj</code> and initialising the repository anew. We can look at the status with <code>jj st</code> and it will use our configured pager (which I’ve set to <code>most</code>) to show the changes.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> st</span>
+<span id="cb12-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy changes:</span>
+<span id="cb12-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> .gitignore</span>
+<span id="cb12-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> agenix.nix</span>
+<span id="cb12-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> audio.nix</span>
+<span id="cb12-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> bluetooth.nix</span>
+<span id="cb12-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> configuration.nix</span>
+<span id="cb12-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> flake.lock</span>
+<span id="cb12-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> flake.nix</span>
+<span id="cb12-10"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> hardware-configuration.nix</span>
+<span id="cb12-11"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> home.nix</span>
+<span id="cb12-12"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> luks.nix</span>
+<span id="cb12-13"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> secrets/secrets.nix</span>
+<span id="cb12-14"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> secrets/slack-vpn.age</span>
+<span id="cb12-15"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">A</span> xfce.nix</span>
+<span id="cb12-16"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy : nxzzlvzo 43e6338e <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span>
+<span id="cb12-17"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit: zzzzzzzz 00000000 <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">empty</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span></code></pre></div>
+<p>We can see the changes (i.e.&nbsp;all new files) are already noted as being under the working copy. We can also use <code>jj describe</code> to look at the changes and add a description. If we use the <code>-m "A message"</code> flag and value we can add a message and it will replace the <code>no description set</code> shown by <code>jj st</code>. With <code>jj describe</code> the information is opened up in an editor, and if a message has already been set it will be shown at the top. Note that lines beginning with <code>JJ</code> will be removed (i.e.&nbsp;they are comment lines). On adding a message or changing it the commit ID changes, the change ID remains the same but the commit ID changes over time allowing us to refer to individual commits rather than a whole change set.</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> describe <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Initial commit with jj :)"</span></span>
+<span id="cb13-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy now at: nxzzlvzo d2d192ec Initial commit with jj :<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb13-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit      : zzzzzzzz 00000000 <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">empty</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span></code></pre></div>
+<section id="new-commits" class="level3">
+<h3 class="anchored" data-anchor-id="new-commits">New commits</h3>
+<p>We’re ready to make some changes, but unlike Git we can make our commit <em>first</em> rather than after having made the changes. We do this with <code>jj new</code></p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> new</span>
+<span id="cb14-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy now at: mkrknnyv d20e2368 <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">empty</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span>
+<span id="cb14-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit      : nxzzlvzo d2d192ec Initial commit with jj :<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<p>We can now modify a file, in this case I tidied up <code>/etc/nixos/configuration.nix</code> and put all <code>network.*</code> options within a <code>network = {...};</code> block and similar aggregated all <code>nix.*</code> options into a <code>nix = {...};</code> block.</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> st</span>
+<span id="cb15-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy changes:</span>
+<span id="cb15-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">M</span> configuration.nix</span>
+<span id="cb15-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy : mkrknnyv 31f1c759 <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span>
+<span id="cb15-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit: nxzzlvzo d2d192ec Initial commit with jj :<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<p>We can see the full commit history with <code>jj log</code> (no surprisese there!)</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">@</span>  mkrknnyv nshephard@protonmail.com 2024-12-21 16:20:53 31f1c759</span>
+<span id="cb16-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span>
+<span id="cb16-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span>  nxzzlvzo nshephard@protonmail.com 2024-12-21 15:48:47 d2d192ec</span>
+<span id="cb16-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>  Initial commit with jj :<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb16-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span>  zzzzzzzz root<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">00000000</span></span></code></pre></div>
+<p>It’s interesting to note that the bold/highlighting of the start of commit hashes gives you an indication of the unique component of that hash (but you’ll have to take my word for that as I’ve not bothered to copy that over to the blog!).</p>
+<p>It is important to note that there is no need to explicitly make a commit, the work done/changes are already part of the current commit. When you are ready to start the next piece of work you <code>jj new</code> (optionally with <code>-m "&lt;message&gt;"</code>) to start a new piece of work.</p>
+<p>This naturally leads to the question of how to undo work that you have done With <code>jj</code> you can move back to commits using <code>jj edit @-</code> or referring to the commit directly with <code>jj edit &lt;hash&gt;</code> and then use</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> edit @-</span>
+<span id="cb17-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> abandon <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>hash_of_latest_commit<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+</section>
+</section>
+<section id="diffing" class="level2">
+<h2 class="anchored" data-anchor-id="diffing">Diffing</h2>
+<p>You can view differences with <code>jj diff</code> and it will show the differences between the current “<code>HEAD</code>” and the previous commit. I use <code>difftastic</code> (see Configuration section below) so have colourized output which isn’t shown below.</p>
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode diff code-with-copy"><code class="sourceCode diff"><span id="cb18-1">    home.nix --- Nix</span>
+<span id="cb18-2">    152 152       urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";</span>
+<span id="cb18-3">    153 153       urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";</span>
+<span id="cb18-4">    154 154     };</span>
+<span id="cb18-5">    ... 155     # initExtra = ''</span>
+<span id="cb18-6">    ... 156     #   if command -v keychain &gt; /dev/null 2&gt;&amp;1; then eval $(keychain --eval --nogui ${keyFilename} --quiet); fi</span>
+<span id="cb18-7">    ... 157     # '';</span>
+<span id="cb18-8">    155 158   };</span>
+<span id="cb18-9">    156 159</span>
+<span id="cb18-10">    157 160   programs.emacs = {</span>
+<span id="cb18-11"></span>
+<span id="cb18-12">    configuration.nix --- 1/2 --- Nix</span>
+<span id="cb18-13">    177   # Some programs need SUID wrappers, can be configured further or are      177   # Some programs need SUID wrappers, can be configured further or are</span>
+<span id="cb18-14">    178   # started in user sessions.                                               178   # started in user sessions.</span>
+<span id="cb18-15">    179   # programs.mtr.enable = true;                                             179   # programs.mtr.enable = true;</span>
+<span id="cb18-16">    180   programs.gnupg.agent = {                                                  180   programs = {</span>
+<span id="cb18-17">    ...                                                                             181     gnupg.agent = {</span>
+<span id="cb18-18">    181     enable = true;                                                          182       enable = true;</span>
+<span id="cb18-19">    ...                                                                             183       # enableSSHSupport = true;</span>
+<span id="cb18-20">    ...                                                                             184     };</span>
+<span id="cb18-21">    182     enableSSHSupport = true;                                                185     ssh.startAgent = true;</span>
+<span id="cb18-22">    183   };                                                                        186   };</span>
+<span id="cb18-23">    184                                                                             187</span>
+<span id="cb18-24">    185   # List services that you want to enable:                                  188   # List services that you want to enable:</span>
+<span id="cb18-25">    186   services = {                                                              189   services = {</span>
+<span id="cb18-26"></span>
+<span id="cb18-27">    configuration.nix --- 2/2 --- Nix</span>
+<span id="cb18-28">    210 213     fprintd = {</span>
+<span id="cb18-29">    211 214       enable = true;</span>
+<span id="cb18-30">    212 215     };</span>
+<span id="cb18-31">    ... 216     # yubikey</span>
+<span id="cb18-32">    ... 217     yubikey-agent = {</span>
+<span id="cb18-33">    ... 218       enable = true;</span>
+<span id="cb18-34">    ... 219     };</span>
+<span id="cb18-35">    213 220   };</span>
+<span id="cb18-36">    214 221   # Open ports in the firewall.</span>
+<span id="cb18-37">    215 222   # networking.firewall.allowedTCPPorts = [ ... ];</span></code></pre></div>
+<p>If you want to look at differences between two specific commits you can use the <code>--from</code> and <code>--to</code> options (the former likely being more useful than the later).</p>
+</section>
+<section id="remotes" class="level2">
+<h2 class="anchored" data-anchor-id="remotes">Remotes</h2>
+<p>I wanted to back my work up remotely and have a few options the ubiquitous <a href="https://github.com/" target="_blank">GitHub</a>, <a href="https://gitlab.com/" target="_blank">GitLab</a>, or my self-hosted <a href="https://forgejo.org/" target="_blank">Forgejo</a>. I opted for the later which is hosted on the VPS I pay for with <a href="https://ovh.co.uk" target="_blank">OVH</a>.</p>
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> git remote add origin <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>git@forgejo.nshephard.dev<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>:nshephard/crow.git</span></code></pre></div>
+<p>However trying to push failed with a rather cryptic and unhelpful message.</p>
+<div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> git push</span>
+<span id="cb20-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Changes</span> to push to origin:</span>
+<span id="cb20-3">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Add</span> bookmark trunk to bfce9c9ab2aa</span>
+<span id="cb20-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Error:</span> failed to connect to forgejo.nshephard.dev: Invalid argument<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">class</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>Os <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">2</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span></code></pre></div>
+<p>I use a non-standard port for SSH on my server (i.e.&nbsp;not <code>22</code> ). The “trick” here was to use the <code>scp</code> like syntax to specifying the <code>url</code> under the <code>remote</code> in the <code>git</code> configuration which resides in <code>.jj/repo/store/git/config</code></p>
+<div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[remote</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"origin"</span>]</span>
+<span id="cb21-2">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">url</span> = ssh://git@forgejo.nshephard.dev:2222/~/nshephard/crow.git</span></code></pre></div>
+<p>Success, I can reach the remote, but it fails to authenticate.</p>
+<div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode conf code-with-copy"><code class="sourceCode toml"><span id="cb22-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">jj</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">git</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">push</span></span>
+<span id="cb22-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Changes</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">to</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">push</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">to</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">origin</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb22-3">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Add</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">bookmark</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">trunk</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">to</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">bfce9c9ab2aa</span></span>
+<span id="cb22-4"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Error</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">:</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">failed</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">to</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">authenticate</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">SSH</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">session</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">:</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Unable</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">to</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">extract</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">public</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">key</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">from</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">private</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">key</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">file</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">:</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Wrong</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">passphrase</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">or</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">invalid</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">unrecognized</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">private</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">key</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">file</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">format</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">;</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">class</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Ssh</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">23</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb22-5"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Hint</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">:</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Jujutsu</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">uses</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">libssh2</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">,</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">which</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">doesn't respect ~/.ssh/config. Does `ssh -F /dev/null` to the host work?</span></span></code></pre></div>
+<p>Checking my <code>~/.ssh/config</code> and my <a href="https://forgejo.org/" target="_blank">Forgejo</a> configuration and I realised that I have it configured to run as user <code>forgejo</code>.</p>
+<div class="sourceCode" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode conf code-with-copy"><code class="sourceCode toml"><span id="cb23-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[remote</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">origin"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">]</span></span>
+<span id="cb23-2">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">url</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">ssh</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">://</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">forgejo</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">@</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">forgejo.nshephard.dev</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">:</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2222</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">nshephard</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">crow.git</span></span></code></pre></div>
+</section>
+<section id="bookmarks-aka-branches" class="level2">
+<h2 class="anchored" data-anchor-id="bookmarks-aka-branches">Bookmarks (aka branches)</h2>
+<p>These are mainly for compatibility with Git, <code>jj</code> actually prefers to use anonymous rather than named branches (sometimes called a “branchless” workflow). You create a bookmark at a given point and it stays there until you move it. This is kind of weird compared to Git where commits are stacked on top of each other to make branches and you are always checked out on the <code>HEAD</code> commit at the top or otherwise in a “detached” status.</p>
+<p>Create a bookmark with…</p>
+<div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> bookmark create <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>If you want to move a bookmark after its creation you can do so…</p>
+<div class="sourceCode" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> bookmark move <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>bookmark_name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> --to <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>revision<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>Note that the default <code>--to</code> is <code>@</code> so <code>jj bookrmark move &lt;bookmark_name&gt;</code> will move it to your current location, whether that is the tip or not.</p>
+</section>
+<section id="merging-branches" class="level2">
+<h2 class="anchored" data-anchor-id="merging-branches">Merging Branches</h2>
+<p>I found when it came to pushing to my <a href="https://forgejo.org/" target="_blank">Forgejo</a> instance where I had created the repository I had to first <code>jj git pull</code> to get the initial commit there and then setup remote tracking.</p>
+<div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> git push</span>
+<span id="cb26-2">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Warning:</span> Non-tracking remote bookmark trunk@origin exists</span>
+<span id="cb26-3">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Hint:</span> Run <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> bookmark track trunk@origin<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span> to import the remote bookmark.</span>
+<span id="cb26-4">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Nothing</span> changed.</span>
+<span id="cb26-5"></span>
+<span id="cb26-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> git fetch</span>
+<span id="cb26-7">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">bookmark:</span> trunk@origin <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">[</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">new</span><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">]</span> untracked</span>
+<span id="cb26-8"></span>
+<span id="cb26-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> bookmark track trunk@origin</span>
+<span id="cb26-10"></span>
+<span id="cb26-11">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> log</span>
+<span id="cb26-12">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span>  myqxkksp nshephard@noreply.forgejo.nshephard.dev 2024-12-21 15:47:13 trunk@origin 12c4747e</span>
+<span id="cb26-13">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>  Initial commit</span>
+<span id="cb26-14">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> @  tossulss nshephard@protonmail.com 2024-12-23 07:28:16 trunk bfce9c9a</span>
+<span id="cb26-15">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Add pcscd to services for GnuPG pinentry</span>
+<span id="cb26-16">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ○  olrmoynt nshephard@protonmail.com 2024-12-22 23:03:58 dcd199d9</span>
+<span id="cb26-17">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Adding tree to systemPackages</span>
+<span id="cb26-18">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ○  wpttsonz nshephard@protonmail.com 2024-12-22 22:39:32 ca5be2ed</span>
+<span id="cb26-19">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  ZSH home.nix configuration</span>
+<span id="cb26-20">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ○  twrvtqty nshephard@protonmail.com 2024-12-22 12:27:39 bb4c6bca</span>
+<span id="cb26-21">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  system: emacs daemon for user</span>
+<span id="cb26-22">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ○  xuzumvqs nshephard@protonmail.com 2024-12-21 22:56:16 ee5dd297</span>
+<span id="cb26-23">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Add btop and htop to system.Packages</span>
+<span id="cb26-24">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ○  zrxyptxn nshephard@protonmail.com 2024-12-21 22:47:29 75fbf987</span>
+<span id="cb26-25">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Minor tweaks to mark ends of blocks in xfce.nix</span>
+<span id="cb26-26">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ○  zkowzsvy nshephard@protonmail.com 2024-12-21 20:41:10 c20e2a66</span>
+<span id="cb26-27">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Adding difftastic</span>
+<span id="cb26-28">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ○  mkrknnyv nshephard@protonmail.com 2024-12-21 16:31:47 18b4e7b1</span>
+<span id="cb26-29">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Tidying up nix and network sections</span>
+<span id="cb26-30">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ○  nxzzlvzo nshephard@protonmail.com 2024-12-21 15:48:47 d2d192ec</span>
+<span id="cb26-31">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├─╯</span>  Initial commit with jj :<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb26-32">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span>  zzzzzzzz root<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">00000000</span></span>
+<span id="cb26-33">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#+end_</span></span></code></pre></div>
+<p>At this point the two “branches” (<code>trunk@origin</code> and the local <code>trunk</code>) have diverged and are in conflict, preventing me from pushing</p>
+<p>jj git push Warning: Bookmark trunk is conflicted Hint: Run <code>jj bookmark list</code> to inspect, and use <code>jj bookmark set</code> to fix it up. Nothing changed.</p>
+<p>There is an old command in Jujutsu to <code>jj merge</code> but, as the help informs you, it has been deprecated in favour of <code>jj new</code>. This isn’t too dissimilar to Git though since “merges” are just commits that bring two branches together. The syntax for this is <code>jj new [OPTIONS] [REVISIONS]</code>, by default the <code>REVISIONS</code> is simply <code>@</code> the current “<code>HEAD</code>”, but specifying more than one will merge the two together. You can of course include <code>-m "Message about merging"</code>. Taking the above output from <code>jj log</code> I can make a merge with the following (the minimal hashes are highlighted in the terminal but not above and here the <code>to my</code> refers to merging to the latest commit).</p>
+<div class="sourceCode" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> new <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"merge: local work with remote init"</span> to my</span>
+<span id="cb27-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy now at: oupkqwzo da0ebd37 <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conflict</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">empty</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">merge:</span> local work with remote init</span>
+<span id="cb27-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit      : tossulss bfce9c9a trunk<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">??</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Add</span> pcscd to services for GnuPG pinentry</span>
+<span id="cb27-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit      : myqxkksp 12c4747e trunk<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">??</span> trunk@origin <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Initial</span> commit</span>
+<span id="cb27-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Added</span> 2 files, modified 1 files, removed 0 files</span>
+<span id="cb27-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">There</span> are unresolved conflicts at these paths:</span>
+<span id="cb27-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">.gitignore</span>    2-sided conflict</span></code></pre></div>
+<section id="conflicts" class="level3">
+<h3 class="anchored" data-anchor-id="conflicts">Conflicts</h3>
+<p>The manual covers <a href="https://jj-vcs.github.io/jj/latest/conflicts/" target="_blank">conflict</a> resolution and its worth reading that. That I encountered merge conflicts isn’t entirely unexpected I had created <code>.gitignore</code> both locally and on the remote so bringing them together the is natural. Lets look at this…</p>
+<div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cat</span> .gitignore</span>
+<span id="cb28-2"></span>
+<span id="cb28-3"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> Conflict <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">1</span> of 1</span>
+<span id="cb28-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">%%%%%%%</span> Changes from base to side <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#1</span></span>
+<span id="cb28-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">+##</span> Emacs temporary files</span>
+<span id="cb28-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">+*~</span></span>
+<span id="cb28-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">+\#*</span></span>
+<span id="cb28-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">+++++++</span> Contents of side <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#2</span></span>
+<span id="cb28-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># ---&gt; Nix</span></span>
+<span id="cb28-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ignore build outputs from performing a nix-build or `nix build` command</span></span>
+<span id="cb28-11"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">result</span></span>
+<span id="cb28-12"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">result-*</span></span>
+<span id="cb28-13"></span>
+<span id="cb28-14"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> Conflict <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">1</span> of 1 ends</span></code></pre></div>
+<p>This is fairly similar to Git merge conflicts, but I like the <code>side 1~/~side 2</code> notation (you get the same in Git by default but its occluded and you have to read up to understand that first bit delimited by ‘&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;’ is from the current branch and the other bit is from the branch that is being merged).</p>
+<p>I know I want both of these included in <code>.gitignore</code> so I make the changes, removing all the conflict markup and save the file. This tidies up the current commit, there is no need to make another commit to take a snapshot of those changes as there is in Git. However the bookmarks are still in conflict so we need to set that to the correct commit.</p>
+<div class="sourceCode" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> st</span>
+<span id="cb29-2"></span>
+<span id="cb29-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy changes:</span>
+<span id="cb29-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">M</span> .gitignore</span>
+<span id="cb29-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy : oupkqwzo f10df751 merge: local work with remote init</span>
+<span id="cb29-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit: tossulss bfce9c9a trunk<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">??</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Add</span> pcscd to services for GnuPG pinentry</span>
+<span id="cb29-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit: myqxkksp 12c4747e trunk<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">??</span> trunk@origin <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Initial</span> commit</span>
+<span id="cb29-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">These</span> bookmarks have conflicts:</span>
+<span id="cb29-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">trunk</span></span>
+<span id="cb29-10"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Use</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> bookmark list<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span> to see details. Use <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> bookmark set <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>name<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> -r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>rev<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">`</span> to resolve.</span>
+<span id="cb29-11"></span>
+<span id="cb29-12"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> bookmark set trunk <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> ou</span>
+<span id="cb29-13"></span>
+<span id="cb29-14"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> st</span>
+<span id="cb29-15"></span>
+<span id="cb29-16"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy changes:</span>
+<span id="cb29-17"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">M</span> .gitignore</span>
+<span id="cb29-18"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy : oupkqwzo f10df751 trunk<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">merge:</span> local work with remo</span>
+<span id="cb29-19"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit: tossulss bfce9c9a Add pcscd to services for GnuPG pine</span>
+<span id="cb29-20"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit: myqxkksp 12c4747e trunk@origin <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Initial</span> commit</span>
+<span id="cb29-21"></span>
+<span id="cb29-22"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> log</span>
+<span id="cb29-23"></span>
+<span id="cb29-24">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">@</span>    oupkqwzo nshephard@protonmail.com 2024-12-23 11:51:49 trunk<span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">*</span> f10df751</span>
+<span id="cb29-25">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├─╮</span>  merge: local work with remote init</span>
+<span id="cb29-26">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ◆  myqxkksp nshephard@noreply.forgejo.nshephard.dev 2024-12-21 15:47:13 trunk@origin 12c4747e</span>
+<span id="cb29-27">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Initial commit</span>
+<span id="cb29-28">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  tossulss nshephard@protonmail.com 2024-12-23 07:28:16 bfce9c9a</span>
+<span id="cb29-29">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Add pcscd to services for GnuPG pinentry</span>
+<span id="cb29-30">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  olrmoynt nshephard@protonmail.com 2024-12-22 23:03:58 dcd199d9</span>
+<span id="cb29-31">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Adding tree to systemPackages</span>
+<span id="cb29-32">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  wpttsonz nshephard@protonmail.com 2024-12-22 22:39:32 ca5be2ed</span>
+<span id="cb29-33">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  ZSH home.nix configuration</span>
+<span id="cb29-34">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  twrvtqty nshephard@protonmail.com 2024-12-22 12:27:39 bb4c6bca</span>
+<span id="cb29-35">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  system: emacs daemon for user</span>
+<span id="cb29-36">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  xuzumvqs nshephard@protonmail.com 2024-12-21 22:56:16 ee5dd297</span>
+<span id="cb29-37">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Add btop and htop to system.Packages</span>
+<span id="cb29-38">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  zrxyptxn nshephard@protonmail.com 2024-12-21 22:47:29 75fbf987</span>
+<span id="cb29-39">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Minor tweaks to mark ends of blocks in xfce.nix</span>
+<span id="cb29-40">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  zkowzsvy nshephard@protonmail.com 2024-12-21 20:41:10 c20e2a66</span>
+<span id="cb29-41">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Adding difftastic</span>
+<span id="cb29-42">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  mkrknnyv nshephard@protonmail.com 2024-12-21 16:31:47 18b4e7b1</span>
+<span id="cb29-43">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Tidying up nix and network sections</span>
+<span id="cb29-44">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">○</span> │  nxzzlvzo nshephard@protonmail.com 2024-12-21 15:48:47 d2d192ec</span>
+<span id="cb29-45">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├─╯</span>  Initial commit with jj :<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb29-46">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span>  zzzzzzzz root<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">00000000</span></span></code></pre></div>
+<p>We’ve merged out branches but <code>trunk@origin</code> is behind that merge we can bring that up-to-date by pushing</p>
+<div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> git push</span>
+<span id="cb30-2"></span>
+<span id="cb30-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Changes</span> to push to origin:</span>
+<span id="cb30-4">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Move</span> forward bookmark trunk from 12c4747edb21 to f10df751ab04</span>
+<span id="cb30-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Warning:</span> The working-copy commit in workspace <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'default'</span> became immutable, so a new commit has been created on top of it.</span>
+<span id="cb30-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Working</span> copy now at: tuwxwnqw 4e3890c1 <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">empty</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span>
+<span id="cb30-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Parent</span> commit      : oupkqwzo f10df751 trunk <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">merge:</span> local work with remote init</span>
+<span id="cb30-8"></span>
+<span id="cb30-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> log</span>
+<span id="cb30-10"></span>
+<span id="cb30-11">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">@</span>  tuwxwnqw nshephard@protonmail.com 2024-12-23 11:58:36 4e3890c1</span>
+<span id="cb30-12">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">empty</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span>
+<span id="cb30-13">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span>  oupkqwzo nshephard@protonmail.com 2024-12-23 11:51:49 trunk f10df751</span>
+<span id="cb30-14">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>  merge: local work with remote init</span>
+<span id="cb30-15">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">~</span></span></code></pre></div>
+<p>Not sure where the rest of the commit history is but it is showing up on the ForgeJo repository <a href="https://forgejo.nshephard.dev/nshephard/crow/commits/branch/trunk" target="_blank">commit history</a>. I’ll return to that later.</p>
+</section>
+</section>
+<section id="revisions-and-revsets" class="level2">
+<h2 class="anchored" data-anchor-id="revisions-and-revsets">Revisions and Revsets</h2>
+<p>A revision set or “revset” is a range of commits and <code>jj</code> has its own language for describing refsets.</p>
+<section id="symbols" class="level3">
+<h3 class="anchored" data-anchor-id="symbols">Symbols</h3>
+<p>We’ve already encountered <code>@</code> which points to our current working copy that we have checked out (sometimes “<code>HEAD</code>” but could be elsewhere in history).</p>
+</section>
+<section id="operators" class="level3">
+<h3 class="anchored" data-anchor-id="operators">Operators</h3>
+<p>The tutorial notes the following common operators.</p>
+<ul>
+<li><code>x &amp; y</code>: changes that are in both <code>x</code> and <code>y</code>.</li>
+<li><code>x | y</code>: changes that are in either <code>x</code> or <code>y</code>.</li>
+<li><code>::x</code> Ancestors of <code>x</code>.</li>
+<li><code>x::</code> Descendants of <code>x</code>.</li>
+</ul>
+<p>We found that we couldn’t review the history of the current checked out commit (<code>@</code>) any more but lets see if we can use this new knowledge to find view the log history. We want to look at all ancestors so we can use <code>::t</code> to view the ancestors of the most recent, empty, commit.</p>
+<p>****NB**** It might be worth adding a description with <code>jj describe</code> before undertaking work, remember that the changes in the working directory are always part of the current commit.</p>
+<div class="sourceCode" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jj</span> log <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> ::t</span>
+<span id="cb31-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">@</span>  tuwxwnqw nshephard@protonmail.com 2024-12-23 11:58:36 4e3890c1</span>
+<span id="cb31-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span>  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">empty</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">(</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">no</span> description set<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span></span>
+<span id="cb31-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span>    oupkqwzo nshephard@protonmail.com 2024-12-23 11:51:49 trunk f10df751</span>
+<span id="cb31-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├─╮</span>  merge: local work with remote init</span>
+<span id="cb31-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> ◆  myqxkksp nshephard@noreply.forgejo.nshephard.dev 2024-12-21 15:47:13 12c4747e</span>
+<span id="cb31-7"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Initial commit</span>
+<span id="cb31-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  tossulss nshephard@protonmail.com 2024-12-23 07:28:16 bfce9c9a</span>
+<span id="cb31-9"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Add pcscd to services for GnuPG pinentry</span>
+<span id="cb31-10"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  olrmoynt nshephard@protonmail.com 2024-12-22 23:03:58 dcd199d9</span>
+<span id="cb31-11"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Adding tree to systemPackages</span>
+<span id="cb31-12"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  wpttsonz nshephard@protonmail.com 2024-12-22 22:39:32 ca5be2ed</span>
+<span id="cb31-13"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  ZSH home.nix configuration</span>
+<span id="cb31-14"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  twrvtqty nshephard@protonmail.com 2024-12-22 12:27:39 bb4c6bca</span>
+<span id="cb31-15"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  system: emacs daemon for user</span>
+<span id="cb31-16"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  xuzumvqs nshephard@protonmail.com 2024-12-21 22:56:16 ee5dd297</span>
+<span id="cb31-17"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Add btop and htop to system.Packages</span>
+<span id="cb31-18"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  zrxyptxn nshephard@protonmail.com 2024-12-21 22:47:29 75fbf987</span>
+<span id="cb31-19"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Minor tweaks to mark ends of blocks in xfce.nix</span>
+<span id="cb31-20"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  zkowzsvy nshephard@protonmail.com 2024-12-21 20:41:10 c20e2a66</span>
+<span id="cb31-21"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Adding difftastic</span>
+<span id="cb31-22"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  mkrknnyv nshephard@protonmail.com 2024-12-21 16:31:47 18b4e7b1</span>
+<span id="cb31-23"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">│</span> │  Tidying up nix and network sections</span>
+<span id="cb31-24"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span> │  nxzzlvzo nshephard@protonmail.com 2024-12-21 15:48:47 d2d192ec</span>
+<span id="cb31-25"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">├─╯</span>  Initial commit with jj :<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb31-26"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">◆</span>  zzzzzzzz root<span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">00000000</span></span></code></pre></div>
+</section>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">Functions</h3>
+<p>The revset language also includes a number of functions that help filter log messages such as <code>author()</code>, <code>description()</code>, <code>ancestors(x, depth)</code> (an extended version of <code>::x</code>) and <code>parents()</code>.</p>
+<p>I’m not going to dig too deep into these at the moment as I have limited use for them right now but see the <a href="https://steveklabnik.github.io/jujutsu-tutorial/branching-merging-and-conflicts/revsets.html" target="_blank">Figuring out where our changes are with revsets - Steve’s Jujutsu Tutorial</a> and the <a href="https://jj-vcs.github.io/jj/latest/revsets/" target="_blank">Revset language</a> of the official documentation.</p>
+</section>
+</section>
+<section id="configuration" class="level2">
+<h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
+<p>You can edit the <a href="https://jj-vcs.github.io/jj/latest/config/" target="_blank">configuration</a> either at the <code>--user</code> or <code>--repo</code> level with <code>jj config edit --[user|repo]</code> (to find the path of the users configuration file use <code>jj config path --user</code>, repository configuration is in <code>.jj/repo/config.toml</code>). These are <a href="id:80ebb47c-7c3e-4aa4-93c4-bb15f0ee7a01" target="_blank">TOML</a> files.</p>
+<p>I enabled color using the brilliant <a href="https://difftastic.wilfred.me.uk/" target="_blank">difftastic</a></p>
+<div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode conf code-with-copy"><code class="sourceCode toml"><span id="cb32-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[user]</span></span>
+<span id="cb32-2">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Neil Shephard"</span></span>
+<span id="cb32-3">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">email</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"nshephard@protonmail.com"</span></span>
+<span id="cb32-4"></span>
+<span id="cb32-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[ui]</span></span>
+<span id="cb32-6">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">editor</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/run/current-system/sw/bin/nano"</span></span>
+<span id="cb32-7">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">pager</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/run/current-system/sw/bin/most"</span></span>
+<span id="cb32-8">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">color</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"always"</span></span>
+<span id="cb32-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Use Difftastic by default</span></span>
+<span id="cb32-10">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">diff.tool</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"difft"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--color=always"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"$left"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"$right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span></code></pre></div>
+<p>…there are a lot more configuration options available (see <a href="https://jj-vcs.github.io/jj/latest/config/" target="_blank">configuration</a> documentation for full details).</p>
+</section>
+<section id="workflow" class="level2">
+<h2 class="anchored" data-anchor-id="workflow">Workflow</h2>
+<p>Two popular workflows are described in the <a href="https://steveklabnik.github.io/jujutsu-tutorial/real-world-workflows/" target="_blank">tutorial</a>, the <a href="https://steveklabnik.github.io/jujutsu-tutorial/real-world-workflows/the-squash-workflow.html" target="_blank">Squash Workflow</a> and the <a href="https://steveklabnik.github.io/jujutsu-tutorial/real-world-workflows/the-edit-workflow.html" target="_blank">Edit Workflow</a>.</p>
+<section id="squash-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="squash-workflow">Squash Workflow</h3>
+<p>This is kind of link <code>git commit --amend</code> where changes are added to the existing <code>HEAD</code> commit of the branch. The <code>jj</code> workflow has at it’s head (denoted by <code>@</code> in the <code>jj log</code> output) the “unstaged” changes and <code>jj squash</code> adds them to the previous commit, which is typically created <em>before</em> making any changes with a description of the intended work (you could do this with <code>git commit -a --allow-empty -m "bug: I'm going to squash a bug!"</code> ) and then repeatedly <code>git commit --amend</code> as we complete the work. With <code>jj</code> squash workflow though it encourages making smaller more atomic commits and reduces the amount of “/fixing an error/typo” commits by those averse to using <code>--amend</code>. By default all files are included but you can specify just those files you want to include by listing them.</p>
+<p>Jujutsu also allows interactive selection of lines to edit via the <code>-i</code> flag. A terminal interface opens and it is possible to select which lines to include prior to making the commit. After having selected all the changes simply hit `c` to confirm them.</p>
+<p>If you decide you don’t want to keep the work you can <code>jj abandon</code> the work in progress and it reverts all changes. In fact <code>jj squash</code> offers much of the functionality of <code>git rebase -i</code>.</p>
+</section>
+<section id="edit-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="edit-workflow">Edit Workflow</h3>
+<p>Continuing from the previous example we make some more changes, but rather than using <code>new</code>, because there is already an empty change there as we squashed the existing changes into the previous commit leaving <code>@</code> empty, we use <code>jj describe -m "message"</code> to add a message to the empty commit that we are <em>not</em> going to squash. Now make the changes and when ready to start a new piece of work you can use <code>jj new -m ""</code>.</p>
+<section id="editing-older-commits" class="level4">
+<h4 class="anchored" data-anchor-id="editing-older-commits">Editing older commits</h4>
+<p>In Git this can be done either by adding a <code>git commit --fixup</code> or using <code>git rebase -i</code> tp interactively squash commits. In <code>jj</code> though we can use <code>jj new -B @ -m "a new message"</code> and what this does is add a new commit before the <code>~@</code> commit (other references can be used if you want to modify a commit further back in the commit history). You get for free a rebase of descendant commits, of course conflicts can arise but this command <em>will</em> always complete without resolving the conflicts (yet!).</p>
+<p>The “<code>HEAD</code>” of the “branch” has been moved to this commit and changes can be made and saved (they’re already included as there is no staging in Jujutsu). When done you can return to the “<code>HEAD</code>” using <code>jj edit &lt;minimal_hash&gt;</code> or the convenience shortcut <code>jj next --edit</code> which moves <code>@</code> to the “child” commit and allows editing.</p>
+<p>You can edit earlier commits with <code>jj edit @-</code> for the previous commit or <code>jj edit &lt;commit&gt;</code></p>
+</section>
+</section>
+</section>
+<section id="ideinterfaces" class="level2">
+<h2 class="anchored" data-anchor-id="ideinterfaces">IDE/Interfaces</h2>
+<p>Being an Emacs user I naturally wanted to use Jujutsu via Emacs and was hoping for a <a href="https://magit.vc/" target="_blank">Magit</a> equivalent. Being considerably newer there isn’t anything quite as powerful as Magit just yet but there is work in progress in the form of <a href="https://git.sr.ht/~puercopop/jujutsushi" target="_blank">jujutsushi - A emacs interface to jujutsu</a> and <a href="https://github.com/bennyandresen/jujutsu.el" target="_blank">jujutsu.el: An Emacs interface for jujutsu</a> (although the former’s author has stated they have deprioritized development in light of the later, see <a href="https://www.reddit.com/r/emacs/comments/1hbmpub/comment/m1inz3i/" target="_blank">here</a>).</p>
+<p>The <a href="https://github.com/jj-vcs/jj/wiki/" target="_blank">wiki</a> is a useful resource on IDE integration</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>After a few weeks or so tinkering with Jujutsu/<sub>jj</sub> I’ve found there are a number of features that differ from my Git experience to date. Having a mental model of Version Control is important for these to make sense. Obviously I need to spend longer working with the system to have a deeper understanding and appreciation of how it works and a better comparison to Git, but first impressions are good, although switching full scale would mean abandoning the amazing <a href="https://magit.vc/" target="_blank">Magit</a> which is one of the best <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> packages going, but there are some Emacs packages for working with Jujutsu in the pipeline.</p>
+<ul>
+<li>All changes are “staged”.</li>
+<li>Branch names are redundant but are available (as “bookmarks”) for compatibility with Git and these need updating to the most recent commit.</li>
+<li>Moving around commits seems more intuitive and there is no warning about the dangers of being in a “detached HEAD” state.</li>
+<li>As a consequence it’s easy to update changes that should have been in older commits.</li>
+<li>When this happens rebasing descendent commits is free, even if conflicts arise, they are still committed. They will need resolving eventually but you can do this once on the commit you wish to rather than repeatedly and having to rely on <a href="https://git-scm.com/book/en/v2/Git-Tools-Rerere" target="_blank"><code>git rerere</code></a></li>
+</ul>
+<p>I’d highly recommend reading some other people’s blogs on Jujutsu for a more technical understanding and broader view. In particular I liked the post <a href="https://kubamartin.com/posts/introduction-to-the-jujutsu-vcs/" target="_blank">Jujutsu VCS Introduction and Patterns | Kuba Martin</a>.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://martinvonz.github.io/jj/latest/" target="_blank">Jujutsu Documentation</a></li>
+<li><a href="https://github.com/martinvonz/jj#command-line-completion" target="_blank">martinvonz/jj: A Git-compatible VCS that is both simple and powerful</a></li>
+</ul>
+<section id="tutorials" class="level3">
+<h3 class="anchored" data-anchor-id="tutorials">Tutorials</h3>
+<ul>
+<li><a href="https://steveklabnik.github.io/jujutsu-tutorial/introduction/introduction.html" target="_blank">Steve’s Jujutsu Tutorial</a></li>
+</ul>
+</section>
+<section id="emacs-packages" class="level3">
+<h3 class="anchored" data-anchor-id="emacs-packages">Emacs Packages</h3>
+<ul>
+<li><a href="https://git.sr.ht/~puercopop/jujutsushi" target="_blank">jujutsushi - A emacs interface to jujutsu</a></li>
+<li><a href="https://github.com/bennyandresen/jujutsu.el" target="_blank">jujutsu.el: An Emacs interface for jujutsu, inspired by magit and humbly not attempting to match it in scope.</a></li>
+<li><a href="https://codeberg.org/vifon/vc-jj.el" target="_blank">vc-jj.el</a></li>
+</ul>
+</section>
+<section id="blogs" class="level3">
+<h3 class="anchored" data-anchor-id="blogs">Blogs</h3>
+<ul>
+<li><a href="https://v5.chriskrycho.com/essays/jj-init/" target="_blank">jj init — Sympolymathesy, by Chris Krycho</a></li>
+<li><a href="https://reasonablypolymorphic.com/blog/jj-strategy/index.html" target="_blank">Jujutsu Strategies :: Reasonably Polymorphic</a></li>
+<li><a href="https://ofcr.se/jujutsu-merge-workflow" target="_blank">A Better Merge Workflow with Jujutsu | ofcrse by Benjamin Tan</a></li>
+<li><a href="https://tonyfinn.com/blog/jj/" target="_blank">Jujutsu (jj), a git compatible VCS - Tony Finn</a></li>
+<li><a href="https://www.felesatra.moe/blog/2024/12/23/jj-is-great-for-the-wrong-reason" target="_blank">Jujutsu is great for the wrong reason</a></li>
+<li><a href="https://kubamartin.com/posts/introduction-to-the-jujutsu-vcs/" target="_blank">Jujutsu VCS Introduction and Patterns | Kuba Martin</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2025,
+  author = {Shephard, Neil},
+  title = {Version {Control} with {Jujutsu}},
+  date = {2025-02-08},
+  url = {https://blog.nshephard.dev/posts/jujutsu/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2025" class="csl-entry quarto-appendix-citeas">
+Shephard, Neil. 2025. <span>“Version Control with Jujutsu.”</span>
+February 8, 2025. <a href="https://blog.nshephard.dev/posts/jujutsu/">https://blog.nshephard.dev/posts/jujutsu/</a>.
+</div></div></section></div> ]]></description>
+  <category>jujutsu</category>
+  <category>git</category>
+  <category>version control</category>
+  <guid>https://blog.nshephard.dev/posts/jujutsu/</guid>
+  <pubDate>Sat, 08 Feb 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/54121847365_b57db38358_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Git - Worktrees</title>
   <dc:creator>Neil Shephard</dc:creator>
