@@ -29,7 +29,7 @@ website:
         rel: me
 format:
   html:
-    theme: vapor
+    theme: pulse # vapor
     css: styles.css
 author:
   - name: Neil Shephard
