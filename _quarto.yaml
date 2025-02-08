@@ -19,13 +19,23 @@ website:
       - icon: github
         href: https://github.com/ns-rse
         rel: me
+      - icon: gitlab
+        href: https://gitlab.com/nshephard
+        rel: me
       # - icon: twitter
       #   href: https://twitter.com/nshephardRSE
+      - text: "![](img/forgejo-monochrome.svg)"
+        url: https://forgejo.nshephard.dev
+      - text: "![](img/codeberg-logo_icon_white.svg)"
+        url: https://codeberg.org/slackline
       - icon: rss
         href: index.xml
         rel: me
       - icon: mastodon
         href: https://fosstodon.org/@nshephard
+        rel: me
+      - text: "![](img/codeberg-logo_icon_white.svg)"
+        href: https://orcid.org/0000-0001-8301-6857
         rel: me
 format:
   html:
