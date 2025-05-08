@@ -15,7 +15,592 @@
 <link>https://blog.nshephard.dev/about.html#category=python</link>
 </image>
 <generator>quarto-1.6.11</generator>
-<lastBuildDate>Tue, 24 Sep 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 07 May 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Emacs Yasnippet</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/emacs-yasnippet/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I’ve used <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> for around 20 years but it wasn’t until about 8 years ago that it all started to click and I realised the benefit of having a highly customisable environment for doing all your development work, note taking, agenda organising (and much more) because its much more fun tinkering with your configuration than it is getting work done!</p>
+<p>Recently I revisited <a href="http://joaotavora.github.io/yasnippet/" target="_blank">Yasnippet</a> and it finally clicked with me so I thought I’d write a short post as much to help me solidify my understanding as to perhaps help others.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://live.staticflickr.com/65535/54109503727_fc5de51c9b_k.jpg" class="img-fluid figure-img"></p>
+<figcaption><a href="https://www.flickr.com/photos/slackline/54109503727/" target="_blank">Autumn Colours by Me</a></figcaption>
+</figure>
+</div>
+<section id="yasnippet" class="level2">
+<h2 class="anchored" data-anchor-id="yasnippet">Yasnippet</h2>
+<p>What is <a href="http://joaotavora.github.io/yasnippet/" target="_blank">YASnippet</a>? Its a templating system for <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> which saves you time on writing <a href="https://en.wikipedia.org/wiki/Boilerplate_code" target="_blank">boiler-plate</a> code/text. Whilst all the cool-kids these days might be “vibe-coding” with Large Language Models and paying Microsoft for the privilege of accessing Co-Pilot there is a lot to be said for understanding and crafting your own tools.</p>
+</section>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p><a href="http://joaotavora.github.io/yasnippet/" target="_blank">YASnippet</a> is a frame work to make it useful you will want to also install <a href="https://github.com/AndreaCrotti/yasnippet-snippets" target="_blank">yasnippet-templates</a>.</p>
+<p>Installation is pretty straight-forward and the same for all Emacs packages. Ideally you should have <a href="https://melpa.org/" target="_blank">MELPA</a> configured as a repository and you can then <code>M-: package-install yasnippet</code> and <code>M-: package-install yasnippet-templates</code>. I use <a href="https://www.gnu.org/software/emacs/manual/html_mono/use-package.html" target="_blank">use-package</a> for installing and managing my packages so somewhere deep in my <a href="https://gitlab.com/nshephard/emacs/" target="_blank">Emacs config</a> I have the following.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode lisp code-with-copy"><code class="sourceCode commonlisp"><span id="cb1-1">(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">use-package</span> yasnippet</span>
+<span id="cb1-2">  :ensure <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">t</span></span>
+<span id="cb1-3">  :config</span>
+<span id="cb1-4">  (yas-reload-all)</span>
+<span id="cb1-5">  (add-hook <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">'prog-mode-hook</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#'</span>yas-minor-mode)</span>
+<span id="cb1-6">  (add-hook <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">'markdown-mode-hook</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#'</span>yas-minor-mode))</span>
+<span id="cb1-7"></span>
+<span id="cb1-8">(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">use-package</span> yasnippet-snippets</span>
+<span id="cb1-9">  :ensure <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">t</span>)</span></code></pre></div>
+<p>This installs both packages and adds a <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html" target="_blank">hook</a> so that whenever the <code>prog-mode-hook</code> is called <code>yas-minor-mode</code> is enabled which is also enabled.</p>
+</section>
+<section id="inserting-templates" class="level2">
+<h2 class="anchored" data-anchor-id="inserting-templates">Inserting templates</h2>
+<p>Until you learn the muscle memory for the key-bindings for the various templates available in each mode your easiest option is to use the <code>YASnippet</code> menu that is available when <code>yas-minor-mode</code> is enabled in a buffer as there are too many snippets for to learn instantly (for me anyway).</p>
+<p>As an example we will use <a href="https://www.python.org/" target="_blank">Python</a>, but most languages have an abundance of templates. You must of course have a buffer(/file) open in <code>python-mode</code> which is simple, just open <code>anything.py</code> and it <em>should</em> be in the correct mode. Lets open <code>C-x C-f ~/tmp/example.py</code>, if you don’t have <code>YASnippet</code> in your menu bar you can <code>M-x yas-snippet-mode</code> and it should appear.</p>
+<p>Start by adding a module description to the top of the file.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""This is an example Python file that we have populated with YASnippet templates."""</span></span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dataclass</span></code></pre></div>
+<p>We now want to add a class definition. We could write it but lets use a template instead. As we don’t know the key-bindings (yet) we go use the menu and select <em>YASnippet &gt; python-mode &gt; object orientated &gt; dataclass</em> and it will insert a class definition with the <code>@dataclass</code> decorator.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""This is an example Python file that we have populated with YASnippet templates."""</span></span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dataclass</span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dataclass</span></span>
+<span id="cb3-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span>:</span></code></pre></div>
+<p>The class name (<code>class:</code>) is highlighted but probably isn’t the name you want for your class, but start typing and it will be replaced. Here we enter <code>person</code></p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""This is an example Python file that we have populated with YASnippet templates."""</span></span>
+<span id="cb4-2"></span>
+<span id="cb4-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dataclass</span>
+<span id="cb4-4"></span>
+<span id="cb4-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dataclass</span></span>
+<span id="cb4-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> person:</span></code></pre></div>
+<section id="using-key-bindings-to-insert" class="level3">
+<h3 class="anchored" data-anchor-id="using-key-bindings-to-insert">Using Key-bindings to insert</h3>
+<p>You might have noticed that the menu you opened and navigated through had a bunch of characters on the right-hand-side next to each command, these are the key-bindings you can use to insert the template automatically so it’s worth paying attention to these (for inserting this dataclass template the key-binding was <code>dc</code> but more on those below)</p>
+<p>Once you are familiar with some of the snippets that you want to use you can learn the key-bindings to insert them. These are all documented in the snippets themselves so you can browse the <a href="https://github.com/AndreaCrotti/yasnippet-snippets" target="_blank">YASnippet Templates</a> repository and looking at each to find out the key-bindings.</p>
+<p>We’ll add a <a href="https://www.pythonmorsels.com/every-dunder-method/" target="_blank">dunder</a> <code>__eq__</code> method to the class but rather than go through the menus I’ll tell you the key-binding to use, type <code>_eq</code> and then hit <code>&lt;Tab&gt;</code> and the template will be inserted. This is how you can type key-sequences and not always have them replaced by the template, you have to hit <code>&lt;Tab&gt;</code> afterwards.</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""This is an example Python file that we have populated with YASnippet templates."""</span></span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dataclass</span>
+<span id="cb5-4"></span>
+<span id="cb5-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dataclass</span></span>
+<span id="cb5-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span>:</span>
+<span id="cb5-7"></span>
+<span id="cb5-8">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__eq__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, other):</span>
+<span id="cb5-9">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span></span></code></pre></div>
+<p>You now have a template with a skeleton for the <code>__eq__</code> dunder method! Obviously the templating can’t know how you want to test for equality so you have to define that yourself which will be dependent on what your class is. For simplicity in this example we’ll just test that <code>self == other</code> which should return <code>True</code> or <code>False</code>.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""This is an example Python file that we have populated with YASnippet templates."""</span></span>
+<span id="cb6-2"></span>
+<span id="cb6-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> dataclasses <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> dataclass</span>
+<span id="cb6-4"></span>
+<span id="cb6-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@dataclass</span></span>
+<span id="cb6-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span>:</span>
+<span id="cb6-7"></span>
+<span id="cb6-8">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__eq__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, other):</span>
+<span id="cb6-9">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> other</span></code></pre></div>
+</section>
+</section>
+<section id="creating-your-own-templates" class="level2">
+<h2 class="anchored" data-anchor-id="creating-your-own-templates">Creating your own templates</h2>
+<p>My main motivation for looking at this system was that I made a dumb mistake when writing some Python code. I was using the <a href="https://realpython.com/python-getter-setter/" target="_blank">getter/setter</a> design pattern in Python to make attributes using the <code>@property</code> fixture and stupidly didn’t include a <code>return self._some_attribute</code> in the getter and wasted too much time looking for my error before a colleague kindly pointed out my error (thanks Sylvia <span class="emoji" data-emoji="pray">🙏</span>).</p>
+<p>I therefore set about writing my own template to insert a decorated getter and associated setter method for Python classes and it was incredibly easy. I place the following code in <code>~/.config/emacs/snippets/python-mode/setter</code> which binds to the <code>sg</code> key sequence and it “Just Worked(TM)”!</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode lisp code-with-copy"><code class="sourceCode commonlisp"><span id="cb7-1"># -*- mode: snippet -*-</span>
+<span id="cb7-2"># name: setter-getter</span>
+<span id="cb7-3"># key: sg</span>
+<span id="cb7-4"># expand-env: ((yas-indent-line <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">'fixed</span>))</span>
+<span id="cb7-5"># --</span>
+<span id="cb7-6">    @property</span>
+<span id="cb7-7">    def ${<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:attribute}(self) -&gt; ${<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:type}:</span>
+<span id="cb7-8">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb7-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        Greeter for the ''${1}'' attribute.</span></span>
+<span id="cb7-10"></span>
+<span id="cb7-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        Returns</span></span>
+<span id="cb7-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        -------</span></span>
+<span id="cb7-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        ${2}</span></span>
+<span id="cb7-14"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">            Returns the value of ''${1}''.</span></span>
+<span id="cb7-15"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb7-16">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> self._${<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>}</span>
+<span id="cb7-17"></span>
+<span id="cb7-18">    @${<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>}.setter</span>
+<span id="cb7-19">    def ${<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>}(self, value: ${<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>}) -&gt; None:</span>
+<span id="cb7-20">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb7-21"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        Setter for the ''${1}'' attribute.</span></span>
+<span id="cb7-22"></span>
+<span id="cb7-23"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        Parameters</span></span>
+<span id="cb7-24"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        ----------</span></span>
+<span id="cb7-25"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        value : ${2}</span></span>
+<span id="cb7-26"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">            Value to set for ${1}.</span></span>
+<span id="cb7-27"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb7-28">self._${<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>} <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> value</span></code></pre></div>
+<p>There is a lot going on here, there is a header (lines starting with <code>#</code>) and then the snippet itself.</p>
+<p>The header has some key/value pairs, the <code>name</code> is <code>setter-getter</code> and this is bound to the <code>key</code>-sequence <code>sg</code> so we know that we can type <code>sg&lt;Tab&gt;</code> to insert the template. I’ve not yet sussed out the <code>expand-env</code> as I copied it from an existing template but I think it preserves the indenting.</p>
+<p>The template then follows and it’s a bit more complex than the examples so far. What does <code>${1:attribute}</code>, <code>${2:type}</code> and the related <code>${1}</code> and <code>${2}</code> mean/do? Well these are ways of inserting names of your own choosing to and having them filled in automatically so you don’t have to find/replace them after inserting the template.</p>
+<p>Lets give it a go. Insert the template by hitting <code>sg&lt;Tab&gt;</code>, you should have the following inserted under your Class definition.</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@property</span></span>
+<span id="cb8-2">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> attribute(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span>:</span>
+<span id="cb8-3">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb8-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Greeter for the ''attribute'' attribute.</span></span>
+<span id="cb8-5"></span>
+<span id="cb8-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Returns</span></span>
+<span id="cb8-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            -------</span></span>
+<span id="cb8-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            type</span></span>
+<span id="cb8-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">                Returns the value of ''attribute''.</span></span>
+<span id="cb8-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            """</span></span>
+<span id="cb8-11">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>._attribute</span>
+<span id="cb8-12"></span>
+<span id="cb8-13">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@attribute.setter</span></span>
+<span id="cb8-14">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> attribute(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, value: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb8-15">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb8-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Setter for the ''attribute'' attribute.</span></span>
+<span id="cb8-17"></span>
+<span id="cb8-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Parameters</span></span>
+<span id="cb8-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            ----------</span></span>
+<span id="cb8-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            value : type</span></span>
+<span id="cb8-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">                Value to set for attribute.</span></span>
+<span id="cb8-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            """</span></span>
+<span id="cb8-23">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>._attribute <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> value</span></code></pre></div>
+<p>This template is as it appears in the definition, but two words are highlighted, the <code>attribute</code> and <code>type</code> which if we look back at our template are the values associated with <code>${1}</code> and <code>${2}</code> respectively. As with inserting the class earlier we can start typing where the cursor is, adjacent to the first occurrence of <code>attribute</code> and Emacs/YASnippet will auto-magically replace all occurrences with what you type, here I’ve typed <code>age</code>…</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@property</span></span>
+<span id="cb9-2">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> age(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span>:</span>
+<span id="cb9-3">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb9-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Greeter for the ''age'' attribute.</span></span>
+<span id="cb9-5"></span>
+<span id="cb9-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Returns</span></span>
+<span id="cb9-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        -------</span></span>
+<span id="cb9-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        type</span></span>
+<span id="cb9-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Returns the value of ''age''.</span></span>
+<span id="cb9-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb9-11">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>._age</span>
+<span id="cb9-12"></span>
+<span id="cb9-13">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@age.setter</span></span>
+<span id="cb9-14">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> age(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, value: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb9-15">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb9-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Setter for the ''age'' attribute.</span></span>
+<span id="cb9-17"></span>
+<span id="cb9-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Parameters</span></span>
+<span id="cb9-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        ----------</span></span>
+<span id="cb9-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        value : type</span></span>
+<span id="cb9-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Value to set for age.</span></span>
+<span id="cb9-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb9-23">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>._age <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> value</span></code></pre></div>
+<p>Hit <code>&lt;Tab&gt;</code> again and the cursor moves to the next “parameter” in our template, in this example <code>type</code> and you can again start typing and Emacs/YASnippet will replace it with whatever you type, I’ve opted for <code>int | float</code>.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@property</span></span>
+<span id="cb10-2">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> age(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>:</span>
+<span id="cb10-3">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb10-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Greeter for the ''age'' attribute.</span></span>
+<span id="cb10-5"></span>
+<span id="cb10-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Returns</span></span>
+<span id="cb10-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        -------</span></span>
+<span id="cb10-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        int | float</span></span>
+<span id="cb10-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Returns the value of ''age''.</span></span>
+<span id="cb10-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb10-11">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>._age</span>
+<span id="cb10-12"></span>
+<span id="cb10-13">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@age.setter</span></span>
+<span id="cb10-14">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> age(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, value: <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span>:</span>
+<span id="cb10-15">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb10-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Setter for the ''age'' attribute.</span></span>
+<span id="cb10-17"></span>
+<span id="cb10-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        Parameters</span></span>
+<span id="cb10-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        ----------</span></span>
+<span id="cb10-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        value : int | float</span></span>
+<span id="cb10-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">            Value to set for age.</span></span>
+<span id="cb10-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">        """</span></span>
+<span id="cb10-23">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>._age <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> value</span></code></pre></div>
+<p>Hit <code>&lt;Tab&gt;</code> again and the cursor moves to the end of the template and you are done. You can go back and edit the <a href="https://gitlab.com/nshephard/emacs" target="_blank">docstrings</a> if you want to make them more informative if you want.</p>
+</section>
+<section id="more-templates" class="level2">
+<h2 class="anchored" data-anchor-id="more-templates">More Templates</h2>
+<p><a href="https://github.com/AndreaCrotti/yasnippet-snippets" target="_blank">YASnippet templates</a> are not the only resource, there are others listed on the <a href="https://github.com/joaotavora/yasnippet" target="_blank">YASnippet GitHub Page</a> page under <a href="https://github.com/joaotavora/yasnippet#where-are-the-snippets" target="_blank">Where are the snippets?</a> which I haven’t investigated yet as I’ve only so much time to spend in front of a computer.</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p><a href="http://joaotavora.github.io/yasnippet/" target="_blank">YASnippet</a> are a really powerful tool for templating common <a href="https://en.wikipedia.org/wiki/Boilerplate_code" target="_blank">boiler plate code</a> and can save you a considerable number of key-strokes by using a <a href="https://github.com/AndreaCrotti/yasnippet-snippets" target="_blank">templates</a>. Whilst there may be an overhead in learning and memorising the keystrokes for doing so the menu system is a saviour (as the author of <a href="https://www.masteringemacs.org/" target="_blank">Mastering Emacs</a> advocates for learning Emacs). Best of all you are free to create your own templates that are customised to your own requirements and I would advocate that learning this is a better way of spending your time than asking a statistical model ever more refined questions until you get the answer you want (aka “prompt engineering” or <a href="https://www.youtube.com/watch?v=JeNS1ZNHQs8" target="_blank">“vibe coding”</a>).</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<ul>
+<li><a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a></li>
+<li><a href="https://melpa.org/" target="_blank">MELPA</a></li>
+<li><a href="https://www.gnu.org/software/emacs/manual/html_mono/use-package.html" target="_blank">use-package</a></li>
+<li><a href="http://joaotavora.github.io/yasnippet/" target="_blank">YASnippet</a></li>
+<li><a href="https://github.com/joaotavora/yasnippet" target="_blank">YASnippet (GitHub)</a></li>
+<li><a href="https://github.com/AndreaCrotti/yasnippet-snippets" target="_blank">YASnippet Templates</a></li>
+</ul>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2025,
+  author = {Shephard, Neil},
+  title = {Emacs {Yasnippet}},
+  date = {2025-05-07},
+  url = {https://blog.nshephard.dev/posts/emacs-yasnippet/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2025" class="csl-entry quarto-appendix-citeas">
+Shephard, Neil. 2025. <span>“Emacs Yasnippet.”</span> May 7, 2025. <a href="https://blog.nshephard.dev/posts/emacs-yasnippet/">https://blog.nshephard.dev/posts/emacs-yasnippet/</a>.
+</div></div></section></div> ]]></description>
+  <category>emacs</category>
+  <category>templates</category>
+  <category>yasnippet</category>
+  <category>python</category>
+  <guid>https://blog.nshephard.dev/posts/emacs-yasnippet/</guid>
+  <pubDate>Wed, 07 May 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/54109503727_fc5de51c9b_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Pytest Matplotlib</title>
   <dc:creator>Neil Shephard</dc:creator>
@@ -4199,7 +4784,7 @@ This is my package, there are many packages like it but this one is mine.</code>
 <section id="including-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="including-markdown">Including Markdown</h3>
 <p>I already know <a href="https://www.markdownguide.org/" target="_blank">Markdown</a> fairly well and would rather use that to write documents (as I do with thisblog). Fortunately Sphinx can incorporate documentation written in <a href="https://github.com/ryanfox/sphinx-markdown-tables" target="_blank">Markdown</a> using the <a href="https://myst-parser.readthedocs.io/en/latest/" target="_blank"><code>myst_parser</code></a> package. Simply include it in the <code>extensions</code>.</p>
-<div id="198fcc74" class="cell" data-execution_count="1">
+<div id="ad225f75" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4209,7 +4794,7 @@ font-style: inherit;">"myst_parser"</span>,</span>
 <span id="cb3-3">]</span></code></pre></div>
 </div>
 <p>By default it works with extensions of <code>.md</code> but if there are other flavours you wish to include (e.g.&nbsp;<code>.Rmd</code> for RMarkdown or <code>.qmd</code> for Quarto) you add them to the <code>source_suffix</code> in <code>docs/conf.py</code></p>
-<div id="1863ceb3" class="cell" data-execution_count="2">
+<div id="402baf2f" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">source_suffix <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {<span class="st" style="color: #20794D;
@@ -4291,7 +4876,7 @@ gitGraph
 <h3 class="anchored" data-anchor-id="sphinx-autoapi"><code>sphinx-autoapi</code></h3>
 <p>However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/" target="_blank">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
 <p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html" target="_blank">configuring</a> at a bare minimum which directories to generate documentation from. i</p>
-<div id="2ab3b000" class="cell" data-execution_count="3">
+<div id="ab4c1e71" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4321,7 +4906,7 @@ font-style: inherit;">"../mypackage"</span>]</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="sphinx-autosummary">Sphinx Autosummary</h3>
 <p>In addition the <a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html" target="_blank">sphinx_ext_autosummary</a> automates summarising the API docstrings.</p>
 <p>Add the package as a dependency to the <code>extensions</code>…</p>
-<div id="28a8c522" class="cell" data-execution_count="4">
+<div id="e60dc2a7" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4351,7 +4936,7 @@ font-style: inherit;">"sphinx.ext.autosummary"</span></span>
 <h2 class="anchored" data-anchor-id="multiple-versions">Multiple Versions</h2>
 <p>Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision documentation for each version that is available. Fortunately the Sphinx extension <a href="https://holzhaus.github.io/sphinx-multiversion/master/" target="_blank">sphinx-multiversion</a> makes this relatively painless.</p>
 <p>You need to include it in the list of <code>extensions</code> of <code>docs/conf.py</code></p>
-<div id="9021a373" class="cell" data-execution_count="5">
+<div id="b73a80da" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4365,7 +4950,7 @@ font-style: inherit;">"sphinx_multiversion"</span>,</span>
 <section id="sidebar" class="level4">
 <h4 class="anchored" data-anchor-id="sidebar">Sidebar</h4>
 <p>For versions to not just be built but available you need to include a section on your site that allows selecting which version of the documentation to view. Sidebars are included via HTML templates and you need to configure the path to this directory and the name of the HTML file within it. The following options in the <code>conf.py</code> configure the <code>_templates</code> directory and within it the <code>versioning.html</code> file.</p>
-<div id="248165db" class="cell" data-execution_count="6">
+<div id="c14c5487" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">templates_path <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4396,7 +4981,7 @@ font-style: inherit;">"versioning.html"</span>,}</span></code></pre></div>
 <section id="tagsbranches" class="level4">
 <h4 class="anchored" data-anchor-id="tagsbranches">Tags/Branches</h4>
 <p>If no options are set then <code>sphinx-multiversion</code> will build documentation for <em>all</em> branhces, which is probably undesirable. Typically you want to restrict this to the released versions which are identified by <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging" target="_blank">git tags</a> and perhaps your <code>main</code>/<code>master</code> branch. If you prefix your tags with <code>v</code> and you want to build the documentation for the <code>HEAD</code> of your <code>main</code> (or <code>master</code>) branch then you should set options as shown below for <code>sphinx-multiversion</code>. I like to be able to test documentation builds and so I have a section that allows me to include a given branch.</p>
-<div id="eb1c6f78" class="cell" data-execution_count="7">
+<div id="e60b3dfc" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">smv_tag_whitelist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
@@ -4459,7 +5044,7 @@ font-style: inherit;">"</span></span></code></pre></div>
 <section id="themes" class="level2">
 <h2 class="anchored" data-anchor-id="themes">Themes</h2>
 <p>There are a number of different themes available for including in your package. Which is used is defined by the <code>html_theme</code> variable in <code>docs/conf.py</code>. I like the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank"><code>pydata-sphinx-theme</code></a> that is used by <a href="https://pandas.pydata.org" target="_blank">Pandas</a>/<a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank">Matplotlib</a>.</p>
-<div id="dc51fe3d" class="cell" data-execution_count="8">
+<div id="315ce30a" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">html_theme <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -4470,7 +5055,7 @@ font-style: inherit;">"pydata_sphinx_theme"</span></span></code></pre></div>
 <section id="package-dependencies" class="level2">
 <h2 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h2>
 <p>Since the documentation is part of your package it is important to include all of the dependencies that are required for building the documentation dependencies of your package so they can be easily installed and are available to Sphinx (since Sphinx will try loading anything listed in your <code>docs/conf.py</code>). These days you should really be using <code>pyproject.toml</code> to configure and manage your package, if you are unfamiliar with the packaging process see my post on <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a>.</p>
-<div id="2ab9640d" class="cell" data-execution_count="9">
+<div id="2fc57ecc" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">[project.optional<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>dependencies]</span>

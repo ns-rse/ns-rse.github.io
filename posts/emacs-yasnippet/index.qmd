@@ -1,0 +1,329 @@
+---
+title: "Emacs Yasnippet"
+date: "2025-05-07"
+categories: [emacs, templates, yasnippet, python]
+image: https://live.staticflickr.com/65535/54109503727_fc5de51c9b_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+I've used [Emacs][emacs] for around 20 years but it wasn't until about 8 years ago that it all started to click and I
+realised the benefit of having a highly customisable environment for doing all your development work, note taking,
+agenda organising (and much more) because its much more fun tinkering with your configuration than it is getting work
+done!
+
+Recently I revisited [Yasnippet][yasnippet] and it finally clicked with me so I thought I'd write a short post as much
+to help me solidify my understanding as to perhaps help others.
+
+![[Autumn Colours by
+Me](https://www.flickr.com/photos/slackline/54109503727/)](https://live.staticflickr.com/65535/54109503727_fc5de51c9b_k.jpg)
+
+## Yasnippet
+
+What is [YASnippet][yasnippet]? Its a templating system for [Emacs][emacs] which saves you time on writing
+[boiler-plate][boiler] code/text. Whilst all the cool-kids these days might be "vibe-coding" with Large Language
+Models and paying Microsoft for the privilege of accessing Co-Pilot there is a lot to be said for understanding and
+crafting your own tools.
+
+## Installation
+
+[YASnippet][yasnippet] is a frame work to make it useful you will want to also install [yasnippet-templates][templates].
+
+Installation is pretty straight-forward and the same for all Emacs packages. Ideally you should have [MELPA][melpa]
+configured as a repository and you can then `M-: package-install yasnippet` and `M-: package-install
+yasnippet-templates`. I use [use-package][usepackage] for installing and managing my packages so somewhere deep in my
+[Emacs config][myconfig] I have the following.
+
+```lisp
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  (add-hook 'markdown-mode-hook #'yas-minor-mode))
+
+(use-package yasnippet-snippets
+  :ensure t)
+```
+
+This installs both packages and adds a [hook][emacshook] so that whenever the `prog-mode-hook` is called
+`yas-minor-mode` is enabled which is also enabled.
+
+## Inserting templates
+
+Until you learn the muscle memory for the key-bindings for the various templates available in each mode your easiest
+option is to use the `YASnippet` menu that is available when `yas-minor-mode` is enabled in a buffer as there are too
+many snippets for to learn instantly (for me anyway).
+
+As an example we will use [Python][python], but most languages have an abundance of templates. You must of course have a
+buffer(/file) open in `python-mode` which is simple, just open `anything.py` and it _should_ be in the correct
+mode. Lets open `C-x C-f ~/tmp/example.py`, if you don't have `YASnippet` in your menu bar you can `M-x
+yas-snippet-mode` and it should appear.
+
+Start by adding a module description to the top of the file.
+
+```python
+"""This is an example Python file that we have populated with YASnippet templates."""
+
+from dataclasses import dataclass
+```
+
+We now want to add a class definition. We could write it but lets use a template instead. As we don't know the
+key-bindings (yet) we go use the menu and select _YASnippet > python-mode > object orientated > dataclass_ and it will
+insert a class definition with the `@dataclass` decorator.
+
+```python
+"""This is an example Python file that we have populated with YASnippet templates."""
+
+from dataclasses import dataclass
+
+@dataclass
+class class:
+```
+
+The class name (`class:`) is highlighted but probably isn't the name you want for your class, but start typing and it
+will be replaced. Here we enter `person`
+
+```python
+"""This is an example Python file that we have populated with YASnippet templates."""
+
+from dataclasses import dataclass
+
+@dataclass
+class person:
+```
+
+### Using Key-bindings to insert
+
+You might have noticed that the menu you opened and navigated through had a bunch of characters on the
+right-hand-side next to each command, these are the key-bindings you can use to insert the template automatically so
+it's worth paying attention to these (for inserting this dataclass template the key-binding was `dc` but more on those
+below)
+
+Once you are familiar with some of the snippets that you want to use you can learn the key-bindings to insert them. These
+are all documented in the snippets themselves so you can browse the [YASnippet Templates][templates] repository and
+looking at each to find out the key-bindings.
+
+We'll add a [dunder][dunder] `__eq__` method to the class but rather than go through the menus I'll tell you the
+key-binding to use, type `_eq` and then hit `<Tab>` and the template will be inserted. This is how you can type
+key-sequences and not always have them replaced by the template, you have to hit `<Tab>` afterwards.
+
+```python
+"""This is an example Python file that we have populated with YASnippet templates."""
+
+from dataclasses import dataclass
+
+@dataclass
+class class:
+
+    def __eq__(self, other):
+        return
+```
+
+You now have a template with a skeleton for the `__eq__` dunder method! Obviously the templating can't know how you want
+to test for equality so you have to define that yourself which will be dependent on what your class is. For simplicity
+in this example we'll just test that `self == other` which should return `True` or `False`.
+
+```python
+"""This is an example Python file that we have populated with YASnippet templates."""
+
+from dataclasses import dataclass
+
+@dataclass
+class class:
+
+    def __eq__(self, other):
+        return self == other
+```
+
+## Creating your own templates
+
+My main motivation for looking at this system was that I made a dumb mistake when writing some Python code. I was using
+the [getter/setter](https://realpython.com/python-getter-setter/) design pattern in Python to make attributes using the
+`@property` fixture and stupidly didn't include a `return self._some_attribute` in the getter and wasted too much time
+looking for my error before a colleague kindly pointed out my error (thanks Sylvia :pray:).
+
+I therefore set about writing my own template to insert a decorated getter and associated setter method for Python
+classes and it was incredibly easy. I place the following code in `~/.config/emacs/snippets/python-mode/setter` which
+binds to the `sg` key sequence and it "Just Worked(TM)"!
+
+```lisp
+# -*- mode: snippet -*-
+# name: setter-getter
+# key: sg
+# expand-env: ((yas-indent-line 'fixed))
+# --
+    @property
+    def ${1:attribute}(self) -> ${2:type}:
+        """
+        Greeter for the ''${1}'' attribute.
+
+        Returns
+        -------
+        ${2}
+            Returns the value of ''${1}''.
+        """
+        return self._${1}
+
+    @${1}.setter
+    def ${1}(self, value: ${2}) -> None:
+        """
+        Setter for the ''${1}'' attribute.
+
+        Parameters
+        ----------
+        value : ${2}
+            Value to set for ${1}.
+        """
+self._${1} = value
+```
+
+There is a lot going on here, there is a header (lines starting with `#`) and then the snippet itself.
+
+The header has some key/value pairs, the `name` is `setter-getter` and this is bound to the `key`-sequence `sg` so we
+know that we can type `sg<Tab>` to insert the template. I've not yet sussed out the `expand-env` as I copied it from an
+existing template but I think it preserves the indenting.
+
+The template then follows and it's a bit more complex than the examples so far. What does `${1:attribute}`, `${2:type}`
+and the related `${1}` and `${2}` mean/do? Well these are ways of inserting names of your own choosing to and having
+them filled in automatically so you don't have to find/replace them after inserting the template.
+
+Lets give it a go. Insert the template by hitting `sg<Tab>`, you should have the following inserted under your Class definition.
+
+```python
+        @property
+        def attribute(self) -> type:
+            """
+            Greeter for the ''attribute'' attribute.
+
+            Returns
+            -------
+            type
+                Returns the value of ''attribute''.
+            """
+            return self._attribute
+
+        @attribute.setter
+        def attribute(self, value: type) -> None:
+            """
+            Setter for the ''attribute'' attribute.
+
+            Parameters
+            ----------
+            value : type
+                Value to set for attribute.
+            """
+            self._attribute = value
+
+```
+
+This template is as it appears in the definition, but two words are highlighted, the `attribute` and `type` which if we
+look back at our template are the values associated with `${1}` and `${2}` respectively. As with inserting the class
+earlier we can start typing where the cursor is, adjacent to the first occurrence of `attribute` and Emacs/YASnippet
+will auto-magically replace all occurrences with what you type, here I've typed `age`...
+
+```python
+    @property
+    def age(self) -> type:
+        """
+        Greeter for the ''age'' attribute.
+
+        Returns
+        -------
+        type
+            Returns the value of ''age''.
+        """
+        return self._age
+
+    @age.setter
+    def age(self, value: type) -> None:
+        """
+        Setter for the ''age'' attribute.
+
+        Parameters
+        ----------
+        value : type
+            Value to set for age.
+        """
+        self._age = value
+```
+
+Hit `<Tab>` again and the cursor moves to the next "parameter" in our template, in this example `type` and you can again
+start typing and Emacs/YASnippet will replace it with whatever you type, I've opted for `int | float`.
+
+```python
+    @property
+    def age(self) -> int | float:
+        """
+        Greeter for the ''age'' attribute.
+
+        Returns
+        -------
+        int | float
+            Returns the value of ''age''.
+        """
+        return self._age
+
+    @age.setter
+    def age(self, value: int | float) -> None:
+        """
+        Setter for the ''age'' attribute.
+
+        Parameters
+        ----------
+        value : int | float
+            Value to set for age.
+        """
+        self._age = value
+```
+
+Hit `<Tab>` again and the cursor moves to the end of the template and you are done. You can go back and edit the
+[docstrings][docstrings] if you want to make them more informative if you want.
+
+## More Templates
+
+[YASnippet templates][templates] are not the only resource, there are others listed on the [YASnippet GitHub
+Page][yasnippet-gh] page under [Where are the snippets?](https://github.com/joaotavora/yasnippet#where-are-the-snippets)
+which I haven't investigated yet as I've only so much time to spend in front of a computer.
+
+## Summary
+
+[YASnippet][yasnippet] are a really powerful tool for templating common [boiler plate code][boiler] and can save you
+a considerable number of key-strokes by using a [templates][templates]. Whilst there may be an overhead in learning
+and memorising the keystrokes for doing so the menu system is a saviour (as the author of [Mastering Emacs][me]
+advocates for learning Emacs). Best of all you are free to create your own templates that are customised to your own
+requirements and I would advocate that learning this is a better way of spending your time than asking a statistical
+model ever more refined questions until you get the answer you want (aka "prompt engineering" or ["vibe
+coding"](https://www.youtube.com/watch?v=JeNS1ZNHQs8)).
+
+## Links
+
+- [Emacs][emacs]
+- [MELPA][melpa]
+- [use-package][usepackage]
+- [YASnippet][yasnippet]
+- [YASnippet (GitHub)][yasnippet-gh]
+- [YASnippet Templates][templates]
+
+[boiler]: https://en.wikipedia.org/wiki/Boilerplate_code
+[docstrings]: https://gitlab.com/nshephard/emacs
+[dunder]: https://www.pythonmorsels.com/every-dunder-method/
+[emacs]: https://www.gnu.org/software/emacs/
+[emacshook]: https://www.gnu.org/software/emacs/manual/html_node/emacs/Hooks.html
+[me]: https://www.masteringemacs.org/
+[melpa]: https://melpa.org/
+[myconfig]: https://gitlab.com/nshephard/emacs/
+[python]: https://www.python.org/
+[usepackage]: https://www.gnu.org/software/emacs/manual/html_mono/use-package.html
+[yasnippet]: http://joaotavora.github.io/yasnippet/
+[yasnippet-gh]: https://github.com/joaotavora/yasnippet
+[templates]: https://github.com/AndreaCrotti/yasnippet-snippets
