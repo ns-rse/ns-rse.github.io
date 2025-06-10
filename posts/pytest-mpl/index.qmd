@@ -279,7 +279,7 @@ Now each time you run your test suite the output of calling the test is compared
 
 ## Failing tests
 
-Sometimes your tests might fail. To demonstrate this we change the title of one of for one of the parameters to `Another
+Sometimes your tests might fail. To demonstrate this we change one of the title parameters in the tests to `Another
 title` in `tests/test_mpl_example.py` and re-run the tests, sure enough the test fails. We are told the `RMS Value` (the
 Root Mean Square difference value) along with the location of the test files of which there are three images, a copy of
 the baseline, the result and a difference between the two.
