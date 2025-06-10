@@ -76,7 +76,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-79bb3942e891885f9f7af119cd221462.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-6a592a1677e4eafc185f6f5d893e936c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-20edd5ea1b3186987395f631daa52051.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -511,7 +511,7 @@ Note
 </section>
 <section id="failing-tests" class="level2">
 <h2 class="anchored" data-anchor-id="failing-tests">Failing tests</h2>
-<p>Sometimes your tests might fail. To demonstrate this we change the title of one of for one of the parameters to <code>Another title</code> in <code>tests/test_mpl_example.py</code> and re-run the tests, sure enough the test fails. We are told the <code>RMS Value</code> (the Root Mean Square difference value) along with the location of the test files of which there are three images, a copy of the baseline, the result and a difference between the two.</p>
+<p>Sometimes your tests might fail. To demonstrate this we change one of the title parameters in the tests to <code>Another title</code> in <code>tests/test_mpl_example.py</code> and re-run the tests, sure enough the test fails. We are told the <code>RMS Value</code> (the Root Mean Square difference value) along with the location of the test files of which there are three images, a copy of the baseline, the result and a difference between the two.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">❱</span> pytest <span class="at">--mpl</span>  tests/test_mpl_example.py</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">==========================</span> test session starts =======================</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">platform</span> linux <span class="at">--</span> Python 3.12.7, pytest-8.3.3, pluggy-1.5.0</span>
