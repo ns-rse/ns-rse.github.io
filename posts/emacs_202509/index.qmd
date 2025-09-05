@@ -1,7 +1,7 @@
 ---
 title: "Emacs Tips & Tweaks (2025-09-05)- vundo, regex builder and more"
 date: "2025-09-05"
-categories: [emacs, undo, regex]
+categories: [emacs, undo, regex, pre-commit]
 image: https://live.staticflickr.com/65535/54764888522_1269a889a5_k.jpg
 from: markdown+emoji
 toc: true
@@ -97,6 +97,28 @@ indicates that it is now a core Emacs package meaning I can simply configure the
   (setq use-package-expand-minimally t))
 ```
 
+## Emacs pre-commit
+
+I'm a big fan of [pre-commit][pre-commit] (see [previous posts][pre-commit-previous]) and already use the
+[lisp-format][lisp-format] hook on my configuration files. Recently I clocked there was a new linter in the form of
+[pre-commit-elisp][pre-commit-elisp] which I've added to the hooks I use on my configuration repository. Configuration
+is simple by adding the following to `.pre-commit-config.yaml`.
+
+```yaml
+  - repo: https://github.com/jamescherti/pre-commit-elisp
+    rev: v1.0.0
+    hooks:
+      # Validate that all parentheses in .el files are correctly balanced
+      - id: elisp-check-parens
+      # Byte-compile .el files to identify compilation errors early
+      # - id: elisp-byte-compile
+      # Optional:
+      # NOTE: This change the indentation.
+      - id: elisp-indent
+```
+
+As you can see I opted not to byte-compile all files by commenting that line out.
+
 ## Summary
 
 Emacs is a :rabbit: :hole: but that is part of the fun and I always enjoy discovering new features and packages that
@@ -104,7 +126,11 @@ make my life that little bit easier. Now all I need to do is go through and re-w
 [literate org-mode][literate-config] and make sure I'm [Using use-package the right way][using-use-package].
 
 [bridging-islands]: https://karthinks.com/software/bridging-islands-in-emacs-1/
+[lisp-format]: https://github.com/eschulte/lisp-format
 [literate-config]: https://leanpub.com/lit-config/read
+[pre-commit]: https://www.pre-commit.com/
+[pre-commit-elisp]: https://github.com/eschulte/lisp-format
+[pre-commit-previous]: https://blog.nshephard.dev/#category=pre-commit
 [re-builder-video]: https://www.youtube.com/watch?v=tZh6ueo9pKk
 [regex]: https://www.gnu.org/software/emacs/manual/html_node/elisp/Regular-Expressions.html
 [regex101]: https://regex101.com/
