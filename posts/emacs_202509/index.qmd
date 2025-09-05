@@ -1,0 +1,119 @@
+---
+title: "Emacs Tips & Tweaks (2025-09-05)- vundo, regex builder and more"
+date: "2025-09-05"
+categories: [emacs, undo, regex]
+image: https://live.staticflickr.com/65535/54764888522_1269a889a5_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+Improving my Emacs configuration is an open-ended hobby. Recently I discovered a couple of things that I've incorporated
+into my daily usage that I've found really useful and thought I'd document and share them here.
+
+![[Taking Time to Reflect by
+Me](https://www.flickr.com/photos/slackline/54764888522/in/datetaken/)](https://live.staticflickr.com/65535/54764888522_1269a889a5_k.jpg)
+
+## `vundo`
+
+Emacs has a [complicated undo history][vundo-undo] and I often find myself going round in circles. Enter [vundo][vundo]
+which is a really neat little package that makes navigating the undo history much easier by providing a graphical
+overview of the sometimes branching undo history. By default it comes with the key-binding `C-c v` which will popup a
+buffer at the bottom showing a graph of your undo history. Switch to this buffer and you can use keys to navigate to
+older points in the undo history. If you want to know what differs just hit `d`. If you enable `vundo-popup-mode` then
+the buffer will appear whenever you hit the traditional `C-x u` to undo some changes. I have this set as a hook for a
+couple of modes.
+
+```lisp
+(use-package vundo
+  :ensure t
+  :hook
+  (prog-mode . vundo-popup-mode)
+  (text-mode . vundo-popup-mode))
+```
+
+## Regex Builder
+
+I'm not great at writing [Regular Expressions (aka regex)][regex] and regularly resort to online builders
+(e.g. [regexr][regexr] or [regex101][regex101]) but these a) lack Emacs' flavour of regex's; b) don't contain what is in
+the buffer I'm editing and want to search/replace.
+
+Enter [`re-builder`][mastering-re-builder] which when invoked brings up a buffer into which you can start typing your
+regular expression and matches in the buffer you are editing are highlighted. Pretty handy for finding things at least,
+but what about replacing regex matches, which is my typical recourse for using a regex?
+
+Well as with most things, someone else has already thought about this and I found this excellent post on [Bridging
+Islands in Emacs by Karthink][bridging-islands]. I won't repeat the contents here and recommend you read the article and
+absorb it into your configuration. You can see mine [here][regex.el].
+
+Now when I use `C-M-%` which is the default for `query-replace-rexp` it instead calls `re-builder` and I can start
+writing my regular expression and see matches. Once I've got the regex correct simply hit `Ret` and I'm prompted to
+enter what I want to replace matches with.
+
+One thing I've not quite sussed out yet is the different input methods of regex's this takes, it seems more backslashes
+are required in one method than "standard" but `re-builder` translates things back to the standard notation on saving.
+
+Tony Aldon has made a good [video][re-builder-video] that shows how to use `re-builder`.
+
+## Yank from kill ring
+
+Copying (yanking) and pasting (insert) is a common task in Emacs and a history of what you have copied is kept in the
+"kill-ring". You can insert older items if you know their position in this history by preceding `C-y` with `C-#` (where
+`#`) represents the Nth most recent yank. But what if you can't remember how many yanks back the item you want to insert
+is?
+
+Obviously Emacs has your back as you can use `M-y` which pops up a buffer containing the kill-ring history which you can
+easily move through and hit `Ret` to insert the item you want. Simple but a game changer that I now use on a daily basis.
+
+## `use-package`
+
+[use-package][use-package] is a commonly used package that helps simplify installing and configuring packages. I have
+the following snippet early in my `init.el` to ensure it is installed and can be used subsequently to load and configure
+all packages.
+
+```lisp
+;;   https://ianyepan.github.io/posts/setting-up-use-package/
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+```
+
+I noticed recently that the [GitHub repo][use-package-gh] was archived in 2025-08-23 and the notice in the `README.md`
+indicates that it is now a core Emacs package meaning I can simply configure the package with the following instead
+(configuration details are already in the [official documentation][use-package-gnu-manual]).
+
+```lisp
+(use-package use-package
+  :config
+  (setq use-package-always-ensure t)
+  (setq use-package-expand-minimally t))
+```
+
+## Summary
+
+Emacs is a :rabbit: :hole: but that is part of the fun and I always enjoy discovering new features and packages that
+make my life that little bit easier. Now all I need to do is go through and re-write my Emacs configuration as a
+[literate org-mode][literate-config] and make sure I'm [Using use-package the right way][using-use-package].
+
+[bridging-islands]: https://karthinks.com/software/bridging-islands-in-emacs-1/
+[literate-config]: https://leanpub.com/lit-config/read
+[re-builder-video]: https://www.youtube.com/watch?v=tZh6ueo9pKk
+[regex]: https://www.gnu.org/software/emacs/manual/html_node/elisp/Regular-Expressions.html
+[regex101]: https://regex101.com/
+[regexr]: https://regexr.com/
+[regex.el]: https://gitlab.com/nshephard/emacs/-/blob/master/settings/regex.el?ref_type=heads
+[mastering-re-builder]: https://www.masteringemacs.org/article/re-builder-interactive-regexp-builder
+[use-package]: https://jwiegley.github.io/use-package/
+[use-package-gh]: https://github.com/jwiegley/use-package
+[use-package-gnu-manual]: https://www.gnu.org/software/emacs/manual/html_mono/use-package.html
+[using-use-package]: https://batsov.com/articles/2025/04/17/using-use-package-the-right-way/
+[vundo]: https://github.com/casouri/vundo
+[vundo-undo]: https://archive.casouri.cc/note/2021/visual-undo-tree/index.html
