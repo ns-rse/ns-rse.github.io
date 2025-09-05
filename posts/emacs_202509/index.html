@@ -240,6 +240,7 @@ window.Quarto = {
                 <div class="quarto-category">emacs</div>
                 <div class="quarto-category">undo</div>
                 <div class="quarto-category">regex</div>
+                <div class="quarto-category">pre-commit</div>
               </div>
                   </div>
   </div>
@@ -277,6 +278,7 @@ window.Quarto = {
   <li><a href="#regex-builder" id="toc-regex-builder" class="nav-link" data-scroll-target="#regex-builder">Regex Builder</a></li>
   <li><a href="#yank-from-kill-ring" id="toc-yank-from-kill-ring" class="nav-link" data-scroll-target="#yank-from-kill-ring">Yank from kill ring</a></li>
   <li><a href="#use-package" id="toc-use-package" class="nav-link" data-scroll-target="#use-package"><code>use-package</code></a></li>
+  <li><a href="#emacs-pre-commit" id="toc-emacs-pre-commit" class="nav-link" data-scroll-target="#emacs-pre-commit">Emacs pre-commit</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
@@ -330,6 +332,21 @@ window.Quarto = {
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  :config</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">setq</span> use-package-always-ensure <span class="kw">t</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">setq</span> use-package-expand-minimally <span class="kw">t</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="emacs-pre-commit" class="level2">
+<h2 class="anchored" data-anchor-id="emacs-pre-commit">Emacs pre-commit</h2>
+<p>I’m a big fan of <a href="https://www.pre-commit.com/" target="_blank">pre-commit</a> (see <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">previous posts</a>) and already use the <a href="https://github.com/eschulte/lisp-format" target="_blank">lisp-format</a> hook on my configuration files. Recently I clocked there was a new linter in the form of <a href="https://github.com/eschulte/lisp-format" target="_blank">pre-commit-elisp</a> which I’ve added to the hooks I use on my configuration repository. Configuration is simple by adding the following to <code>.pre-commit-config.yaml</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/jamescherti/pre-commit-elisp</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v1.0.0</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">      # Validate that all parentheses in .el files are correctly balanced</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> elisp-check-parens</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">      # Byte-compile .el files to identify compilation errors early</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">      # - id: elisp-byte-compile</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">      # Optional:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">      # </span><span class="al">NOTE</span><span class="co">: This change the indentation.</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> elisp-indent</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As you can see I opted not to byte-compile all files by commenting that line out.</p>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
