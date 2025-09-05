@@ -22,7 +22,6 @@ into my daily usage that I've found really useful and thought I'd document and s
 ![[Taking Time to Reflect by
 Me](https://www.flickr.com/photos/slackline/54764888522/in/datetaken/)](https://live.staticflickr.com/65535/54764888522_1269a889a5_k.jpg)
 
-
 ## `vundo`
 
 Emacs has a [complicated undo history][vundo-undo] and I often find myself going round in circles. Enter [vundo][vundo]
@@ -86,6 +85,7 @@ all packages.
   (package-refresh-contents)
   (package-install 'use-package))
 ```
+
 I noticed recently that the [GitHub repo][use-package-gh] was archived in 2025-08-23 and the notice in the `README.md`
 indicates that it is now a core Emacs package meaning I can simply configure the package with the following instead
 (configuration details are already in the [official documentation][use-package-gnu-manual]).
