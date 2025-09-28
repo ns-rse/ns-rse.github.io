@@ -15,7 +15,611 @@
 <link>https://blog.nshephard.dev/about.html#category=python</link>
 </image>
 <generator>quarto-1.6.11</generator>
-<lastBuildDate>Wed, 07 May 2025 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 24 Sep 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pytest testmon</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/pytest-testmon/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p><a href="https://pytest.org" target="_blank">Pytest</a> is an excellent testing framework for Python with a wealth of <a href="https://docs.pytest.org/en/stable/reference/plugin_list.html" target="_blank">plugins</a> which extend the functionality. This blog post covers using the <a href="https://testmon.org/" target="_blank">pytest-testmon</a> to speed up the feedback loop whilst working on and developing your code.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://live.staticflickr.com/65535/54800591152_f2509b5efb_k.jpg" class="img-fluid figure-img"></p>
+<figcaption><a href="https://www.flickr.com/photos/slackline/54800591152/in/datetaken/" target="_blank">Pretty Stones by Me!</a></figcaption>
+</figure>
+</div>
+<section id="test-test-test" class="level2">
+<h2 class="anchored" data-anchor-id="test-test-test">Test, test, test</h2>
+<p>It is good practice to have a comprehensive suite of both unit, integration and regression tests when writing and developing software. The former ensure at a fine-grained level that each of the functions or methods that you write work as expected whilst the later ensure that they all function together as expected.</p>
+<p><a href="https://pytest.org" target="_blank">Pytest</a> is a popular alternative framework for writing and running your test suite to the standard libraries <a href="https://docs.python.org/3/library/unittest.html" target="_blank">unittests</a> and is easy to incorporate into your project. Including and configuring it via <code>pyproject.toml</code> might look something like the following which includes <code>pytest-cov</code> to summarise coverage and <code>pytest-mpl</code> for testing Matplotlib output. Configuration of coverage is included that omits certain files.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[project.optional-dependencies]</span></span>
+<span id="cb1-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">tests</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-3">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pytest"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-4">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pytest-cov"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-5">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pytest-mpl"</span></span>
+<span id="cb1-6"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[tool.pytest.ini_options]</span></span>
+<span id="cb1-9"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">minversion</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"8.0"</span></span>
+<span id="cb1-10"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">addopts</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--cov"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--mpl"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-ra"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--strict-config"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--strict-markers"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-11"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">log_level</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"INFO"</span></span>
+<span id="cb1-12"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">log_cli</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb1-13"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">log_cli_level</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"INFO"</span></span>
+<span id="cb1-14"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">testpaths</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-15">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tests"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-16"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-17"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">filterwarnings</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-18">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ignore::DeprecationWarning"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-19">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ignore::PendingDeprecationWarning"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-20">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ignore::UserWarning"</span></span>
+<span id="cb1-21"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-22"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">xfail_strict</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb1-23"></span>
+<span id="cb1-24"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[tool.coverage.run]</span></span>
+<span id="cb1-25"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">source</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"src"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-26"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">omit</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb1-27">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"**/_version.py"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-28">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"*tests*"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-29">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"**/__init__*"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-30"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span></code></pre></div>
+<p>Tests are typically organised with a single file per Python sub-module with at least one test for each function. If you’re not familiar with <a href="https://pytest.org" target="_blank">pytest</a> check out its <a href="https://docs.pytest.org/en/stable/getting-started.html" target="_blank">documentation</a>.</p>
+</section>
+<section id="development-cycle" class="level2">
+<h2 class="anchored" data-anchor-id="development-cycle">Development cycle</h2>
+<p>A typical development cycle to add a new feature might involve the following cycle, if you are following the <a href="https://en.wikipedia.org/wiki/Test-driven_development" target="_blank">Test Drive Development</a> paradigm…</p>
+<ol type="1">
+<li>Write a unit test.</li>
+<li>Write code to add functionality.</li>
+<li>Run test suite to see if it passes.</li>
+</ol>
+<p>Alternatively if fixing bugs you might…</p>
+<ol type="1">
+<li>Add new test to cover the bug.</li>
+<li>Run test to check new test fails.</li>
+<li>Attempt to fix the bug</li>
+<li>Run test suite to see if it passes.</li>
+</ol>
+<p>In either scenario you will typically iterate over the steps a few times until everything is working.</p>
+<p>With <code>pytest</code> running your test suite is simple you call <code>pytest</code> from the route of your directory.</p>
+<pre class="shell"><code>pytest</code></pre>
+<p>If you want to only run tests on a specific sub-module of your package you can do so.</p>
+<pre class="shell"><code>pytest tests/test_submodule1.py</code></pre>
+<p>This will run all tests within the file <code>tests/test_submodule.py</code>. But you can have even finer grained control over your tests. For example if you want to only run an individual test within <code>tests/test_submodules.py</code> you can do that too. For example if you are fixing a bug in your <code>function1()</code> function you can run the corresponding test, assuming you follow the conventional nomenclature, with the following.</p>
+<pre class="shell"><code>pytest tests/test_submodule1.py::test_function1</code></pre>
+<p>This would run <em>onby</em> <code>test_function1()</code> defined within <code>tests_submodule1.py</code> which tests the <code>function1()</code> function.</p>
+<p>Similarly if you were developing a new feature and writing <code>function2</code> in submodule1 you could have a test <code>test_function2()</code> and explicitly test it with.</p>
+<pre class="shell"><code>pytest tests/test_submodule1.py::test_function1</code></pre>
+<p>As you iterate through the development cycle you could manually run your tests which works fine, but doesn’t account for any integration tests where your functions are used as part of a pipeline.</p>
+<p>You could</p>
+</section>
+<section id="commits-as-units-of-work" class="level2">
+<h2 class="anchored" data-anchor-id="commits-as-units-of-work">Commits as Units of Work</h2>
+<p>In software development small units of related work are typically aggregated into commits within Git which means we have a natural point at which to undertake testing, i.e.&nbsp;when we are ready to add our work to the Git history via a commit. Thus before making a commit we should make sure that our test suite completes. Naturally we could run the whole suite with <code>pytest</code> (and even parallelise it so it runs faster with <a href="https://pytest-xdist.readthedocs.io/en/latest/" target="_blank">pytest-xdist</a>) but as a software package grows so does the number of tests and it might take a while to run the test suite. We’ve seen already that it is possible to run individual tests as desired but this might take a little work if there are several tests that need running when fixing bugs and regression tests need to be run as well as unit tests.</p>
+<p>Wouldn’t it be great if we could automatically run <em>only</em> the tests that are affected by the changes that we have made when making a commit?</p>
+</section>
+<section id="say-hello-to-pytest-testmon" class="level2">
+<h2 class="anchored" data-anchor-id="say-hello-to-pytest-testmon">Say Hello to pytest-testmon</h2>
+<p>This is where <a href="https://testmon.org/" target="_blank">pytest-testmon</a> comes in useful, it “<em>selects and executes only tests you need to run</em>” and achieves this by “<em>collecting dependencies between tests and all executed code and comparing the dependencies against changes.</em>”. Basically, given the dummy example above it would identify the tests that involve either <code>function1()</code> or <code>function2()</code> and <em>only</em> run those tests.</p>
+<section id="installation" class="level3">
+<h3 class="anchored" data-anchor-id="installation">Installation</h3>
+<p>You can test out <code>pytest-testmon</code> by installing it in your <a href="https://blog.nshephard.dev/posts/virtualenvwrapper/" target="_blank">virtual environment</a>. Before you can use it though you have to allow it to analyse your code base and build a database of how the tests relate to the packages modules, functions, classes and methods, so after installing it you should run <code>pytest --testmon</code> to create becomes useful it has to establish how functions, classes and methods relate to tests and you can use it thought <code>pytest-testmon</code> needs to analyse your code base and build a database of how the test relates to the packages modules and functions/methods.</p>
+<pre class="shell"><code>pip install pytest-testmon
+pytest --testmon</code></pre>
+<p>This creates, by default, the file <code>.testmondata</code> which is an SQLite database of the functions, classes and methods and how they relate to your test suite. Once you have installed and built your database subsequent calls to <code>pytest --testmon</code> will work out what tests are affected by changes and only run those.</p>
+<p>This is an improvement as you now can run <code>pytest --testmon</code> to ensure that <em>only</em> tests affected by the changes you are making are run and it helps shorten the feedback loop because you only have to wait for a subset of the tests to run. But it’s still running the tests manually before you make your <code>git commit</code>. What if there were a way to automate this step?</p>
+</section>
+<section id="hello-pre-commit-my-old-friend" class="level3">
+<h3 class="anchored" data-anchor-id="hello-pre-commit-my-old-friend">Hello pre-commit my old friend</h3>
+<p>I’m a big fan of <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">pre-commit</a> and have written about it many times and we can define a <code>pre-commit</code> local hook to run <code>pytest --testmon</code> automatically before each commit is made which not only removes the task of having to remember to run <code>pytest --testmon</code> manually but ensures that our test suite passes before we can make commits.</p>
+<section id="add-pytest-testmon-to-package-dependencies" class="level4">
+<h4 class="anchored" data-anchor-id="add-pytest-testmon-to-package-dependencies">Add <code>pytest-testmon</code> to package dependencies</h4>
+<p>You will want to make sure that anyone else who wishes to contribute to your code also uses <code>pytest-testmon</code> to help ensure that pull requests that are made against your repository continue to pass all tests.Here we add it under the <code>dev</code> subset of optional dependencies in the projects <code>pyproject.toml</code> as only those developing the software will want to install it, and we want to avoid installing it unnecessarily in say Continuous Integration.</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb7-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[project.optional-dependencies]</span></span>
+<span id="cb7-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">dev</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb7-3">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pytest-testmon"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb7-4"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span></code></pre></div>
+<div class="callout callout-style-simple callout-none no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Update your documentation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is recommended to add section to your documentations <em>Contributing</em> section that advises how to install the <code>dev</code>eloper dependencies with…</p>
+<pre class="shell"><code>pip install -e .[dev]</code></pre>
+</div>
+</div>
+</section>
+<section id="configure-pre-commit" class="level4">
+<h4 class="anchored" data-anchor-id="configure-pre-commit">Configure pre-commit</h4>
+<p>We can now add a local hook to the <code>.pre-commit-config.yaml</code> file which will run <code>pytest --testmon</code> on each commit. We define the <code>repo: local</code> so that it only runs on local systems and not in Continuous Integration and give it appropriately named <code>ìd</code> and <code>name</code> values. The <code>entry</code> is the command we wish to run, i.e.&nbsp;<code>pytest --testmon</code> and we set the <code>language: system</code>. Finally we restrict it to <code>files</code> that end in <code>\.py$</code> so that it won’t run if you change say your documentation files that are written in Markdown (<code>.md</code>).</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb9-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">repo</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> local</span></span>
+<span id="cb9-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hooks</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb9-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">id</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> pytest</span></span>
+<span id="cb9-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Pytest (testmon)</span></span>
+<span id="cb9-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">entry</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> pytest --testmon</span></span>
+<span id="cb9-7"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">language</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> system</span></span>
+<span id="cb9-8"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">files</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> \.py$</span></span></code></pre></div>
+</section>
+<section id="pytest-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="pytest-configuration"><code>pytest</code> configuration</h4>
+<p>If you don’t already have a <code>tool.pytest.ini_options</code> section in your <code>pyproject.toml</code> now would be a good time to add one. You don’t need any specific configuration for <code>pytest --testmon</code> added but the options defined here will be used when <code>pytest --testmon</code> is run by the <code>pre-commit</code> hook we have just defined. A basic example is below along with the additional entries required in <code>project.optional-dependencies.dev</code>. The following is the basic configuration introduced at the start of this article, adding in the <code>pytest-testmon</code> as a <code>dev</code> optional dependency.</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb10-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[project.optional-dependencies]</span></span>
+<span id="cb10-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">tests</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb10-3">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pytest"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-4">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pytest-cov"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-5">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pytest-mpl"</span></span>
+<span id="cb10-6"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb10-7"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">dev</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb10-8">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pytest-testmon"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-9"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb10-10"></span>
+<span id="cb10-11"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[tool.pytest.ini_options]</span></span>
+<span id="cb10-12"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">minversion</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"8.0"</span></span>
+<span id="cb10-13"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">addopts</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--cov"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--mpl"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-ra"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--strict-config"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"--strict-markers"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb10-14"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">log_level</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"INFO"</span></span>
+<span id="cb10-15"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">log_cli</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb10-16"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">log_cli_level</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"INFO"</span></span>
+<span id="cb10-17"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">testpaths</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb10-18">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"tests"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-19"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb10-20"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">filterwarnings</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb10-21">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ignore::DeprecationWarning"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-22">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ignore::PendingDeprecationWarning"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-23">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ignore::UserWarning"</span></span>
+<span id="cb10-24"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb10-25"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">xfail_strict</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb10-26"></span>
+<span id="cb10-27"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">[tool.coverage.run]</span></span>
+<span id="cb10-28"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">source</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"topostats"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb10-29"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">omit</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb10-30">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"topostats/_version.py"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-31">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"*tests*"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-32">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"**/__init__*"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb10-33"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span></code></pre></div>
+</section>
+<section id="package-upgrades" class="level4">
+<h4 class="anchored" data-anchor-id="package-upgrades">Package Upgrades</h4>
+<p>You may find periodically that <code>pytest-testmon</code> reports that the installed packages have changed and the database needs updating. If this is the case simply run <code>pytest --testmon</code> again manually and it should update the database.</p>
+</section>
+</section>
+<section id="test-it-out" class="level3">
+<h3 class="anchored" data-anchor-id="test-it-out">Test It Out</h3>
+<p>Add a new test, fix a bug or add a new feature (with a test of course!) and <code>git add -u . &amp;&amp; git commit -m "bug: Fixing bug 5"</code> and you should find that only the tests that affect the changed code are run as part of the <code>pre-commit</code> hook. 🪄</p>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>Speeding up the feedback loop for software development by pushing the identification of errors in your code further “left”, i.e.&nbsp;earlier in the development cycle is really useful and leveraging <a href="https://testmon.org/" target="_blank">pytest-testmon</a> as a <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">pre-commit</a> hook is a simple way of achieving this. It helps you capture and fix changes that break your test suite before making commits to your Git history which helps remove the <code>fixing tests</code> commits that litter many projects.</p>
+
+
+
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2025,
+  author = {Shephard, Neil},
+  title = {Pytest Testmon},
+  date = {2025-09-24},
+  url = {https://blog.nshephard.dev/posts/pytest-testmon/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2025" class="csl-entry quarto-appendix-citeas">
+Shephard, Neil. 2025. <span>“Pytest Testmon.”</span> September 24, 2025.
+<a href="https://blog.nshephard.dev/posts/pytest-testmon/">https://blog.nshephard.dev/posts/pytest-testmon/</a>.
+</div></div></section></div> ]]></description>
+  <category>python</category>
+  <category>pytest</category>
+  <category>testing</category>
+  <category>pre-commit</category>
+  <guid>https://blog.nshephard.dev/posts/pytest-testmon/</guid>
+  <pubDate>Wed, 24 Sep 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/54800591152_f2509b5efb_k.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Emacs Yasnippet</title>
   <dc:creator>Neil Shephard</dc:creator>
@@ -4784,7 +5388,7 @@ This is my package, there are many packages like it but this one is mine.</code>
 <section id="including-markdown" class="level3">
 <h3 class="anchored" data-anchor-id="including-markdown">Including Markdown</h3>
 <p>I already know <a href="https://www.markdownguide.org/" target="_blank">Markdown</a> fairly well and would rather use that to write documents (as I do with thisblog). Fortunately Sphinx can incorporate documentation written in <a href="https://github.com/ryanfox/sphinx-markdown-tables" target="_blank">Markdown</a> using the <a href="https://myst-parser.readthedocs.io/en/latest/" target="_blank"><code>myst_parser</code></a> package. Simply include it in the <code>extensions</code>.</p>
-<div id="84348dd7" class="cell" data-execution_count="1">
+<div id="269fc1a6" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4794,7 +5398,7 @@ font-style: inherit;">"myst_parser"</span>,</span>
 <span id="cb3-3">]</span></code></pre></div>
 </div>
 <p>By default it works with extensions of <code>.md</code> but if there are other flavours you wish to include (e.g.&nbsp;<code>.Rmd</code> for RMarkdown or <code>.qmd</code> for Quarto) you add them to the <code>source_suffix</code> in <code>docs/conf.py</code></p>
-<div id="feb513cf" class="cell" data-execution_count="2">
+<div id="411eca7c" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">source_suffix <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {<span class="st" style="color: #20794D;
@@ -4876,7 +5480,7 @@ gitGraph
 <h3 class="anchored" data-anchor-id="sphinx-autoapi"><code>sphinx-autoapi</code></h3>
 <p>However, rather than learning the intricacies of using this command the package Sphinx extensions <a href="https://sphinx-autoapi.readthedocs.io/en/latest/" target="_blank">sphinx-autoapi</a> can be leveraged to automatically build the API documentation for you. This is particularly useful when you come to build multiple versions of your documentation as it means you do not have to include the <code>.rst</code> files that <code>sphinx-apidoc</code> generates in your repository they are generated on the fly when Sphinx builds each version of the documentation.</p>
 <p>Configuration is via <code>docs/conf.py</code> and the package needs referencing in the <code>extensions</code> section then <a href="https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html" target="_blank">configuring</a> at a bare minimum which directories to generate documentation from. i</p>
-<div id="82d3abaf" class="cell" data-execution_count="3">
+<div id="5c4d6cdc" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4906,7 +5510,7 @@ font-style: inherit;">"../mypackage"</span>]</span></code></pre></div>
 <h3 class="anchored" data-anchor-id="sphinx-autosummary">Sphinx Autosummary</h3>
 <p>In addition the <a href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html" target="_blank">sphinx_ext_autosummary</a> automates summarising the API docstrings.</p>
 <p>Add the package as a dependency to the <code>extensions</code>…</p>
-<div id="eae1a0c3" class="cell" data-execution_count="4">
+<div id="12905a80" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4936,7 +5540,7 @@ font-style: inherit;">"sphinx.ext.autosummary"</span></span>
 <h2 class="anchored" data-anchor-id="multiple-versions">Multiple Versions</h2>
 <p>Over time code and in turn documentation changes, not just the API but the documents written to demonstrate installation and usage of software. Not everyone always uses the latest version of your software and so it can be useful to provision documentation for each version that is available. Fortunately the Sphinx extension <a href="https://holzhaus.github.io/sphinx-multiversion/master/" target="_blank">sphinx-multiversion</a> makes this relatively painless.</p>
 <p>You need to include it in the list of <code>extensions</code> of <code>docs/conf.py</code></p>
-<div id="07a0f47c" class="cell" data-execution_count="5">
+<div id="5c3c1e50" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">extensions <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4950,7 +5554,7 @@ font-style: inherit;">"sphinx_multiversion"</span>,</span>
 <section id="sidebar" class="level4">
 <h4 class="anchored" data-anchor-id="sidebar">Sidebar</h4>
 <p>For versions to not just be built but available you need to include a section on your site that allows selecting which version of the documentation to view. Sidebars are included via HTML templates and you need to configure the path to this directory and the name of the HTML file within it. The following options in the <code>conf.py</code> configure the <code>_templates</code> directory and within it the <code>versioning.html</code> file.</p>
-<div id="9273df19" class="cell" data-execution_count="6">
+<div id="f44fd7d9" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1">templates_path <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [</span>
@@ -4981,7 +5585,7 @@ font-style: inherit;">"versioning.html"</span>,}</span></code></pre></div>
 <section id="tagsbranches" class="level4">
 <h4 class="anchored" data-anchor-id="tagsbranches">Tags/Branches</h4>
 <p>If no options are set then <code>sphinx-multiversion</code> will build documentation for <em>all</em> branhces, which is probably undesirable. Typically you want to restrict this to the released versions which are identified by <a href="https://git-scm.com/book/en/v2/Git-Basics-Tagging" target="_blank">git tags</a> and perhaps your <code>main</code>/<code>master</code> branch. If you prefix your tags with <code>v</code> and you want to build the documentation for the <code>HEAD</code> of your <code>main</code> (or <code>master</code>) branch then you should set options as shown below for <code>sphinx-multiversion</code>. I like to be able to test documentation builds and so I have a section that allows me to include a given branch.</p>
-<div id="df492a4d" class="cell" data-execution_count="7">
+<div id="704cdb91" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1">smv_tag_whitelist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
@@ -5044,7 +5648,7 @@ font-style: inherit;">"</span></span></code></pre></div>
 <section id="themes" class="level2">
 <h2 class="anchored" data-anchor-id="themes">Themes</h2>
 <p>There are a number of different themes available for including in your package. Which is used is defined by the <code>html_theme</code> variable in <code>docs/conf.py</code>. I like the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank"><code>pydata-sphinx-theme</code></a> that is used by <a href="https://pandas.pydata.org" target="_blank">Pandas</a>/<a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html" target="_blank">Matplotlib</a>.</p>
-<div id="4ca93fe0" class="cell" data-execution_count="8">
+<div id="5561b084" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">html_theme <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -5055,7 +5659,7 @@ font-style: inherit;">"pydata_sphinx_theme"</span></span></code></pre></div>
 <section id="package-dependencies" class="level2">
 <h2 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h2>
 <p>Since the documentation is part of your package it is important to include all of the dependencies that are required for building the documentation dependencies of your package so they can be easily installed and are available to Sphinx (since Sphinx will try loading anything listed in your <code>docs/conf.py</code>). These days you should really be using <code>pyproject.toml</code> to configure and manage your package, if you are unfamiliar with the packaging process see my post on <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a>.</p>
-<div id="0f6685c2" class="cell" data-execution_count="9">
+<div id="ee308f28" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1">[project.optional<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>dependencies]</span>

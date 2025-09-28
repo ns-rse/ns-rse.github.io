@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>blog.nshephard.dev</title>
+<link>https://blog.nshephard.dev/posts/pytest-testmon/#category=code</link>
+<atom:link href="https://blog.nshephard.dev/posts/pytest-testmon/index-code.xml" rel="self" type="application/rss+xml"/>
+<description>Software development in a Research Environment</description>
+<image>
+<url>https://live.staticflickr.com/65535/54800591152_f2509b5efb_k.jpg</url>
+<title>blog.nshephard.dev</title>
+<link>https://blog.nshephard.dev/posts/pytest-testmon/#category=code</link>
+</image>
+<generator>quarto-1.6.11</generator>
+<lastBuildDate>Sun, 28 Sep 2025 10:30:16 GMT</lastBuildDate>
+</channel>
+</rss>
