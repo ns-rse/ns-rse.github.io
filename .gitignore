@@ -50,3 +50,5 @@ vignettes/*.pdf
 
 # Git
 *.rej
+
+**/*.quarto_ipynb
