@@ -22,7 +22,7 @@ working on and developing your code.
 
 ![[Pretty Stones by Me!](https://www.flickr.com/photos/slackline/54800591152/in/datetaken/)](https://live.staticflickr.com/65535/54800591152_f2509b5efb_k.jpg)
 
-## Test, test, test!!!
+## Test, test, test
 
 It is good practice to have a comprehensive suite of both unit, integration and regression tests when writing and
 developing software. The former ensure at a fine-grained level that each of the functions or methods that you write work
@@ -186,6 +186,7 @@ dev = [
 ```
 
 ::: {.callout}
+
 ## Update your documentation
 
 It is recommended to add section to your documentations _Contributing_ section that advises how to install the
@@ -194,6 +195,7 @@ It is recommended to add section to your documentations _Contributing_ section t
 ``` shell
 pip install -e .[dev]
 ```
+
 :::
 
 #### Configure pre-commit
@@ -203,7 +205,6 @@ define the `repo: local` so that it only runs on local systems and not in Contin
 appropriately named `ìd` and `name` values. The `entry` is the command we wish to run, i.e. `pytest --testmon` and we
 set the `language: system`. Finally we restrict it to `files` that end in `\.py$` so that it won't run if you change say
 your documentation files that are written in Markdown (`.md`).
-
 
 ``` yaml
 repos:
