@@ -168,7 +168,7 @@ those.
 You will probably want to have git ignore these files and can do so by adding them to either the local `.gitignore` or
 your global `.gitignore`
 
-```
+``` shell
 .testmondata*
 ```
 
@@ -184,33 +184,6 @@ we ensure `pytest --testmon` is run prior to commits to make sure tests pass on 
 I'm a big fan of [pre-commit][pre-commit] and have written about it many times. We can define a local `pre-commit`
 hook to run `pytest --testmon` automatically before each commit is made which not only removes the task of having to
 remember to run `pytest --testmon` manually but ensures that our test suite passes before we can make commits.
-
-#### Add `pytest-testmon` to package dependencies
-
-You will want to make sure that anyone else who wishes to contribute to your code also uses `pytest-testmon` to help
-ensure that pull requests that are made against your repository continue to pass all tests. Here we add it under the
-`dev` subset of optional dependencies in the projects `pyproject.toml` as only those developing the software will want
-to install it, and we want to avoid installing it unnecessarily in say Continuous Integration.
-
-``` toml
-[project.optional-dependencies]
-dev = [
-  "pytest-testmon",
-]
-```
-
-::: {.callout}
-
-## Update your documentation
-
-It is recommended to add section to your documentations _Contributing_ section that advises how to install the
-`dev`eloper dependencies and use `pytest-testmon` including which files to ignore.
-
-``` shell
-pip install -e .[dev]
-```
-
-:::
 
 #### Configure pre-commit
 
