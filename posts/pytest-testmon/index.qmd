@@ -67,16 +67,19 @@ omit = [
 ```
 
 Tests are typically organised with a single file per Python sub-module with at least one test for each function. If
-you're not familiar with [pytest][pytest] check out its [documentation][pytest-docs].
+you're not familiar with [pytest][pytest] check out its [documentation][pytest-docs] for more on how to organise your
+test suite.
 
 ## Development cycle
 
-A typical development cycle to add a new feature might involve the following cycle, if you are following the [Test Drive
-Development][tdd] paradigm...
+A typical development cycle to add a new feature might involve the following cycle if you are following the [Test Drive
+Development][tdd] paradigm.
 
 1. Write a unit test.
 2. Write code to add functionality.
 3. Run test suite to see if it passes.
+  a) If it fails return to 2.
+  b) If it passes all is good.
 
 Alternatively if fixing bugs you might...
 
@@ -84,69 +87,69 @@ Alternatively if fixing bugs you might...
 2. Run test to check new test fails.
 3. Attempt to fix the bug
 4. Run test suite to see if it passes.
+  a) If it fails return to 2.
+  b) If it passes all is good.
 
-In either scenario you will typically iterate over the steps a few times until everything is working.
-
-With `pytest` running your test suite is simple you call `pytest` from the route of your directory.
+In either scenario you will typically iterate over the steps a few times until everything is working using
+`pytest` to run your test suite root of your packages directory.
 
 ``` shell
 pytest
 ```
 
-If you want to only run tests on a specific sub-module of your package you can do so.
+But if you've a large test suite you probably want to avoid running all tests each time and you can do so by telling
+`pytest` which file to run tests on by providing it as an argument. Here we run only the `test_submodule1.py` tests.
 
 ``` shell
 pytest tests/test_submodule1.py
 ```
 
-This will run all tests within the file `tests/test_submodule.py`. But you can have even finer grained control over your
-tests. For example if you want to only run an individual test within `tests/test_submodules.py` you can do that too. For
-example if you are fixing a bug in your `function1()` function you can run the corresponding test, assuming you follow
-the conventional nomenclature, with the following.
+You can have even finer grained control over your tests. For example if you want to only run an individual test within
+`tests/test_submodules.py` you can do that too by specifying the name of the test you want to run after the test file
+name, so if you had `test_function1()` defined in `tests/test_submodules.py` you would run the following.
 
 ``` shell
 pytest tests/test_submodule1.py::test_function1
 ```
-
-This would run _onby_ `test_function1()` defined within `tests_submodule1.py` which tests the `function1()` function.
 
 Similarly if you were developing a new feature and writing `function2` in submodule1 you could have a test
 `test_function2()` and explicitly test it with.
 
 ``` shell
-pytest tests/test_submodule1.py::test_function1
+pytest tests/test_submodule1.py::test_function2
 ```
 
-As you iterate through the development cycle you could manually run your tests which works fine, but doesn't account for
-any integration tests where your functions are used as part of a pipeline.
-
-You could
+As you iterate through the development cycle you could manually run your unit tests to find out if they pass or fail,
+but that doesn't account for any integration tests where your functions are used as part of a pipeline and knowing what
+tests are affected by changes can be challenging, particularly in a large code base where you would want to avoid
+running the whole test suite each time.
 
 ## Commits as Units of Work
 
-In software development small units of related work are typically aggregated into commits within Git which means we have
-a natural point at which to undertake testing, i.e. when we are ready to add our work to the Git history via a
-commit. Thus before making a commit we should make sure that our test suite completes. Naturally we could run the whole
-suite with `pytest` (and even parallelise it so it runs faster with [pytest-xdist][pytest-xdist]) but as a software
-package grows so does the number of tests and it might take a while to run the test suite. We've seen already that it is
-possible to run individual tests as desired but this might take a little work if there are several tests that need
-running when fixing bugs and regression tests need to be run as well as unit tests.
+In software development small units of related work are typically aggregated into commits within Git (or other version
+control systems) which means we have a natural point at which to undertake testing, i.e. when we are ready to add our
+work to the Git history via a commit. Thus before making a commit we should make sure that our test suite
+completes. Naturally we could run the whole suite with `pytest` (and even parallelise it so it runs faster with
+[pytest-xdist][pytest-xdist]) but as a software package grows so does the number of tests and it might take a while to
+run the test suite. We've seen already that it is possible to run individual tests as desired but this might take a
+little work if there are several tests that need running when fixing bugs and regression tests need to be run as well as
+unit tests.
 
 Wouldn't it be great if we could automatically run _only_ the tests that are affected by the changes that we have made
 when making a commit?
 
-## Say Hello to pytest-testmon
+## Enter `pytest-testmon`
 
 This is where [pytest-testmon][pytest-testmon] comes in useful, it "_selects and executes only tests you need to run_"
 and achieves this by "_collecting dependencies between tests and all executed code and comparing the dependencies
-against changes._". Basically, given the dummy example above it would identify the tests that involve either
+against changes._". Basically, given the dummy examples above it would identify the tests that involve either
 `function1()` or `function2()` and _only_ run those tests.
 
 ### Installation
 
-You can test out `pytest-testmon` by installing it in your [virtual environment][virtualenvwrapper]. Before you can use
-it though you have to allow it to analyse your code base and build a database of how the tests relate to the packages
-modules, functions, classes and methods, so after installing it you should run `pytest --testmon` to create
+You can install `pytest-testmon` in your [virtual environment][virtualenvwrapper] and run it manually. Before you can
+use it though you have to allow it to analyse your code base and build a database of how the tests relate to the
+packages modules, functions, classes and methods, so after installing it you should run `pytest --testmon` to create
 becomes useful it has to establish how functions, classes and methods relate to tests and  you can use
 it thought `pytest-testmon` needs to analyse your code base and build a database of how the test relates to the packages
 modules and functions/methods.
@@ -156,20 +159,56 @@ pip install pytest-testmon
 pytest --testmon
 ```
 
-This creates, by default, the file `.testmondata` which is an SQLite database of the functions, classes and methods
-and how they relate to your test suite. Once you have installed and built your database subsequent calls to `pytest
---testmon` will work out what tests are affected by changes and only run those.
+This creates, by default, the files `.testmondata`, `.testmondata-shm` and `.testmondata-wal` which comprise is an SQLite
+database of the functions, classes and methods and how they relate to your test suite. Once you have installed and built
+your database subsequent calls to `pytest --testmon` will work out what tests are affected by changes and only run
+those.
+
+::: {.callout}
+You will probably want to have git ignore these files and can do so by adding them to either the local `.gitignore` or
+your global `.gitignore`
+
+``` shell
+.testmondata*
+```
+
+:::
 
 This is an improvement as you now can run `pytest --testmon` to ensure that _only_ tests affected by the changes you are
 making are run and it helps shorten the feedback loop because you only have to wait for a subset of the tests to
-run. But it's still running the tests manually before you make your `git commit`. What if there were a way to automate
-this step?
+run. But it's still running the tests manually before you make your `git commit`. We want to automate this step, how can
+we ensure `pytest --testmon` is run prior to commits to make sure tests pass on only the changed files?
 
 ### Hello pre-commit my old friend
 
-I'm a big fan of [pre-commit][pre-commit] and have written about it many times and we can define a `pre-commit` local
+I'm a big fan of [pre-commit][pre-commit] and have written about it many times. We can define a local `pre-commit`
 hook to run `pytest --testmon` automatically before each commit is made which not only removes the task of having to
 remember to run `pytest --testmon` manually but ensures that our test suite passes before we can make commits.
+
+#### Configure pre-commit
+
+We define the local hook in the repositories `.pre-commit-config.yaml` file which will run `pytest --testmon` on each
+commit. The `repo: local` is defined so that it only runs on local systems and not in Continuous Integration (CI),
+typically the whole test suite will be run in CI anywaym and give it appropriately named `ìd` and `name` values. The
+`entry` is the command we wish to run, i.e. `pytest --testmon` and we set the `language: system`. Finally we restrict it
+to `files` that end in `\.py$` so that it won't run if you change say your documentation files that are written in
+Markdown (`.md`).
+
+``` yaml
+repos:
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Pytest (testmon)
+        entry: pytest --testmon
+        language: system
+        files: \.py$
+```
+
+#### Package Upgrades
+
+You may find periodically that `pytest-testmon` reports that the installed packages have changed and the database needs
+updating. If this is the case simply run `pytest --testmon` again manually and it should update the database.
 
 #### Add `pytest-testmon` to package dependencies
 
@@ -185,86 +224,22 @@ dev = [
 ]
 ```
 
+If you don't already have a `tool.pytest.ini_options` section in your `pyproject.toml` now would be a good time to add
+one (see the example at the start of this article). You don't need any specific configuration for `pytest --testmon`
+adding, just make sure its an optional dependency as above.
+
 ::: {.callout}
 
 ## Update your documentation
 
-It is recommended to add section to your documentations _Contributing_ section that advises how to install the
-`dev`eloper dependencies with...
+It is recommended to add a section to your documentations _Contributing_ section that advises how to install the
+`dev`eloper dependencies and use `pytest-testmon` including which files to ignore.
 
 ``` shell
 pip install -e .[dev]
 ```
 
 :::
-
-#### Configure pre-commit
-
-We can now add a local hook to the `.pre-commit-config.yaml` file which will run `pytest --testmon` on each commit. We
-define the `repo: local` so that it only runs on local systems and not in Continuous Integration and give it
-appropriately named `ìd` and `name` values. The `entry` is the command we wish to run, i.e. `pytest --testmon` and we
-set the `language: system`. Finally we restrict it to `files` that end in `\.py$` so that it won't run if you change say
-your documentation files that are written in Markdown (`.md`).
-
-``` yaml
-repos:
-  - repo: local
-    hooks:
-      - id: pytest
-        name: Pytest (testmon)
-        entry: pytest --testmon
-        language: system
-        files: \.py$
-```
-
-#### `pytest` configuration
-
-If you don't already have a `tool.pytest.ini_options` section in your `pyproject.toml` now would be a good time to add
-one. You don't need any specific configuration for `pytest --testmon` added but the options defined here will be used
-when `pytest --testmon` is run by the `pre-commit` hook we have just defined. A basic example is below along with the
-additional entries required in `project.optional-dependencies.dev`. The following is the basic configuration introduced
-at the start of this article, adding in the `pytest-testmon` as a `dev` optional dependency.
-
-``` toml
-[project.optional-dependencies]
-tests = [
-  "pytest",
-  "pytest-cov",
-  "pytest-mpl"
-]
-dev = [
-  "pytest-testmon",
-]
-
-[tool.pytest.ini_options]
-minversion = "8.0"
-addopts = ["--cov", "--mpl", "-ra", "--strict-config", "--strict-markers"]
-log_level = "INFO"
-log_cli = true
-log_cli_level = "INFO"
-testpaths = [
-    "tests",
-]
-filterwarnings = [
-    "ignore::DeprecationWarning",
-    "ignore::PendingDeprecationWarning",
-    "ignore::UserWarning"
-]
-xfail_strict = true
-
-[tool.coverage.run]
-source = ["topostats"]
-omit = [
-  "topostats/_version.py",
-  "*tests*",
-  "**/__init__*",
-]
-```
-
-#### Package Upgrades
-
-You may find periodically that `pytest-testmon` reports that the installed packages have changed and the database needs
-updating. If this is the case simply run `pytest --testmon` again manually and it should update the database.
 
 ### Test It Out
 

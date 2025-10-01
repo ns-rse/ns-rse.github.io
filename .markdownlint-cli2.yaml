@@ -11,6 +11,7 @@ config:
   html:
     allowed_elements:
       - div
+  descriptive-link-text: false
 
 # Globs
 
