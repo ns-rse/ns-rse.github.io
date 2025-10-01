@@ -22,7 +22,7 @@ working on and developing your code.
 
 ![[Pretty Stones by Me!](https://www.flickr.com/photos/slackline/54800591152/in/datetaken/)](https://live.staticflickr.com/65535/54800591152_f2509b5efb_k.jpg)
 
-## Test, test, test!!!
+## Test, test, test
 
 It is good practice to have a comprehensive suite of both unit, integration and regression tests when writing and
 developing software. The former ensure at a fine-grained level that each of the functions or methods that you write work
@@ -183,8 +183,34 @@ we ensure `pytest --testmon` is run prior to commits to make sure tests pass on 
 
 I'm a big fan of [pre-commit][pre-commit] and have written about it many times. We can define a local `pre-commit`
 hook to run `pytest --testmon` automatically before each commit is made which not only removes the task of having to
-remember to run `pytest --testmon` manually but ensures that our test suite passes before we can make commits because if
-the tests fail then so will the commit.
+remember to run `pytest --testmon` manually but ensures that our test suite passes before we can make commits.
+
+#### Add `pytest-testmon` to package dependencies
+
+You will want to make sure that anyone else who wishes to contribute to your code also uses `pytest-testmon` to help
+ensure that pull requests that are made against your repository continue to pass all tests. Here we add it under the
+`dev` subset of optional dependencies in the projects `pyproject.toml` as only those developing the software will want
+to install it, and we want to avoid installing it unnecessarily in say Continuous Integration.
+
+``` toml
+[project.optional-dependencies]
+dev = [
+  "pytest-testmon",
+]
+```
+
+::: {.callout}
+
+## Update your documentation
+
+It is recommended to add section to your documentations _Contributing_ section that advises how to install the
+`dev`eloper dependencies and use `pytest-testmon` including which files to ignore.
+
+``` shell
+pip install -e .[dev]
+```
+
+:::
 
 #### Configure pre-commit
 
@@ -194,7 +220,6 @@ typically the whole test suite will be run in CI anywaym and give it appropriate
 `entry` is the command we wish to run, i.e. `pytest --testmon` and we set the `language: system`. Finally we restrict it
 to `files` that end in `\.py$` so that it won't run if you change say your documentation files that are written in
 Markdown (`.md`).
-
 
 ``` yaml
 repos:
