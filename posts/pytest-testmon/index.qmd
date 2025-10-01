@@ -256,6 +256,7 @@ one (see the example at the start of this article). You don't need any specific 
 adding, just make sure its an optional dependency as above.
 
 ::: {.callout}
+
 ## Update your documentation
 
 It is recommended to add a section to your documentations _Contributing_ section that advises how to install the
@@ -264,6 +265,7 @@ It is recommended to add a section to your documentations _Contributing_ section
 ``` shell
 pip install -e .[dev]
 ```
+
 :::
 
 ### Test It Out
