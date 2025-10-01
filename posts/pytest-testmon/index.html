@@ -277,15 +277,14 @@ window.Quarto = {
   <li><a href="#test-test-test" id="toc-test-test-test" class="nav-link active" data-scroll-target="#test-test-test">Test, test, test</a></li>
   <li><a href="#development-cycle" id="toc-development-cycle" class="nav-link" data-scroll-target="#development-cycle">Development cycle</a></li>
   <li><a href="#commits-as-units-of-work" id="toc-commits-as-units-of-work" class="nav-link" data-scroll-target="#commits-as-units-of-work">Commits as Units of Work</a></li>
-  <li><a href="#say-hello-to-pytest-testmon" id="toc-say-hello-to-pytest-testmon" class="nav-link" data-scroll-target="#say-hello-to-pytest-testmon">Say Hello to pytest-testmon</a>
+  <li><a href="#enter-pytest-testmon" id="toc-enter-pytest-testmon" class="nav-link" data-scroll-target="#enter-pytest-testmon">Enter <code>pytest-testmon</code></a>
   <ul>
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
   <li><a href="#hello-pre-commit-my-old-friend" id="toc-hello-pre-commit-my-old-friend" class="nav-link" data-scroll-target="#hello-pre-commit-my-old-friend">Hello pre-commit my old friend</a>
   <ul class="collapse">
-  <li><a href="#add-pytest-testmon-to-package-dependencies" id="toc-add-pytest-testmon-to-package-dependencies" class="nav-link" data-scroll-target="#add-pytest-testmon-to-package-dependencies">Add <code>pytest-testmon</code> to package dependencies</a></li>
   <li><a href="#configure-pre-commit" id="toc-configure-pre-commit" class="nav-link" data-scroll-target="#configure-pre-commit">Configure pre-commit</a></li>
-  <li><a href="#pytest-configuration" id="toc-pytest-configuration" class="nav-link" data-scroll-target="#pytest-configuration"><code>pytest</code> configuration</a></li>
   <li><a href="#package-upgrades" id="toc-package-upgrades" class="nav-link" data-scroll-target="#package-upgrades">Package Upgrades</a></li>
+  <li><a href="#add-pytest-testmon-to-package-dependencies" id="toc-add-pytest-testmon-to-package-dependencies" class="nav-link" data-scroll-target="#add-pytest-testmon-to-package-dependencies">Add <code>pytest-testmon</code> to package dependencies</a></li>
   </ul></li>
   <li><a href="#test-it-out" id="toc-test-it-out" class="nav-link" data-scroll-target="#test-it-out">Test It Out</a></li>
   </ul></li>
@@ -341,15 +340,19 @@ window.Quarto = {
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"*tests*"</span><span class="op">,</span></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"**/__init__*"</span><span class="op">,</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Tests are typically organised with a single file per Python sub-module with at least one test for each function. If you’re not familiar with <a href="https://pytest.org" target="_blank">pytest</a> check out its <a href="https://docs.pytest.org/en/stable/getting-started.html" target="_blank">documentation</a>.</p>
+<p>Tests are typically organised with a single file per Python sub-module with at least one test for each function. If you’re not familiar with <a href="https://pytest.org" target="_blank">pytest</a> check out its <a href="https://docs.pytest.org/en/stable/getting-started.html" target="_blank">documentation</a> for more on how to organise your test suite.</p>
 </section>
 <section id="development-cycle" class="level2">
 <h2 class="anchored" data-anchor-id="development-cycle">Development cycle</h2>
-<p>A typical development cycle to add a new feature might involve the following cycle, if you are following the <a href="https://en.wikipedia.org/wiki/Test-driven_development" target="_blank">Test Drive Development</a> paradigm…</p>
+<p>A typical development cycle to add a new feature might involve the following cycle if you are following the <a href="https://en.wikipedia.org/wiki/Test-driven_development" target="_blank">Test Drive Development</a> paradigm.</p>
 <ol type="1">
 <li>Write a unit test.</li>
 <li>Write code to add functionality.</li>
 <li>Run test suite to see if it passes.</li>
+</ol>
+<ol type="a">
+<li>If it fails return to 2.</li>
+<li>If it passes all is good.</li>
 </ol>
 <p>Alternatively if fixing bugs you might…</p>
 <ol type="1">
@@ -358,45 +361,74 @@ window.Quarto = {
 <li>Attempt to fix the bug</li>
 <li>Run test suite to see if it passes.</li>
 </ol>
-<p>In either scenario you will typically iterate over the steps a few times until everything is working.</p>
-<p>With <code>pytest</code> running your test suite is simple you call <code>pytest</code> from the route of your directory.</p>
+<ol type="a">
+<li>If it fails return to 2.</li>
+<li>If it passes all is good.</li>
+</ol>
+<p>In either scenario you will typically iterate over the steps a few times until everything is working using <code>pytest</code> to run your test suite root of your packages directory.</p>
 <pre class="shell"><code>pytest</code></pre>
-<p>If you want to only run tests on a specific sub-module of your package you can do so.</p>
+<p>But if you’ve a large test suite you probably want to avoid running all tests each time and you can do so by telling <code>pytest</code> which file to run tests on by providing it as an argument. Here we run only the <code>test_submodule1.py</code> tests.</p>
 <pre class="shell"><code>pytest tests/test_submodule1.py</code></pre>
-<p>This will run all tests within the file <code>tests/test_submodule.py</code>. But you can have even finer grained control over your tests. For example if you want to only run an individual test within <code>tests/test_submodules.py</code> you can do that too. For example if you are fixing a bug in your <code>function1()</code> function you can run the corresponding test, assuming you follow the conventional nomenclature, with the following.</p>
+<p>You can have even finer grained control over your tests. For example if you want to only run an individual test within <code>tests/test_submodules.py</code> you can do that too by specifying the name of the test you want to run after the test file name, so if you had <code>test_function1()</code> defined in <code>tests/test_submodules.py</code> you would run the following.</p>
 <pre class="shell"><code>pytest tests/test_submodule1.py::test_function1</code></pre>
-<p>This would run <em>onby</em> <code>test_function1()</code> defined within <code>tests_submodule1.py</code> which tests the <code>function1()</code> function.</p>
 <p>Similarly if you were developing a new feature and writing <code>function2</code> in submodule1 you could have a test <code>test_function2()</code> and explicitly test it with.</p>
-<pre class="shell"><code>pytest tests/test_submodule1.py::test_function1</code></pre>
-<p>As you iterate through the development cycle you could manually run your tests which works fine, but doesn’t account for any integration tests where your functions are used as part of a pipeline.</p>
-<p>You could</p>
+<pre class="shell"><code>pytest tests/test_submodule1.py::test_function2</code></pre>
+<p>As you iterate through the development cycle you could manually run your unit tests to find out if they pass or fail, but that doesn’t account for any integration tests where your functions are used as part of a pipeline and knowing what tests are affected by changes can be challenging, particularly in a large code base where you would want to avoid running the whole test suite each time.</p>
 </section>
 <section id="commits-as-units-of-work" class="level2">
 <h2 class="anchored" data-anchor-id="commits-as-units-of-work">Commits as Units of Work</h2>
-<p>In software development small units of related work are typically aggregated into commits within Git which means we have a natural point at which to undertake testing, i.e.&nbsp;when we are ready to add our work to the Git history via a commit. Thus before making a commit we should make sure that our test suite completes. Naturally we could run the whole suite with <code>pytest</code> (and even parallelise it so it runs faster with <a href="https://pytest-xdist.readthedocs.io/en/latest/" target="_blank">pytest-xdist</a>) but as a software package grows so does the number of tests and it might take a while to run the test suite. We’ve seen already that it is possible to run individual tests as desired but this might take a little work if there are several tests that need running when fixing bugs and regression tests need to be run as well as unit tests.</p>
+<p>In software development small units of related work are typically aggregated into commits within Git (or other version control systems) which means we have a natural point at which to undertake testing, i.e.&nbsp;when we are ready to add our work to the Git history via a commit. Thus before making a commit we should make sure that our test suite completes. Naturally we could run the whole suite with <code>pytest</code> (and even parallelise it so it runs faster with <a href="https://pytest-xdist.readthedocs.io/en/latest/" target="_blank">pytest-xdist</a>) but as a software package grows so does the number of tests and it might take a while to run the test suite. We’ve seen already that it is possible to run individual tests as desired but this might take a little work if there are several tests that need running when fixing bugs and regression tests need to be run as well as unit tests.</p>
 <p>Wouldn’t it be great if we could automatically run <em>only</em> the tests that are affected by the changes that we have made when making a commit?</p>
 </section>
-<section id="say-hello-to-pytest-testmon" class="level2">
-<h2 class="anchored" data-anchor-id="say-hello-to-pytest-testmon">Say Hello to pytest-testmon</h2>
-<p>This is where <a href="https://testmon.org/" target="_blank">pytest-testmon</a> comes in useful, it “<em>selects and executes only tests you need to run</em>” and achieves this by “<em>collecting dependencies between tests and all executed code and comparing the dependencies against changes.</em>”. Basically, given the dummy example above it would identify the tests that involve either <code>function1()</code> or <code>function2()</code> and <em>only</em> run those tests.</p>
+<section id="enter-pytest-testmon" class="level2">
+<h2 class="anchored" data-anchor-id="enter-pytest-testmon">Enter <code>pytest-testmon</code></h2>
+<p>This is where <a href="https://testmon.org/" target="_blank">pytest-testmon</a> comes in useful, it “<em>selects and executes only tests you need to run</em>” and achieves this by “<em>collecting dependencies between tests and all executed code and comparing the dependencies against changes.</em>”. Basically, given the dummy examples above it would identify the tests that involve either <code>function1()</code> or <code>function2()</code> and <em>only</em> run those tests.</p>
 <section id="installation" class="level3">
 <h3 class="anchored" data-anchor-id="installation">Installation</h3>
-<p>You can test out <code>pytest-testmon</code> by installing it in your <a href="https://blog.nshephard.dev/posts/virtualenvwrapper/" target="_blank">virtual environment</a>. Before you can use it though you have to allow it to analyse your code base and build a database of how the tests relate to the packages modules, functions, classes and methods, so after installing it you should run <code>pytest --testmon</code> to create becomes useful it has to establish how functions, classes and methods relate to tests and you can use it thought <code>pytest-testmon</code> needs to analyse your code base and build a database of how the test relates to the packages modules and functions/methods.</p>
+<p>You can install <code>pytest-testmon</code> in your <a href="https://blog.nshephard.dev/posts/virtualenvwrapper/" target="_blank">virtual environment</a> and run it manually. Before you can use it though you have to allow it to analyse your code base and build a database of how the tests relate to the packages modules, functions, classes and methods, so after installing it you should run <code>pytest --testmon</code> to create becomes useful it has to establish how functions, classes and methods relate to tests and you can use it thought <code>pytest-testmon</code> needs to analyse your code base and build a database of how the test relates to the packages modules and functions/methods.</p>
 <pre class="shell"><code>pip install pytest-testmon
 pytest --testmon</code></pre>
-<p>This creates, by default, the file <code>.testmondata</code> which is an SQLite database of the functions, classes and methods and how they relate to your test suite. Once you have installed and built your database subsequent calls to <code>pytest --testmon</code> will work out what tests are affected by changes and only run those.</p>
-<p>This is an improvement as you now can run <code>pytest --testmon</code> to ensure that <em>only</em> tests affected by the changes you are making are run and it helps shorten the feedback loop because you only have to wait for a subset of the tests to run. But it’s still running the tests manually before you make your <code>git commit</code>. What if there were a way to automate this step?</p>
+<p>This creates, by default, the files <code>.testmondata</code>, <code>.testmondata-shm</code> and <code>.testmondata-wal</code> which comprise is an SQLite database of the functions, classes and methods and how they relate to your test suite. Once you have installed and built your database subsequent calls to <code>pytest --testmon</code> will work out what tests are affected by changes and only run those.</p>
+<div class="callout callout-style-simple callout-none no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>You will probably want to have git ignore these files and can do so by adding them to either the local <code>.gitignore</code> or your global <code>.gitignore</code></p>
+<pre class="shell"><code>.testmondata*</code></pre>
+</div>
+</div>
+</div>
+<p>This is an improvement as you now can run <code>pytest --testmon</code> to ensure that <em>only</em> tests affected by the changes you are making are run and it helps shorten the feedback loop because you only have to wait for a subset of the tests to run. But it’s still running the tests manually before you make your <code>git commit</code>. We want to automate this step, how can we ensure <code>pytest --testmon</code> is run prior to commits to make sure tests pass on only the changed files?</p>
 </section>
 <section id="hello-pre-commit-my-old-friend" class="level3">
 <h3 class="anchored" data-anchor-id="hello-pre-commit-my-old-friend">Hello pre-commit my old friend</h3>
-<p>I’m a big fan of <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">pre-commit</a> and have written about it many times and we can define a <code>pre-commit</code> local hook to run <code>pytest --testmon</code> automatically before each commit is made which not only removes the task of having to remember to run <code>pytest --testmon</code> manually but ensures that our test suite passes before we can make commits.</p>
+<p>I’m a big fan of <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">pre-commit</a> and have written about it many times. We can define a local <code>pre-commit</code> hook to run <code>pytest --testmon</code> automatically before each commit is made which not only removes the task of having to remember to run <code>pytest --testmon</code> manually but ensures that our test suite passes before we can make commits.</p>
+<section id="configure-pre-commit" class="level4">
+<h4 class="anchored" data-anchor-id="configure-pre-commit">Configure pre-commit</h4>
+<p>We define the local hook in the repositories <code>.pre-commit-config.yaml</code> file which will run <code>pytest --testmon</code> on each commit. The <code>repo: local</code> is defined so that it only runs on local systems and not in Continuous Integration (CI), typically the whole test suite will be run in CI anywaym and give it appropriately named <code>ìd</code> and <code>name</code> values. The <code>entry</code> is the command we wish to run, i.e.&nbsp;<code>pytest --testmon</code> and we set the <code>language: system</code>. Finally we restrict it to <code>files</code> that end in <code>\.py$</code> so that it won’t run if you change say your documentation files that are written in Markdown (<code>.md</code>).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> local</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> pytest</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Pytest (testmon)</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">entry</span><span class="kw">:</span><span class="at"> pytest --testmon</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">language</span><span class="kw">:</span><span class="at"> system</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">files</span><span class="kw">:</span><span class="at"> \.py$</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="package-upgrades" class="level4">
+<h4 class="anchored" data-anchor-id="package-upgrades">Package Upgrades</h4>
+<p>You may find periodically that <code>pytest-testmon</code> reports that the installed packages have changed and the database needs updating. If this is the case simply run <code>pytest --testmon</code> again manually and it should update the database.</p>
+</section>
 <section id="add-pytest-testmon-to-package-dependencies" class="level4">
 <h4 class="anchored" data-anchor-id="add-pytest-testmon-to-package-dependencies">Add <code>pytest-testmon</code> to package dependencies</h4>
 <p>You will want to make sure that anyone else who wishes to contribute to your code also uses <code>pytest-testmon</code> to help ensure that pull requests that are made against your repository continue to pass all tests.Here we add it under the <code>dev</code> subset of optional dependencies in the projects <code>pyproject.toml</code> as only those developing the software will want to install it, and we want to avoid installing it unnecessarily in say Continuous Integration.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project.optional-dependencies]</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="dt">dev</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pytest-testmon"</span><span class="op">,</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project.optional-dependencies]</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dt">dev</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pytest-testmon"</span><span class="op">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you don’t already have a <code>tool.pytest.ini_options</code> section in your <code>pyproject.toml</code> now would be a good time to add one (see the example at the start of this article). You don’t need any specific configuration for <code>pytest --testmon</code> adding, just make sure its an optional dependency as above.</p>
 <div class="callout callout-style-simple callout-none no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -407,63 +439,10 @@ Update your documentation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>It is recommended to add section to your documentations <em>Contributing</em> section that advises how to install the <code>dev</code>eloper dependencies with…</p>
+<p>It is recommended to add a section to your documentations <em>Contributing</em> section that advises how to install the <code>dev</code>eloper dependencies and use <code>pytest-testmon</code> including which files to ignore.</p>
 <pre class="shell"><code>pip install -e .[dev]</code></pre>
 </div>
 </div>
-</section>
-<section id="configure-pre-commit" class="level4">
-<h4 class="anchored" data-anchor-id="configure-pre-commit">Configure pre-commit</h4>
-<p>We can now add a local hook to the <code>.pre-commit-config.yaml</code> file which will run <code>pytest --testmon</code> on each commit. We define the <code>repo: local</code> so that it only runs on local systems and not in Continuous Integration and give it appropriately named <code>ìd</code> and <code>name</code> values. The <code>entry</code> is the command we wish to run, i.e.&nbsp;<code>pytest --testmon</code> and we set the <code>language: system</code>. Finally we restrict it to <code>files</code> that end in <code>\.py$</code> so that it won’t run if you change say your documentation files that are written in Markdown (<code>.md</code>).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> local</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">hooks</span><span class="kw">:</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> pytest</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Pytest (testmon)</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">entry</span><span class="kw">:</span><span class="at"> pytest --testmon</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">language</span><span class="kw">:</span><span class="at"> system</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">files</span><span class="kw">:</span><span class="at"> \.py$</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="pytest-configuration" class="level4">
-<h4 class="anchored" data-anchor-id="pytest-configuration"><code>pytest</code> configuration</h4>
-<p>If you don’t already have a <code>tool.pytest.ini_options</code> section in your <code>pyproject.toml</code> now would be a good time to add one. You don’t need any specific configuration for <code>pytest --testmon</code> added but the options defined here will be used when <code>pytest --testmon</code> is run by the <code>pre-commit</code> hook we have just defined. A basic example is below along with the additional entries required in <code>project.optional-dependencies.dev</code>. The following is the basic configuration introduced at the start of this article, adding in the <code>pytest-testmon</code> as a <code>dev</code> optional dependency.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project.optional-dependencies]</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">tests</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pytest"</span><span class="op">,</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pytest-cov"</span><span class="op">,</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pytest-mpl"</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="dt">dev</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"pytest-testmon"</span><span class="op">,</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.pytest.ini_options]</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="dt">minversion</span> <span class="op">=</span> <span class="st">"8.0"</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="dt">addopts</span> <span class="op">=</span> <span class="op">[</span><span class="st">"--cov"</span><span class="op">,</span> <span class="st">"--mpl"</span><span class="op">,</span> <span class="st">"-ra"</span><span class="op">,</span> <span class="st">"--strict-config"</span><span class="op">,</span> <span class="st">"--strict-markers"</span><span class="op">]</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="dt">log_level</span> <span class="op">=</span> <span class="st">"INFO"</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="dt">log_cli</span> <span class="op">=</span> <span class="cn">true</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="dt">log_cli_level</span> <span class="op">=</span> <span class="st">"INFO"</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="dt">testpaths</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tests"</span><span class="op">,</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="dt">filterwarnings</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ignore::DeprecationWarning"</span><span class="op">,</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ignore::PendingDeprecationWarning"</span><span class="op">,</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ignore::UserWarning"</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="dt">xfail_strict</span> <span class="op">=</span> <span class="cn">true</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.coverage.run]</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="dt">source</span> <span class="op">=</span> <span class="op">[</span><span class="st">"topostats"</span><span class="op">]</span></span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="dt">omit</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topostats/_version.py"</span><span class="op">,</span></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"*tests*"</span><span class="op">,</span></span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"**/__init__*"</span><span class="op">,</span></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="package-upgrades" class="level4">
-<h4 class="anchored" data-anchor-id="package-upgrades">Package Upgrades</h4>
-<p>You may find periodically that <code>pytest-testmon</code> reports that the installed packages have changed and the database needs updating. If this is the case simply run <code>pytest --testmon</code> again manually and it should update the database.</p>
 </section>
 </section>
 <section id="test-it-out" class="level3">
