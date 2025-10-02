@@ -87,7 +87,7 @@ Alternatively if fixing bugs you might...
 2. Run test to check new test fails.
 3. Attempt to fix the bug
 4. Run test suite to see if it passes.
-  a) If it fails return to 2.
+  a) If it fails return to 3.
   b) If it passes all is good.
 
 In either scenario you will typically iterate over the steps a few times until everything is working using
