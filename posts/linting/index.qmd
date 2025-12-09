@@ -157,7 +157,8 @@ The messages are quite informative, taking each in turn we can work through reso
 
 Each Python module should have a docstring as the very first line that describes what it does. In this example it might
 be considered superfluous but its good practice to get in the habit of writing these as it comes in useful when
-documentation is automatically generated from the docstrings in the code. To fix it we can add a short docstring at the top.
+documentation is automatically generated from the docstrings in the code. To fix it we can add a short docstring at the
+top.
 
 ```python
 """Module for saving randomly generated numbers."""

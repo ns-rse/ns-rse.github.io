@@ -110,9 +110,9 @@ The `README` of your package which may be in [Markdown](https://www.markdownguid
 Sets the components of your package which are set dynamically. In this example we only set the version dynamically using
 `setuptools_scm`.
 
-The `dependencies` are those that are required for running the code. They should not include packages that are required for
-development (e.g. `black`. `flake8`, `ruff`, `pre-comit`, `pylint` etc.), nor those required for testing (e.g. `pytest`,
-`pytest-regtest`, `pytest-cov` etc.), documentation (e.g. `Sphinx`, `numpydoc`, `sphinx_markdown_table`,
+The `dependencies` are those that are required for running the code. They should not include packages that are required
+for development (e.g. `black`. `flake8`, `ruff`, `pre-comit`, `pylint` etc.), nor those required for testing
+(e.g. `pytest`, `pytest-regtest`, `pytest-cov` etc.), documentation (e.g. `Sphinx`, `numpydoc`, `sphinx_markdown_table`,
 `sphinx-autodoc-typehints`, `sphinxcontrib-mermaid` etc.) as these are defined in a separate section.
 
 ``` {.toml}
