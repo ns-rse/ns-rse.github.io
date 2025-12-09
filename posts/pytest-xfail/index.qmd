@@ -209,8 +209,8 @@ The `condition`/`reason` arguments to both `pytest.mark.skipif()` and `pytest.ma
 and can be used to conditionally mark specific sets of parameters to be skipped or indicate if they will fail under
 certain conditions.
 
-To exclude the test with `id` of `five divided by two` under Python 3.10 we would do the following (again note the need to
-`import sys` and its use in the `cond` positional argument).
+To exclude the test with `id` of `five divided by two` under Python 3.10 we would do the following (again note the need
+to `import sys` and its use in the `cond` positional argument).
 
 ```python
 import sys

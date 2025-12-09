@@ -433,8 +433,8 @@ There are unresolved conflicts at these paths:
 
 ### Conflicts
 
-The manual covers [conflict](https://jj-vcs.github.io/jj/latest/conflicts/) resolution and its worth reading that. That I
-encountered merge conflicts isn't entirely unexpected I had created `.gitignore` both locally and on the remote so
+The manual covers [conflict](https://jj-vcs.github.io/jj/latest/conflicts/) resolution and its worth reading that. That
+I encountered merge conflicts isn't entirely unexpected I had created `.gitignore` both locally and on the remote so
 bringing them together the is natural. Lets look at this…
 
 ```sh
