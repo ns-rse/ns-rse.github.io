@@ -119,7 +119,6 @@ use will be dependent on your browser usage and work
 
 ### Productivity Extensions
 
-
 | Extension                                                             | Description                                                                                                                                                                       | Shortcut                                |
 |-----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
 | [BibItNow!](https://addons.mozilla.org/en-US/firefox/addon/bibitnow/) | Creates BibTex and other citation formats from web-pages. Really useful when browsing for journal articles, books and other sites that you want to add to your citation database. | `Alt-C`                                 |
@@ -129,7 +128,6 @@ use will be dependent on your browser usage and work
 | [org-capture](https://github.com/sprig/org-capture-extension)         | "Capture" web-site, title and selected text to Emacs via [org-protocol](https://orgmode.org/worg/org-contrib/org-protocol.html).                                                  | `Ctrl-Shift-L`                          |
 | [GitLab Notify](https://github.com/Mikescops/gitlab-notify-extension) | Get notifications from GitLab in your browser.                                                                                                                                    | Not Available                           |
 | [Sci-Hub Now!](https://github.com/0x01h/sci-hub-now)                  | Access papers on Sci-Hub.                                                                                                                                                         | Not Available                           |
-
 
 ### Privacy Protecting Extensions
 
