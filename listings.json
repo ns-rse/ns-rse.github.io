@@ -1,6 +1,6 @@
 [
   {
-    "listing": "/about.html",
+    "listing": "/links.html",
     "items": [
       "/posts/pytest-testmon/index.html",
       "/posts/emacs_202509/index.html",
@@ -31,17 +31,13 @@
       "/posts/whos_to_blame/index.html",
       "/posts/pre-commit-updates/index.html",
       "/posts/cli-alternatives/index.html",
-      "/posts/git-ssh/index.html",
       "/posts/pre-commit/index.html",
+      "/posts/git-ssh/index.html",
       "/posts/linting/index.html"
     ]
   },
   {
-    "listing": "/posts/running-2022/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/cli-alternatives/index.html",
+    "listing": "/posts/emacs_202509/index.html",
     "items": []
   },
   {
@@ -49,27 +45,11 @@
     "items": []
   },
   {
-    "listing": "/posts/pre-commit/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pytest-mpl/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-r/index.html",
-    "items": []
-  },
-  {
     "listing": "/posts/git-remotes-revisited/index.html",
     "items": []
   },
   {
-    "listing": "/posts/jujutsu/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-remotes/index.html",
+    "listing": "/posts/sphinx-docs/index.html",
     "items": []
   },
   {
@@ -77,11 +57,31 @@
     "items": []
   },
   {
-    "listing": "/posts/pytest-param/index.html",
+    "listing": "/posts/virtualenv-hooks/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pre-commit-ci/index.html",
+    "listing": "/posts/git-ssh/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit-updates/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/virtualenvwrapper/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-worktrees/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/whos_to_blame/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pennine-way/index.html",
     "items": []
   },
   {
@@ -89,15 +89,15 @@
     "items": []
   },
   {
+    "listing": "/posts/running-2022/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/jujutsu/index.html",
+    "items": []
+  },
+  {
     "listing": "/posts/gitlab-ci-pypi/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pytest-xfail/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/repository-review/index.html",
     "items": []
   },
   {
@@ -132,33 +132,17 @@
       "/posts/whos_to_blame/index.html",
       "/posts/pre-commit-updates/index.html",
       "/posts/cli-alternatives/index.html",
-      "/posts/git-ssh/index.html",
       "/posts/pre-commit/index.html",
+      "/posts/git-ssh/index.html",
       "/posts/linting/index.html"
     ]
-  },
-  {
-    "listing": "/posts/linting/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/virtualenv-hooks/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/emacs_202509/index.html",
-    "items": []
   },
   {
     "listing": "/posts/pre-commit-hooks/index.html",
     "items": []
   },
   {
-    "listing": "/posts/virtualenvwrapper/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pennine-way/index.html",
+    "listing": "/posts/linting/index.html",
     "items": []
   },
   {
@@ -166,31 +150,19 @@
     "items": []
   },
   {
+    "listing": "/posts/pre-commit-r/index.html",
+    "items": []
+  },
+  {
     "listing": "/posts/tmate/index.html",
     "items": []
   },
   {
-    "listing": "/posts/git-amend-fixup/index.html",
+    "listing": "/posts/repository-review/index.html",
     "items": []
   },
   {
-    "listing": "/posts/sphinx-docs/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-ssh/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-worktrees/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/browser-extensions/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-updates/index.html",
+    "listing": "/posts/pre-commit/index.html",
     "items": []
   },
   {
@@ -198,11 +170,39 @@
     "items": []
   },
   {
-    "listing": "/posts/whos_to_blame/index.html",
+    "listing": "/posts/git-amend-fixup/index.html",
     "items": []
   },
   {
-    "listing": "/links.html",
+    "listing": "/posts/cli-alternatives/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-remotes/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/browser-extensions/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit-ci/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pytest-param/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pytest-xfail/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pytest-mpl/index.html",
+    "items": []
+  },
+  {
+    "listing": "/about.html",
     "items": [
       "/posts/pytest-testmon/index.html",
       "/posts/emacs_202509/index.html",
@@ -233,8 +233,8 @@
       "/posts/whos_to_blame/index.html",
       "/posts/pre-commit-updates/index.html",
       "/posts/cli-alternatives/index.html",
-      "/posts/git-ssh/index.html",
       "/posts/pre-commit/index.html",
+      "/posts/git-ssh/index.html",
       "/posts/linting/index.html"
     ]
   }
