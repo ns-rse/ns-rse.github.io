@@ -1,0 +1,113 @@
+---
+title: "Git - Worktree Hooks"
+date: "2026-03-25"
+categories: [git, worktrees, hooks, bash]
+image: https://live.staticflickr.com/3027/3018839068_ff71bcb5f5_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+Git worktrees are one of the lesser known and under appreciated features of [Git][git] that I
+[discovered][nshephard_worktree] a couple of years ago but didn't fully adopt into my work flow until recently. In doing
+so I found there are some friction points to adopting Git Worktrees but as with most things there are ways to smooth
+over those problems
+
+## The problem(s)
+
+Typically when working on projects I'll use virtual environments to provide an isolated set of packages specific to the
+package being developed, typically Python. I used to use [virtualenvwrapper][nshephard_venv] to create and manage my
+environments but have recently been trying out [uv][uv] where the source of the environment is created _within_ the
+project (by default in the `.venv/` directory). When using the traditional Git workflow of a single folder and switching
+branches this was quite convenient, as installing packages with `[uv] pip install -e .` meant that switching branches
+the files within the project are "editable" and by switching branches I also get the changes between branches reflected
+in the behaviour of the software. However, with the switch to using Git Worktrees each branch lives in its own directory
+and its not possible to have a single virtual environment that you can easily switch between the versions of the
+software that you are developing. Instead you have to create and activate a virtual environment in each worktree directory.
+
+I've also started using the [Just runner][just] system to provide convenient functions to
+
+## The solution
+
+Regular readers of this blog, if any exist, will know that I'm a big fan of [pre-commit][nshephard_pc] which is a
+framework for leveraging Git [hooks][git_hooks]. Hooks are not limited to run prior to commits though, there are a whole
+host of other stages at which they can run such as `post-commit`, `pre-push` and `pre-pull`. For the challenge at hand
+ we can leverage the `post-checkout` hook to run some commands _after_ we checkout a branch. The real trick though is
+ doing so _only_ on the first time we checkout a branch.
+
+I found this solution courtesy of a short snippet [Using Git Hooks When Creating
+Worktrees](https://mskelton.dev/bytes/20230906143340) which provides the framework/scaffolding which I've bulked out
+with my use case. The script...
+
+1. Sets the `BASE_PATH` to the directory two levels higher. This is because I use a convention of
+   `<github-username>/<github-issue-##>-<short-description>` when naming branches and use the same when creating
+   worktrees.
+2. Checks to see if there is a `main/.justfile`, if not it creates one which lists the available runners
+   (of which there are none at this point).
+3. Checks for `main/.envrc` and if not creates one which will `source .venv/bin/activate` which is the path [uv
+   venv][uv_venv] installs to by default.
+4. Checks if this is a new worktree, this is the "magic" I found in Mark Skelton's article if so then...
+5. Copy `main/.justfile` and `main/.envrc` from `main/` to the current directory.
+6. If there is no virtual environment directory (`.venv/`) then create a virtual environment, run `uv sync` and then
+     install the current package in editable form.
+7. Enable `direnv` in the current directory.
+8. If there is a ~
+
+``` bash
+#!/bin/bash
+#
+# Inspiration from : https://mskelton.dev/bytes/20230906143340
+#
+# Copy .justfile and .envrc to new worktrees on first checkout and create and activate a virtual environment
+# with uv
+# Base directory for bare repository
+BASE_PATH="$(git rev-parse --git-dir)/../../"
+if [ ! -f "${BASE_PATH}/main/.justfile" ]; then
+  echo "No .justfile creating a basic skeleton"
+  echo "@default:\n    @just --list\n\n" > main/.justfile
+  echo "pc_ruff\n    pre-commit run ruff-check --all-files ; pre-commit run ruff-format --all-files" >> main/.justfile
+  echo "pc_npd:\n    pre-commit run numpydoc-validation --all-files" >> main/.justfile
+  echo "pc_black:\n    pre-commit run blacken-docs --all-files" >> main/.justfile
+  echo "pc_prettier:\n    pre-commit run prettier --all-files" >> main/.justfile
+  echo "pc_markdown:\n    pre-commit run markdownlint-cli2 --all-files" >> main/.justfile
+  echo "pc_pylint:\n    pre-commit run pylint --all-files" >> main/.justfile
+  echo "pip_install:\n    uv pip install --editable . --group dev" >> main/.justfile
+fi
+if [ ! -f "${BASE_PATH}/main/.envrc" ]; then
+  echo "No .envrc creating a basic skeleton"
+  echo "#!/bin/bash\nsource .venv/bin/activate" > main/.envrc
+fi
+if [[ "$1" == "0000000000000000000000000000000000000000" ]]; then
+  # Copy files (they should be in main/)
+  FILES=(".justfile" ".envrc")
+  for FILE in "${FILES[@]}"; do
+    echo "Copying main/'${FILE}' to $(pwd)/${FILE}"
+    cp "${BASE_PATH}/main/${FILE}" "$(pwd)/${FILE}"
+  done
+  # Create a virtual environment using uv and install
+  if [ ! -d ".venv/" ]; then
+    uv venv
+    uv sync
+    uv pip install -e .
+    # Allow direnv so venv can be activated
+    direnv allow
+  fi
+  # Enable pre-commit if not already enabled
+  if [ ! -f "${BASE_PATH}/hooks/pre-commit" ]; then
+    pre-commit init
+  fi
+fi
+```
+
+[git_hooks]: https://git-scm.com/docs/git-hook
+[just]: https://just.systems/man/en/
+[nshephard_pc]: https://blog.nshephard.dev/#category=pre-commit
+[nshephard_venv]: https://blog.nshephard.dev/#category=virtual%20environments
