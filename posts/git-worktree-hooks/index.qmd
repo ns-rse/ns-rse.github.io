@@ -35,7 +35,6 @@ software that you are developing. Instead you have to create and activate a virt
 
 I've also started using the [Just runner][just] system to provide convenient functions to
 
-
 ## The solution
 
 Regular readers of this blog, if any exist, will know that I'm a big fan of [pre-commit][nshephard_pc] which is a
@@ -56,12 +55,11 @@ with my use case. The script...
 3. Checks for `main/.envrc` and if not creates one which will `source .venv/bin/activate` which is the path [uv
    venv][uv_venv] installs to by default.
 4. Checks if this is a new worktree, this is the "magic" I found in Mark Skelton's article if so then...
-  1. Copy `main/.justfile` and `main/.envrc` from `main/` to the current directory.
-  2. If there is no virtual environment directory (`.venv/`) then create a virtual environment, run `uv sync` and then
+5. Copy `main/.justfile` and `main/.envrc` from `main/` to the current directory.
+6. If there is no virtual environment directory (`.venv/`) then create a virtual environment, run `uv sync` and then
      install the current package in editable form.
-  3. Enable `direnv` in the current directory.
-  4. If there is a ~
-
+7. Enable `direnv` in the current directory.
+8. If there is a ~
 
 ``` bash
 #!/bin/bash
@@ -110,8 +108,6 @@ fi
 ```
 
 [git_hooks]: https://git-scm.com/docs/git-hook
-[git_worktree]: https://git-scm.com/docs/git-worktree
 [just]: https://just.systems/man/en/
 [nshephard_pc]: https://blog.nshephard.dev/#category=pre-commit
 [nshephard_venv]: https://blog.nshephard.dev/#category=virtual%20environments
-[nshephard_worktrees]: https://blog.nshephard.dev/posts/git-worktrees/
