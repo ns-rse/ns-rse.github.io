@@ -12,7 +12,7 @@ jobs:
       contents: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install dependencies
         run: |
@@ -22,22 +22,20 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
-          version: 1.6.11
+          version: 1.9.2
 
       - name: Install Quarto Extensions
         run: |
           quarto install --no-prompt extension jmbuhr/quarto-qrcode
           quarto install --no-prompt extension mcanouil/quarto-elevator
           quarto install --no-prompt extension davidwilby/openlinksinnewpage
+          quarto install --no-prompt extension schochastics/academicons
 
       - name: Install Python and Dependencies
-        uses: actions/setup-python@v5.2.0
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
           cache: 'pip'
-
-      - name: Restore virtualenv or install dependencies
-        uses: syphar/restore-virtualenv@v1
 
       - run: pip install -r requirements.txt
         if: steps.restore-virtualenv.outputs.cache-hit != 'true'
