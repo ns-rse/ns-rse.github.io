@@ -1,0 +1,146 @@
+---
+title: "Pytest - Marks"
+date: "2026-08-19"
+categories: [python, pytest, markers]
+image: https://live.staticflickr.com/65535/55465066678_178a76abff_k.jpg
+from: markdown+emoji
+toc: true
+toc-depth: 4
+toc-location: right
+execute:
+  code_fold: true
+  code_link: true
+  code_tools: true
+  fig-cap-location: top
+  tbl-cap-location: top
+  warning: false
+---
+
+![[Infinite reflections by me](https://www.flickr.com/photos/slackline/55465066678/)](https://live.staticflickr.com/65535/55465066678_178a76abff_k.jpg)
+
+In the [Parametrisation](https://blog.nshephard.dev/posts/pytest-param/) and [Fail and
+Skip](https://blog.nshephard.dev/posts/pytest-xfail/) posts on Pytest we saw how you could use `@pytest.mark` module to
+make tests more flexible. Recently a work colleague [Andrew Fisher](https://sheffield.ac.uk/mac/people/research-staff/andrew-fisher) introduced
+me to another flexible usage of this module to make it simple to select what tests to run.
+
+## Marking Tests
+
+Sometimes you may wish to run subsets of tests, if for example one of your tests takes a particularly long time to
+run. You can do this using `pytest tests/test_something.py::test_slow` to run an individual test but that doesn't
+exclude it from running as part of the test suite and it would be a pain to repeatedly toggle the `@pytest.mark.skip()`
+marker.
+
+There is a neat solution provided by Pytest though that uses the
+[@pytest.mark](https://docs.pytest.org/en/stable/example/markers.html#marking-test-functions-and-selecting-them-for-a-run)
+fixture to mark tests into groups and run them using the `pytest -m <name>` to select which tests to run.
+
+## Simple Example
+
+```python
+import time
+import pytest
+
+@pytest.mark.slow
+def test_slow() -> None:
+    """A dummy test that takes a an hour to run."""
+    time.sleep(60*60)
+    pass
+
+def test_quick() -> None:
+    """A dummy test that takes 2 seconds to run."""
+    time.sleep(2)
+    pass
+
+def test_very_fast() -> None:
+    """A dummy test that takes 1 second to run."""
+    time.sleep(1)
+    pass
+```
+
+You can then selectively run tests using the \`slow\` mark. :tada:
+
+```shell
+# Run just `test_slow` that is marked with 'slow'
+pytest -v -m "slow"
+# Run all other tests that are not marked 'slow'
+pytest -v -m "not slow"
+```
+
+## Project configuration
+
+Your packages `pyproject.toml` is typically be used to configure Pytest via the `tool.pytest` section if you are
+following the current standards.
+
+If you want to normally exclude the slow test then you can include the option to do so under `addopts`. To avoid
+warnings you should also register the markers and give a description as shown below.
+
+```toml
+[tool.pytest]
+addopts = ["-m", "not slow"]
+markers = [
+  "slow: marks slow tests (deselect with '-m \"not slow\")",
+]
+```
+
+## Automatically adding markers based on test names
+
+If you have structured the nomenclature to your tests to indicates what the tests are doing then you can [automate
+adding markers](https://docs.pytest.org/en/stable/example/markers.html#automatically-adding-markers-based-on-test-names)
+based on these.
+
+Say you have the following tests.
+
+```python
+def test_func_function1():
+    pass
+
+def test_func_function2():
+    pass
+
+def test_exception_keyerror():
+    with pytest.raises(KeyError):
+        {"a": 0, "b": 1}["not a key"]
+
+def test_exception_indexerror():
+    with pytest.raises(IndexError):
+        [0, 1, 2][3]
+```
+
+It is now possible to dynamically define two markers `func` (to run function tests) and `exception` (to run tests for
+exceptions) in `conftest.py` with the following.
+
+```python
+import pytest
+
+def pytest_collection_modifyitems(items):
+    for item in items:
+    if "func" in item.nodeid:
+        item.add_marker(pytest.mark.func)
+    elif "exception" in item.nodeid:
+        item.add_marker(pytest.mark.exception)
+```
+
+And you can now use the markers as described above to run subsets of tests based on the test names themselves. You
+should add these to the `markers` list in the configuration section for `pytest` in `pyproject.toml`.
+
+```toml
+[tool.pytest]
+  addopts = ["-m", "not slow"]
+  markers = [
+    "slow: marks slow tests (deselect with '-m \"not slow\")",
+    "func: marks tests of functions (dselect with '-m \"not func\")"
+    "exceptions: marks tests of exceptions (dselect with '-m \"not exceptions\")"
+  ]
+```
+
+## Listing Markers
+
+Over time you may include multiple markers in your test suite. It is possible to list these with `pytest --markers`
+which will show custom markers as well as built-ins.
+
+## Summary
+
+Markers are a really useful feature of Pytest that makes it possible to run subsets of tests. As
+[documented](https://docs.pytest.org/en/stable/example/markers.html#marking-platform-specific-tests-with-pytest) this
+can be used to make tests platform specific, but as the above simple examples start to demonstrate they are highly
+flexible and customisable.
