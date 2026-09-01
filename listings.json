@@ -2,6 +2,7 @@
   {
     "listing": "/links.html",
     "items": [
+      "/posts/git-worktree-hooks/index.html",
       "/posts/pytest-testmon/index.html",
       "/posts/emacs_202509/index.html",
       "/posts/tmate/index.html",
@@ -22,8 +23,8 @@
       "/posts/r-resources/index.html",
       "/posts/gitlab-ci-pypi/index.html",
       "/posts/pre-commit-r/index.html",
-      "/posts/pre-commit-hooks/index.html",
       "/posts/sphinx-docs/index.html",
+      "/posts/pre-commit-hooks/index.html",
       "/posts/python-packaging/index.html",
       "/posts/browser-extensions/index.html",
       "/posts/pre-commit-ci/index.html",
@@ -31,41 +32,55 @@
       "/posts/whos_to_blame/index.html",
       "/posts/pre-commit-updates/index.html",
       "/posts/cli-alternatives/index.html",
-      "/posts/pre-commit/index.html",
       "/posts/git-ssh/index.html",
+      "/posts/pre-commit/index.html",
       "/posts/linting/index.html"
     ]
   },
   {
-    "listing": "/posts/emacs_202509/index.html",
+    "listing": "/about.html",
+    "items": [
+      "/posts/git-worktree-hooks/index.html",
+      "/posts/pytest-testmon/index.html",
+      "/posts/emacs_202509/index.html",
+      "/posts/tmate/index.html",
+      "/posts/emacs-yasnippet/index.html",
+      "/posts/jujutsu/index.html",
+      "/posts/quarto-cname/index.html",
+      "/posts/pytest-mpl/index.html",
+      "/posts/pennine-way/index.html",
+      "/posts/virtualenv-hooks/index.html",
+      "/posts/pytest-xfail/index.html",
+      "/posts/git-worktrees/index.html",
+      "/posts/git-amend-fixup/index.html",
+      "/posts/git-remotes-revisited/index.html",
+      "/posts/pytest-param/index.html",
+      "/posts/virtualenvwrapper/index.html",
+      "/posts/repository-review/index.html",
+      "/posts/git-remotes/index.html",
+      "/posts/r-resources/index.html",
+      "/posts/gitlab-ci-pypi/index.html",
+      "/posts/pre-commit-r/index.html",
+      "/posts/sphinx-docs/index.html",
+      "/posts/pre-commit-hooks/index.html",
+      "/posts/python-packaging/index.html",
+      "/posts/browser-extensions/index.html",
+      "/posts/pre-commit-ci/index.html",
+      "/posts/running-2022/index.html",
+      "/posts/whos_to_blame/index.html",
+      "/posts/pre-commit-updates/index.html",
+      "/posts/cli-alternatives/index.html",
+      "/posts/git-ssh/index.html",
+      "/posts/pre-commit/index.html",
+      "/posts/linting/index.html"
+    ]
+  },
+  {
+    "listing": "/posts/jujutsu/index.html",
     "items": []
   },
   {
-    "listing": "/posts/r-resources/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-remotes-revisited/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/sphinx-docs/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/quarto-cname/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/virtualenv-hooks/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-ssh/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-updates/index.html",
+    "listing": "/posts/pre-commit-hooks/index.html",
     "items": []
   },
   {
@@ -73,104 +88,15 @@
     "items": []
   },
   {
-    "listing": "/posts/git-worktrees/index.html",
+    "listing": "/posts/virtualenv-hooks/index.html",
     "items": []
   },
   {
-    "listing": "/posts/whos_to_blame/index.html",
+    "listing": "/posts/r-resources/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pennine-way/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/emacs-yasnippet/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/running-2022/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/jujutsu/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/gitlab-ci-pypi/index.html",
-    "items": []
-  },
-  {
-    "listing": "/index.html",
-    "items": [
-      "/posts/pytest-testmon/index.html",
-      "/posts/emacs_202509/index.html",
-      "/posts/tmate/index.html",
-      "/posts/emacs-yasnippet/index.html",
-      "/posts/jujutsu/index.html",
-      "/posts/quarto-cname/index.html",
-      "/posts/pytest-mpl/index.html",
-      "/posts/pennine-way/index.html",
-      "/posts/virtualenv-hooks/index.html",
-      "/posts/pytest-xfail/index.html",
-      "/posts/git-worktrees/index.html",
-      "/posts/git-amend-fixup/index.html",
-      "/posts/git-remotes-revisited/index.html",
-      "/posts/pytest-param/index.html",
-      "/posts/virtualenvwrapper/index.html",
-      "/posts/repository-review/index.html",
-      "/posts/git-remotes/index.html",
-      "/posts/r-resources/index.html",
-      "/posts/gitlab-ci-pypi/index.html",
-      "/posts/pre-commit-r/index.html",
-      "/posts/pre-commit-hooks/index.html",
-      "/posts/sphinx-docs/index.html",
-      "/posts/python-packaging/index.html",
-      "/posts/browser-extensions/index.html",
-      "/posts/pre-commit-ci/index.html",
-      "/posts/running-2022/index.html",
-      "/posts/whos_to_blame/index.html",
-      "/posts/pre-commit-updates/index.html",
-      "/posts/cli-alternatives/index.html",
-      "/posts/pre-commit/index.html",
-      "/posts/git-ssh/index.html",
-      "/posts/linting/index.html"
-    ]
-  },
-  {
-    "listing": "/posts/pre-commit-hooks/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/linting/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/python-packaging/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit-r/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/tmate/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/repository-review/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pre-commit/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/pytest-testmon/index.html",
-    "items": []
-  },
-  {
-    "listing": "/posts/git-amend-fixup/index.html",
+    "listing": "/posts/pre-commit-updates/index.html",
     "items": []
   },
   {
@@ -178,7 +104,23 @@
     "items": []
   },
   {
-    "listing": "/posts/git-remotes/index.html",
+    "listing": "/posts/git-remotes-revisited/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/linting/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/repository-review/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-worktrees/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pytest-testmon/index.html",
     "items": []
   },
   {
@@ -186,11 +128,39 @@
     "items": []
   },
   {
-    "listing": "/posts/pre-commit-ci/index.html",
+    "listing": "/posts/pre-commit-r/index.html",
     "items": []
   },
   {
-    "listing": "/posts/pytest-param/index.html",
+    "listing": "/posts/git-remotes/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-ssh/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/running-2022/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/quarto-cname/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/emacs_202509/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/emacs-yasnippet/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-amend-fixup/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/git-worktree-hooks/index.html",
     "items": []
   },
   {
@@ -198,12 +168,49 @@
     "items": []
   },
   {
+    "listing": "/posts/pytest-param/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/python-packaging/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/gitlab-ci-pypi/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pre-commit-ci/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/pennine-way/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/tmate/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/sphinx-docs/index.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/whos_to_blame/index.html",
+    "items": []
+  },
+  {
     "listing": "/posts/pytest-mpl/index.html",
     "items": []
   },
   {
-    "listing": "/about.html",
+    "listing": "/index.html",
     "items": [
+      "/posts/git-worktree-hooks/index.html",
       "/posts/pytest-testmon/index.html",
       "/posts/emacs_202509/index.html",
       "/posts/tmate/index.html",
@@ -224,8 +231,8 @@
       "/posts/r-resources/index.html",
       "/posts/gitlab-ci-pypi/index.html",
       "/posts/pre-commit-r/index.html",
-      "/posts/pre-commit-hooks/index.html",
       "/posts/sphinx-docs/index.html",
+      "/posts/pre-commit-hooks/index.html",
       "/posts/python-packaging/index.html",
       "/posts/browser-extensions/index.html",
       "/posts/pre-commit-ci/index.html",
@@ -233,8 +240,8 @@
       "/posts/whos_to_blame/index.html",
       "/posts/pre-commit-updates/index.html",
       "/posts/cli-alternatives/index.html",
-      "/posts/pre-commit/index.html",
       "/posts/git-ssh/index.html",
+      "/posts/pre-commit/index.html",
       "/posts/linting/index.html"
     ]
   }
