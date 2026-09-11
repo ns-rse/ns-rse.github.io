@@ -9,7 +9,7 @@
 <link>https://blog.nshephard.dev/#category=github</link>
 <atom:link href="https://blog.nshephard.dev/index-github.xml" rel="self" type="application/rss+xml"/>
 <description>Software development in a Research Environment</description>
-<generator>quarto-1.6.11</generator>
+<generator>quarto-1.9.2</generator>
 <lastBuildDate>Tue, 10 Jun 2025 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Debugging GitHub Actions with tmate</title>
@@ -41,7 +41,7 @@
 <section id="testing-on-multiple-oss-and-versions" class="level3">
 <h3 class="anchored" data-anchor-id="testing-on-multiple-oss-and-versions">Testing on multiple OS’s and versions</h3>
 <p>You can configure your GitHub Action to run on a range of operating systems by setting up single or multi-dimension <code>matrix</code> under the <code>strategy</code>. The example below<sup>1</sup> tests multiple operating systems and multiple versions of Python.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -244,12 +244,12 @@ background-color: null;
 font-style: inherit;"> ${{ matrix.python-version }}</span></span>
 <span id="cb1-15"><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">    ...</span></span></code></pre></div>
+font-style: inherit;">    ...</span></span></code></pre></div></div>
 </section>
 <section id="tmate-github-action" class="level3">
 <h3 class="anchored" data-anchor-id="tmate-github-action"><code>tmate</code> GitHub Action</h3>
 <p>To use <code>tmate</code> to debug your workflow you need to add the <a href="https://mxschmitt.github.io/action-tmate/" target="_blank">action-tmate</a> to the <code>.github/workflows/&lt;action&gt;.yaml</code> you wish to debug. There are a lot of options available but a very basic configuration is shown below and you should add this as the last step in your workflow.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">steps</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -304,7 +304,7 @@ font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">5</span></span></code></pre></div>
+font-style: inherit;">5</span></span></code></pre></div></div>
 <p>This will use the <code>mxschmitt/action-tmate</code> step <em>only</em> if there is a failure and will make the SSH session on the runner available for just 5 minutes. Its quite likely that it will take me than 5 minutes to work out what is causing the error and so after have encountered an error I typically increase this amount to allow me longer to work on debugging the problem.</p>
 </section>
 </section>
@@ -374,9 +374,7 @@ font-style: inherit;">5</span></span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
@@ -457,7 +455,7 @@ Tmate.”</span> June 10, 2025. <a href="https://blog.nshephard.dev/posts/tmate/
 <li>Pushes back up-stream.</li>
 </ol>
 <p>You should already have added a <a href="https://github.com/quarto-dev/quarto-actions" target="_blank">publish action</a> to your repository which runs the <a href="https://github.com/quarto-dev/quarto-actions" target="_blank"><code>quarto-dev/quarto-actions/publish</code> GitHub Action</a>. This runs <code>quarto publish $TARGET</code> where <code>$TARGET</code> is set by the chosen output configured in the <code>target</code> argument. In this example <code>gh-pages</code></p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -517,9 +515,9 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> ${{ secrets.GITHUB_TOKEN }}</span></span></code></pre></div>
+font-style: inherit;"> ${{ secrets.GITHUB_TOKEN }}</span></span></code></pre></div></div>
 <p>After this you should add the following, substituting <code>blog.nshephard.dev</code> for your own domain.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -548,7 +546,7 @@ font-style: inherit;">|</span></span>
 <span id="cb2-6">          echo 'blog.nshephard.dev &gt; CNAME</span>
 <span id="cb2-7">          git add CNAME</span>
 <span id="cb2-8">          git commit -m "Adding CNAME"</span>
-<span id="cb2-9">          git push</span></code></pre></div>
+<span id="cb2-9">          git push</span></code></pre></div></div>
 <p>This…</p>
 <ol type="1">
 <li>Removes the lingering <code>renv/activate.R</code> which prevents switching branches.</li>
@@ -565,7 +563,7 @@ font-style: inherit;">|</span></span>
 <h2 class="anchored" data-anchor-id="solution-2---the-correct-way-of-doing-this">Solution 2 - The correct way of doing this</h2>
 <p>Turns out the <a href="https://github.com/quarto-dev/quarto-actions/issues/118#issuecomment-2445375569" target="_blank">answer</a> provided by <code>@cscheid</code> is, unsurprisingly, much simpler.</p>
 <p>You need to add <code>CNAME</code> in the <code>_quarto.yaml</code> so that it is included in the project.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">project</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -601,9 +599,9 @@ font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"CNAME"</span></span></code></pre></div>
+font-style: inherit;">"CNAME"</span></span></code></pre></div></div>
 <p>You <em>also</em> have to create and add the <code>CNAME</code> file with your domain to the repository.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -616,7 +614,7 @@ background-color: null;
 font-style: inherit;">git commit -m "Adding CNAME to repository"</span></span>
 <span id="cb4-4"><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">git push</span></span></code></pre></div>
+font-style: inherit;">git push</span></span></code></pre></div></div>
 <p>Then, because it’s included in the resources, the file will carry through/persist when the publishing action runs to create the <code>gh-pages</code> branch with each new update and run on GitHub Actions :magic:.</p>
 </section>
 <section id="related" class="level2">
@@ -632,9 +630,7 @@ font-style: inherit;">git push</span></span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
   author = {Shephard, Neil},
   title = {Quarto {Custom} Domain on {GitHub} {Pages}},
@@ -676,7 +672,7 @@ Pages.”</span> November 14, 2024. <a href="https://blog.nshephard.dev/posts/qu
 <section id="listing-remotes" class="level2">
 <h2 class="anchored" data-anchor-id="listing-remotes">Listing Remotes</h2>
 <p>List remotes with <code>git remote [-v]</code> the <code>-v</code> flag will show the URLs that are stored for the short-cut.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git remote <span class="at" style="color: #657422;
 background-color: null;
@@ -720,9 +716,9 @@ background-color: null;
 font-style: inherit;">push</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 <p>You can get more information about a remote using <code>git remote show origin</code></p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git remote show origin</span>
 <span id="cb2-2"> <span class="ex" style="color: null;
@@ -820,33 +816,33 @@ background-color: null;
 font-style: inherit;">date</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 <p>This can be useful to show you what you need to tidy up if there are lots of stale branches around. In this example I can run <code>git remote prune origin</code> as advised to remove these.</p>
 <section id="default-remote" class="level3">
 <h3 class="anchored" data-anchor-id="default-remote">Default Remote</h3>
 <p>The default remote to push to can be set with the following command, it will likely already be set to <code>origin</code> so this would not change anything.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> config <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">--local</span> remote.pushDefault origin</span></code></pre></div>
+font-style: inherit;">--local</span> remote.pushDefault origin</span></code></pre></div></div>
 <p>This adds the following to your <code>.git/config</code> if it wasn’t already there.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">[remote]</span></span>
 <span id="cb4-2">    <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">pushDefault</span> = origin</span></code></pre></div>
+font-style: inherit;">pushDefault</span> = origin</span></code></pre></div></div>
 </section>
 </section>
 <section id="adding-remotes" class="level2">
 <h2 class="anchored" data-anchor-id="adding-remotes">Adding Remotes</h2>
 <p>It is straight forward to add a remote with <code>git remote add &lt;shortcut&gt; &lt;URL&gt;</code> where the URL is either the <code>https</code> or the <code>git</code> URL.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">❱</span> git remote add forgejo forgejo@forgejo.hopto.org:nshephard/mvdate.git</span></code></pre></div>
+font-style: inherit;">❱</span> git remote add forgejo forgejo@forgejo.hopto.org:nshephard/mvdate.git</span></code></pre></div></div>
 <p>This adds details to your <code>.git/config</code> so that it has the following</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">[remote</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -899,12 +895,12 @@ background-color: null;
 font-style: inherit;">remote</span> = origin</span>
 <span id="cb6-12">    <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">merge</span> = refs/heads/main</span></code></pre></div>
+font-style: inherit;">merge</span> = refs/heads/main</span></code></pre></div></div>
 <p>Two remotes are defined, <code>origin</code> and <code>forgejo</code>, the default to push to is set to <code>origin</code> and the <code>main</code> branch is setup to track the remote <code>origin</code>.</p>
 <section id="pushing-to-specific-remote" class="level3">
 <h3 class="anchored" data-anchor-id="pushing-to-specific-remote">Pushing to specific remote</h3>
 <p>With two remotes setup you can choose, at the branch level, where to push your changes by specifying the remote you wish to use. If you wanted to push a newly created branch, <code>change-just-for-forgejo</code>, to the newly added <code>forgejo</code> remote you would configure it with.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git switch <span class="at" style="color: #657422;
 background-color: null;
@@ -1018,9 +1014,9 @@ font-style: inherit;">branch</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'change-just-for-forgejo'</span> set up to track <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'forgejo/change-just-for-forgejo'</span>.</span></code></pre></div>
+font-style: inherit;">'forgejo/change-just-for-forgejo'</span>.</span></code></pre></div></div>
 <p>Git reports that the local <code>change-just-for-forgejo</code> has been setup to track <code>forgejo/change-just-for-forgejo</code> and the following entry has been added to <code>.git/config</code></p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">[branch</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -1032,12 +1028,12 @@ background-color: null;
 font-style: inherit;">"forgejo"</span></span>
 <span id="cb8-3">    <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div>
+font-style: inherit;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div></div>
 </section>
 <section id="a-note-on-ssh-ports" class="level3">
 <h3 class="anchored" data-anchor-id="a-note-on-ssh-ports">A Note on SSH Ports</h3>
 <p>If a remote is using a non-standard port for SSH connections (i.e.&nbsp;anything other than <code>22</code>) then you have to use a different format for specifying the remote URL. Instead of <code>forgejo@forgejo.hopto.org:nshephard/mvdate.git</code> you must explicitly state the protocol (<code>ssh://</code>) and include the port so that it reads <code>ssh://forgejo@forgejo.hopto.org:1234</code> and so to add it you would be added with the following</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git remote add forgejo ssh://forgejo@forgejo.hopto.org:1234/nshephard/mvdate.git</span>
 <span id="cb9-2"><span class="ex" style="color: null;
@@ -1084,7 +1080,7 @@ background-color: null;
 font-style: inherit;">push</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 <p>I use a non-standard port and so use that convention for the remainder of this article. If you do not use a non-standard port you can either change the port (<code>1234</code>) to the default (<code>22</code>) or use the conventional syntax for referring to the remote.</p>
 </section>
 </section>
@@ -1092,7 +1088,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <h2 class="anchored" data-anchor-id="mirroring-remotes">Mirroring Remotes</h2>
 <p>The really neat thing is that it is possible to have a local repository track multiple remotes, which means when you push your changes it will go to both. You could configure an alias to push to both of the remotes we currently have defined, but there is an excellent post on <a href="https://stackoverflow.com/a/14290145/1444043" target="_blank">StackOverflow</a> that shows how to do this with Git itself because each remote can have multiple <code>pushurls</code>.</p>
 <p>As we have added a second remote to our configuration our <code>.git/config</code> for <a href="https://gitlab.com/nsshephard/mvdate" target="_blank">mvdate</a> our configuration currently looks like this.</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">[remote</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -1156,9 +1152,9 @@ background-color: null;
 font-style: inherit;">remote</span> = forgejo</span>
 <span id="cb10-15">    <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div>
+font-style: inherit;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div></div>
 <p>As above, there are two remotes are defined, <code>origin</code> and <code>forgejo</code>, the default to push to is set to <code>origin</code> and the <code>main</code> branch is setup to track <code>origin</code> whilst the <code>change-just-for-forgejo</code> branch is setup to track <code>forgejo</code>.</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git remote <span class="at" style="color: #657422;
 background-color: null;
@@ -1202,10 +1198,10 @@ background-color: null;
 font-style: inherit;">push</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 <p>How do we get the <code>origin</code> remote setup and configured to push to both gitlab and forgejo? This can be done using the <code>set-url --add --push</code> options to <code>git remote</code>, below we add <code>forgejo</code> as a push target to <code>origin</code>.</p>
 <p><strong>NB</strong> Note I use a non-standard SSH port in the following, see above note.</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git remote set-url <span class="at" style="color: #657422;
 background-color: null;
@@ -1256,9 +1252,9 @@ background-color: null;
 font-style: inherit;">push</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 <p>But this has removed the original <code>push</code> target under <code>origin</code> which pointed to <code>gitlab</code> so we need to add that back in.</p>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git remote set-url <span class="at" style="color: #657422;
 background-color: null;
@@ -1319,10 +1315,10 @@ background-color: null;
 font-style: inherit;">push</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 <p>We now have two <code>push</code> targets on <code>origin</code>, one pointing to <code>gitlab.com</code> (using the default port <code>22</code>) and one pointing to <code>forgejo.hopto.org</code> (on port <code>1234</code>) and as the default target is <code>origin</code> when we <code>git push</code> it will send the changes to both. We still have the <code>forgejo</code> remote defined and it only tracks the <code>forgejo</code> URL.</p>
 <p>We can test this with an empty commit on a new branch, <code>test-both</code>, which we first create.</p>
-<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git switch <span class="at" style="color: #657422;
 background-color: null;
@@ -1527,14 +1523,14 @@ font-style: inherit;">branch</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'test-both'</span> set up to track <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'origin/test-both'</span>.</span></code></pre></div>
+font-style: inherit;">'origin/test-both'</span>.</span></code></pre></div></div>
 <p>The output above shows that the branch <code>test-both</code> was pushed to both the URLs we have configured as push targets to <code>origin</code> and if you visit the repositories you will find the branches now exist there.</p>
 </section>
 <section id="deleting-remotes" class="level2">
 <h2 class="anchored" data-anchor-id="deleting-remotes">Deleting Remotes</h2>
 <p>In my use case I simply want to push both remotes so that they mirror each other so I can delete the <code>forgejo</code> remote. This will leave the push URL for that remote under the configuration for <code>origin</code> and allows us to set any branch to use the <code>origin</code> as a the remote and any changes will be pushed to both.</p>
 <p>There may be instances where you want to leave the additional remote in place if you wanted to push some changes just to that remote so its not essential that you remove it, but if you want to you can delete reference to a remote from your local configuration.</p>
-<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git remote remove forgejo</span>
 <span id="cb15-2"><span class="ex" style="color: null;
@@ -1571,9 +1567,9 @@ background-color: null;
 font-style: inherit;">push</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 <p>Because the <code>change-just-for-forgejo</code> was setup to track the <code>forejo</code> remote we would need to change that target, we can do so with the following</p>
-<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> git switch change-just-for-forgejo</span>
 <span id="cb16-2"><span class="ex" style="color: null;
@@ -1582,9 +1578,9 @@ font-style: inherit;">❱</span> git branch <span class="at" style="color: #6574
 background-color: null;
 font-style: inherit;">--set-upstream-to</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span>origin/change-just-for-forgejo change-just-for-forgejo</span></code></pre></div>
+font-style: inherit;">=</span>origin/change-just-for-forgejo change-just-for-forgejo</span></code></pre></div></div>
 <p>This changes the remote target for the branches definition and our configuration now looks like the following.</p>
-<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">[remote</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -1639,7 +1635,7 @@ background-color: null;
 font-style: inherit;">remote</span> = origin</span>
 <span id="cb17-14">    <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div>
+font-style: inherit;">merge</span> = refs/heads/change-just-for-forgejo</span></code></pre></div></div>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
@@ -1663,9 +1659,7 @@ font-style: inherit;">merge</span> = refs/heads/change-just-for-forgejo</span></
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2024,
   author = {Shephard, Neil},
   title = {Git {Remotes} {Revisited}},
@@ -1731,9 +1725,9 @@ Shephard, Neil. 2024. <span>“Git Remotes Revisited.”</span> February 17,
 <section id="git-at-the-command-line" class="level4">
 <h4 class="anchored" data-anchor-id="git-at-the-command-line">Git at the Command Line</h4>
 <p>You should have some instructions shown on GitHub one of which is <strong>…or push an existing repository from the command line</strong>. The first line of this is telling you how to add a new remote to the repository. called <code>origin</code> and to point towards the repository you have just created. You will likely already have an <code>origin</code> remote defined so you need to choose a different name and point it to the correct location.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> remote add private-work git@github.com:ns-rse/private-work</span></code></pre></div>
+font-style: inherit;">git</span> remote add private-work git@github.com:ns-rse/private-work</span></code></pre></div></div>
 </section>
 <section id="check-your-.gitconfig" class="level4">
 <h4 class="anchored" data-anchor-id="check-your-.gitconfig">Check your <code>.git/config</code></h4>
@@ -1746,17 +1740,17 @@ font-style: inherit;">git</span> remote add private-work git@github.com:ns-rse/p
 <p>Now that you have a secondary <code>remote</code> defined you can create a branch and set it to track the private remote you have created and configured. Create a new branch by using <code>git checkout -b</code></p>
 <section id="command-line" class="level4">
 <h4 class="anchored" data-anchor-id="command-line">Command Line</h4>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> checkout <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-b</span> private-feature</span></code></pre></div>
+font-style: inherit;">-b</span> private-feature</span></code></pre></div></div>
 <p>You then set the upstream using <code>--set-upstream-to</code> or its shorthand <code>-u</code>, at this stage you don’t have anything to include so make an empty commit</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> push <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">--set-upstream-to</span> private-work private-work</span></code></pre></div>
+font-style: inherit;">--set-upstream-to</span> private-work private-work</span></code></pre></div></div>
 </section>
 <section id="magit" class="level4">
 <h4 class="anchored" data-anchor-id="magit">Magit</h4>
@@ -1777,7 +1771,7 @@ font-style: inherit;">--set-upstream-to</span> private-work private-work</span><
 <h2 class="anchored" data-anchor-id="keeping-up-to-date">Keeping up to Date</h2>
 <p>The private repository you setup on GitHub/GitLab should now have a copy of the <code>private-work</code> branch you created locally.</p>
 <p>If you are collaborating with others the <code>main</code>/<code>master</code> branch may move ahead of yours as others work is merged in. You therefore need to regularly update your private branch by merging or rebasing from the <code>origin</code> rather than the <code>private-work</code> remote your branch is configured to track. The difference between merging and rebasing is beyond the scope of this article, there are pros and cons to each</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> checkout main</span>
 <span id="cb6-2"><span class="fu" style="color: #4758AB;
@@ -1788,14 +1782,14 @@ background-color: null;
 font-style: inherit;">git</span> checkout private-work</span>
 <span id="cb6-4"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> merge main</span></code></pre></div>
+font-style: inherit;">git</span> merge main</span></code></pre></div></div>
 <p>Or you can merge directly from origin with</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> checkout private-feature</span>
 <span id="cb7-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> merge origin/main</span></code></pre></div>
+font-style: inherit;">git</span> merge origin/main</span></code></pre></div></div>
 </section>
 <section id="checkout-someone-elses-private-branch" class="level2">
 <h2 class="anchored" data-anchor-id="checkout-someone-elses-private-branch">Checkout someone else’s private branch</h2>
@@ -1817,9 +1811,7 @@ font-style: inherit;">git</span> merge origin/main</span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
   author = {Shephard, Neil},
   title = {Git {Remotes}},
@@ -1859,7 +1851,7 @@ Shephard, Neil. 2023. <span>“Git Remotes.”</span> October 6, 2023. <a href="
 <section id="ruff" class="level3">
 <h3 class="anchored" data-anchor-id="ruff">Ruff</h3>
 <p><a href="https://github.com/charliermarsh/ruff" target="_blank">ruff</a> is a Python linter written in Rust which means its considerably faster than many native linters. It aims for parity with Flake8 and covers a lot of the linting that PyLint undertakes too. Its configured via <code>pyproject.toml</code> which makes incorporating it into your Python Package simple.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -1912,9 +1904,9 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> ruff</span></span></code></pre></div>
+font-style: inherit;"> ruff</span></span></code></pre></div></div>
 <p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a> worth reading to understand more on this.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[tool.ruff]</span></span>
@@ -1999,12 +1991,12 @@ font-style: inherit;">unfixable</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">[]</span></span></code></pre></div>
+font-style: inherit;">[]</span></span></code></pre></div></div>
 </section>
 <section id="black" class="level3">
 <h3 class="anchored" data-anchor-id="black">Black</h3>
 <p><a href="https://black.readthedocs.io/en/stable/index.html" target="_blank">Black</a> is an opinionated formatter for Python that is <a href="https://pep8.org/" target="_blank">PEP8</a> compliant. By using <code>black</code> to format your code you end up with a consistent style across the code base and commit changes end up being minimal. This helps speed up code-review of pull-requests.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -2077,9 +2069,9 @@ background-color: null;
 font-style: inherit;">python</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/pre-commit-updating/" target="_blank">Python Packaging</a> worth reading to understand more on this.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[tool.black]</span></span>
@@ -2119,13 +2111,13 @@ font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\\</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">.pyi?$"</span></span></code></pre></div>
+font-style: inherit;">.pyi?$"</span></span></code></pre></div></div>
 </section>
 <section id="pydocstyle" class="level3">
 <h3 class="anchored" data-anchor-id="pydocstyle">pydocstyle</h3>
 <p>You can check your docstrings are correctly written using the <a href="https://www.pydocstyle.org/en/stable/usage.html#usage-with-the-pre-commit-git-hooks-framework" target="_blank">pydocstyle</a> hook.</p>
 <p>Its pretty straight-forward to use and accepts arguments so you can pass all the command line options you might want to use into the hook when it runs. It supports three different doc string styles, <code>pep257</code>, <code>numpy</code> and <code>google</code>.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -2196,9 +2188,9 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> --ignore=D101,D2</span></span></code></pre></div>
+font-style: inherit;"> --ignore=D101,D2</span></span></code></pre></div></div>
 <p>Alternatively you can add configuration options to your projects <code>pyproject.toml</code> under a <code>[tool.pydocstyle]</code> section.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[tool.pydocstyle]</span></span>
@@ -2226,13 +2218,13 @@ background-color: null;
 font-style: inherit;">"D2"</span></span>
 <span id="cb6-6"><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="markdown-linting" class="level2">
 <h2 class="anchored" data-anchor-id="markdown-linting">Markdown Linting</h2>
 <p><a href="https://github.com/DavidAnson/markdownlint-cli2" target="_blank">markdownlint-cli2</a> is a useful and highly configurable hook for linting <a href="https://www.markdownguide.org" target="_blank">Markdown</a> and <a href="https://commonmark.org/" target="_blank">CommonMark</a>. I wanted to use it on this blog though which is written using <a href="https://quarto.org/docs/authoring/markdown-basics.html" target="_blank">Quarto</a> and therefore uses <a href="https://pandoc.org/MANUAL.html#pandocs-markdown" target="_blank">PandocMarkdown</a> with files that have extension <code>.qmd</code>. I therefore enable the hook in <code>.pre-commit-config.yaml</code> with a configuration file specified</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -2301,9 +2293,9 @@ background-color: null;
 font-style: inherit;">.markdownlin-cli2.yaml</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>..and add a sample configuration file (e.g.&nbsp;<code>.mardownlint-cli2.yaml</code> although other formats such as JSON can be used) is shown below and <code>markdownlint-cli2</code> picks this up automatically.</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Configuration</span></span>
 <span id="cb8-2"><span class="fu" style="color: #4758AB;
@@ -2426,12 +2418,12 @@ font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
 background-color: null;
-font-style: inherit;">false</span></span></code></pre></div>
+font-style: inherit;">false</span></span></code></pre></div></div>
 </section>
 <section id="emacs-lisp" class="level2">
 <h2 class="anchored" data-anchor-id="emacs-lisp">Emacs Lisp</h2>
 <p>As I use <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> I have recourse to write some <a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/" target="_blank">Emacs Lisp</a> and so its useful to applying formatting to my <code>.el</code> files before committing them. <a href="https://github.com/eschulte/lisp-format" target="_blank">lisp-format</a> does the job nicely.</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -2534,7 +2526,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> lisp-format -i</span></span></code></pre></div>
+font-style: inherit;"> lisp-format -i</span></span></code></pre></div></div>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
@@ -2571,9 +2563,7 @@ font-style: inherit;"> lisp-format -i</span></span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
   author = {Shephard, Neil},
   title = {Pre-Commit : {Useful} {Hooks}},
@@ -2635,7 +2625,7 @@ Shephard, Neil. 2023. <span>“Pre-Commit : Useful Hooks.”</span> May 7,
 <section id="configuration-.pre-commit-config.yaml" class="level3">
 <h3 class="anchored" data-anchor-id="configuration-.pre-commit-config.yaml">Configuration (<code>.pre-commit-config.yaml</code>)</h3>
 <p>Whilst not required it is possible to configure the behaviour of <code>pre-commit.ci</code> by adding a <code>ci:</code> section to your <code>.pre-commit-config.yaml</code>. The fields are fairly self-explanatory as the example below shows. Its possible to toggle whether to <code>autofix_prs</code> and to set the <code>autofix_commit_msg</code>. The <code>autoupdate_schedule</code> can be set to <code>weekly</code>, <code>monthly</code> or <code>quarterly</code> along with a custom <code>autoupdate_commit_msg</code>. Finally you can optionally disable some hooks from being run only in <code>pre-commit.ci</code>.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ci</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -2706,7 +2696,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">]</span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"> # Optionally list ids of hooks to skip on CI</span></span></code></pre></div>
+font-style: inherit;"> # Optionally list ids of hooks to skip on CI</span></span></code></pre></div></div>
 </section>
 <section id="setup" class="level3">
 <h3 class="anchored" data-anchor-id="setup">Setup</h3>
@@ -2761,7 +2751,7 @@ font-style: inherit;"> # Optionally list ids of hooks to skip on CI</span></span
 <h2 class="anchored" data-anchor-id="gitlab">GitLab</h2>
 <p>As <a href="https://pre-commit.ci" target="_blank"><code>pre-commit.ci</code></a> doesn’t (yet) support GitLab integrating <code>pre-commit</code> into your GitLab Pipeline is a little more involved. What follows is based on the excellent post on <a href="https://stackoverflow.com/collectives/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g" target="_blank">StackOverflow</a> describing how to achieve this integration.</p>
 <p>You should already have a valid <code>.pre-commit-config.yaml</code> in place (if not work through <a href="https://ns-rse.github.io/posts/pre-commit/" target="_blank">Pre-commit : Protecting your future self (blog-post)</a>). To enable <code>pre-commit</code> on your <a href="https://docs.gitlab.com/ee/ci/pipelines/" target="_blank">GitLab Pipeline</a> you need to to have a pipeline in place. This is a file in the root of your repository called <code>.gitlab-ci.yml</code>. You need to add the following to this file…</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">variables</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -2823,7 +2813,7 @@ font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml'</span></span></code></pre></div>
+font-style: inherit;">'https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml'</span></span></code></pre></div></div>
 <p>This uses the <code>pre-commit-autofix.yaml</code> from <a href="https://gitlab.com/yesolutions/" target="_blank">yesolutions</a> to run <code>pre-commit</code> and as the configuration shows automatically apply fixes <code>pre-commit</code> makes to your code. There are more options available for configuring this pipeline and they are documented <a href="https://gitlab.com/yesolutions/gitlab-ci-templates" target="_blank">here</a>.</p>
 <p>Because you are allowing a third-party pipeline to access your repository when pushing the changes <code>pre-commit</code> makes back to your repository for this to work you <em>must</em> create a <a href="https://docs.gitlab.com/ee/user/project/settings/project_access_tokens.html" target="_blank">project access token</a>. Under the repositories <em>Settings &gt; Access Tokens</em> you can create a new token with an expiry date. You must then create a CI/CD variable called <code>PRE_COMMIT_ACCESS_TOKEN</code> with this token as a value.</p>
 <p>Once you have done this your CI/CD pipeline should show at the very start the <code>.pre</code> stage…</p>
@@ -2870,9 +2860,7 @@ font-style: inherit;">'https://gitlab.com/yesolutions/gitlab-ci-templates/raw/ma
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
   author = {Shephard, Neil},
   title = {Pre-Commit.ci : {Integrating} {Pre-Commit} into {CI/CD}},
@@ -2909,7 +2897,7 @@ CI/CD.”</span> February 6, 2023. <a href="https://blog.nshephard.dev/posts/pre
 <section id="usage" class="level2">
 <h2 class="anchored" data-anchor-id="usage">Usage</h2>
 <p>Git blame works on individual files and so requires a filename, there are a host of options, for example <code>-e</code> prints the authors email address <code>-w</code> ignores changes to white space and <code>-L 10,20</code> restricts output to the specified line range. If you want a the blame for a specific revision then you must include the hash.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> blame <span class="at" style="color: #657422;
 background-color: null;
@@ -2917,12 +2905,12 @@ font-style: inherit;">-e</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-w</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-L</span> 10,20 f923la git_blame.org</span></code></pre></div>
+font-style: inherit;">-L</span> 10,20 f923la git_blame.org</span></code></pre></div></div>
 </section>
 <section id="alias" class="level2">
 <h2 class="anchored" data-anchor-id="alias">Alias</h2>
 <p>Some people don’t like the pejorative nature of the word <code>blame</code>. That’s ok though, with a tweak to our configuration its possible to use the alias <code>praise</code> or simply <code>who</code>.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># blame alias</span></span>
 <span id="cb2-2"><span class="fu" style="color: #4758AB;
@@ -2947,13 +2935,13 @@ font-style: inherit;">--global</span> alias.who blame</span>
 background-color: null;
 font-style: inherit;">git</span> who <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-L1,30</span> git_blame.org</span></code></pre></div>
+font-style: inherit;">-L1,30</span> git_blame.org</span></code></pre></div></div>
 <p>For more detailed information on the array of options refer to the <a href="https://www.git-scm.com/docs/git-blame" target="_blank">official documentation</a> or see <code>git blame --help</code>.</p>
 </section>
 <section id="ignoring-blame" class="level2">
 <h2 class="anchored" data-anchor-id="ignoring-blame">Ignoring blame</h2>
 <p>Sometimes the case arises where you want to ignore blame. Perhaps the most common example is when an existing code base has been <a href="../linting" target="_blank">linted</a> to conform to a particular style guide. Looking at who performed these changes is not informative and masks who made the changes and why. Its possible to ignore specific commits on the command line with <code>--ignore-revs &lt;hash&gt; &lt;file&gt;</code>, but it will quickly become tedious to remember to ignore all blame across multiple commits. Fortunately you can save the commits to ignore to the file <code>.git-blame-ignore-revs</code> (along with comments) so that they are stored. The full commit (40 characters) of hashes should be used.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># PEP8 compliance for module X</span></span>
 <span id="cb3-2"><span class="ex" style="color: null;
@@ -2965,20 +2953,20 @@ background-color: null;
 font-style: inherit;"># PEP8 compliance for module Y</span></span>
 <span id="cb3-5"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">db27fa5f18299ca631efc430512a3f358c2b154f</span></span></code></pre></div>
+font-style: inherit;">db27fa5f18299ca631efc430512a3f358c2b154f</span></span></code></pre></div></div>
 <p>Now that you have the revisions in place to be ignored when reporting blame you can choose not to use it.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> blame <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">--ignore-revs-file</span> .git-blame-ignore-revs git_blame.org</span></code></pre></div>
+font-style: inherit;">--ignore-revs-file</span> .git-blame-ignore-revs git_blame.org</span></code></pre></div></div>
 <p>…but this is tedious to remember to have to do each time and ideally others on your team should use this file too. You can configure Git to use this file by modifying the local configuration. Make sure to add it to your repository so that others can use it.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> config blame.ignoreRevsFile .git-blame-ignore-revs</span>
 <span id="cb5-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> add .git-blame-ignore-revs</span></code></pre></div>
+font-style: inherit;">git</span> add .git-blame-ignore-revs</span></code></pre></div></div>
 <p>As of <a href="https://github.com/orgs/community/discussions/5033#discussioncomment-2318478" target="_blank">2022-03-08</a> GitHub will also <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file#ignore-commits-in-the-blame-view" target="_blank">ignore commits in the blame view</a> that are listed in <code>.git-blame-ignore-revs</code> providing this file is in the root of your project folder.</p>
 </section>
 <section id="links" class="level2">
@@ -3006,9 +2994,7 @@ font-style: inherit;">git</span> add .git-blame-ignore-revs</span></code></pre><
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
   author = {Shephard, Neil},
   title = {Who’s to {Blame}},
@@ -3044,7 +3030,7 @@ Shephard, Neil. 2022. <span>“Who’s to Blame.”</span> December 17, 2022.
 <section id="pre-commit-hooks" class="level2">
 <h2 class="anchored" data-anchor-id="pre-commit-hooks">Pre-commit hooks</h2>
 <p>A lot of the power of <code>pre-commit</code> comes from the vast array of <a href="https://pre-commit.com/hooks.html" target="_blank">hooks</a> that are available that users make available. These are included under <code>repos:</code> section of the <code>.pre-commit-config.yaml</code> and typically require a minimum of the <code>repo:</code> and the <code>rev:</code> to use and then optionally a <code>hooks:</code> section. The <code>sample-config</code> that <code>pre-commit</code> will auto-generate looks like…</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -3140,9 +3126,9 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> check-added-large-files</span></span></code></pre></div>
+font-style: inherit;"> check-added-large-files</span></span></code></pre></div></div>
 <p>After finding a repository and hook that you wish to use <a href="https://pre-commit.com/hooks.html" target="_blank">hooks</a> repository you need to add it to your <code>.pre-commit-config.yaml</code>. Here we add the <a href="https://github.com/PyCQA/pylint" target="_blank"><code>pylint</code></a> repository and whilst it only has one hook we explicitly add it.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -3284,14 +3270,14 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> pylint</span></span></code></pre></div>
+font-style: inherit;"> pylint</span></span></code></pre></div></div>
 <p>If a repository has more than one <code>hook</code> available then it can be enabled by listing its <code>id:</code> as is the case in the <code>hooks</code> above for the <code>pre-commit-hooks</code> repository.</p>
 </section>
 <section id="local-hooks" class="level2">
 <h2 class="anchored" data-anchor-id="local-hooks">Local Hooks</h2>
 <p>In some instances the provisioned repositories do not always meet the requirements. One example of this is the <a href="https://github.com/pycqa/pylint" target="_blank">pylint action</a> which parses the code-base to detect errors using <a href="https://pylint.pycqa.org/en/latest/" target="_blank">pylint</a>. Typically most Python packages have their own dependencies but because the Pylint action pulls down and uses its own virtual environment these packages are not installed. As a consequence <code>pylint</code> reports a lot of <code>import-error</code> as its unable to import the required dependencies.</p>
 <p>The solution to this is to write a local hook, which instead of defining a GitHub repository as the <code>repo:</code> uses the value <code>local</code>. Thus to run <code>pylint</code> in a local environment from <code>pre-commit</code> you would add the following to your <code>.pre-commit-config.yaml</code></p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -3475,13 +3461,13 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> \.py$</span></span></code></pre></div>
+font-style: inherit;"> \.py$</span></span></code></pre></div></div>
 <p>For this to work you would have to ensure that you have a virtual environment activated that includes the package dependencies, including <code>pylint</code>, when you make you <code>git commit</code> so that <code>pre-commit</code> can find and import all the required packages.</p>
 </section>
 <section id="updating-pre-commit" class="level2">
 <h2 class="anchored" data-anchor-id="updating-pre-commit">Updating <code>pre-commit</code></h2>
 <p>After adding a new repo and hook it will not be immediately ready to use as the environment has not been initialised. You can wait until your next commit or force this with the <code>autoupdate</code> option. This will update <em>all</em> repositories that are defined in your configuration.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">$</span> pre-commit autoupdate</span>
 <span id="cb4-2"><span class="ex" style="color: null;
@@ -3502,13 +3488,13 @@ background-color: null;
 font-style: inherit;">]</span> Initializing environment for https://github.com/PyCQA/pylint.</span>
 <span id="cb4-4"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">already</span> up to date.</span></code></pre></div>
+font-style: inherit;">already</span> up to date.</span></code></pre></div></div>
 </section>
 <section id="repository-changes" class="level2">
 <h2 class="anchored" data-anchor-id="repository-changes">Repository Changes</h2>
 <p>Sometimes, albeit rarely, repositories change their location as was the case recently when <a href="https://gitlab.com/PyCQA/flake8" target="_blank">flake8</a> moved from <a href="https://gitlab.com" target="_blank">GitLab</a> to <a href="https://github.com/PyCQA/flake8" target="_blank">GitHub</a>. As a consequence any <code>pre-commit</code> that uses <code>flake8</code> repo/hook and configured to run in Continuous Integration pipelines failed as it was unable to download and run the <code>flake8</code> environment. The solution is simply to update the <code>repo:</code>.</p>
 <p>Before this change the entry for <code>flake8</code> looked like…</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
@@ -3616,9 +3602,9 @@ background-color: null;
 font-style: inherit;">python</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>To update to use the new repository it should point to <code>github.com</code> as shown below.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
@@ -3726,7 +3712,7 @@ background-color: null;
 font-style: inherit;">python</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>After making this change you have to <code>pre-commit autoupdate</code> to force downloading and updating from the new source, otherwise your existing older revision will be used locally.</p>
 </section>
 <section id="links" class="level2">
@@ -3747,9 +3733,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
   author = {Shephard, Neil},
   title = {Pre-Commit : {Customising} and {Updating}},
@@ -3771,244 +3755,6 @@ Updating.”</span> November 15, 2022. <a href="https://blog.nshephard.dev/posts
   <guid>https://blog.nshephard.dev/posts/pre-commit-updates/</guid>
   <pubDate>Tue, 15 Nov 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52358442614_416d014454_k.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Git : Custom SSH credentials for git repositories</title>
-  <dc:creator>Neil Shephard</dc:creator>
-  <link>https://blog.nshephard.dev/posts/git-ssh/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>How to configure individual Git repositories to use specific SSH keys. This is useful if you have more than one account on a forge, for example a personal and work account.</p>
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>Typically when pushing and pulling changes to a forge such as <a href="https://github.com" target="_blank">GitHub</a>, <a href="https://gitlab.com" target="_blank">GitLab</a> or <a href="https://codeberg.org" target="_blank">Codeberg</a> you use an SSH (<em>S</em>ecure <em>SH</em>ell) key to authenticate that you have permission to access the repository.</p>
-</section>
-<section id="ssh-keys" class="level2">
-<h2 class="anchored" data-anchor-id="ssh-keys">SSH Keys</h2>
-<section id="concept" class="level3">
-<h3 class="anchored" data-anchor-id="concept">Concept</h3>
-<p>SSH keys are, in conjunction with “keychains”, used to save you having to enter a password each time you connect from one computer to another. They are generated on your computer and consist of two parts, a private key which remains on your computer and a public key which you place on remote computers you wish to connect to. There is a password associated with your key which is required to “unlock” your private key on your computer. Only an unlocked private key will match with a public key. Think of the public key as the lock on your front door, and the private key the key you carry on your traditional, physical, keychain/keyring. Only when the two match will things be unlocked, although you have to unlock your private key when you want to use it just as you have to get your keys out of your pocket (although “keychains” help with this).</p>
-</section>
-<section id="generation" class="level3">
-<h3 class="anchored" data-anchor-id="generation">Generation</h3>
-<p>There are different algorithms for generating SSH key pairs. DSA is no longer considered secure and RSA keys should have at least 2048-bits if not 4096-bits. A good choice these days is to use an elliptic curve based key such as ed25519 as they are shorter and faster. For more on why you should use this key see the article <a href="https://blog.g3rt.nl/upgrade-your-ssh-keys.html" target="_blank">Upgrade your SSH keys!</a>.</p>
-<p>To generate a key use the following command entering a secure (i.e.&nbsp;<a href="xkcd.com/936/" target="_blank">long</a>) password.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">ssh-keygen</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-o</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-a</span> 100 <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-t</span> ed25519</span></code></pre></div>
-<p>You will be prompted for a filename to save your keys to, so you should know where to find them (the default is <code>~/.ssh/id_ed25519[.pub]</code>). You have a private key <code>~/.ssh/id_ed25519</code> and a public <code>~/.ssh/id_ed25519.pub</code> and we will use this to set up authentication on your Git Forge.</p>
-</section>
-<section id="forge-configuration" class="level3">
-<h3 class="anchored" data-anchor-id="forge-configuration">Forge Configuration</h3>
-<p>Under your account settings on your chosen Git Forge navigate to <em>Settings &gt; SSH and GPG Keys</em> and select <em>Add New Key</em> on (<a href="https://github.com/settings/keys" target="_blank">GitHub</a>). On GitLab navigate to <em>Preferences &gt; SSH Keys</em> <a href="https://gitlab.com/-/profile/keys" target="_blank">GitLab</a>), this page allows you to add a new key.</p>
-<p>You need to copy and paste your public key into the <code>Key</code> box on these pages and give it a name (typically the hostname of your computer is a good choice). To view your public key simply use <code>cat</code> and copy and paste it. You can optionally choose to set an expiration date for your key which is good practice but means you have to generate new keys in the future.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">cat</span> ~/.ssh/id_ed25519.pub</span></code></pre></div>
-</section>
-</section>
-<section id="git-global-ssh-configuration" class="level2">
-<h2 class="anchored" data-anchor-id="git-global-ssh-configuration">Git Global SSH Configuration</h2>
-<p>Typically your global configuration for which key to use is set in <code>~/.ssh/config</code> with an entry similar to the below.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">Host</span> github.com</span>
-<span id="cb3-2">     <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">User</span> git</span>
-<span id="cb3-3">     <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">Port</span> 22</span>
-<span id="cb3-4">     <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">PreferredAuthentications</span> publickey</span>
-<span id="cb3-5">     <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">IdentityFile</span> ~/.ssh/id_ed25519</span></code></pre></div>
-<p>Here it uses the User name <code>git</code> on port <code>22</code>. The preferred authentication method is using a <code>publickey</code> and the private key used is stored locally at <code>~/.ssh/id_ed25519</code>.</p>
-<p>When asked to connect to a forge using SSH (e.g.&nbsp;<code>git pull</code> or <code>git push</code>) will look through the <code>~/.ssh/config</code> file to see if there is a configuration section that matches the target and if so use the configuration defined there-in. You will then be prompted for your SSH private key password.</p>
-<section id="what-are-keychains" class="level3">
-<h3 class="anchored" data-anchor-id="what-are-keychains">What are Keychains?</h3>
-<p>You may be wondering how an SSH key makes your life easier, you are still prompted to enter a password when trying to interact with a Git Forge, or use it in a more traditional manner to connect over SSH to another server. This is where the magic of a “keychain” steps in to make your life easier, you still have to enter a password but only once to add your SSH key to the “keychain”. Typically keychains are front-ends for interacting with and managing <a href="https://www.ssh.com/academy/ssh/agent" target="_blank">SSH agent</a>. The name is apt since you add your SSH key to the keychain once, typically on log-in, and are asked for your password to unlock it and then stores it in the SSH agent. Then each time SSH requires an SSH key it retrieves it from the keychain rather than prompting you for a password.</p>
-<p>There are many different implementations of keychain such as the <a href="https://www.funtoo.org/Funtoo:Keychain" target="_blank">Funtoo Keychain Project</a>, <a href="https://wiki.gnome.org/Apps/Seahorse" target="_blank">Seahorse</a> the GNOME GUI management tool,</p>
-</section>
-</section>
-<section id="git-per-repository-configuration" class="level2">
-<h2 class="anchored" data-anchor-id="git-per-repository-configuration">Git Per Repository Configuration</h2>
-<p>We now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be desirable if you have two accounts on the same forge e.g.&nbsp;both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you can configure each repository to use a specific key (<a href="https://superuser.com/a/912281" target="_blank">source</a>). At the command line…</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">cd</span> a/git/repository</span>
-<span id="cb4-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git</span> config core.sshCommand <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"ssh -i ~/.ssh/work_ed25519 -F /dev/null"</span></span>
-<span id="cb4-3"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git</span> config <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">--local</span> user.name <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Username"</span></span>
-<span id="cb4-4"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">git</span> config <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">--local</span> user.email <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"repos@username.com"</span></span></code></pre></div>
-<p>This adds the following to the repositories configuration which is stored under <code>.git/config</code> and you can of course enter this directly to the configuration file yourself.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[core]</span></span>
-<span id="cb5-2">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-F</span> /dev/null</span>
-<span id="cb5-3"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[user]</span></span>
-<span id="cb5-4">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">name</span> = Username</span>
-<span id="cb5-5">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">email</span> = repos@username.com</span></code></pre></div>
-<p>What is this doing? Well it’s instructing Git to run ssh using the private key file (with the <code>-i</code> flag to specify the <code>identity_file</code>) that is located at <code>~/.ssh/work_ed25519</code>. Providing you have…</p>
-<ol type="a">
-<li>Already uploaded the public key (<code>work_ed25519.pub</code>) to your GitHub account.</li>
-<li>Stored this key in a Keychain as described above.</li>
-</ol>
-<p>…you shouldn’t be prompted for a password.</p>
-<p>You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote <code>origin</code> (typically a forge such as GitHub, GitLab, Codeberg or so forth). If however you have multiple projects you wish to setup with an alternative SSH key configuration it can be tedious to configure each repository. Thankfully Git &gt;= 2.13 introduced <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank">Conditional includes</a> to the configuration.</p>
-</section>
-<section id="conditional-includes" class="level2">
-<h2 class="anchored" data-anchor-id="conditional-includes">Conditional Includes</h2>
-<p>You global configuration is stored in <code>~/.gitconfig</code> and defines key variables such <code>user</code> and <code>name</code>, the default <code>editor</code> and many other options, including a customised <code>sshCommand</code> as was added above to a local <code>.git/config</code> file.</p>
-<p>Git 2.13 introduced the aforementioned <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank">Conditional includes</a> which works “_by setting a <code>includeIf.&lt;condition&gt;.path</code> variable to the name of the file to be included.”. For our current case-use the <code>&lt;condition&gt;</code> we are interested in is whether the <code>path</code>, which is interpreted as a pattern, is a <code>gitdir</code> then we include what follows.</p>
-<p>For example, we place all of our work related Git repositories under the <code>~/work/</code> directory and wish to use <code>~/.ssh/work_ed25519</code> for these and keep all of our personal repositories elsewhere and wish to use our main <code>~/.ssh/id_ed25519</code> key for those.</p>
-<p>Out <code>~/.gitconfig</code> should look like</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[user]</span></span>
-<span id="cb6-2">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">name</span> = Your Name</span>
-<span id="cb6-3">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">email</span> = your.personal@email.com</span>
-<span id="cb6-4"></span>
-<span id="cb6-5"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[includeIf</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"gitdir:~/work/"</span>]    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Directory paths ending in '/** has the globbing wildcard '**' added by default.</span></span>
-<span id="cb6-6">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">path</span> = ~/work/.gitconfig_work</span>
-<span id="cb6-7"></span>
-<span id="cb6-8"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[core]</span></span>
-<span id="cb6-9">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-i</span> ~/.ssh/id_ed25519 <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-F</span> /dev/null</span></code></pre></div>
-<p>Then our <code>~/work/.gitconfig_work</code> can contain the alternative values we wish to use for all repositories under the <code>~/work/</code> directory.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[user]</span></span>
-<span id="cb7-2">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">name</span> = Your Name</span>
-<span id="cb7-3">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">email</span> = your.work@email.com</span>
-<span id="cb7-4"></span>
-<span id="cb7-5"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">[core]</span></span>
-<span id="cb7-6">    <span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-F</span> /dev/null</span></code></pre></div>
-</section>
-<section id="commit-verification-with-ssh" class="level2">
-<h2 class="anchored" data-anchor-id="commit-verification-with-ssh">Commit verification with SSH</h2>
-<p>Verification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys is a recently supported feature on GitHub (see blog <a href="https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/" target="_blank">SSH commit verification now supported</a>) I felt it worth mentioning.</p>
-</section>
-<section id="links" class="level2">
-<h2 class="anchored" data-anchor-id="links">Links</h2>
-<section id="ssh" class="level3">
-<h3 class="anchored" data-anchor-id="ssh">SSH</h3>
-<ul>
-<li><a href="https://www.ssh.com/academy/ssh" target="_blank">SSH Academy</a></li>
-<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_1" target="_blank">OpenSSH Key Management, Part 1</a></li>
-<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_2" target="_blank">OpenSSH Key Management, Part 2</a></li>
-<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_3" target="_blank">OpenSSH Key Management, Part 3</a></li>
-</ul>
-</section>
-<section id="forges" class="level3">
-<h3 class="anchored" data-anchor-id="forges">Forges</h3>
-<ul>
-<li><a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh" target="_blank">GitHub | Connect with SSH</a></li>
-<li><a href="https://docs.gitlab.com/ee/user/ssh.html" target="_blank">GitLab | Use SSH keys to communicate with GitLab</a></li>
-<li><a href="https://docs.codeberg.org/security/ssh-key/" target="_blank">Codeberg | Adding an SSH key to your account</a></li>
-</ul>
-
-
-
-</section>
-</section>
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
-  author = {Shephard, Neil},
-  title = {Git : {Custom} {SSH} Credentials for Git Repositories},
-  date = {2022-08-28},
-  url = {https://blog.nshephard.dev/posts/git-ssh/},
-  langid = {en}
-}
-</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
-Shephard, Neil. 2022. <span>“Git : Custom SSH Credentials for Git
-Repositories.”</span> August 28, 2022. <a href="https://blog.nshephard.dev/posts/git-ssh/">https://blog.nshephard.dev/posts/git-ssh/</a>.
-</div></div></section></div> ]]></description>
-  <category>ssh</category>
-  <category>git</category>
-  <category>github</category>
-  <category>gitlab</category>
-  <category>keychain</category>
-  <guid>https://blog.nshephard.dev/posts/git-ssh/</guid>
-  <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://live.staticflickr.com/65535/48816178863_85ee1fe7f1_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Pre-Commit : Protecting your future self</title>
@@ -4041,16 +3787,16 @@ Repositories.”</span> August 28, 2022. <a href="https://blog.nshephard.dev/pos
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <p>Pre-commit is written in Python and so you will need Python installed on your system in order to use it. Aside from that there is little else extra that is required to be manually installed as pre-commit installs virtual environments specific for each enabled hook.</p>
 <p>Most systems provide <code>pre-commit</code> in their package management system but typically you should install <code>pre-commit</code> within your virtual environment or under your user account.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pip</span> install pre-commit</span>
 <span id="cb1-2"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">conda</span> install <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-c</span> conda-forge pre-commit</span></code></pre></div>
+font-style: inherit;">-c</span> conda-forge pre-commit</span></code></pre></div></div>
 <p>If you are working on a Python project then you should include <code>pre-commit</code> as a requirement (either in <code>requirements-dev.txt</code>) or under the <code>dev</code> section of <code>[options.extras_require]</code> in your <code>setup.cfg</code> as shown below.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[options.extras_require]</span></span>
@@ -4067,7 +3813,7 @@ background-color: null;
 font-style: inherit;">pytest</span></span>
 <span id="cb2-5">  <span class="dt" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">pytest-cov</span></span></code></pre></div>
+font-style: inherit;">pytest-cov</span></span></code></pre></div></div>
 </section>
 <section id="configuration" class="level2">
 <h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
@@ -4080,7 +3826,7 @@ git add .pre-commit-config.yaml</code></pre>
 <section id="hooks" class="level3">
 <h3 class="anchored" data-anchor-id="hooks">Hooks</h3>
 <p>Each hook is associated with a repository (<code>repo</code>) and a version (<code>rev</code>) within it. Many are available from the <code>https://github.com/pre-commit/pre-commit-hooks</code>. The default set of <code>pre-commit</code> hooks might look like the following.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -4251,12 +3997,12 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> check-yaml</span></span></code></pre></div>
+font-style: inherit;"> check-yaml</span></span></code></pre></div></div>
 </section>
 <section id="hooks-from-external-repositories" class="level3">
 <h3 class="anchored" data-anchor-id="hooks-from-external-repositories">Hooks from External Repositories</h3>
 <p>Some hooks are available from dedicated repositories, for example the following runs <a href="https://github.com/psf/black" target="_blank">Black</a>, <a href="https://flake8.pycqa.org/en/latest/" target="_blank">Flake8</a> and <a href="https://pylint.pycqa.org/en/latest/" target="_blank">Pylint</a> on your code and should follow under the above (with the same level of indenting to be valid YAML).</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -4458,13 +4204,13 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> pylint</span></span></code></pre></div>
+font-style: inherit;"> pylint</span></span></code></pre></div></div>
 <p>An extensive list of <a href="https://pre-commit.com/hooks.html" target="_blank">supported hooks</a> is available. It lists the repository from which the hook is derived along with its name.</p>
 </section>
 <section id="local-hooks" class="level3">
 <h3 class="anchored" data-anchor-id="local-hooks">Local Hooks</h3>
 <p>You can also define <a href="https://pre-commit.com/#new-hooks" target="_blank">new hook</a> and configure them under the <code>- repo: local</code>.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -4547,48 +4293,48 @@ background-color: null;
 font-style: inherit;">python</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>For some examples of locally defined hooks see the <a href="https://github.com/pandas-dev/pandas/blob/main/.pre-commit-config.yaml" target="_blank">Pandas .pre-commit-config.yaml</a>.</p>
 </section>
 </section>
 <section id="usage" class="level2">
 <h2 class="anchored" data-anchor-id="usage">Usage</h2>
 <p>Before <code>pre-commit</code> will run you need to install it within your repository. This puts the file <code>.git/hooks/pre-commit</code> in place that contains the hooks you have configured to run. To install this you should have your <code>.pre-commit-config.yaml</code> in place and then run the following.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">pre-commit</span> install</span></code></pre></div>
+font-style: inherit;">pre-commit</span> install</span></code></pre></div></div>
 <p>Once installed and configured there really isn’t much to be said for using <code>pre-commit</code>, just make commits and before you can make a successful commit <code>pre-commit</code> must run with all the hooks you have configured passing. By default <code>pre-commit</code> only runs on files that are staged and ready to be committed, if you have unstaged files these will be stashed prior to running the <code>pre-commit</code> hook and restored afterwards. Should you wish to run these manually without making a commit then, after activating a virtual environment if you are using one, simply make a <code>git commit</code> or you can run.</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">pre-commit</span> run</span></code></pre></div>
+font-style: inherit;">pre-commit</span> run</span></code></pre></div></div>
 <p>If any of the configured hooks fail then the commit will not be made. Some hooks such as <a href="https://github.com/psf/black" target="_blank">black</a> may reformat files in place and you can then make another commit recording those changes and the hook should pass. Its important to pay close attention to the output.</p>
 <p>If you want to run a specific hook you simply add the <code>&lt;id&gt;</code> after <code>run</code>.</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pre-commit</span> run <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span>id<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
 <p>Or if you want to force running against all files (except unstaged ones) you can do so.</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pre-commit</span> run <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">--all-files</span> <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># Across all files/hooks</span></span></code></pre></div>
+font-style: inherit;"># Across all files/hooks</span></span></code></pre></div></div>
 <p>And these two options can be combined to run a specific hook against all files.</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pre-commit</span> run <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span>id<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;</span> --all-files</span></code></pre></div>
+font-style: inherit;">&gt;</span> --all-files</span></code></pre></div></div>
 <p>You may find that you wish to switch branches to work on another feature or fix a bug but that your current work doesn’t pass the <code>pre-commit</code> and you don’t wish to sort that out immediately. The solution to this is to use <code>git stash</code> to temporarily save your current uncommitted work and restore the working directory and index to its previous state. You are then free to switch branches and work on another feature or fix a bug, commit and push those changes and then switch back.</p>
 <p>Imagine you are working on branch <code>a</code> but are asked to fix a bug on branch <code>b</code>. You go to commit your work but find that <code>a</code> does not pass <code>pre-commit</code> but you wish to work on <code>b</code> anyway. Starting on branch <code>a</code> you stash your changes, switch branches, make and commit your changes to branch <code>b</code> then switch back to <code>a</code> and unstash your work there.</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> stash</span>
 <span id="cb12-2"><span class="fu" style="color: #4758AB;
@@ -4621,7 +4367,7 @@ background-color: null;
 font-style: inherit;">git</span> checkout a</span>
 <span id="cb12-8"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> stash apply</span></code></pre></div>
+font-style: inherit;">git</span> stash apply</span></code></pre></div></div>
 </section>
 <section id="updating" class="level2">
 <h2 class="anchored" data-anchor-id="updating">Updating</h2>
@@ -4633,7 +4379,7 @@ font-style: inherit;">git</span> stash apply</span></code></pre></div>
 <section id="github" class="level3">
 <h3 class="anchored" data-anchor-id="github">GitHub</h3>
 <p>GitHub actions reside in the <code>.github/workflows/</code> directory of your project. A simple pre-commit action is available on the Marketplace at <a href="https://github.com/marketplace/actions/pre-commit" target="_blank">pre-commit/action</a>. Copy this template to <code>.github/workflows/pre-commit.yml</code> and include it in your Git repository.</p>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> add .github/workflows/pre-commit.yml</span>
 <span id="cb13-2"><span class="fu" style="color: #4758AB;
@@ -4647,7 +4393,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">&amp;&amp;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> push</span></code></pre></div>
+font-style: inherit;">git</span> push</span></code></pre></div></div>
 </section>
 <section id="gitlab" class="level3">
 <h3 class="anchored" data-anchor-id="gitlab">GitLab</h3>
@@ -4674,9 +4420,7 @@ font-style: inherit;">git</span> push</span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
   author = {Shephard, Neil},
   title = {Pre-Commit : {Protecting} Your Future Self},
@@ -4698,6 +4442,242 @@ Self.”</span> August 28, 2022. <a href="https://blog.nshephard.dev/posts/pre-c
   <guid>https://blog.nshephard.dev/posts/pre-commit/</guid>
   <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
   <media:content url="https://live.staticflickr.com/65535/52294716597_ea3be238c0_k.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Git : Custom SSH credentials for git repositories</title>
+  <dc:creator>Neil Shephard</dc:creator>
+  <link>https://blog.nshephard.dev/posts/git-ssh/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>How to configure individual Git repositories to use specific SSH keys. This is useful if you have more than one account on a forge, for example a personal and work account.</p>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background">Background</h2>
+<p>Typically when pushing and pulling changes to a forge such as <a href="https://github.com" target="_blank">GitHub</a>, <a href="https://gitlab.com" target="_blank">GitLab</a> or <a href="https://codeberg.org" target="_blank">Codeberg</a> you use an SSH (<em>S</em>ecure <em>SH</em>ell) key to authenticate that you have permission to access the repository.</p>
+</section>
+<section id="ssh-keys" class="level2">
+<h2 class="anchored" data-anchor-id="ssh-keys">SSH Keys</h2>
+<section id="concept" class="level3">
+<h3 class="anchored" data-anchor-id="concept">Concept</h3>
+<p>SSH keys are, in conjunction with “keychains”, used to save you having to enter a password each time you connect from one computer to another. They are generated on your computer and consist of two parts, a private key which remains on your computer and a public key which you place on remote computers you wish to connect to. There is a password associated with your key which is required to “unlock” your private key on your computer. Only an unlocked private key will match with a public key. Think of the public key as the lock on your front door, and the private key the key you carry on your traditional, physical, keychain/keyring. Only when the two match will things be unlocked, although you have to unlock your private key when you want to use it just as you have to get your keys out of your pocket (although “keychains” help with this).</p>
+</section>
+<section id="generation" class="level3">
+<h3 class="anchored" data-anchor-id="generation">Generation</h3>
+<p>There are different algorithms for generating SSH key pairs. DSA is no longer considered secure and RSA keys should have at least 2048-bits if not 4096-bits. A good choice these days is to use an elliptic curve based key such as ed25519 as they are shorter and faster. For more on why you should use this key see the article <a href="https://blog.g3rt.nl/upgrade-your-ssh-keys.html" target="_blank">Upgrade your SSH keys!</a>.</p>
+<p>To generate a key use the following command entering a secure (i.e.&nbsp;<a href="xkcd.com/936/" target="_blank">long</a>) password.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ssh-keygen</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-a</span> 100 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-t</span> ed25519</span></code></pre></div></div>
+<p>You will be prompted for a filename to save your keys to, so you should know where to find them (the default is <code>~/.ssh/id_ed25519[.pub]</code>). You have a private key <code>~/.ssh/id_ed25519</code> and a public <code>~/.ssh/id_ed25519.pub</code> and we will use this to set up authentication on your Git Forge.</p>
+</section>
+<section id="forge-configuration" class="level3">
+<h3 class="anchored" data-anchor-id="forge-configuration">Forge Configuration</h3>
+<p>Under your account settings on your chosen Git Forge navigate to <em>Settings &gt; SSH and GPG Keys</em> and select <em>Add New Key</em> on (<a href="https://github.com/settings/keys" target="_blank">GitHub</a>). On GitLab navigate to <em>Preferences &gt; SSH Keys</em> <a href="https://gitlab.com/-/profile/keys" target="_blank">GitLab</a>), this page allows you to add a new key.</p>
+<p>You need to copy and paste your public key into the <code>Key</code> box on these pages and give it a name (typically the hostname of your computer is a good choice). To view your public key simply use <code>cat</code> and copy and paste it. You can optionally choose to set an expiration date for your key which is good practice but means you have to generate new keys in the future.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cat</span> ~/.ssh/id_ed25519.pub</span></code></pre></div></div>
+</section>
+</section>
+<section id="git-global-ssh-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="git-global-ssh-configuration">Git Global SSH Configuration</h2>
+<p>Typically your global configuration for which key to use is set in <code>~/.ssh/config</code> with an entry similar to the below.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Host</span> github.com</span>
+<span id="cb3-2">     <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">User</span> git</span>
+<span id="cb3-3">     <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Port</span> 22</span>
+<span id="cb3-4">     <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">PreferredAuthentications</span> publickey</span>
+<span id="cb3-5">     <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">IdentityFile</span> ~/.ssh/id_ed25519</span></code></pre></div></div>
+<p>Here it uses the User name <code>git</code> on port <code>22</code>. The preferred authentication method is using a <code>publickey</code> and the private key used is stored locally at <code>~/.ssh/id_ed25519</code>.</p>
+<p>When asked to connect to a forge using SSH (e.g.&nbsp;<code>git pull</code> or <code>git push</code>) will look through the <code>~/.ssh/config</code> file to see if there is a configuration section that matches the target and if so use the configuration defined there-in. You will then be prompted for your SSH private key password.</p>
+<section id="what-are-keychains" class="level3">
+<h3 class="anchored" data-anchor-id="what-are-keychains">What are Keychains?</h3>
+<p>You may be wondering how an SSH key makes your life easier, you are still prompted to enter a password when trying to interact with a Git Forge, or use it in a more traditional manner to connect over SSH to another server. This is where the magic of a “keychain” steps in to make your life easier, you still have to enter a password but only once to add your SSH key to the “keychain”. Typically keychains are front-ends for interacting with and managing <a href="https://www.ssh.com/academy/ssh/agent" target="_blank">SSH agent</a>. The name is apt since you add your SSH key to the keychain once, typically on log-in, and are asked for your password to unlock it and then stores it in the SSH agent. Then each time SSH requires an SSH key it retrieves it from the keychain rather than prompting you for a password.</p>
+<p>There are many different implementations of keychain such as the <a href="https://www.funtoo.org/Funtoo:Keychain" target="_blank">Funtoo Keychain Project</a>, <a href="https://wiki.gnome.org/Apps/Seahorse" target="_blank">Seahorse</a> the GNOME GUI management tool,</p>
+</section>
+</section>
+<section id="git-per-repository-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="git-per-repository-configuration">Git Per Repository Configuration</h2>
+<p>We now get to the meat of this post, how to configure individual repositories to use specific SSH keys. This may be desirable if you have two accounts on the same forge e.g.&nbsp;both on GitHub.com or both on GitLab.com? As of Git 2.10.0 you can configure each repository to use a specific key (<a href="https://superuser.com/a/912281" target="_blank">source</a>). At the command line…</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> a/git/repository</span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config core.sshCommand <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ssh -i ~/.ssh/work_ed25519 -F /dev/null"</span></span>
+<span id="cb4-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--local</span> user.name <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Username"</span></span>
+<span id="cb4-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--local</span> user.email <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"repos@username.com"</span></span></code></pre></div></div>
+<p>This adds the following to the repositories configuration which is stored under <code>.git/config</code> and you can of course enter this directly to the configuration file yourself.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[core]</span></span>
+<span id="cb5-2">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> /dev/null</span>
+<span id="cb5-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[user]</span></span>
+<span id="cb5-4">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name</span> = Username</span>
+<span id="cb5-5">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">email</span> = repos@username.com</span></code></pre></div></div>
+<p>What is this doing? Well it’s instructing Git to run ssh using the private key file (with the <code>-i</code> flag to specify the <code>identity_file</code>) that is located at <code>~/.ssh/work_ed25519</code>. Providing you have…</p>
+<ol type="a">
+<li>Already uploaded the public key (<code>work_ed25519.pub</code>) to your GitHub account.</li>
+<li>Stored this key in a Keychain as described above.</li>
+</ol>
+<p>…you shouldn’t be prompted for a password.</p>
+<p>You can now configure, on a repository basis, which SSH key is used by Git when pushing/pulling changes from the remote <code>origin</code> (typically a forge such as GitHub, GitLab, Codeberg or so forth). If however you have multiple projects you wish to setup with an alternative SSH key configuration it can be tedious to configure each repository. Thankfully Git &gt;= 2.13 introduced <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank">Conditional includes</a> to the configuration.</p>
+</section>
+<section id="conditional-includes" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-includes">Conditional Includes</h2>
+<p>You global configuration is stored in <code>~/.gitconfig</code> and defines key variables such <code>user</code> and <code>name</code>, the default <code>editor</code> and many other options, including a customised <code>sshCommand</code> as was added above to a local <code>.git/config</code> file.</p>
+<p>Git 2.13 introduced the aforementioned <a href="https://git-scm.com/docs/git-config#_conditional_includes" target="_blank">Conditional includes</a> which works “_by setting a <code>includeIf.&lt;condition&gt;.path</code> variable to the name of the file to be included.”. For our current case-use the <code>&lt;condition&gt;</code> we are interested in is whether the <code>path</code>, which is interpreted as a pattern, is a <code>gitdir</code> then we include what follows.</p>
+<p>For example, we place all of our work related Git repositories under the <code>~/work/</code> directory and wish to use <code>~/.ssh/work_ed25519</code> for these and keep all of our personal repositories elsewhere and wish to use our main <code>~/.ssh/id_ed25519</code> key for those.</p>
+<p>Out <code>~/.gitconfig</code> should look like</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[user]</span></span>
+<span id="cb6-2">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name</span> = Your Name</span>
+<span id="cb6-3">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">email</span> = your.personal@email.com</span>
+<span id="cb6-4"></span>
+<span id="cb6-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[includeIf</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"gitdir:~/work/"</span>]    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Directory paths ending in '/** has the globbing wildcard '**' added by default.</span></span>
+<span id="cb6-6">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">path</span> = ~/work/.gitconfig_work</span>
+<span id="cb6-7"></span>
+<span id="cb6-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[core]</span></span>
+<span id="cb6-9">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> ~/.ssh/id_ed25519 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> /dev/null</span></code></pre></div></div>
+<p>Then our <code>~/work/.gitconfig_work</code> can contain the alternative values we wish to use for all repositories under the <code>~/work/</code> directory.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[user]</span></span>
+<span id="cb7-2">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name</span> = Your Name</span>
+<span id="cb7-3">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">email</span> = your.work@email.com</span>
+<span id="cb7-4"></span>
+<span id="cb7-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[core]</span></span>
+<span id="cb7-6">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sshCommand</span> = ssh <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> ~/.ssh/work_ed25519 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> /dev/null</span></code></pre></div></div>
+</section>
+<section id="commit-verification-with-ssh" class="level2">
+<h2 class="anchored" data-anchor-id="commit-verification-with-ssh">Commit verification with SSH</h2>
+<p>Verification of commits is a useful security feature, but beyond the scope of this article but as doing so with SSH keys is a recently supported feature on GitHub (see blog <a href="https://github.blog/changelog/2022-08-23-ssh-commit-verification-now-supported/" target="_blank">SSH commit verification now supported</a>) I felt it worth mentioning.</p>
+</section>
+<section id="links" class="level2">
+<h2 class="anchored" data-anchor-id="links">Links</h2>
+<section id="ssh" class="level3">
+<h3 class="anchored" data-anchor-id="ssh">SSH</h3>
+<ul>
+<li><a href="https://www.ssh.com/academy/ssh" target="_blank">SSH Academy</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_1" target="_blank">OpenSSH Key Management, Part 1</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_2" target="_blank">OpenSSH Key Management, Part 2</a></li>
+<li><a href="https://www.funtoo.org/OpenSSH_Key_Management,_Part_3" target="_blank">OpenSSH Key Management, Part 3</a></li>
+</ul>
+</section>
+<section id="forges" class="level3">
+<h3 class="anchored" data-anchor-id="forges">Forges</h3>
+<ul>
+<li><a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh" target="_blank">GitHub | Connect with SSH</a></li>
+<li><a href="https://docs.gitlab.com/ee/user/ssh.html" target="_blank">GitLab | Use SSH keys to communicate with GitLab</a></li>
+<li><a href="https://docs.codeberg.org/security/ssh-key/" target="_blank">Codeberg | Adding an SSH key to your account</a></li>
+</ul>
+
+
+
+</section>
+</section>
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="list quarto-listing-default">
+
+</div>
+<div class="listing-no-matching d-none">No matching items</div>
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
+  author = {Shephard, Neil},
+  title = {Git : {Custom} {SSH} Credentials for Git Repositories},
+  date = {2022-08-28},
+  url = {https://blog.nshephard.dev/posts/git-ssh/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-shephard2022" class="csl-entry quarto-appendix-citeas">
+Shephard, Neil. 2022. <span>“Git : Custom SSH Credentials for Git
+Repositories.”</span> August 28, 2022. <a href="https://blog.nshephard.dev/posts/git-ssh/">https://blog.nshephard.dev/posts/git-ssh/</a>.
+</div></div></section></div> ]]></description>
+  <category>ssh</category>
+  <category>git</category>
+  <category>github</category>
+  <category>gitlab</category>
+  <category>keychain</category>
+  <guid>https://blog.nshephard.dev/posts/git-ssh/</guid>
+  <pubDate>Sun, 28 Aug 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://live.staticflickr.com/65535/48816178863_85ee1fe7f1_k.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

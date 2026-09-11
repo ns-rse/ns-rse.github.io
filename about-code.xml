@@ -14,7 +14,7 @@
 <title>blog.nshephard.dev</title>
 <link>https://blog.nshephard.dev/about.html#category=code</link>
 </image>
-<generator>quarto-1.6.11</generator>
+<generator>quarto-1.9.2</generator>
 <lastBuildDate>Sun, 07 May 2023 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Pre-Commit : Useful Hooks</title>
@@ -38,7 +38,7 @@
 <section id="ruff" class="level3">
 <h3 class="anchored" data-anchor-id="ruff">Ruff</h3>
 <p><a href="https://github.com/charliermarsh/ruff" target="_blank">ruff</a> is a Python linter written in Rust which means its considerably faster than many native linters. It aims for parity with Flake8 and covers a lot of the linting that PyLint undertakes too. Its configured via <code>pyproject.toml</code> which makes incorporating it into your Python Package simple.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -91,9 +91,9 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> ruff</span></span></code></pre></div>
+font-style: inherit;"> ruff</span></span></code></pre></div></div>
 <p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/python-packaging/" target="_blank">Python Packaging</a> worth reading to understand more on this.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[tool.ruff]</span></span>
@@ -178,12 +178,12 @@ font-style: inherit;">unfixable</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">[]</span></span></code></pre></div>
+font-style: inherit;">[]</span></span></code></pre></div></div>
 </section>
 <section id="black" class="level3">
 <h3 class="anchored" data-anchor-id="black">Black</h3>
 <p><a href="https://black.readthedocs.io/en/stable/index.html" target="_blank">Black</a> is an opinionated formatter for Python that is <a href="https://pep8.org/" target="_blank">PEP8</a> compliant. By using <code>black</code> to format your code you end up with a consistent style across the code base and commit changes end up being minimal. This helps speed up code-review of pull-requests.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -256,9 +256,9 @@ background-color: null;
 font-style: inherit;">python</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>Configuration is, as noted, via <code>pyproject.toml</code> and you may find the post on <a href="https://ns-rse.github.io/posts/pre-commit-updating/" target="_blank">Python Packaging</a> worth reading to understand more on this.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[tool.black]</span></span>
@@ -298,13 +298,13 @@ font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">\\</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">.pyi?$"</span></span></code></pre></div>
+font-style: inherit;">.pyi?$"</span></span></code></pre></div></div>
 </section>
 <section id="pydocstyle" class="level3">
 <h3 class="anchored" data-anchor-id="pydocstyle">pydocstyle</h3>
 <p>You can check your docstrings are correctly written using the <a href="https://www.pydocstyle.org/en/stable/usage.html#usage-with-the-pre-commit-git-hooks-framework" target="_blank">pydocstyle</a> hook.</p>
 <p>Its pretty straight-forward to use and accepts arguments so you can pass all the command line options you might want to use into the hook when it runs. It supports three different doc string styles, <code>pep257</code>, <code>numpy</code> and <code>google</code>.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -375,9 +375,9 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> --ignore=D101,D2</span></span></code></pre></div>
+font-style: inherit;"> --ignore=D101,D2</span></span></code></pre></div></div>
 <p>Alternatively you can add configuration options to your projects <code>pyproject.toml</code> under a <code>[tool.pydocstyle]</code> section.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[tool.pydocstyle]</span></span>
@@ -405,13 +405,13 @@ background-color: null;
 font-style: inherit;">"D2"</span></span>
 <span id="cb6-6"><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="markdown-linting" class="level2">
 <h2 class="anchored" data-anchor-id="markdown-linting">Markdown Linting</h2>
 <p><a href="https://github.com/DavidAnson/markdownlint-cli2" target="_blank">markdownlint-cli2</a> is a useful and highly configurable hook for linting <a href="https://www.markdownguide.org" target="_blank">Markdown</a> and <a href="https://commonmark.org/" target="_blank">CommonMark</a>. I wanted to use it on this blog though which is written using <a href="https://quarto.org/docs/authoring/markdown-basics.html" target="_blank">Quarto</a> and therefore uses <a href="https://pandoc.org/MANUAL.html#pandocs-markdown" target="_blank">PandocMarkdown</a> with files that have extension <code>.qmd</code>. I therefore enable the hook in <code>.pre-commit-config.yaml</code> with a configuration file specified</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -480,9 +480,9 @@ background-color: null;
 font-style: inherit;">.markdownlin-cli2.yaml</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>..and add a sample configuration file (e.g.&nbsp;<code>.mardownlint-cli2.yaml</code> although other formats such as JSON can be used) is shown below and <code>markdownlint-cli2</code> picks this up automatically.</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Configuration</span></span>
 <span id="cb8-2"><span class="fu" style="color: #4758AB;
@@ -605,12 +605,12 @@ font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
 background-color: null;
-font-style: inherit;">false</span></span></code></pre></div>
+font-style: inherit;">false</span></span></code></pre></div></div>
 </section>
 <section id="emacs-lisp" class="level2">
 <h2 class="anchored" data-anchor-id="emacs-lisp">Emacs Lisp</h2>
 <p>As I use <a href="https://www.gnu.org/software/emacs/" target="_blank">Emacs</a> I have recourse to write some <a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/" target="_blank">Emacs Lisp</a> and so its useful to applying formatting to my <code>.el</code> files before committing them. <a href="https://github.com/eschulte/lisp-format" target="_blank">lisp-format</a> does the job nicely.</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -713,7 +713,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> lisp-format -i</span></span></code></pre></div>
+font-style: inherit;"> lisp-format -i</span></span></code></pre></div></div>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
@@ -750,9 +750,7 @@ font-style: inherit;"> lisp-format -i</span></span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
   author = {Shephard, Neil},
   title = {Pre-Commit : {Useful} {Hooks}},
@@ -814,7 +812,7 @@ Shephard, Neil. 2023. <span>“Pre-Commit : Useful Hooks.”</span> May 7,
 <section id="configuration-.pre-commit-config.yaml" class="level3">
 <h3 class="anchored" data-anchor-id="configuration-.pre-commit-config.yaml">Configuration (<code>.pre-commit-config.yaml</code>)</h3>
 <p>Whilst not required it is possible to configure the behaviour of <code>pre-commit.ci</code> by adding a <code>ci:</code> section to your <code>.pre-commit-config.yaml</code>. The fields are fairly self-explanatory as the example below shows. Its possible to toggle whether to <code>autofix_prs</code> and to set the <code>autofix_commit_msg</code>. The <code>autoupdate_schedule</code> can be set to <code>weekly</code>, <code>monthly</code> or <code>quarterly</code> along with a custom <code>autoupdate_commit_msg</code>. Finally you can optionally disable some hooks from being run only in <code>pre-commit.ci</code>.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ci</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -885,7 +883,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">]</span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"> # Optionally list ids of hooks to skip on CI</span></span></code></pre></div>
+font-style: inherit;"> # Optionally list ids of hooks to skip on CI</span></span></code></pre></div></div>
 </section>
 <section id="setup" class="level3">
 <h3 class="anchored" data-anchor-id="setup">Setup</h3>
@@ -940,7 +938,7 @@ font-style: inherit;"> # Optionally list ids of hooks to skip on CI</span></span
 <h2 class="anchored" data-anchor-id="gitlab">GitLab</h2>
 <p>As <a href="https://pre-commit.ci" target="_blank"><code>pre-commit.ci</code></a> doesn’t (yet) support GitLab integrating <code>pre-commit</code> into your GitLab Pipeline is a little more involved. What follows is based on the excellent post on <a href="https://stackoverflow.com/collectives/articles/71270196/how-to-use-pre-commit-to-automatically-correct-commits-and-merge-requests-with-g" target="_blank">StackOverflow</a> describing how to achieve this integration.</p>
 <p>You should already have a valid <code>.pre-commit-config.yaml</code> in place (if not work through <a href="https://ns-rse.github.io/posts/pre-commit/" target="_blank">Pre-commit : Protecting your future self (blog-post)</a>). To enable <code>pre-commit</code> on your <a href="https://docs.gitlab.com/ee/ci/pipelines/" target="_blank">GitLab Pipeline</a> you need to to have a pipeline in place. This is a file in the root of your repository called <code>.gitlab-ci.yml</code>. You need to add the following to this file…</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">variables</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -1002,7 +1000,7 @@ font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml'</span></span></code></pre></div>
+font-style: inherit;">'https://gitlab.com/yesolutions/gitlab-ci-templates/raw/main/templates/pre-commit-autofix.yaml'</span></span></code></pre></div></div>
 <p>This uses the <code>pre-commit-autofix.yaml</code> from <a href="https://gitlab.com/yesolutions/" target="_blank">yesolutions</a> to run <code>pre-commit</code> and as the configuration shows automatically apply fixes <code>pre-commit</code> makes to your code. There are more options available for configuring this pipeline and they are documented <a href="https://gitlab.com/yesolutions/gitlab-ci-templates" target="_blank">here</a>.</p>
 <p>Because you are allowing a third-party pipeline to access your repository when pushing the changes <code>pre-commit</code> makes back to your repository for this to work you <em>must</em> create a <a href="https://docs.gitlab.com/ee/user/project/settings/project_access_tokens.html" target="_blank">project access token</a>. Under the repositories <em>Settings &gt; Access Tokens</em> you can create a new token with an expiry date. You must then create a CI/CD variable called <code>PRE_COMMIT_ACCESS_TOKEN</code> with this token as a value.</p>
 <p>Once you have done this your CI/CD pipeline should show at the very start the <code>.pre</code> stage…</p>
@@ -1049,9 +1047,7 @@ font-style: inherit;">'https://gitlab.com/yesolutions/gitlab-ci-templates/raw/ma
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2023,
   author = {Shephard, Neil},
   title = {Pre-Commit.ci : {Integrating} {Pre-Commit} into {CI/CD}},
@@ -1088,7 +1084,7 @@ CI/CD.”</span> February 6, 2023. <a href="https://blog.nshephard.dev/posts/pre
 <section id="usage" class="level2">
 <h2 class="anchored" data-anchor-id="usage">Usage</h2>
 <p>Git blame works on individual files and so requires a filename, there are a host of options, for example <code>-e</code> prints the authors email address <code>-w</code> ignores changes to white space and <code>-L 10,20</code> restricts output to the specified line range. If you want a the blame for a specific revision then you must include the hash.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> blame <span class="at" style="color: #657422;
 background-color: null;
@@ -1096,12 +1092,12 @@ font-style: inherit;">-e</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-w</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-L</span> 10,20 f923la git_blame.org</span></code></pre></div>
+font-style: inherit;">-L</span> 10,20 f923la git_blame.org</span></code></pre></div></div>
 </section>
 <section id="alias" class="level2">
 <h2 class="anchored" data-anchor-id="alias">Alias</h2>
 <p>Some people don’t like the pejorative nature of the word <code>blame</code>. That’s ok though, with a tweak to our configuration its possible to use the alias <code>praise</code> or simply <code>who</code>.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># blame alias</span></span>
 <span id="cb2-2"><span class="fu" style="color: #4758AB;
@@ -1126,13 +1122,13 @@ font-style: inherit;">--global</span> alias.who blame</span>
 background-color: null;
 font-style: inherit;">git</span> who <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-L1,30</span> git_blame.org</span></code></pre></div>
+font-style: inherit;">-L1,30</span> git_blame.org</span></code></pre></div></div>
 <p>For more detailed information on the array of options refer to the <a href="https://www.git-scm.com/docs/git-blame" target="_blank">official documentation</a> or see <code>git blame --help</code>.</p>
 </section>
 <section id="ignoring-blame" class="level2">
 <h2 class="anchored" data-anchor-id="ignoring-blame">Ignoring blame</h2>
 <p>Sometimes the case arises where you want to ignore blame. Perhaps the most common example is when an existing code base has been <a href="../linting" target="_blank">linted</a> to conform to a particular style guide. Looking at who performed these changes is not informative and masks who made the changes and why. Its possible to ignore specific commits on the command line with <code>--ignore-revs &lt;hash&gt; &lt;file&gt;</code>, but it will quickly become tedious to remember to ignore all blame across multiple commits. Fortunately you can save the commits to ignore to the file <code>.git-blame-ignore-revs</code> (along with comments) so that they are stored. The full commit (40 characters) of hashes should be used.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># PEP8 compliance for module X</span></span>
 <span id="cb3-2"><span class="ex" style="color: null;
@@ -1144,20 +1140,20 @@ background-color: null;
 font-style: inherit;"># PEP8 compliance for module Y</span></span>
 <span id="cb3-5"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">db27fa5f18299ca631efc430512a3f358c2b154f</span></span></code></pre></div>
+font-style: inherit;">db27fa5f18299ca631efc430512a3f358c2b154f</span></span></code></pre></div></div>
 <p>Now that you have the revisions in place to be ignored when reporting blame you can choose not to use it.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> blame <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">--ignore-revs-file</span> .git-blame-ignore-revs git_blame.org</span></code></pre></div>
+font-style: inherit;">--ignore-revs-file</span> .git-blame-ignore-revs git_blame.org</span></code></pre></div></div>
 <p>…but this is tedious to remember to have to do each time and ideally others on your team should use this file too. You can configure Git to use this file by modifying the local configuration. Make sure to add it to your repository so that others can use it.</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> config blame.ignoreRevsFile .git-blame-ignore-revs</span>
 <span id="cb5-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> add .git-blame-ignore-revs</span></code></pre></div>
+font-style: inherit;">git</span> add .git-blame-ignore-revs</span></code></pre></div></div>
 <p>As of <a href="https://github.com/orgs/community/discussions/5033#discussioncomment-2318478" target="_blank">2022-03-08</a> GitHub will also <a href="https://docs.github.com/en/repositories/working-with-files/using-files/viewing-a-file#ignore-commits-in-the-blame-view" target="_blank">ignore commits in the blame view</a> that are listed in <code>.git-blame-ignore-revs</code> providing this file is in the root of your project folder.</p>
 </section>
 <section id="links" class="level2">
@@ -1185,9 +1181,7 @@ font-style: inherit;">git</span> add .git-blame-ignore-revs</span></code></pre><
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
   author = {Shephard, Neil},
   title = {Who’s to {Blame}},
@@ -1223,7 +1217,7 @@ Shephard, Neil. 2022. <span>“Who’s to Blame.”</span> December 17, 2022.
 <section id="pre-commit-hooks" class="level2">
 <h2 class="anchored" data-anchor-id="pre-commit-hooks">Pre-commit hooks</h2>
 <p>A lot of the power of <code>pre-commit</code> comes from the vast array of <a href="https://pre-commit.com/hooks.html" target="_blank">hooks</a> that are available that users make available. These are included under <code>repos:</code> section of the <code>.pre-commit-config.yaml</code> and typically require a minimum of the <code>repo:</code> and the <code>rev:</code> to use and then optionally a <code>hooks:</code> section. The <code>sample-config</code> that <code>pre-commit</code> will auto-generate looks like…</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -1319,9 +1313,9 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> check-added-large-files</span></span></code></pre></div>
+font-style: inherit;"> check-added-large-files</span></span></code></pre></div></div>
 <p>After finding a repository and hook that you wish to use <a href="https://pre-commit.com/hooks.html" target="_blank">hooks</a> repository you need to add it to your <code>.pre-commit-config.yaml</code>. Here we add the <a href="https://github.com/PyCQA/pylint" target="_blank"><code>pylint</code></a> repository and whilst it only has one hook we explicitly add it.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -1463,14 +1457,14 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> pylint</span></span></code></pre></div>
+font-style: inherit;"> pylint</span></span></code></pre></div></div>
 <p>If a repository has more than one <code>hook</code> available then it can be enabled by listing its <code>id:</code> as is the case in the <code>hooks</code> above for the <code>pre-commit-hooks</code> repository.</p>
 </section>
 <section id="local-hooks" class="level2">
 <h2 class="anchored" data-anchor-id="local-hooks">Local Hooks</h2>
 <p>In some instances the provisioned repositories do not always meet the requirements. One example of this is the <a href="https://github.com/pycqa/pylint" target="_blank">pylint action</a> which parses the code-base to detect errors using <a href="https://pylint.pycqa.org/en/latest/" target="_blank">pylint</a>. Typically most Python packages have their own dependencies but because the Pylint action pulls down and uses its own virtual environment these packages are not installed. As a consequence <code>pylint</code> reports a lot of <code>import-error</code> as its unable to import the required dependencies.</p>
 <p>The solution to this is to write a local hook, which instead of defining a GitHub repository as the <code>repo:</code> uses the value <code>local</code>. Thus to run <code>pylint</code> in a local environment from <code>pre-commit</code> you would add the following to your <code>.pre-commit-config.yaml</code></p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -1654,13 +1648,13 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> \.py$</span></span></code></pre></div>
+font-style: inherit;"> \.py$</span></span></code></pre></div></div>
 <p>For this to work you would have to ensure that you have a virtual environment activated that includes the package dependencies, including <code>pylint</code>, when you make you <code>git commit</code> so that <code>pre-commit</code> can find and import all the required packages.</p>
 </section>
 <section id="updating-pre-commit" class="level2">
 <h2 class="anchored" data-anchor-id="updating-pre-commit">Updating <code>pre-commit</code></h2>
 <p>After adding a new repo and hook it will not be immediately ready to use as the environment has not been initialised. You can wait until your next commit or force this with the <code>autoupdate</code> option. This will update <em>all</em> repositories that are defined in your configuration.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">$</span> pre-commit autoupdate</span>
 <span id="cb4-2"><span class="ex" style="color: null;
@@ -1681,13 +1675,13 @@ background-color: null;
 font-style: inherit;">]</span> Initializing environment for https://github.com/PyCQA/pylint.</span>
 <span id="cb4-4"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">already</span> up to date.</span></code></pre></div>
+font-style: inherit;">already</span> up to date.</span></code></pre></div></div>
 </section>
 <section id="repository-changes" class="level2">
 <h2 class="anchored" data-anchor-id="repository-changes">Repository Changes</h2>
 <p>Sometimes, albeit rarely, repositories change their location as was the case recently when <a href="https://gitlab.com/PyCQA/flake8" target="_blank">flake8</a> moved from <a href="https://gitlab.com" target="_blank">GitLab</a> to <a href="https://github.com/PyCQA/flake8" target="_blank">GitHub</a>. As a consequence any <code>pre-commit</code> that uses <code>flake8</code> repo/hook and configured to run in Continuous Integration pipelines failed as it was unable to download and run the <code>flake8</code> environment. The solution is simply to update the <code>repo:</code>.</p>
 <p>Before this change the entry for <code>flake8</code> looked like…</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
@@ -1795,9 +1789,9 @@ background-color: null;
 font-style: inherit;">python</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>To update to use the new repository it should point to <code>github.com</code> as shown below.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
@@ -1905,7 +1899,7 @@ background-color: null;
 font-style: inherit;">python</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>After making this change you have to <code>pre-commit autoupdate</code> to force downloading and updating from the new source, otherwise your existing older revision will be used locally.</p>
 </section>
 <section id="links" class="level2">
@@ -1926,9 +1920,7 @@ font-style: inherit;">]</span></span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
   author = {Shephard, Neil},
   title = {Pre-Commit : {Customising} and {Updating}},
@@ -1970,7 +1962,7 @@ Updating.”</span> November 15, 2022. <a href="https://blog.nshephard.dev/posts
 <p><a href="https://github.com/sharkdp/bat" target="_blank"><code>bat</code></a> is “<em>A <code>cat(1)</code> clone with wings.</em>”. It automatically uses syntax highlighting and integrates with git if a file is version controlled to show changes and lots more. You can pipe input to it, including from e.g.&nbsp;<code>curl -s https://server.com/some_file</code></p>
 <section id="example---bat" class="level4">
 <h4 class="anchored" data-anchor-id="example---bat">Example - <code>bat</code></h4>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> bat pyproject.toml</span>
 <span id="cb1-2"><span class="ex" style="color: null;
@@ -2049,16 +2041,16 @@ background-color: null;
 font-style: inherit;">'\.pyi?$'</span></span>
 <span id="cb1-16"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">───────┴──────────────────────────────────────────────</span></span></code></pre></div>
+font-style: inherit;">───────┴──────────────────────────────────────────────</span></span></code></pre></div></div>
 </section>
 <section id="configuration" class="level4">
 <h4 class="anchored" data-anchor-id="configuration">Configuration</h4>
 <p>You can generate a default configuration file with</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">bat</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">--generate-config-file</span></span></code></pre></div>
+font-style: inherit;">--generate-config-file</span></span></code></pre></div></div>
 <p>This will be saved at <code>~/.config/bat/config</code> and you can edit it as desired.</p>
 </section>
 </section>
@@ -2067,7 +2059,7 @@ font-style: inherit;">--generate-config-file</span></span></code></pre></div>
 <p><a href="https://opensource.com/article/22/6/linux-cheat-command" target="_blank"><code>cheat</code></a> is actually a web-service that returns short “cheats” for command line programmes which will often cover many use cases and save you having to read the rather dry <code>man</code> pages for functions.</p>
 <section id="example---cheat" class="level4">
 <h4 class="anchored" data-anchor-id="example---cheat">Example - <code>cheat</code></h4>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> cheat cheat</span>
 <span id="cb3-2"> <span class="ex" style="color: null;
@@ -2182,12 +2174,12 @@ font-style: inherit;"># Get the current cheat version:</span></span>
 background-color: null;
 font-style: inherit;">cheat</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-v</span></span></code></pre></div>
+font-style: inherit;">-v</span></span></code></pre></div></div>
 </section>
 <section id="aliases---cheat" class="level4">
 <h4 class="anchored" data-anchor-id="aliases---cheat">Aliases - <code>cheat</code></h4>
 <p>You don’t need to install anything to use this, instead define an <a href="https://www.gnu.org/software/bash/manual/html_node/Aliases.html" target="_blank">alias</a> for your shell (e.g.&nbsp;in <code>~/.bashrc</code>/<code>~/.zshrc</code>/<code>~/.oh-my-zsh/custom/aliases.zsh</code>).</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">## Linux commands https://github.com/chubin/cheat.sheets</span></span>
 <span id="cb4-2"><span class="fu" style="color: #4758AB;
@@ -2208,7 +2200,7 @@ font-style: inherit;">"</span></span>
 <span id="cb4-4"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">}</span></span></code></pre></div>
+font-style: inherit;">}</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="difftastic" class="level3">
@@ -2221,7 +2213,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 <p><a href="https://github.com/muesli/duf" target="_blank">duf</a> is a nice alternative to the traditional <code>du</code> and <code>df</code> commands which report disk usage and file/directory usage respectively.</p>
 <section id="examples" class="level4">
 <h4 class="anchored" data-anchor-id="examples">Examples</h4>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> tldr duf</span>
 <span id="cb5-2"></span>
@@ -2408,7 +2400,7 @@ background-color: null;
 font-style: inherit;">]</span>   0.0% │ tmpfs    │ tmpfs      │</span>
 <span id="cb5-42"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">╰────────────────┴────────┴────────┴────────┴───────────────────────────────┴──────────┴────────────╯</span></span></code></pre></div>
+font-style: inherit;">╰────────────────┴────────┴────────┴────────┴───────────────────────────────┴──────────┴────────────╯</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="fd" class="level3">
@@ -2416,7 +2408,7 @@ font-style: inherit;">╰────────────────┴─�
 <p><a href="https://github.com/sharkdp/fd" target="_blank"><code>fd</code></a> is an alternative to <code>find</code> that is easier to use. It is “opinionated” (i.e.&nbsp;decisions have been made about default options that you may not agree with) but purportedly covers ~80% of use cases. It works directly with regular expressions.</p>
 <section id="example---fd" class="level4">
 <h4 class="anchored" data-anchor-id="example---fd">Example - <code>fd</code></h4>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> tldr fd</span>
 <span id="cb6-2"></span>
@@ -2502,7 +2494,7 @@ font-style: inherit;">-</span> Execute a command on each search result returned:
 background-color: null;
 font-style: inherit;">fd</span> pattern <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">--exec</span> command</span></code></pre></div>
+font-style: inherit;">--exec</span> command</span></code></pre></div></div>
 </section>
 </section>
 <section id="jq" class="level3">
@@ -2511,7 +2503,7 @@ font-style: inherit;">--exec</span> command</span></code></pre></div>
 <section id="example---jq" class="level4">
 <h4 class="anchored" data-anchor-id="example---jq">Example - <code>jq</code></h4>
 <p>Details of using <code>jq</code> are really beyond the scope of this short article, like <code>awk</code> its almost a language in itself.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> tldr jq</span>
 <span id="cb7-2"></span>
@@ -2643,7 +2635,7 @@ font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'. +|- {"key1": "value1", "key2": "value2", ...}'</span></span></code></pre></div>
+font-style: inherit;">'. +|- {"key1": "value1", "key2": "value2", ...}'</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="lsd" class="level3">
@@ -2651,7 +2643,7 @@ font-style: inherit;">'. +|- {"key1": "value1", "key2": "value2", ...}'</span></
 <p><a href="https://github.com/Peltoche/lsd" target="_blank"><code>lsd</code></a> is <code>ls</code>Deluxe and is very similar to <a href="../../posts/cli-alternatives/index.html#exa" target="_blank"><code>exa</code></a> but with a few additions such as icons.</p>
 <section id="example---lsd" class="level4">
 <h4 class="anchored" data-anchor-id="example---lsd">Example - <code>lsd</code></h4>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> l</span>
 <span id="cb8-2"><span class="ex" style="color: null;
@@ -2727,11 +2719,11 @@ background-color: null;
 font-style: inherit;">.rw-r--r--</span> neil neil   17 B  Sun Aug 14 21:24:35 2022  styles.css</span>
 <span id="cb8-25"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">drwxr-xr-x</span> neil neil  4.0 KB Thu Aug 25 23:20:16 2022  www</span></code></pre></div>
+font-style: inherit;">drwxr-xr-x</span> neil neil  4.0 KB Thu Aug 25 23:20:16 2022  www</span></code></pre></div></div>
 </section>
 <section id="aliases---lsd" class="level4">
 <h4 class="anchored" data-anchor-id="aliases---lsd">Aliases - <code>lsd</code></h4>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="bu" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">alias</span> ls=<span class="st" style="color: #20794D;
 background-color: null;
@@ -2750,7 +2742,7 @@ font-style: inherit;">'ls -la'</span></span>
 background-color: null;
 font-style: inherit;">alias</span> lt=<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'ls --tree'</span></span></code></pre></div>
+font-style: inherit;">'ls --tree'</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="tldr" class="level3">
@@ -2758,7 +2750,7 @@ font-style: inherit;">'ls --tree'</span></span></code></pre></div>
 <p><a href="https://tldr.sh/" target="_blank"><code>tldr</code></a> is very similar to <code>cheat</code> in that it shows short, simple examples of using a command. There are a number of different clients written in <a href="https://github.com/tldr-pages/tldr-c-client" target="_blank">C</a>, <a href="https://github.com/tldr-pages/tldr-node-client" target="_blank">Node</a> and <a href="https://github.com/tldr-pages/tldr-python-client" target="_blank">Python</a> as well as a few others. It depends on <code>jq</code> so you will have to install that if you want to use <code>yq</code>.</p>
 <section id="example---tldr" class="level4">
 <h4 class="anchored" data-anchor-id="example---tldr">Example - <code>tldr</code></h4>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> tldr tldr</span>
 <span id="cb10-2"></span>
@@ -2844,7 +2836,7 @@ font-style: inherit;">]</span>pdate the local cache of tldr pages:</span>
 background-color: null;
 font-style: inherit;">tldr</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-u</span></span></code></pre></div>
+font-style: inherit;">-u</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="yq" class="level3">
@@ -2852,7 +2844,7 @@ font-style: inherit;">-u</span></span></code></pre></div>
 <p><a href="https://kislyuk.github.io/yq/" target="_blank"><code>yq</code></a> is to <a href="https://yaml.org/" target="_blank">YAML</a> (YAML Ain’t Markup Language) what <code>jq</code> is to JSON. Written in Python it allows fast and efficient parsing, searching and selecting of YAML files.</p>
 <section id="example---yq" class="level4">
 <h4 class="anchored" data-anchor-id="example---yq">Example - <code>yq</code></h4>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> tldr yq</span>
 <span id="cb11-2"></span>
@@ -3031,7 +3023,7 @@ font-style: inherit;">:</span></span>
 background-color: null;
 font-style: inherit;">yq</span> merge path/to/file1.yaml path/to/file2.yaml <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">--colors</span></span></code></pre></div>
+font-style: inherit;">--colors</span></span></code></pre></div></div>
 </section>
 </section>
 </section>
@@ -3040,7 +3032,7 @@ font-style: inherit;">--colors</span></span></code></pre></div>
 <p>Most of these programmes will be available in your systems package manager, if they are not you should consult the project page directly for install instructions.</p>
 <section id="linux" class="level3">
 <h3 class="anchored" data-anchor-id="linux">Linux</h3>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Gentoo</span></span>
 <span id="cb12-2"><span class="ex" style="color: null;
@@ -3063,20 +3055,20 @@ background-color: null;
 font-style: inherit;"># Ubuntu</span></span>
 <span id="cb12-8"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">sudo</span> apt-install bat duf fd jq lsd tldr yq</span></code></pre></div>
+font-style: inherit;">sudo</span> apt-install bat duf fd jq lsd tldr yq</span></code></pre></div></div>
 </section>
 <section id="osx" class="level3">
 <h3 class="anchored" data-anchor-id="osx">OSX</h3>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">brew</span> install bat duf fd jq lsd tldr yq</span></code></pre></div>
+font-style: inherit;">brew</span> install bat duf fd jq lsd tldr yq</span></code></pre></div></div>
 </section>
 <section id="windows" class="level3">
 <h3 class="anchored" data-anchor-id="windows">Windows</h3>
 <p><strong>WARNING</strong> None of these have been tested I do not have access to a Windows system running PowerShell. They use <a href="https://scoop.sh/" target="_blank">Scoop</a> a command-line installer for Windows.</p>
-<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">scoop</span> install lsd</span></code></pre></div>
+font-style: inherit;">scoop</span> install lsd</span></code></pre></div></div>
 </section>
 </section>
 <section id="links" class="level2">
@@ -3101,9 +3093,7 @@ font-style: inherit;">scoop</span> install lsd</span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
   author = {Shephard, Neil},
   title = {Linux {Command} {Line} {Alternatives}},
@@ -3153,16 +3143,16 @@ September 18, 2022. <a href="https://blog.nshephard.dev/posts/cli-alternatives/"
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <p>Pre-commit is written in Python and so you will need Python installed on your system in order to use it. Aside from that there is little else extra that is required to be manually installed as pre-commit installs virtual environments specific for each enabled hook.</p>
 <p>Most systems provide <code>pre-commit</code> in their package management system but typically you should install <code>pre-commit</code> within your virtual environment or under your user account.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pip</span> install pre-commit</span>
 <span id="cb1-2"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">conda</span> install <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">-c</span> conda-forge pre-commit</span></code></pre></div>
+font-style: inherit;">-c</span> conda-forge pre-commit</span></code></pre></div></div>
 <p>If you are working on a Python project then you should include <code>pre-commit</code> as a requirement (either in <code>requirements-dev.txt</code>) or under the <code>dev</code> section of <code>[options.extras_require]</code> in your <code>setup.cfg</code> as shown below.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">[options.extras_require]</span></span>
@@ -3179,7 +3169,7 @@ background-color: null;
 font-style: inherit;">pytest</span></span>
 <span id="cb2-5">  <span class="dt" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">pytest-cov</span></span></code></pre></div>
+font-style: inherit;">pytest-cov</span></span></code></pre></div></div>
 </section>
 <section id="configuration" class="level2">
 <h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
@@ -3192,7 +3182,7 @@ git add .pre-commit-config.yaml</code></pre>
 <section id="hooks" class="level3">
 <h3 class="anchored" data-anchor-id="hooks">Hooks</h3>
 <p>Each hook is associated with a repository (<code>repo</code>) and a version (<code>rev</code>) within it. Many are available from the <code>https://github.com/pre-commit/pre-commit-hooks</code>. The default set of <code>pre-commit</code> hooks might look like the following.</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">repos</span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -3363,12 +3353,12 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> check-yaml</span></span></code></pre></div>
+font-style: inherit;"> check-yaml</span></span></code></pre></div></div>
 </section>
 <section id="hooks-from-external-repositories" class="level3">
 <h3 class="anchored" data-anchor-id="hooks-from-external-repositories">Hooks from External Repositories</h3>
 <p>Some hooks are available from dedicated repositories, for example the following runs <a href="https://github.com/psf/black" target="_blank">Black</a>, <a href="https://flake8.pycqa.org/en/latest/" target="_blank">Flake8</a> and <a href="https://pylint.pycqa.org/en/latest/" target="_blank">Pylint</a> on your code and should follow under the above (with the same level of indenting to be valid YAML).</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -3570,13 +3560,13 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;"> pylint</span></span></code></pre></div>
+font-style: inherit;"> pylint</span></span></code></pre></div></div>
 <p>An extensive list of <a href="https://pre-commit.com/hooks.html" target="_blank">supported hooks</a> is available. It lists the repository from which the hook is derived along with its name.</p>
 </section>
 <section id="local-hooks" class="level3">
 <h3 class="anchored" data-anchor-id="local-hooks">Local Hooks</h3>
 <p>You can also define <a href="https://pre-commit.com/#new-hooks" target="_blank">new hook</a> and configure them under the <code>- repo: local</code>.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="at" style="color: #657422;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -3659,48 +3649,48 @@ background-color: null;
 font-style: inherit;">python</span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">]</span></span></code></pre></div>
+font-style: inherit;">]</span></span></code></pre></div></div>
 <p>For some examples of locally defined hooks see the <a href="https://github.com/pandas-dev/pandas/blob/main/.pre-commit-config.yaml" target="_blank">Pandas .pre-commit-config.yaml</a>.</p>
 </section>
 </section>
 <section id="usage" class="level2">
 <h2 class="anchored" data-anchor-id="usage">Usage</h2>
 <p>Before <code>pre-commit</code> will run you need to install it within your repository. This puts the file <code>.git/hooks/pre-commit</code> in place that contains the hooks you have configured to run. To install this you should have your <code>.pre-commit-config.yaml</code> in place and then run the following.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">pre-commit</span> install</span></code></pre></div>
+font-style: inherit;">pre-commit</span> install</span></code></pre></div></div>
 <p>Once installed and configured there really isn’t much to be said for using <code>pre-commit</code>, just make commits and before you can make a successful commit <code>pre-commit</code> must run with all the hooks you have configured passing. By default <code>pre-commit</code> only runs on files that are staged and ready to be committed, if you have unstaged files these will be stashed prior to running the <code>pre-commit</code> hook and restored afterwards. Should you wish to run these manually without making a commit then, after activating a virtual environment if you are using one, simply make a <code>git commit</code> or you can run.</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">pre-commit</span> run</span></code></pre></div>
+font-style: inherit;">pre-commit</span> run</span></code></pre></div></div>
 <p>If any of the configured hooks fail then the commit will not be made. Some hooks such as <a href="https://github.com/psf/black" target="_blank">black</a> may reformat files in place and you can then make another commit recording those changes and the hook should pass. Its important to pay close attention to the output.</p>
 <p>If you want to run a specific hook you simply add the <code>&lt;id&gt;</code> after <code>run</code>.</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pre-commit</span> run <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span>id<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
 <p>Or if you want to force running against all files (except unstaged ones) you can do so.</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pre-commit</span> run <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">--all-files</span> <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># Across all files/hooks</span></span></code></pre></div>
+font-style: inherit;"># Across all files/hooks</span></span></code></pre></div></div>
 <p>And these two options can be combined to run a specific hook against all files.</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pre-commit</span> run <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span>id<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;</span> --all-files</span></code></pre></div>
+font-style: inherit;">&gt;</span> --all-files</span></code></pre></div></div>
 <p>You may find that you wish to switch branches to work on another feature or fix a bug but that your current work doesn’t pass the <code>pre-commit</code> and you don’t wish to sort that out immediately. The solution to this is to use <code>git stash</code> to temporarily save your current uncommitted work and restore the working directory and index to its previous state. You are then free to switch branches and work on another feature or fix a bug, commit and push those changes and then switch back.</p>
 <p>Imagine you are working on branch <code>a</code> but are asked to fix a bug on branch <code>b</code>. You go to commit your work but find that <code>a</code> does not pass <code>pre-commit</code> but you wish to work on <code>b</code> anyway. Starting on branch <code>a</code> you stash your changes, switch branches, make and commit your changes to branch <code>b</code> then switch back to <code>a</code> and unstash your work there.</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> stash</span>
 <span id="cb12-2"><span class="fu" style="color: #4758AB;
@@ -3733,7 +3723,7 @@ background-color: null;
 font-style: inherit;">git</span> checkout a</span>
 <span id="cb12-8"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> stash apply</span></code></pre></div>
+font-style: inherit;">git</span> stash apply</span></code></pre></div></div>
 </section>
 <section id="updating" class="level2">
 <h2 class="anchored" data-anchor-id="updating">Updating</h2>
@@ -3745,7 +3735,7 @@ font-style: inherit;">git</span> stash apply</span></code></pre></div>
 <section id="github" class="level3">
 <h3 class="anchored" data-anchor-id="github">GitHub</h3>
 <p>GitHub actions reside in the <code>.github/workflows/</code> directory of your project. A simple pre-commit action is available on the Marketplace at <a href="https://github.com/marketplace/actions/pre-commit" target="_blank">pre-commit/action</a>. Copy this template to <code>.github/workflows/pre-commit.yml</code> and include it in your Git repository.</p>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> add .github/workflows/pre-commit.yml</span>
 <span id="cb13-2"><span class="fu" style="color: #4758AB;
@@ -3759,7 +3749,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">&amp;&amp;</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> push</span></code></pre></div>
+font-style: inherit;">git</span> push</span></code></pre></div></div>
 </section>
 <section id="gitlab" class="level3">
 <h3 class="anchored" data-anchor-id="gitlab">GitLab</h3>
@@ -3786,9 +3776,7 @@ font-style: inherit;">git</span> push</span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
   author = {Shephard, Neil},
   title = {Pre-Commit : {Protecting} Your Future Self},
@@ -3849,7 +3837,7 @@ Self.”</span> August 28, 2022. <a href="https://blog.nshephard.dev/posts/pre-c
 <li><p><a href="http://mypy-lang.org/" target="_blank">mypy</a> - Optional Static Typing for Python</p></li>
 </ul>
 <p>Here we will work through linting and formatting the simple file below (available as a download <a href="../../www/python/save_random_numbers.py" target="_blank">here</a>) using PyLint and Black.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
 background-color: null;
@@ -3947,16 +3935,16 @@ font-style: inherit;">as</span> out:</span>
 <span id="cb1-24">        writer <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> csv.write(out)</span>
-<span id="cb1-25">        writer.writerows(random_numbers)</span></code></pre></div>
+<span id="cb1-25">        writer.writerows(random_numbers)</span></code></pre></div></div>
 <section id="linting-with-pylint" class="level3">
 <h3 class="anchored" data-anchor-id="linting-with-pylint">Linting with PyLint</h3>
 <p>We will lint this file using <a href="https://pylint.pycqa.org/en/latest/index.html" target="_blank">Pylint</a> to find out what errors there are and how its style can be improved to conform with PEP8 guidelines.</p>
 <p>First you need to install <code>pylint</code>, typically in your <a href="https://realpython.com/python-virtual-environments-a-primer/" target="_blank">virtual environment</a>.</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">pip</span> install pylint</span></code></pre></div>
+font-style: inherit;">pip</span> install pylint</span></code></pre></div></div>
 <p>Pylint can be configured using a <code>~/.pylintrc</code> file in your home directory and over time this will grow as you customise your configuration but for now we will make one simple change from the default which is to increase the accepted line length. Create the file and save it with the following content.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">[FORMAT]</span></span>
 <span id="cb3-2"><span class="co" style="color: #5E5E5E;
@@ -3964,13 +3952,13 @@ background-color: null;
 font-style: inherit;">## Maximum number of characters on a single line.</span></span>
 <span id="cb3-3"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">max-line-length=120</span></span></code></pre></div>
+font-style: inherit;">max-line-length=120</span></span></code></pre></div></div>
 <p>Open a terminal and navigate to the location you saved the example file <code>save_random_numbers.py</code> activate the virtual environment you installed pylint under if its not already being used and then type the following to run Pylint against your code…</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">pylint</span> save_random_numbers.py</span></code></pre></div>
+font-style: inherit;">pylint</span> save_random_numbers.py</span></code></pre></div></div>
 <p>You should see output similar to the following…</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"> <span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> pylint save_random_numbers.py</span>
 <span id="cb5-2"><span class="ex" style="color: null;
@@ -4044,7 +4032,7 @@ background-color: null;
 font-style: inherit;">-------------------------------------------------------------------</span></span>
 <span id="cb5-10"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">Your</span> code has been rated at 0.00/10</span></code></pre></div>
+font-style: inherit;">Your</span> code has been rated at 0.00/10</span></code></pre></div></div>
 <p>The output tells us which module has been inspected on the first line. Each subsequent line indicates</p>
 <ul>
 <li>The file.</li>
@@ -4058,7 +4046,7 @@ font-style: inherit;">Your</span> code has been rated at 0.00/10</span></code></
 <section id="missing-module-docstring-missing-module-docstring" class="level4">
 <h4 class="anchored" data-anchor-id="missing-module-docstring-missing-module-docstring"><code>Missing module docstring (missing-module-docstring)</code></h4>
 <p>Each Python module should have a docstring as the very first line that describes what it does. In this example it might be considered superfluous but its good practice to get in the habit of writing these as it comes in useful when documentation is automatically generated from the docstrings in the code. To fix it we can add a short docstring at the top.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">"""Module for saving randomly generated numbers."""</span></span>
 <span id="cb6-2"><span class="im" style="color: #00769E;
@@ -4070,12 +4058,12 @@ font-style: inherit;">as</span> np</span>
 background-color: null;
 font-style: inherit;">from</span> pathlib <span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit;">import</span> Path</span></code></pre></div>
+font-style: inherit;">import</span> Path</span></code></pre></div></div>
 </section>
 <section id="undefined-variable-union-undefined-variable" class="level4">
 <h4 class="anchored" data-anchor-id="undefined-variable-union-undefined-variable"><code>Undefined variable 'Union' (undefined-variable)</code></h4>
 <p>This error arises because the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/" target="_blank">type hint</a> uses <code>Union</code> but it hasn’t been imported. It’s from the <a href="https://www.pythontutorial.net/python-basics/python-type-hints/" target="_blank">typing</a> module so we can import it.</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">"""Module for saving randomly generated numbers."""</span></span>
 <span id="cb7-2"><span class="im" style="color: #00769E;
@@ -4092,21 +4080,21 @@ font-style: inherit;">import</span> Path</span>
 background-color: null;
 font-style: inherit;">from</span> typing <span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit;">import</span> Union</span></code></pre></div>
+font-style: inherit;">import</span> Union</span></code></pre></div></div>
 </section>
 <section id="unused-argument-seed-unused-argument" class="level4">
 <h4 class="anchored" data-anchor-id="unused-argument-seed-unused-argument"><code>Unused argument 'seed' (unused-argument)</code></h4>
 <p>This is very useful to be informed about because the <code>seed</code> argument, according to the docstring, is meant to be used in the call to the random number generator and ensures we will get the same set of random numbers generated each time we call the function with that seed, however, as Pylint has informed us we haven’t actually used it within the <code>save_random_number()</code> function. We can correct that by adding it when we instantiate the random number generator.</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">rng <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">rng <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.random.default_rng(seed<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span>seed)</span></code></pre></div>
+font-style: inherit;">=</span>seed)</span></code></pre></div></div>
 </section>
 <section id="standard-import-from-pathlib-import-path-should-be-placed-before-import-numpy-as-np-wrong-import-order" class="level4">
 <h4 class="anchored" data-anchor-id="standard-import-from-pathlib-import-path-should-be-placed-before-import-numpy-as-np-wrong-import-order"><code>standard import "from pathlib import Path" should be placed before "import numpy as np" (wrong-import-order)</code></h4>
 <p>This message, like the one that follows it, is telling us that the order in which we have imported modules is incorrect, because the PEP8 guide recommends that core modules, which both <code>csv</code> and <code>pathlib</code> are, should be imported before other modules. We can correct this by changing the order (and because we have added an import from the <code>typing</code> module which is also a core module we move that too).</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">"""Module for saving randomly generated numbers."""</span></span>
 <span id="cb9-2"><span class="im" style="color: #00769E;
@@ -4127,9 +4115,9 @@ font-style: inherit;">import</span> Union</span>
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit;">as</span> np</span></code></pre></div>
+font-style: inherit;">as</span> np</span></code></pre></div></div>
 <p>Once corrected your file should look like this…</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">"""Module for saving randomly generated numbers."""</span></span>
 <span id="cb10-2"><span class="im" style="color: #00769E;
@@ -4231,9 +4219,9 @@ font-style: inherit;">as</span> out:</span>
 <span id="cb10-26">        writer <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> csv.write(out)</span>
-<span id="cb10-27">        writer.writerows(random_numbers)</span></code></pre></div>
+<span id="cb10-27">        writer.writerows(random_numbers)</span></code></pre></div></div>
 <p>…and you can now run PyLint against it to see if you’ve improved your score.</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"> <span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> pylint save_random_numbers.py</span>
 <span id="cb11-2"><span class="ex" style="color: null;
@@ -4264,11 +4252,11 @@ background-color: null;
 font-style: inherit;">previous</span> run: 4.00/10, +1.00<span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 <p>That is an improvement in score (of <code>+1.00</code>) but we now have another error telling us that <code>E1136: Value 'Union' is unsubscriptable (unsubscriptable-object)</code>. You are unlikely to know what all the error codes mean, but there are a few handy on-line lists <a href="http://pylint-messages.wikidot.com/all-codes" target="_blank">all PyLint codes</a> or <a href="http://pylint-messages.wikidot.com/all-messages" target="_blank">all PyLint messages</a> and what they are telling you are worth consulting (<a href="https://docs.quantifiedcode.com/python-anti-patterns/index.html" target="_blank">The Little Book of Python Anti-Patterns</a> is also useful). In this instance PyLint has returned a false-positive because <code>Union</code> can and should be subscripted here because it means the argument can be either a string (<code>str</code>) or a <a href="https://docs.python.org/3/library/pathlib.html" target="_blank">pathlib</a> Path (<code>Path</code>). So how do we get around this complaint?</p>
 <p>You can disable PyLint from complaining about specific error codes/messages on a per-file basis by adding a line that disables them. You can use either codes or messages (the bit in the brackets at the end of the line, in this case <code>unsubscriptable-object</code>) and it is advisable to use the message form as it is more informative to those who read your code subsequently.</p>
 <p>If we add the following line it prevents PyLint from reporting the specific error…</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
 background-color: null;
@@ -4299,9 +4287,9 @@ font-style: inherit;">"./random_numbers.txt"</span>) <span class="op" style="col
 background-color: null;
 font-style: inherit;">-&gt;</span> <span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">None</span>:</span></code></pre></div>
+font-style: inherit;">None</span>:</span></code></pre></div></div>
 <p>…running PyLint against our code again we get a much better score.</p>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"> <span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">❱</span> pylint save_random_numbers_tidy.py</span>
 <span id="cb13-2"></span>
@@ -4317,13 +4305,13 @@ background-color: null;
 font-style: inherit;">previous</span> run: 5.00/10, +5.00<span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="configuring-pylint" class="level3">
 <h3 class="anchored" data-anchor-id="configuring-pylint">Configuring PyLint</h3>
 <p>The last error we encountered is something that is likely to crop up again if you use Typehints liberally throughout your Python code (and I would encourage you to do so). Rather than having to remember to disable the error in each file/module we create we can configure PyLint via its configuration file <code>~/.pylintrc</code> to always ignore this error. To do so add the following…</p>
-<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">[MESSAGES</span> CONTROL]</span>
 <span id="cb14-2"><span class="co" style="color: #5E5E5E;
@@ -4342,21 +4330,21 @@ font-style: inherit;"># file where it should appear only once).</span></span>
 background-color: null;
 font-style: inherit;">disable</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span>unsubscriptable-object</span></code></pre></div>
+font-style: inherit;">=</span>unsubscriptable-object</span></code></pre></div></div>
 <p>For more on configuriong PyLint refer to the <a href="https://pylint.pycqa.org/en/latest/user_guide/options.html" target="_blank">documentation</a> and also details of how to <a href="https://pylint.pycqa.org/en/latest/user_guide/ide-integration.html" target="_blank">integrate with your editor and IDE</a></p>
 </section>
 <section id="automated-formatting-with-black" class="level3">
 <h3 class="anchored" data-anchor-id="automated-formatting-with-black">Automated Formatting with Black</h3>
 <p><a href="https://github.com/psf/black" target="_blank">Black</a> is <em>The Uncompromising Code Formatter</em> and is very strict about the way in which it formats code. This could be a good or bad thing depending on your point of view, but it does result in highly consistent code when applied to all files. It formats files in place, so be mindful of this if you run it against one of your files it <em>will</em> change it.</p>
 <p>Install <code>black</code> in your virtual environment and make a backup of your <code>save_random_number.py</code> file that you have just tidied up with linting.</p>
-<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pip</span> install black</span>
 <span id="cb15-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">cp</span> save_random_numbers.py tidy_save_random_numbers.py</span></code></pre></div>
+font-style: inherit;">cp</span> save_random_numbers.py tidy_save_random_numbers.py</span></code></pre></div></div>
 <p>To run black against your code pass it the input file, it will re-write it and you can then compare it against the backup you just made…</p>
-<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">black</span> save_random_numbers.py</span>
 <span id="cb16-2"><span class="ex" style="color: null;
@@ -4464,7 +4452,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">as</span> out:</span></code></pre></div>
+font-style: inherit;">as</span> out:</span></code></pre></div></div>
 <p>In this instance Black hasn’t changed much but it has reformatted the <code>def save~randomnumbers~(...)</code> line and moved the <code>with Path()</code> line as a consequence.</p>
 </section>
 </section>
@@ -4541,9 +4529,7 @@ font-style: inherit;">as</span> out:</span></code></pre></div>
 <div class="list quarto-listing-default">
 
 </div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<div class="listing-no-matching d-none">No matching items</div>
 </div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{shephard2022,
   author = {Shephard, Neil},
   title = {Linting - {What} Is All the Fluff About?},
