@@ -153,7 +153,6 @@ a `post-checkout` hook its easy to create [just][just] and [direnv][direnv] conf
 worktree and branch as well as create and activate [uv][uv] based virtual environments, allow [direnv][direnv] and
 initialise the [pre-commit][nshephard_pc] framework in the new directory.
 
-
 [direnv]: https://direnv.net/
 [emacs_direnv]: https://github.com/wbolster/emacs-direnv
 [git]: https://git-scm.com/
