@@ -337,7 +337,7 @@ pytest -v -m "not slow"</code></pre>
 </section>
 <section id="project-configuration" class="level2">
 <h2 class="anchored" data-anchor-id="project-configuration">Project configuration</h2>
-<p>Your packages <code>pyproject.toml</code> is typically be used to configure Pytest via the <code>tool.pytest</code> section if you are following the current standards.</p>
+<p>Your packages <code>pyproject.toml</code> is typically used to configure Pytest via the <code>tool.pytest</code> section if you are following the current standards.</p>
 <p>If you want to normally exclude the slow test then you can include the option to do so under <code>addopts</code>. To avoid warnings you should also register the markers and give a description as shown below.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.pytest]</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">addopts</span> <span class="op">=</span> <span class="op">[</span><span class="st">"-m"</span><span class="op">,</span> <span class="st">"not slow"</span><span class="op">]</span></span>
@@ -347,8 +347,8 @@ pytest -v -m "not slow"</code></pre>
 </section>
 <section id="automatically-adding-markers-based-on-test-names" class="level2">
 <h2 class="anchored" data-anchor-id="automatically-adding-markers-based-on-test-names">Automatically adding markers based on test names</h2>
-<p>If you have structured the nomenclature to your tests to indicates what the tests are doing then you can <a href="https://docs.pytest.org/en/stable/example/markers.html#automatically-adding-markers-based-on-test-names" target="_blank">automate adding markers</a> based on these.</p>
-<p>Say you have the following tests.</p>
+<p>If you have structured the nomenclature of your tests to indicates what the tests are doing then you can <a href="https://docs.pytest.org/en/stable/example/markers.html#automatically-adding-markers-based-on-test-names" target="_blank">automate adding markers</a> based on these.</p>
+<p>Suppose you have the following tests.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_func_function1():</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -371,7 +371,7 @@ pytest -v -m "not slow"</code></pre>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        item.add_marker(pytest.mark.func)</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="st">"exception"</span> <span class="kw">in</span> item.nodeid:</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        item.add_marker(pytest.mark.exception)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>And you can now use the markers as described above to run subsets of tests based on the test names themselves. You should add these to the <code>markers</code> list in the configuration section for <code>pytest</code> in <code>pyproject.toml</code>.</p>
+<p>This will in the background add <code>@pytest.mark.func</code> to any test with <code>func</code> in the name and <code>@pytest.mark.exception</code> to any test with <code>exception</code> in the name and means you can now use the markers as described above to run subsets of tests based on the test names themselves. You should add these to the <code>markers</code> list in the configuration section for <code>pytest</code> in <code>pyproject.toml</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.pytest]</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">addopts</span> <span class="op">=</span> <span class="op">[</span><span class="st">"-m"</span><span class="op">,</span> <span class="st">"not slow"</span><span class="op">]</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">markers</span> <span class="op">=</span> <span class="op">[</span></span>

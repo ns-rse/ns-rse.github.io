@@ -249,6 +249,8 @@ window.Quarto = {
                 <div class="quarto-category">worktrees</div>
                 <div class="quarto-category">hooks</div>
                 <div class="quarto-category">bash</div>
+                <div class="quarto-category">just</div>
+                <div class="quarto-category">direnv</div>
               </div>
                   </div>
   </div>
@@ -285,6 +287,7 @@ window.Quarto = {
   <li><a href="#the-problems" id="toc-the-problems" class="nav-link active" data-scroll-target="#the-problems">The problem(s)</a></li>
   <li><a href="#the-solution" id="toc-the-solution" class="nav-link" data-scroll-target="#the-solution">The solution</a></li>
   <li><a href="#gotchas" id="toc-gotchas" class="nav-link" data-scroll-target="#gotchas">Gotchas</a></li>
+  <li><a href="#side-stepping-creation" id="toc-side-stepping-creation" class="nav-link" data-scroll-target="#side-stepping-creation">Side-stepping creation</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
@@ -302,12 +305,12 @@ window.Quarto = {
 <figcaption><a href="https://www.flickr.com/photos/slackline/3018839068/" target="_blank">Worktrees by me</a></figcaption>
 </figure>
 </div>
-<p><a href="https://git-scm.com/docs/git-worktree" target="_blank">Git worktrees</a> are one of the lesser known and under appreciated features of <a href="https://git-scm.com/" target="_blank">Git</a> that I [discovered][nshephard_worktree] a couple of years ago but didn’t fully adopt into my work flow until recently. In doing so I found there are some friction points to adopting Git Worktrees but as with most things there are ways to smooth over these. This post explains how to use <a href="https://git-scm.com/docs/git-hook" target="_blank">Git hooks</a> to manage setting up <a href="https://just.systems/man/en/" target="_blank">just</a> configuration files and create virtual environments with <a href="https://docs.astral.sh/uv/" target="_blank">uv</a> and configure <a href="https://direnv.net/" target="_blank">direnv</a> to activate these.</p>
+<p><a href="https://git-scm.com/docs/git-worktree" target="_blank">Git worktrees</a> are one of the lesser known and under-appreciated features of <a href="https://git-scm.com/" target="_blank">Git</a> that I <a href="https://blog.nshephard.dev/posts/git-worktrees/" target="_blank">discovered</a> a couple of years ago but didn’t fully adopt into my work flow until recently. In doing so I found there are some friction points to adopting Git Worktrees but as with most things there are ways to smooth over these. This post explains how to use <a href="https://git-scm.com/docs/git-hook" target="_blank">Git hooks</a> to manage setting up <a href="https://just.systems/man/en/" target="_blank">just</a> configuration files and create virtual environments with <a href="https://docs.astral.sh/uv/" target="_blank">uv</a> and configure <a href="https://direnv.net/" target="_blank">direnv</a> to activate these.</p>
 <section id="the-problems" class="level2">
 <h2 class="anchored" data-anchor-id="the-problems">The problem(s)</h2>
 <p>When working on <a href="https://blog.nshephard.dev/#category=python" target="_blank">Python</a> projects I’ll use virtual environments to provide an isolated set of packages specific to the package being developed, typically Python. I used to use <a href="https://blog.nshephard.dev/#category=virtual%20environments" target="_blank">virtualenvwrapper</a> to create and manage my environments but have recently been trying out <a href="https://docs.astral.sh/uv/" target="_blank">uv</a> where the source of the environment is created <em>within</em> the project (by default in the <code>.venv/</code> directory). When using the traditional Git workflow of a single folder and switching branches this was quite convenient, as installing packages with <code>[uv] pip install -e .</code> meant that switching branches the files within the project are “editable” and by switching branches I also get the changes between branches reflected in the behaviour of the software.</p>
-<p>However, with the switch to using Git Worktrees each branch lives in its own directory and it’s not possible to have a single virtual environment that you can easily switch between the development versions of the software that you are developing. Instead you have to create and activate a virtual environment in each worktree directory. For a long time I’ve used <a href="https://direnv.net/" target="_blank">direnv</a> to activate a given virtual directory when I <code>cd</code> into it.</p>
-<p>I’ve also started using the <a href="https://just.systems/man/en/" target="_blank">Just runner</a> system to provide convenient short-cuts functions and tasks I run regularly such as running different <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">pre-commit</a> hooks or installing the package itself.</p>
+<p>However, with the switch to using Git Worktrees each branch lives in its own directory and it’s not possible to have a single virtual environment that you can easily switch between the development versions of the software that resides in each directory. Instead you have to create a virtual environment in each directory and activate it. For a long time I’ve used <a href="https://direnv.net/" target="_blank">direnv</a> to carry out the task of activating a given virtual directory when I <code>cd</code> into it (or load a project in Emacs thanks to the <a href="https://github.com/wbolster/emacs-direnv" target="_blank">emacs-direnv</a> package).</p>
+<p>I’ve also started using the <a href="https://just.systems/man/en/" target="_blank">Just runner</a> system to provide convenient short-cut commands for tasks I run regularly such as running different <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">pre-commit</a> hooks, installing the package itself, updating tests and so forth (see my <a href="https://codeberg.org/slackline/dotfiles/src/branch/master/.config/just/.justfile.tmpl" target="_blank">justfile template</a> for a growing list of examples).</p>
 </section>
 <section id="the-solution" class="level2">
 <h2 class="anchored" data-anchor-id="the-solution">The solution</h2>
@@ -315,16 +318,16 @@ window.Quarto = {
 <p>The real trick though is doing so <em>only</em> on the first time we checkout a branch and I found this solution courtesy of a short snippet <a href="https://mskelton.dev/bytes/20230906143340" target="_blank">Using Git Hooks When Creating Worktrees</a> which provides the framework/scaffolding which I’ve bulked out for my use case. The script…</p>
 <ol type="1">
 <li>Sets the <code>BASE_PATH</code> to the directory two levels higher. This is because I use a convention of <code>&lt;username&gt;/&lt;issue-##&gt;-&lt;short-description&gt;</code> when naming branches and this carries over nicely to naming my worktrees.</li>
-<li>Checks to see if there is a <code>main/.justfile</code>, if not it creates one using <code>echo</code> to append the required commands to <code>main/.justfile</code>.</li>
-<li>Checks for <code>main/.envrc</code> and if not creates one which will <code>source .venv/bin/activate</code> which is the path [uv venv][uv_venv] installs to by default.</li>
+<li>Checks to see if there is a <code>main/.justfile</code>, if not it creates one using <code>echo</code> to append the required commands to <code>main/.justfile</code>. This example only adds two runners, for more examples see my <a href="https://codeberg.org/slackline/dotfiles/src/branch/master/.config/just/.justfile.tmpl" target="_blank">justfile template</a></li>
+<li>Checks for <code>main/.envrc</code> and if not creates one which will <code>source .venv/bin/activate</code> which is the path <code>uv    venv</code> installs to by default.</li>
 <li>Checks if this is a new worktree, this is the “magic” I found in Mark Skelton’s article if so then…</li>
 <li>Copy <code>main/.justfile</code> and <code>main/.envrc</code> from <code>main/</code> to the current directory.</li>
 <li>If there is no virtual environment directory (<code>.venv/</code>) then…</li>
 <li>Create a virtual environment using <code>uv venv</code>.</li>
-<li>Run <code>uv sync</code>.</li>
-<li>Install the current package in editable form using the <code>just pip_install</code> command.</li>
-<li>Enable <code>direnv</code> in the current directory.</li>
-<li>If <code>pre-commit</code> hooks are present then initialise <code>pre-commit</code>.</li>
+<li>Run <code>uv sync</code> to install the project dependencies.</li>
+<li>Install the current package in editable form using the <code>just pip_install</code> command to ensure all <code>dev</code> group dependencies are installed.</li>
+<li>Allow <code>direnv</code> in the current directory.</li>
+<li>If <code>pre-commit</code> hooks are not present then initialise <code>pre-commit</code>.</li>
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
@@ -337,51 +340,59 @@ window.Quarto = {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If main/.justfile doesn't exist create it</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">${MAIN_PATH}</span><span class="st">/.justfile"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"No .justfile creating a basic skeleton"</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"@default:\n    @just --list\n\n"</span> <span class="op">&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"pc_ruff:\n    pre-commit run ruff-check --all-files ; pre-commit run ruff-format --all-files"</span> <span class="op">&gt;&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"pc_npd:\n    pre-commit run numpydoc-validation --all-files"</span> <span class="op">&gt;&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"pc_black:\n    pre-commit run blacken-docs --all-files"</span> <span class="op">&gt;&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"pc_prettier:\n    pre-commit run prettier --all-files"</span> <span class="op">&gt;&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"pc_markdown:\n    pre-commit run markdownlint-cli2 --all-files"</span> <span class="op">&gt;&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"pc_pylint:\n    pre-commit run pylint --all-files"</span> <span class="op">&gt;&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"pip_install:\n    uv pip install --editable . --group dev"</span> <span class="op">&gt;&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If main/envrc doesn't exist create it</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">${MAIN_PATH}</span><span class="st">/.envrc"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"No .envrc creating a basic skeleton"</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"#!/bin/bash\nsource .venv/bin/activate"</span> <span class="op">&gt;</span> <span class="va">${MAIN_PATH}</span>/.envrc</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Copy main/{envrc,justfiles} to current directory</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="va">FILES</span><span class="op">=</span><span class="va">(</span><span class="st">".justfile"</span> <span class="st">".envrc"</span><span class="va">)</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> FILE <span class="kw">in</span> <span class="st">"</span><span class="va">${FILES</span><span class="op">[@]</span><span class="va">}</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Copying main/'</span><span class="va">${FILE}</span><span class="st">' to </span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/</span><span class="va">${FILE}</span><span class="st">"</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="st">"</span><span class="va">${MAIN_PATH}</span><span class="st">/</span><span class="va">${FILE}</span><span class="st">"</span> <span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/</span><span class="va">${FILE}</span><span class="st">"</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">done</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a virtual environment using uv and install the current Python package</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-d</span> <span class="st">".venv/"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="ex">uv</span> venv</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="ex">uv</span> sync</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="ex">just</span> pip_install</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Allow direnv so venv can be activated</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">".envrc"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>      <span class="ex">direnv</span> allow</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Enable pre-commit if not already enabled</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">${BASE_PATH}</span><span class="st">/hooks/pre-commit"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pre-commit</span> install</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>With Worktrees you typically, but not always, will have cloned a bare repository which contains all the files that normally live in a repositories <code>~/.git/</code> directory. The above should code should be placed in the <code>hooks/post-checkout</code> file and will then run after every checkout.</p>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="st">@default:</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="st">    @just --list</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="st">"</span> <span class="op">&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="st"># uv pip install with group dev dependencies</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="st">pip_install:</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="st">    uv pip install --editable . --group dev</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="st">"</span> <span class="op">&gt;&gt;</span> <span class="va">${MAIN_PATH}</span>/.justfile</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If main/envrc doesn't exist create it</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">${MAIN_PATH}</span><span class="st">/.envrc"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"No .envrc creating a basic skeleton"</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">printf</span> <span class="st">"#!/bin/bash</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="st">source .venv/bin/activate</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="st">export PATH=</span><span class="va">${VIRTUAL_ENV}</span><span class="st">/bin:</span><span class="va">${PATH}</span><span class="st">"</span> <span class="op">&gt;</span> <span class="va">${MAIN_PATH}</span>/.envrc</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Copy main/{envrc,justfiles} to current directory</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="va">FILES</span><span class="op">=</span><span class="va">(</span><span class="st">".justfile"</span> <span class="st">".envrc"</span><span class="va">)</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> FILE <span class="kw">in</span> <span class="st">"</span><span class="va">${FILES</span><span class="op">[@]</span><span class="va">}</span><span class="st">"</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"Copying main/'</span><span class="va">${FILE}</span><span class="st">' to </span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/</span><span class="va">${FILE}</span><span class="st">"</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="st">"</span><span class="va">${MAIN_PATH}</span><span class="st">/</span><span class="va">${FILE}</span><span class="st">"</span> <span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">/</span><span class="va">${FILE}</span><span class="st">"</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">done</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a virtual environment using uv and install the current Python package</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-d</span> <span class="st">".venv/"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="ex">uv</span> venv</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="ex">uv</span> sync</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="ex">just</span> pip_install</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Allow direnv so venv can be activated</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">".envrc"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>      <span class="ex">direnv</span> allow</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Enable pre-commit if not already enabled</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="ot">!</span> <span class="ot">-f</span> <span class="st">"</span><span class="va">${BASE_PATH}</span><span class="st">/hooks/pre-commit"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pre-commit</span> install</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>With Worktrees you typically, but not always, will have cloned a bare repository which contains all the files that normally live in a repositories <code>~/.git/</code> directory at the top level. The above should code should be placed in the <code>hooks/post-checkout</code> file and will then run after every checkout.</p>
 </section>
 <section id="gotchas" class="level2">
 <h2 class="anchored" data-anchor-id="gotchas">Gotchas</h2>
-<p>There are a few other gotchas to be aware of if you want to use the above script directly. Setting the <code>BASE_PATH</code> variable above assumes that you are creating your worktrees in a nested directory. I alluded to this above when I wrote that I use <code>&lt;username&gt;/&lt;issue-##&gt;-&lt;short-description&gt;</code> for my branch names and use the same convention for worktree names. If you only use <code>&lt;branch-name&gt;</code> for both the branch and worktree name then you will have to modify the <code>BASE_PATH</code> and remove one of the <code>../</code> as you will only need to go up one directory level.</p>
+<p>There are a few gotchas to be aware of if you want to use the above script directly. Setting the <code>BASE_PATH</code> variable above assumes that you are creating your worktrees in a nested directory. I alluded to this above when I wrote that I use <code>&lt;username&gt;/&lt;issue-##&gt;-&lt;short-description&gt;</code> for my branch names and use the same convention for worktree names. If you only use <code>&lt;branch-name&gt;</code> for the worktree directory then you will have to modify the <code>BASE_PATH</code> and remove one of the <code>../</code> as you will only need to go up one directory level.</p>
 <p>If you don’t use <a href="https://direnv.net/" target="_blank">direnv</a> then you should remove those sections that create/copy <code>.envrc</code> and activate the directory. Similarly if you don’t use <a href="https://pre-commit.com/" target="_blank">pre-commit</a> you should remove the lines that activate that.</p>
+</section>
+<section id="side-stepping-creation" class="level2">
+<h2 class="anchored" data-anchor-id="side-stepping-creation">Side-stepping creation</h2>
+<p>If you already have either <code>.justfile</code> or <code>.envrc</code> files that you use in a given repository and don’t want to create them from scratch then you do not need to worry because if they are in the <code>main</code> branch they will be used.</p>
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>There is a small amount of friction to switching to a <a href="https://git-scm.com/docs/git-worktree" target="_blank">Git Worktrees</a> based workflow but they greatly reduce the friction involved in working on multiple branches simultaneously as it reduces to <code>cd &lt;worktree_path&gt;</code>. With a <code>post-checkout</code> hook its easy to create <a href="https://just.systems/man/en/" target="_blank">just</a> and <a href="https://direnv.net/" target="_blank">direnv</a> configuration files on initial creation of a worktree and branch and create and activate <a href="https://docs.astral.sh/uv/" target="_blank">uv</a> based virtual environments, activate [direnv][dirnev] and initialise the <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">pre-commit</a> framework.</p>
+<p>There is a small amount of friction to switching to a <a href="https://git-scm.com/docs/git-worktree" target="_blank">Git Worktrees</a> based workflow but they greatly reduce the friction involved in working on multiple branches simultaneously as it reduces to <code>cd &lt;worktree_path&gt;</code>. With a <code>post-checkout</code> hook its easy to create <a href="https://just.systems/man/en/" target="_blank">just</a> and <a href="https://direnv.net/" target="_blank">direnv</a> configuration files on initial creation of a worktree and branch as well as create and activate <a href="https://docs.astral.sh/uv/" target="_blank">uv</a> based virtual environments, allow <a href="https://direnv.net/" target="_blank">direnv</a> and initialise the <a href="https://blog.nshephard.dev/#category=pre-commit" target="_blank">pre-commit</a> framework in the new directory.</p>
+<p>[uv_env]</p>
 
 
 
