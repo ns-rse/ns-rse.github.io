@@ -20,8 +20,9 @@ execute:
 
 In the [Parametrisation](https://blog.nshephard.dev/posts/pytest-param/) and [Fail and
 Skip](https://blog.nshephard.dev/posts/pytest-xfail/) posts on Pytest we saw how you could use `@pytest.mark` module to
-make tests more flexible. Recently a work colleague [Andrew Fisher](https://sheffield.ac.uk/mac/people/research-staff/andrew-fisher) introduced
-me to another flexible usage of this module to make it simple to select what tests to run.
+make tests more flexible. Recently a work colleague [Andrew
+Fisher](https://sheffield.ac.uk/mac/people/research-staff/andrew-fisher)
+introduced me to another flexible usage of this module to make it simple to select what tests to run.
 
 ## Marking Tests
 
@@ -68,7 +69,7 @@ pytest -v -m "not slow"
 
 ## Project configuration
 
-Your packages `pyproject.toml` is typically be used to configure Pytest via the `tool.pytest` section if you are
+Your packages `pyproject.toml` is typically used to configure Pytest via the `tool.pytest` section if you are
 following the current standards.
 
 If you want to normally exclude the slow test then you can include the option to do so under `addopts`. To avoid
@@ -84,11 +85,11 @@ markers = [
 
 ## Automatically adding markers based on test names
 
-If you have structured the nomenclature to your tests to indicates what the tests are doing then you can [automate
+If you have structured the nomenclature of your tests to indicates what the tests are doing then you can [automate
 adding markers](https://docs.pytest.org/en/stable/example/markers.html#automatically-adding-markers-based-on-test-names)
 based on these.
 
-Say you have the following tests.
+Suppose you have the following tests.
 
 ```python
 def test_func_function1():
@@ -120,8 +121,10 @@ def pytest_collection_modifyitems(items):
         item.add_marker(pytest.mark.exception)
 ```
 
-And you can now use the markers as described above to run subsets of tests based on the test names themselves. You
-should add these to the `markers` list in the configuration section for `pytest` in `pyproject.toml`.
+This will in the background add `@pytest.mark.func` to any test with `func` in the name and `@pytest.mark.exception` to
+any test with `exception` in the name and means you can now use the markers as described above to run subsets of tests
+based on the test names themselves. You should add these to the `markers` list in the configuration section for `pytest`
+in `pyproject.toml`.
 
 ```toml
 [tool.pytest]

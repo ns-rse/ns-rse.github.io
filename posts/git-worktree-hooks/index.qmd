@@ -1,7 +1,7 @@
 ---
 title: "Git - Worktree Hooks"
 date: "2026-07-25"
-categories: [git, worktrees, hooks, bash]
+categories: [git, worktrees, hooks, bash, just, direnv]
 image: https://live.staticflickr.com/3027/3018839068_ff71bcb5f5_k.jpg
 from: markdown+emoji
 toc: true
@@ -18,7 +18,7 @@ execute:
 
 ![[Worktrees by me](https://www.flickr.com/photos/slackline/3018839068/)](https://live.staticflickr.com/3027/3018839068_ff71bcb5f5_k.jpg)
 
-[Git worktrees][git_worktrees] are one of the lesser known and under appreciated features of [Git][git] that I
+[Git worktrees][git_worktrees] are one of the lesser known and under-appreciated features of [Git][git] that I
 [discovered][nshephard_worktree] a couple of years ago but didn't fully adopt into my work flow until recently. In doing
 so I found there are some friction points to adopting Git Worktrees but as with most things there are ways to smooth
 over these. This post explains how to use [Git hooks][git_hooks] to manage setting up [just][just] configuration
@@ -27,8 +27,8 @@ files and create virtual environments with [uv][uv] and configure [direnv][diren
 ## The problem(s)
 
 When working on [Python][python] projects I'll use virtual environments to provide an isolated set of packages specific
-to the package being developed, typically Python. I used to use [virtualenvwrapper][nshephard_venv] to create and manage my
-environments but have recently been trying out [uv][uv] where the source of the environment is created _within_ the
+to the package being developed, typically Python. I used to use [virtualenvwrapper][nshephard_venv] to create and manage
+my environments but have recently been trying out [uv][uv] where the source of the environment is created _within_ the
 project (by default in the `.venv/` directory). When using the traditional Git workflow of a single folder and switching
 branches this was quite convenient, as installing packages with `[uv] pip install -e .` meant that switching branches
 the files within the project are "editable" and by switching branches I also get the changes between branches reflected
@@ -36,11 +36,13 @@ in the behaviour of the software.
 
 However, with the switch to using Git Worktrees each branch lives in its own directory
 and it's not possible to have a single virtual environment that you can easily switch between the development versions
-of the software that you are developing. Instead you have to create and activate a virtual environment in each worktree
-directory. For a long time I've used [direnv][direnv] to activate a given virtual directory when I `cd` into it.
+of the software that resides in each directory. Instead you have to create a virtual environment in each directory and
+activate it. For a long time I've used [direnv][direnv] to carry out the task of activating a given virtual directory
+when I `cd` into it (or load a project in Emacs thanks to the [emacs-direnv][emacs_direnv] package).
 
-I've also started using the [Just runner][just] system to provide convenient short-cuts functions and tasks I run
-regularly such as running different  [pre-commit][nshephard_pc] hooks or installing the package itself.
+I've also started using the [Just runner][just] system to provide convenient short-cut commands for tasks I run
+regularly such as running different [pre-commit][nshephard_pc] hooks, installing the package itself, updating tests
+and so forth (see my [justfile template][just_template] for a growing list of examples).
 
 ## The solution
 
@@ -57,17 +59,19 @@ host of other stages at which they can run such as `post-commit`, `pre-push` and
 1. Sets the `BASE_PATH` to the directory two levels higher. This is because I use a convention of
    `<username>/<issue-##>-<short-description>` when naming branches and this carries over nicely to naming
    my worktrees.
-2. Checks to see if there is a `main/.justfile`, if not it creates one using `echo` to append the required commands to `main/.justfile`.
-3. Checks for `main/.envrc` and if not creates one which will `source .venv/bin/activate` which is the path [uv
-   venv][uv_venv] installs to by default.
+2. Checks to see if there is a `main/.justfile`, if not it creates one using `echo` to append the required commands to
+   `main/.justfile`. This example only adds two runners, for more examples see my [justfile template][just_template]
+3. Checks for `main/.envrc` and if not creates one which will `source .venv/bin/activate` which is the path `uv
+   venv` installs to by default.
 4. Checks if this is a new worktree, this is the "magic" I found in Mark Skelton's article if so then...
 5. Copy `main/.justfile` and `main/.envrc` from `main/` to the current directory.
 6. If there is no virtual environment directory (`.venv/`) then...
 7. Create a virtual environment using `uv venv`.
-8. Run `uv sync`.
-9. Install the current package in editable form using the `just pip_install` command.
-10. Enable `direnv` in the current directory.
-11. If `pre-commit` hooks are present then initialise `pre-commit`.
+8. Run `uv sync` to install the project dependencies.
+9. Install the current package in editable form using the `just pip_install` command to ensure all `dev` group
+   dependencies are installed.
+10. Allow `direnv` in the current directory.
+11. If `pre-commit` hooks are not present then initialise `pre-commit`.
 
 ``` bash
 #!/bin/bash
@@ -81,19 +85,22 @@ if [[ "$1" == "0000000000000000000000000000000000000000" ]]; then
   # If main/.justfile doesn't exist create it
   if [ ! -f "${MAIN_PATH}/.justfile" ]; then
     echo "No .justfile creating a basic skeleton"
-    printf "@default:\n    @just --list\n\n" > ${MAIN_PATH}/.justfile
-    printf "pc_ruff:\n    pre-commit run ruff-check --all-files ; pre-commit run ruff-format --all-files" >> ${MAIN_PATH}/.justfile
-    printf "pc_npd:\n    pre-commit run numpydoc-validation --all-files" >> ${MAIN_PATH}/.justfile
-    printf "pc_black:\n    pre-commit run blacken-docs --all-files" >> ${MAIN_PATH}/.justfile
-    printf "pc_prettier:\n    pre-commit run prettier --all-files" >> ${MAIN_PATH}/.justfile
-    printf "pc_markdown:\n    pre-commit run markdownlint-cli2 --all-files" >> ${MAIN_PATH}/.justfile
-    printf "pc_pylint:\n    pre-commit run pylint --all-files" >> ${MAIN_PATH}/.justfile
-    printf "pip_install:\n    uv pip install --editable . --group dev" >> ${MAIN_PATH}/.justfile
+    printf "
+@default:
+    @just --list
+" > ${MAIN_PATH}/.justfile
+    printf "
+# uv pip install with group dev dependencies
+pip_install:
+    uv pip install --editable . --group dev
+" >> ${MAIN_PATH}/.justfile
   fi
   # If main/envrc doesn't exist create it
   if [ ! -f "${MAIN_PATH}/.envrc" ]; then
     echo "No .envrc creating a basic skeleton"
-    printf "#!/bin/bash\nsource .venv/bin/activate" > ${MAIN_PATH}/.envrc
+    printf "#!/bin/bash
+source .venv/bin/activate
+export PATH=${VIRTUAL_ENV}/bin:${PATH}" > ${MAIN_PATH}/.envrc
   fi
   # Copy main/{envrc,justfiles} to current directory
   FILES=(".justfile" ".envrc")
@@ -119,35 +126,44 @@ fi
 ```
 
 With Worktrees you typically, but not always, will have cloned a bare repository which contains all the files that
-normally live in a repositories `~/.git/` directory. The above should code should be placed in the `hooks/post-checkout`
-file and will then run after every checkout.
+normally live in a repositories `~/.git/` directory at the top level. The above should code should be placed in the
+`hooks/post-checkout` file and will then run after every checkout.
 
 ## Gotchas
 
-There are a few other gotchas to be aware of if you want to use the above script directly. Setting the `BASE_PATH`
+There are a few gotchas to be aware of if you want to use the above script directly. Setting the `BASE_PATH`
 variable above assumes that you are creating your worktrees in a nested directory. I alluded to this above when I wrote
 that I use `<username>/<issue-##>-<short-description>` for my branch names and use the same convention for worktree
-names. If you only use `<branch-name>` for both the branch and worktree name then you will have to modify the
-`BASE_PATH` and remove one of the `../` as you will only need to go up one directory level.
+names. If you only use `<branch-name>` for the worktree directory then you will have to modify the `BASE_PATH` and
+remove one of the `../` as you will only need to go up one directory level.
 
 If you don't use [direnv][direnv] then you should remove those sections that create/copy `.envrc` and activate the
 directory. Similarly if you don't use [pre-commit][pc] you should remove the lines that activate that.
+
+## Side-stepping creation
+
+If you already have either `.justfile` or `.envrc` files that you use in a given repository and don't want to create
+them from scratch then you do not need to worry because if they are in the `main` branch they will be used.
 
 ## Summary
 
 There is a small amount of friction to switching to a [Git Worktrees][git_worktrees] based workflow but they greatly
 reduce the friction involved in working on multiple branches simultaneously as it reduces to `cd <worktree_path>`. With
 a `post-checkout` hook its easy to create [just][just] and [direnv][direnv] configuration files on initial creation of a
-worktree and branch and create and activate [uv][uv] based virtual environments, activate [direnv][dirnev] and
-initialise the [pre-commit][nshephard_pc] framework.
+worktree and branch as well as create and activate [uv][uv] based virtual environments, allow [direnv][direnv] and
+initialise the [pre-commit][nshephard_pc] framework in the new directory.
 
 [direnv]: https://direnv.net/
+[emacs_direnv]: https://github.com/wbolster/emacs-direnv
 [git]: https://git-scm.com/
 [git_hooks]: https://git-scm.com/docs/git-hook
 [git_worktrees]: https://git-scm.com/docs/git-worktree
 [just]: https://just.systems/man/en/
+[just_template]: https://codeberg.org/slackline/dotfiles/src/branch/master/.config/just/.justfile.tmpl
 [nshephard_pc]: https://blog.nshephard.dev/#category=pre-commit
 [nshephard_venv]: https://blog.nshephard.dev/#category=virtual%20environments
+[nshephard_worktree]: https://blog.nshephard.dev/posts/git-worktrees/
 [pc]: https://pre-commit.com/
 [python]: https://blog.nshephard.dev/#category=python
 [uv]: https://docs.astral.sh/uv/
+[uv_env]
