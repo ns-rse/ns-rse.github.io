@@ -58,7 +58,16 @@ def test_very_fast() -> None:
     pass
 ```
 
-You can then selectively run tests using the \`slow\` mark. :tada:
+You have to tell `pytest` about the mark you are adding in the relevant section of `pyproject.toml`.
+
+```toml
+[tool.pytest]
+markers = [
+  "slow: marks slow tests (deselect with '-m \"not slow\")",
+]
+```
+
+You can then selectively run tests using the `-m "slow"` mark or exclude them with `-m "not slow"`. :tada:
 
 ```shell
 # Run just `test_slow` that is marked with 'slow'
@@ -70,10 +79,9 @@ pytest -v -m "not slow"
 ## Project configuration
 
 Your packages `pyproject.toml` is typically used to configure Pytest via the `tool.pytest` section if you are
-following the current standards.
-
-If you want to normally exclude the slow test then you can include the option to do so under `addopts`. To avoid
-warnings you should also register the markers and give a description as shown below.
+following the current standards and whilst you will have already made `pytest` aware of the mark you have created you
+may want to set things up so that by default you do not run those marked with `slow` which you can do via the `addopts`
+configuration under `tool.pytest`.
 
 ```toml
 [tool.pytest]
@@ -85,7 +93,7 @@ markers = [
 
 ## Automatically adding markers based on test names
 
-If you have structured the nomenclature of your tests to indicates what the tests are doing then you can [automate
+If you have structured the nomenclature of your tests to indicate what the tests are doing then you can [automate
 adding markers](https://docs.pytest.org/en/stable/example/markers.html#automatically-adding-markers-based-on-test-names)
 based on these.
 
@@ -115,31 +123,76 @@ import pytest
 
 def pytest_collection_modifyitems(items):
     for item in items:
-    if "func" in item.nodeid:
-        item.add_marker(pytest.mark.func)
-    elif "exception" in item.nodeid:
-        item.add_marker(pytest.mark.exception)
+        if "_func_" in item.nodeid:
+            item.add_marker(pytest.mark.func)
+        elif "_exception_" in item.nodeid:
+            item.add_marker(pytest.mark.exception)
 ```
 
-This will in the background add `@pytest.mark.func` to any test with `func` in the name and `@pytest.mark.exception` to
-any test with `exception` in the name and means you can now use the markers as described above to run subsets of tests
-based on the test names themselves. You should add these to the `markers` list in the configuration section for `pytest`
-in `pyproject.toml`.
+This will in the background add `@pytest.mark.func` to any test with `_func_` in the name and `@pytest.mark.exception` to
+any test with `_exception_` in the name and means you can now use these markers as described above to run subsets of tests
+based on the test names themselves. You should of course add these to the `markers` list in the configuration section
+for `pytest` in `pyproject.toml`.
 
 ```toml
 [tool.pytest]
-  addopts = ["-m", "not slow"]
-  markers = [
-    "slow: marks slow tests (deselect with '-m \"not slow\")",
-    "func: marks tests of functions (dselect with '-m \"not func\")"
-    "exceptions: marks tests of exceptions (dselect with '-m \"not exceptions\")"
-  ]
+addopts = ["-m", "not slow"]
+markers = [
+  "slow: marks slow tests (deselect with '-m \"not slow\")'",
+  "func: marks tests of functions (dselect with '-m \"not func\")'",
+  "exceptions: marks tests of exceptions (dselect with '-m \"not exceptions\")'",
+]
+```
+
+If you just want to run tests of your functions can do so.
+
+```shell
+pytest -v -m "func"
+```
+
+Alternatively you can run the tests of exceptions, or exclude tests of exceptions them.
+
+```shell
+pytest -v -m "exceptions"
+pytest -v -m "not exceptions"
 ```
 
 ## Listing Markers
 
 Over time you may include multiple markers in your test suite. It is possible to list these with `pytest --markers`
-which will show custom markers as well as built-ins.
+which will show custom markers as well as built-ins and those from plugins which include markers.
+
+```shell
+@pytest.mark.slow: marks slow testes (deselect with '-m "not slow"')
+
+@pytest.mark.func: marks tests of functions (dselect with '-m "not func")
+
+@pytest.mark.exceptions: marks tests of exceptions (dselect with '-m "not exceptions"')
+
+@pytest.mark.syrupy_snapshot: test directly or indirectly uses the snapshot fixture
+
+@pytest.mark.no_cover: disable coverage for this test.
+
+@pytest.mark.mpl_image_compare: Compares matplotlib figures against a baseline image
+
+@pytest.mark.filterwarnings(warning): add a warning filter to the given test. see https://docs.pytest.org/en/stable/how-to/capture-warnings.html#pytest-mark-filterwarnings
+
+@pytest.mark.skip(reason=None): skip the given test function with an optional reason. Example: skip(reason="no way of currently testing this") skips the test.
+
+@pytest.mark.skipif(condition, ..., *, reason=...): skip the given test function if any of the conditions evaluate to True. Example: skipif(sys.platform == 'win32') skips the test if we are on the win32 platform. See https://docs.pytest.org/en/stable/reference/reference.html#pytest-mark-skipif
+
+@pytest.mark.xfail(condition, ..., *, reason=..., run=True, raises=None, strict=strict_xfail): mark the test function as an expected failure if any of the conditions evaluate to True. Optionally specify a reason for better reporting and run=False if you don't even want to execute the test function. If only specific exception(s) are expected, you can list them in raises, and if the test fails in other ways, it will be reported as a true failure. See https://docs.pytest.org/en/stable/reference/reference.html#pytest-mark-xfail
+
+@pytest.mark.parametrize(argnames, argvalues): call a test function multiple times passing in different arguments in turn. argvalues generally needs to be a list of values if argnames specifies only one name or a list of tuples of values if argnames specifies multiple names. Example: @parametrize('arg1', [1,2]) would lead to two calls of the decorated test function, one with arg1=1 and another with arg1=2.see https://docs.pytest.org/en/stable/how-to/parametrize.html for more info and examples.
+
+@pytest.mark.usefixtures(fixturename1, fixturename2, ...): mark tests as needing all of the specified fixtures. see https://docs.pytest.org/en/stable/explanation/fixtures.html#usefixtures
+
+@pytest.mark.tryfirst: mark a hook implementation function such that the plugin machinery will try to call it first/as early as possible. DEPRECATED, use @pytest.hookimpl(tryfirst=True) instead.
+
+@pytest.mark.trylast: mark a hook implementation function such that the plugin machinery will try to call it last/as late as possible. DEPRECATED, use @pytest.hookimpl(trylast=True) instead.
+
+@pytest.mark.xdist_group: specify group for tests should run in same session.in relation to one another. Provided by pytest-xdist.
+```
 
 ## Summary
 
